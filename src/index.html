@@ -128,7 +128,7 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 .srch svg{position:absolute;left:12px;top:12px;color:var(--ink3);width:20px;height:20px}
 .srch .in{padding-left:40px}
 .fpan{display:flex;gap:12px;flex-wrap:wrap;padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--line)}
-.tr{display:grid;grid-template-columns:minmax(0,2.4fr) 64px 92px 150px 232px;gap:12px;align-items:center;padding:10px 16px;border-top:1px solid var(--line)}
+.tr{display:grid;grid-template-columns:minmax(0,2.4fr) 64px 92px 150px 276px;gap:12px;align-items:center;padding:10px 16px;border-top:1px solid var(--line)}
 .tr.h{border-top:0;font-size:12px;font-weight:700;color:var(--ink2);padding-block:8px;background:var(--surface2)}
 .tr .t b{display:block;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tr .t span{font-size:13px;color:var(--ink2)}
@@ -220,6 +220,7 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 /*__LIVE_CSS__*/
+/*__EDIT_CSS__*/
 </style>
 </head>
 <body>
@@ -250,6 +251,10 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
     <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C5 10 10 5 20 4c0 10-5 15-14 15z"/><path d="M5 19l8-8"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4l9 16H3L12 4zM12 10v4M12 17v.5"/></symbol>
     <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5c3-1 5-1 8 1 3-2 5-2 8-1v13c-3-1-5-1-8 1-3-2-5-2-8-1z"/><path d="M12 6v13"/></symbol>
   </defs>
 </svg>
@@ -269,7 +274,7 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 <script>/*__QR__*/</script>
 <script>
 "use strict";
-const VERSAO = "0.2.0";
+const VERSAO = "0.3.0";
 const MODELOS = __MODELOS__;
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -336,7 +341,7 @@ const NAV2 = [["conferir", "Conferir", "shield"], ["ajustes", "Ajustes", "gear"]
 function rota() { const h = (location.hash || "#/inicio").replace(/^#\//, "").split("/"); return {v: h[0] || "inicio", id: h[1] || null}; }
 function ir(h) { if (location.hash === h) render(); else location.hash = h; }
 function menu(v) {
-  const at = v === "aplicar" || v === "sala" ? "treinos" : v;
+  const at = v === "aplicar" || v === "sala" || v === "editar" ? "treinos" : v;
   const item = ([id, nome, i]) => `<a class="ri" href="#/${id}" ${at === id ? 'aria-current="page"' : ""}><span class="pill">${ic(i)}</span>${nome}</a>`;
   $("#rail").innerHTML = `<div class="lg" aria-hidden="true"><svg viewBox="0 0 48 48"><use href="#logo"/></svg></div>${NAV.map(item).join("")}<div class="sp"></div>${NAV2.map(item).join("")}`;
   const bi = ([id, nome, i]) => `<a href="#/${id}" ${at === id ? 'aria-current="page"' : ""}><span class="pill">${ic(i)}</span>${nome}</a>`;
@@ -426,9 +431,10 @@ function filtrar(aba) {
 function linhaTreino(t) {
   const nq = t.itens.filter(isQ).length, pode = nq > 0;
   return `<div class="tr"><div class="t"><b>${esc(t.titulo)}</b><span>${nq} pergunta${nq === 1 ? "" : "s"} · atualizado ${dm(t.atualizado)}</span></div>
-    <span class="num hide-m">v${String(t.versao).padStart(2, "0")}</span><span class="hide-m"><span class="num">${t.meta}%</span><div class="meta-bar" aria-hidden="true"><i style="width:${t.meta}%"></i></div></span>
-    <span class="hide-m">${pode ? `<span class="chip ok">Pronto para aplicar</span>` : `<span class="chip warn">Rascunho</span>`}</span>
+    <span class="num hide-m" title="${t.sujo ? "Há alterações sem versão salva" : "Versão salva"}">v${String(t.versao).padStart(2, "0")}${t.sujo ? "*" : ""}</span><span class="hide-m"><span class="num">${t.meta}%</span><div class="meta-bar" aria-hidden="true"><i style="width:${t.meta}%"></i></div></span>
+    <span class="hide-m">${pode ? (problemasTreino(t).length ? `<span class="chip warn">Revisar perguntas</span>` : `<span class="chip ok">Pronto para aplicar</span>`) : `<span class="chip warn">Rascunho</span>`}</span>
     <div class="acts"><a class="b sm p" href="#/aplicar/${t.id}" ${pode ? "" : 'aria-disabled="true" tabindex="-1" style="opacity:.5;pointer-events:none"'}>${ic("play", 'style="width:16px;height:16px"')}Aplicar</a>
+    <a class="b sm ic" href="#/editar/${t.id}" aria-label="Editar ${esc(t.titulo)}" title="Editar perguntas">${ic("edit", 'style="width:18px;height:18px"')}</a>
     <button class="b sm ic" data-act="exportar" data-id="${t.id}" aria-label="Exportar ${esc(t.titulo)}" title="Exportar .json">${ic("download", 'style="width:18px;height:18px"')}</button>
     <button class="b sm ic" data-act="duplicar" data-id="${t.id}" aria-label="Duplicar ${esc(t.titulo)}" title="Duplicar">${ic("copy", 'style="width:18px;height:18px"')}</button>
     <button class="b sm ic bad" data-act="excluir" data-id="${t.id}" aria-label="Excluir ${esc(t.titulo)}" title="Excluir">${ic("trash", 'style="width:18px;height:18px"')}</button></div></div>`;
@@ -437,6 +443,7 @@ function cartaoTreino(t) {
   const nq = t.itens.filter(isQ).length;
   return `<div class="card"><b>${esc(t.titulo)}</b><span class="sm mut">${nq} pergunta${nq === 1 ? "" : "s"} · meta <span class="num">${t.meta}%</span> · v${String(t.versao).padStart(2, "0")}</span>
     <div style="display:flex;gap:6px"><a class="b sm p" style="flex:1" href="#/aplicar/${t.id}" ${nq ? "" : 'aria-disabled="true" style="opacity:.5;pointer-events:none"'}>Aplicar</a>
+    <a class="b sm ic" href="#/editar/${t.id}" aria-label="Editar ${esc(t.titulo)}">${ic("edit", 'style="width:18px;height:18px"')}</a>
     <button class="b sm ic" data-act="exportar" data-id="${t.id}" aria-label="Exportar ${esc(t.titulo)}">${ic("download", 'style="width:18px;height:18px"')}</button>
     <button class="b sm ic bad" data-act="excluir" data-id="${t.id}" aria-label="Excluir ${esc(t.titulo)}">${ic("trash", 'style="width:18px;height:18px"')}</button></div></div>`;
 }
@@ -476,7 +483,7 @@ function vInicio() {
   else if (!S.sessoes.length && prontos.length) coach = {t: `${prontos[0].titulo} está pronto para aplicar`, p: "Escolha como vai ser, quem participa e prepare a sessão em um minuto.", a: `<a class="b p" href="#/aplicar/${prontos[0].id}">${ic("play")}Aplicar agora</a>`};
   else if (S.sessoes.some(x => x.estado === "sala")) { const x = S.sessoes.find(y => y.estado === "sala"); coach = {t: `A sala de "${x.titulo}" está aberta`, p: `Chave ${x.chave.slice(0, 3)} ${x.chave.slice(3)} · ${x.part.length} pessoa${x.part.length === 1 ? "" : "s"} na sala.`, a: `<button class="b p" data-act="voltarsala" data-id="${x.id}">${ic("play")}Voltar à sala</button>`}; }
   else if (prontos.length && S.sessoes.length) coach = {t: "Pronto para a próxima turma", p: "Escolha como vai ser, quem participa e abra a sala com chave e telão.", a: `<a class="b p" href="#/aplicar/${prontos[0].id}">${ic("play")}Aplicar agora</a>`};
-  else coach = {t: "Treinamentos sem perguntas", p: "O editor de perguntas chega na v0.3. Enquanto isso, importe ou use um modelo.", a: `<button class="b p" data-act="novo">${ic("plus")}Novo treinamento</button>`};
+  else { const vz = S.treinamentos.find(x => !x.itens.some(isQ)) || S.treinamentos[0]; coach = {t: "Treinamentos sem perguntas", p: "Abra o editor e escreva as perguntas, ou comece por um modelo pronto.", a: `<a class="b p" href="#/editar/${vz.id}">${ic("edit")}Escrever perguntas</a>`}; }
   const enc = S.sessoes.filter(x => x.estado === "encerrada");
   const kp = [[nT, "Treinamentos"], [nP, "Perguntas no total"], [enc.length, "Sessões realizadas"], enc.length ? [Math.round(enc.reduce((a, x) => a + x.resultado.pct, 0) / enc.length) + "%", "Acerto médio"] : [nT ? Math.round(S.treinamentos.reduce((a, t) => a + t.meta, 0) / nT) + "%" : "–", "Meta média"]];
   const usados = new Set(S.treinamentos.map(t => t.modelo));
@@ -553,7 +560,8 @@ function vAplicar(id) {
 }
 function preparar() {
   const a = UI.apl, t = treino(a.id); if (!t) return;
-  S.sessoes.push({id: uid(), treinoId: t.id, preset: a.preset, setores: a.setores.slice(), instrutor: a.instrutor.trim(), local: a.local.trim(), horas: a.horas, aj: Object.assign({}, a.aj), estado: "preparada", criada: new Date().toISOString()});
+  fixarVersao(t);
+  S.sessoes.push({id: uid(), treinoId: t.id, versao: t.versao, itens: clone(t.itens), preset: a.preset, setores: a.setores.slice(), instrutor: a.instrutor.trim(), local: a.local.trim(), horas: a.horas, aj: Object.assign({}, a.aj), estado: "preparada", criada: new Date().toISOString()});
   if (a.instrutor.trim() && !S.cfg.instrutor) S.cfg.instrutor = a.instrutor.trim();
   salvar(); UI.apl = null; aviso("Sessão preparada. Ela aparece no Início."); ir("#/inicio");
 }
@@ -590,7 +598,7 @@ function vFuturo(v) {
     <section class="k road"><h3 style="margin-bottom:6px">Mapa das versões</h3><ul>
       <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.1.0</b> · Casca, Início, Treinos e Aplicar</span></li>
       <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.2.0</b> · Sala ao vivo, chave, QR e telão</span></li>
-      <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.3.0</b> · Editor de perguntas e versões</span></li>
+      <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.3.0</b> · Editor de perguntas e versões</span></li>
       <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.4.0</b> · Celular do participante</span></li>
       <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.5.0</b> · Relatórios, PDF e conferência</span></li>
       <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.6.0 a v1.0.0</b> · Reforço, pessoas, mensagens e acabamento</span></li></ul></section>`;
@@ -602,7 +610,7 @@ function dlgNovo(passo = "menu") {
   const fecha = `<button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button>`;
   if (passo === "menu") d.innerHTML = `<div class="dl"><header><h2>Novo treinamento</h2>${fecha}</header>
     <button class="opcao" data-act="dlg" data-v="modelos"><span class="pic">${ic("book")}</span><span><b>Modelo pronto</b><span class="d">Perguntas prontas para revisar com o seu material.</span></span></button>
-    <button class="opcao" data-act="dlg" data-v="zero"><span class="pic">${ic("plus")}</span><span><b>Começar do zero</b><span class="d">Só o título e a meta. As perguntas entram no editor (v0.3).</span></span></button>
+    <button class="opcao" data-act="dlg" data-v="zero"><span class="pic">${ic("plus")}</span><span><b>Começar do zero</b><span class="d">Só o título e a meta. Depois você escreve as perguntas no editor.</span></span></button>
     <button class="opcao" data-act="impor"><span class="pic">${ic("upload")}</span><span><b>Importar arquivo</b><span class="d">Treinamento .json exportado do EFCquiz ou do Sabiá.</span></span></button></div>`;
   else if (passo === "modelos") d.innerHTML = `<div class="dl"><header><button class="b ic g" data-act="dlg" data-v="menu" aria-label="Voltar">${ic("back")}</button><h2>Modelos prontos</h2>${fecha}</header>
     ${MODELOS.map(m => `<button class="opcao" data-act="usarmodelo" data-id="${m.id}"><span class="pic">${ic("leaf")}</span><span><b>${esc(m.titulo)}</b><span class="d">${m.itens.filter(isQ).length} perguntas · meta ${m.meta}%</span></span></button>`).join("")}
@@ -662,10 +670,11 @@ document.addEventListener("change", e => {
 });
 document.addEventListener("submit", e => {
   const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault();
-  if (f.dataset.form === "zero") { const t = criarDoZero($("#z-t").value, Math.min(100, Math.max(1, Math.round(Number($("#z-m").value) || 80)))); $("#dlg").close(); ir("#/treinos"); render(); aviso(`"${t.titulo}" criado como rascunho`); }
+  if (f.dataset.form === "zero") { const t = criarDoZero($("#z-t").value, Math.min(100, Math.max(1, Math.round(Number($("#z-m").value) || 80)))); $("#dlg").close(); ir("#/editar/" + t.id); aviso(`"${t.titulo}" criado. Escreva a primeira pergunta.`); }
   else if (f.dataset.form === "setor") { const i = $("#c-set"), n = i.value.trim(); if (n && !S.cfg.setores.includes(n)) { S.cfg.setores.push(n); salvar(); render(); } }
 });
 
+/*__EDIT_JS__*/
 /*__LIVE_JS__*/
 function render() {
   if (!S) return;
@@ -674,6 +683,7 @@ function render() {
   if (r.v === "inicio") vInicio();
   else if (r.v === "treinos") vTreinos();
   else if (r.v === "aplicar") vAplicar(r.id);
+  else if (r.v === "editar") vEditar(r.id);
   else if (r.v === "sala") vSala(r.id);
   else if (r.v === "telao") vTelao(r.id);
   else if (r.v === "ajustes") vAjustes();

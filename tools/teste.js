@@ -23,6 +23,7 @@ const log=[];const ok=(n,c,x='')=>{log.push((c?'OK   ':'FALHA ')+n+(x?' · '+x:'
  await p.locator('.tb [data-act=novo], .tbar [data-act=novo]').first().click();await p.click('[data-act=dlg][data-v=zero]');
  await p.fill('#z-t','Calibração do pHmetro');await p.fill('#z-m','85');await p.click('#dlg button[type=submit]');
  await p.waitForTimeout(200);
+ ok('Do zero abre o editor',p.url().includes('#/editar/'));await p.evaluate(()=>{location.hash='#/treinos'});await p.waitForTimeout(250);
  ok('Do zero vira rascunho',(await p.locator('.chip.warn').count())===1);
  ok('Aplicar do rascunho desativado',(await p.locator('.tr .b.p[aria-disabled=true]').count())===1);
  // excluir + desfazer
@@ -54,6 +55,7 @@ const log=[];const ok=(n,c,x='')=>{log.push((c?'OK   ':'FALHA ')+n+(x?' · '+x:'
  await p.locator('.tb [data-act=novo], .tbar [data-act=novo]').first().click();await p.click('[data-act=dlg][data-v=zero]');
  await p.fill('#z-t','<img src=x onerror=window.__x=1>');await p.click('#dlg button[type=submit]');await p.waitForTimeout(200);
  ok('Título com HTML é escapado',(await p.evaluate(()=>window.__x))===undefined);
+ await p.evaluate(()=>{location.hash='#/treinos'});await p.waitForTimeout(250);
  // aplicar
  await p.click('.tr:not(.h) .b.p:not([aria-disabled]) >> nth=0');await p.waitForSelector('.apl');
  await p.screenshot({path:OUT+'/d-aplicar.png'});

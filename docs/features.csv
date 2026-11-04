@@ -12,18 +12,18 @@ Vista em lista ou cartões,Treinamentos,should,yes,yes,
 Novo treinamento: modelo pronto (X06),Criação,must,yes,yes,revisar com o POP antes de aplicar
 Novo treinamento: começar do zero,Criação,must,yes,yes,
 Novo treinamento: criar com uma IA (prompt pronto para colar),Criação,should,yes,no,importa a resposta
-Editor: título / meta em pontos ou % / descrição,Criação,must,yes,no,
+Editor: título / meta em pontos ou % / descrição,Criação,must,yes,partial,"meta em %, título e descrição; falta meta em pontos"
 Editor: periodicidade (refazer a cada N dias) e vencidos (M09),Criação,must,yes,no,
 Editor: reavaliação de eficácia em 30/60/90 dias (M07),Criação,must,yes,no,
-Item explicação (momento de explicar no telão),Criação,must,yes,no,
-Pergunta múltipla escolha,Criação,must,yes,no,cores A-D
-Pergunta verdadeiro ou falso,Criação,must,yes,no,
-Pergunta ordenar etapas,Criação,must,yes,no,
-Pergunta de teste automática que não vale nota,Criação,must,yes,no,ensaio
-Mover / excluir / marcar correta / alternativas,Criação,must,yes,no,
+Item explicação (momento de explicar no telão),Criação,must,yes,yes,
+Pergunta múltipla escolha,Criação,must,yes,yes,cores A-D
+Pergunta verdadeiro ou falso,Criação,must,yes,yes,
+Pergunta ordenar etapas,Criação,must,yes,yes,
+Pergunta de teste automática que não vale nota,Criação,must,yes,partial,uso Teste (não vale nota) por pergunta; falta a pergunta de teste automática no começo
+Mover / excluir / marcar correta / alternativas,Criação,must,yes,yes,
 Voz gravada na pergunta (X03) e ouvir a pergunta,Criação,should,yes,no,acessibilidade para quem lê pouco
 Banco de perguntas,Criação,should,yes,no,
-Versões do treinamento (v00 v01...) com nota do que mudou,Versões,must,yes,no,versão nova ao salvar
+Versões do treinamento (v00 v01...) com nota do que mudou,Versões,must,yes,yes,"v00, v01...; nota, comparar e restaurar"
 Painel lateral: visão geral / acerto por versão / comentários / material,Versões,must,yes,no,
 Observações do treinamento,Versões,should,yes,no,Principal e Líder editam
 Material (PDF/HTML/PPTX neste aparelho) com capítulos ligados à explicação (M02),Material,should,yes,no,abre por cima da tela

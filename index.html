@@ -128,7 +128,7 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 .srch svg{position:absolute;left:12px;top:12px;color:var(--ink3);width:20px;height:20px}
 .srch .in{padding-left:40px}
 .fpan{display:flex;gap:12px;flex-wrap:wrap;padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--line)}
-.tr{display:grid;grid-template-columns:minmax(0,2.4fr) 64px 92px 150px 232px;gap:12px;align-items:center;padding:10px 16px;border-top:1px solid var(--line)}
+.tr{display:grid;grid-template-columns:minmax(0,2.4fr) 64px 92px 150px 276px;gap:12px;align-items:center;padding:10px 16px;border-top:1px solid var(--line)}
 .tr.h{border-top:0;font-size:12px;font-weight:700;color:var(--ink2);padding-block:8px;background:var(--surface2)}
 .tr .t b{display:block;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tr .t span{font-size:13px;color:var(--ink2)}
@@ -343,6 +343,82 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 @media (max-width:760px){.tb .b[data-act=telao]{width:44px;padding:0}.tb .sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60vw}}
 @media (prefers-reduced-motion:reduce){.conf{display:none}}
 
+/* ===== v0.3.0 · editor de perguntas e versões ===== */
+.edit{display:grid;grid-template-columns:268px minmax(0,1fr) minmax(0,420px);gap:14px;align-items:start}
+.edl{display:grid;gap:10px;position:sticky;top:0;min-width:0}
+.edc{display:grid;gap:12px;min-width:0}
+.edr{display:grid;gap:10px;min-width:0;position:sticky;top:0}
+.ed-meta{display:grid;grid-template-columns:minmax(0,1fr) 84px;gap:8px}
+.ed-meta .full{grid-column:1/-1}
+.ta{min-height:44px;padding:10px 12px;line-height:1.4;font:inherit;resize:vertical}
+.qlist{display:grid;gap:2px;max-height:calc(100dvh - 330px);min-height:60px;overflow:auto;margin:0 -4px;padding:0 4px}
+button.qi{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:8px;align-items:center;width:100%;text-align:left;min-height:52px;padding:6px 8px;border:1.5px solid transparent;border-radius:12px;background:transparent;cursor:pointer;color:var(--ink)}
+button.qi:hover{background:var(--sunk)}
+button.qi[aria-current="true"]{background:var(--sabia-soft);border-color:var(--sabia)}
+.qn{width:28px;height:28px;border-radius:50%;background:var(--sunk);display:grid;place-items:center;font-family:var(--f-mono);font-size:13px;font-weight:700;color:var(--ink2)}
+.qi[aria-current="true"] .qn{background:var(--sabia);color:var(--on-sabia)}
+.qt{display:grid;min-width:0}
+.qt b{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qt span{font-size:12px;color:var(--ink2)}
+.qw{color:var(--warn);display:grid}
+.adds{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.adds .b{min-height:40px;padding:0 8px;font-size:13px;gap:6px}
+.stt{font-size:13px;color:var(--ink2);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.edh{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.edh h2{font-size:19px;flex:1;min-width:120px}
+.seg{display:flex;gap:4px;background:var(--sunk);border-radius:12px;padding:3px}
+.seg button{flex:1;min-height:44px;border:0;border-radius:9px;background:transparent;font-weight:600;font-size:14px;color:var(--ink2);padding:0 8px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--e1)}
+.avs{display:flex;gap:6px;flex-wrap:wrap}
+.avs:empty{display:none}
+.alts{display:grid;gap:8px}
+.alt{display:grid;grid-template-columns:44px 30px minmax(0,1fr) 44px;gap:6px;align-items:center}
+.alt.o{grid-template-columns:30px minmax(0,1fr) 44px 44px 44px}
+.alt.v{grid-template-columns:44px 30px minmax(0,1fr)}
+.rd{display:grid;place-items:center;min-height:44px;cursor:pointer}
+.rd input{width:22px;height:22px;accent-color:var(--ok);margin:0;cursor:pointer}
+.shp{width:30px;height:30px;border-radius:9px;color:#fff;display:grid;place-items:center}
+.shp svg{width:18px;height:18px}
+.vfx{min-height:44px;display:flex;align-items:center;font-weight:600}
+.dica{font-size:12px;color:var(--ink2);margin:0}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+select.in{padding-right:8px}
+.pvh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pvh b{font-size:13px;flex:1;min-width:130px}
+.pvh .seg{width:auto}
+.pvh .seg button{min-height:36px;font-size:13px;padding:0 12px}
+.pvn{font-size:12px;color:var(--ink2);margin:0}
+.vl{display:grid;gap:8px;max-height:46vh;overflow:auto}
+.vr{display:grid;gap:6px;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.vr .vh{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.vr .vh .grow{flex:1}
+.vr .nt{font-size:13px;color:var(--ink2)}
+.df{display:grid;gap:4px;background:var(--sunk);border-radius:10px;padding:8px 10px;font-size:13px}
+.df div{display:flex;gap:6px;align-items:baseline}
+.df i{font-style:normal;font-weight:700;font-family:var(--f-mono);flex:none;width:18px}
+.df .ad{color:var(--ok)}.df .rm{color:var(--bad)}.df .ch{color:var(--warn)}
+.vs{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end}
+@media (max-width:1180px){
+  .edit{grid-template-columns:268px minmax(0,1fr)}
+  .edr{grid-column:2;position:static}
+}
+@media (max-width:860px){
+  .edit{grid-template-columns:1fr}
+  .edl{display:contents}.edr{grid-column:auto;position:static}
+  .edl>.k:nth-child(2){order:1}.edc{order:2}.edr{order:3}.ed-meta{order:4}
+  .qlist{max-height:200px}
+  .tb .b{flex:none}.tb>div:not(.grow){min-width:0}
+  .tb h1{overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:20px}
+  .row2{grid-template-columns:1fr 1fr}
+  .vs{grid-template-columns:1fr}
+}
+
+.rsm{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 8px;padding:12px 14px}
+.rsm div{display:grid;gap:0;text-align:left}
+.rsm b{font-family:var(--f-disp);font-size:20px;line-height:1.2}
+.rsm span{font-size:12px;color:var(--ink2)}
+.rsm .w b{color:var(--warn)}
+
 </style>
 </head>
 <body>
@@ -373,6 +449,10 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
     <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C5 10 10 5 20 4c0 10-5 15-14 15z"/><path d="M5 19l8-8"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4l9 16H3L12 4zM12 10v4M12 17v.5"/></symbol>
     <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5c3-1 5-1 8 1 3-2 5-2 8-1v13c-3-1-5-1-8 1-3-2-5-2-8-1z"/><path d="M12 6v13"/></symbol>
   </defs>
 </svg>
@@ -393,7 +473,7 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 </script>
 <script>
 "use strict";
-const VERSAO = "0.2.0";
+const VERSAO = "0.3.0";
 const MODELOS = [{"id":"m-epi","titulo":"Equipamentos de proteção no trabalho","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Para que serve o equipamento de proteção e quando usar","texto":""},{"tipo":"multipla","enunciado":"Quando o equipamento de proteção deve ser usado?","alternativas":["Só quando o responsável está olhando","Durante toda a atividade que exige o equipamento","Só nos dias de muito calor","Só no começo do turno"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"A proteção vale durante toda a atividade. Tirar no meio do serviço deixa a pessoa exposta."},{"tipo":"vf","enunciado":"Pode emprestar o seu equipamento de proteção de uso individual a um colega.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"O equipamento é de uso pessoal. O colega deve pedir o dele ao responsável."},{"tipo":"multipla","enunciado":"O equipamento rasgou ou quebrou durante o trabalho. O que fazer?","alternativas":["Continuar e trocar no fim do mês","Avisar o responsável e trocar antes de continuar","Remendar com fita","Trabalhar sem ele"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Equipamento danificado não protege. Avise e troque antes de voltar à atividade."},{"tipo":"vf","enunciado":"O equipamento de proteção precisa ser do tamanho certo para quem usa.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Equipamento folgado ou apertado atrapalha e protege mal."},{"tipo":"ordenar","enunciado":"Coloque na ordem o cuidado com o equipamento depois do uso.","alternativas":["Limpar conforme a orientação","Conferir se há rasgo ou defeito","Guardar em local limpo e seco"],"tempo":45,"uso":"avaliacao","porque":"Limpar, conferir e guardar: assim ele está pronto e seguro para o próximo uso."},{"tipo":"multipla","enunciado":"Onde guardar o equipamento de proteção?","alternativas":["Em local limpo, seco e conhecido por todos","No chão, perto do trabalho","Dentro do carro","Onde der"],"correta":0,"tempo":20,"uso":"gincana","porque":"Guardado no lugar certo, o equipamento dura mais e é fácil de achar."}]},{"id":"m-hig","titulo":"Higiene das mãos e pessoal","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Higiene pessoal protege quem trabalha e quem é atendido","texto":""},{"tipo":"multipla","enunciado":"Você acordou com febre ou diarreia. O que fazer antes de começar o dia?","alternativas":["Trabalhar normalmente","Avisar o responsável antes de entrar na área","Tomar um remédio e entrar","Só usar máscara"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Doença passa de pessoa para pessoa e para os alimentos. O responsável decide a sua atividade antes de você entrar."},{"tipo":"vf","enunciado":"Corte na mão deve ficar coberto com curativo e luva.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Curativo e luva impedem contato do ferimento com o que a pessoa toca."},{"tipo":"multipla","enunciado":"Onde se pode comer e beber durante o turno?","alternativas":["No meio da atividade","Só na área definida para isso","Dentro da área de trabalho","Em qualquer lugar"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Comida e bebida só na área definida, longe do trabalho e do material."},{"tipo":"vf","enunciado":"Unha comprida ou com esmalte é permitida na área de manuseio.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Unha comprida acumula sujeira e o esmalte pode soltar."},{"tipo":"ordenar","enunciado":"Coloque na ordem a entrada na área de manuseio.","alternativas":["Prender o cabelo e colocar a touca","Lavar as mãos","Calçar as luvas, se a atividade pedir"],"tempo":45,"uso":"avaliacao","porque":"Touca primeiro, depois mãos lavadas e por último as luvas: assim as mãos limpas não tocam o cabelo."},{"tipo":"vf","enunciado":"Brinco, anel e pulseira devem ser retirados antes de entrar.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":15,"uso":"gincana","porque":"Adornos acumulam sujeira e podem cair."}]},{"id":"m-inc","titulo":"Como comunicar um problema ou acidente","meta":75,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Avisar logo evita que o problema cresça","texto":""},{"tipo":"multipla","enunciado":"Quando avisar o responsável sobre um problema ou acidente?","alternativas":["Só no fim da semana","O quanto antes","Só se alguém perguntar","Nunca, se for pequeno"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Quanto antes o responsável souber, mais cedo ele resolve e evita que se repita."},{"tipo":"multipla","enunciado":"O que não pode faltar no aviso?","alternativas":["Só o nome de quem viu","O que aconteceu, onde e quando","Nada, o responsável descobre","Só o horário"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Sem saber o que, onde e quando, fica difícil achar a causa e resolver."},{"tipo":"vf","enunciado":"Quase acidente, que não machucou ninguém, também deve ser avisado.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"O quase acidente mostra o risco antes que alguém se machuque."},{"tipo":"vf","enunciado":"Pode mexer no local do acidente antes de o responsável chegar, para arrumar tudo.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Mexer apaga as pistas do que aconteceu. Só mexa se for preciso para socorrer alguém ou evitar outro risco."},{"tipo":"ordenar","enunciado":"Coloque as etapas na ordem certa.","alternativas":["Garantir a segurança de todos","Avisar o responsável","Registrar o que aconteceu","Acompanhar a solução"],"tempo":60,"uso":"avaliacao","porque":"Primeiro a segurança, depois o aviso, o registro e o acompanhamento: cada etapa depende da anterior."},{"tipo":"multipla","enunciado":"Quem deve avisar um problema?","alternativas":["Só o chefe","Qualquer pessoa que perceber","Só quem se machucou","Só quem está de plantão"],"correta":1,"tempo":20,"uso":"gincana","porque":"Quem percebe primeiro tem o dever de avisar. Todos ajudam a evitar o problema."}]}];
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -460,7 +540,7 @@ const NAV2 = [["conferir", "Conferir", "shield"], ["ajustes", "Ajustes", "gear"]
 function rota() { const h = (location.hash || "#/inicio").replace(/^#\//, "").split("/"); return {v: h[0] || "inicio", id: h[1] || null}; }
 function ir(h) { if (location.hash === h) render(); else location.hash = h; }
 function menu(v) {
-  const at = v === "aplicar" || v === "sala" ? "treinos" : v;
+  const at = v === "aplicar" || v === "sala" || v === "editar" ? "treinos" : v;
   const item = ([id, nome, i]) => `<a class="ri" href="#/${id}" ${at === id ? 'aria-current="page"' : ""}><span class="pill">${ic(i)}</span>${nome}</a>`;
   $("#rail").innerHTML = `<div class="lg" aria-hidden="true"><svg viewBox="0 0 48 48"><use href="#logo"/></svg></div>${NAV.map(item).join("")}<div class="sp"></div>${NAV2.map(item).join("")}`;
   const bi = ([id, nome, i]) => `<a href="#/${id}" ${at === id ? 'aria-current="page"' : ""}><span class="pill">${ic(i)}</span>${nome}</a>`;
@@ -550,9 +630,10 @@ function filtrar(aba) {
 function linhaTreino(t) {
   const nq = t.itens.filter(isQ).length, pode = nq > 0;
   return `<div class="tr"><div class="t"><b>${esc(t.titulo)}</b><span>${nq} pergunta${nq === 1 ? "" : "s"} · atualizado ${dm(t.atualizado)}</span></div>
-    <span class="num hide-m">v${String(t.versao).padStart(2, "0")}</span><span class="hide-m"><span class="num">${t.meta}%</span><div class="meta-bar" aria-hidden="true"><i style="width:${t.meta}%"></i></div></span>
-    <span class="hide-m">${pode ? `<span class="chip ok">Pronto para aplicar</span>` : `<span class="chip warn">Rascunho</span>`}</span>
+    <span class="num hide-m" title="${t.sujo ? "Há alterações sem versão salva" : "Versão salva"}">v${String(t.versao).padStart(2, "0")}${t.sujo ? "*" : ""}</span><span class="hide-m"><span class="num">${t.meta}%</span><div class="meta-bar" aria-hidden="true"><i style="width:${t.meta}%"></i></div></span>
+    <span class="hide-m">${pode ? (problemasTreino(t).length ? `<span class="chip warn">Revisar perguntas</span>` : `<span class="chip ok">Pronto para aplicar</span>`) : `<span class="chip warn">Rascunho</span>`}</span>
     <div class="acts"><a class="b sm p" href="#/aplicar/${t.id}" ${pode ? "" : 'aria-disabled="true" tabindex="-1" style="opacity:.5;pointer-events:none"'}>${ic("play", 'style="width:16px;height:16px"')}Aplicar</a>
+    <a class="b sm ic" href="#/editar/${t.id}" aria-label="Editar ${esc(t.titulo)}" title="Editar perguntas">${ic("edit", 'style="width:18px;height:18px"')}</a>
     <button class="b sm ic" data-act="exportar" data-id="${t.id}" aria-label="Exportar ${esc(t.titulo)}" title="Exportar .json">${ic("download", 'style="width:18px;height:18px"')}</button>
     <button class="b sm ic" data-act="duplicar" data-id="${t.id}" aria-label="Duplicar ${esc(t.titulo)}" title="Duplicar">${ic("copy", 'style="width:18px;height:18px"')}</button>
     <button class="b sm ic bad" data-act="excluir" data-id="${t.id}" aria-label="Excluir ${esc(t.titulo)}" title="Excluir">${ic("trash", 'style="width:18px;height:18px"')}</button></div></div>`;
@@ -561,6 +642,7 @@ function cartaoTreino(t) {
   const nq = t.itens.filter(isQ).length;
   return `<div class="card"><b>${esc(t.titulo)}</b><span class="sm mut">${nq} pergunta${nq === 1 ? "" : "s"} · meta <span class="num">${t.meta}%</span> · v${String(t.versao).padStart(2, "0")}</span>
     <div style="display:flex;gap:6px"><a class="b sm p" style="flex:1" href="#/aplicar/${t.id}" ${nq ? "" : 'aria-disabled="true" style="opacity:.5;pointer-events:none"'}>Aplicar</a>
+    <a class="b sm ic" href="#/editar/${t.id}" aria-label="Editar ${esc(t.titulo)}">${ic("edit", 'style="width:18px;height:18px"')}</a>
     <button class="b sm ic" data-act="exportar" data-id="${t.id}" aria-label="Exportar ${esc(t.titulo)}">${ic("download", 'style="width:18px;height:18px"')}</button>
     <button class="b sm ic bad" data-act="excluir" data-id="${t.id}" aria-label="Excluir ${esc(t.titulo)}">${ic("trash", 'style="width:18px;height:18px"')}</button></div></div>`;
 }
@@ -600,7 +682,7 @@ function vInicio() {
   else if (!S.sessoes.length && prontos.length) coach = {t: `${prontos[0].titulo} está pronto para aplicar`, p: "Escolha como vai ser, quem participa e prepare a sessão em um minuto.", a: `<a class="b p" href="#/aplicar/${prontos[0].id}">${ic("play")}Aplicar agora</a>`};
   else if (S.sessoes.some(x => x.estado === "sala")) { const x = S.sessoes.find(y => y.estado === "sala"); coach = {t: `A sala de "${x.titulo}" está aberta`, p: `Chave ${x.chave.slice(0, 3)} ${x.chave.slice(3)} · ${x.part.length} pessoa${x.part.length === 1 ? "" : "s"} na sala.`, a: `<button class="b p" data-act="voltarsala" data-id="${x.id}">${ic("play")}Voltar à sala</button>`}; }
   else if (prontos.length && S.sessoes.length) coach = {t: "Pronto para a próxima turma", p: "Escolha como vai ser, quem participa e abra a sala com chave e telão.", a: `<a class="b p" href="#/aplicar/${prontos[0].id}">${ic("play")}Aplicar agora</a>`};
-  else coach = {t: "Treinamentos sem perguntas", p: "O editor de perguntas chega na v0.3. Enquanto isso, importe ou use um modelo.", a: `<button class="b p" data-act="novo">${ic("plus")}Novo treinamento</button>`};
+  else { const vz = S.treinamentos.find(x => !x.itens.some(isQ)) || S.treinamentos[0]; coach = {t: "Treinamentos sem perguntas", p: "Abra o editor e escreva as perguntas, ou comece por um modelo pronto.", a: `<a class="b p" href="#/editar/${vz.id}">${ic("edit")}Escrever perguntas</a>`}; }
   const enc = S.sessoes.filter(x => x.estado === "encerrada");
   const kp = [[nT, "Treinamentos"], [nP, "Perguntas no total"], [enc.length, "Sessões realizadas"], enc.length ? [Math.round(enc.reduce((a, x) => a + x.resultado.pct, 0) / enc.length) + "%", "Acerto médio"] : [nT ? Math.round(S.treinamentos.reduce((a, t) => a + t.meta, 0) / nT) + "%" : "–", "Meta média"]];
   const usados = new Set(S.treinamentos.map(t => t.modelo));
@@ -677,7 +759,8 @@ function vAplicar(id) {
 }
 function preparar() {
   const a = UI.apl, t = treino(a.id); if (!t) return;
-  S.sessoes.push({id: uid(), treinoId: t.id, preset: a.preset, setores: a.setores.slice(), instrutor: a.instrutor.trim(), local: a.local.trim(), horas: a.horas, aj: Object.assign({}, a.aj), estado: "preparada", criada: new Date().toISOString()});
+  fixarVersao(t);
+  S.sessoes.push({id: uid(), treinoId: t.id, versao: t.versao, itens: clone(t.itens), preset: a.preset, setores: a.setores.slice(), instrutor: a.instrutor.trim(), local: a.local.trim(), horas: a.horas, aj: Object.assign({}, a.aj), estado: "preparada", criada: new Date().toISOString()});
   if (a.instrutor.trim() && !S.cfg.instrutor) S.cfg.instrutor = a.instrutor.trim();
   salvar(); UI.apl = null; aviso("Sessão preparada. Ela aparece no Início."); ir("#/inicio");
 }
@@ -714,7 +797,7 @@ function vFuturo(v) {
     <section class="k road"><h3 style="margin-bottom:6px">Mapa das versões</h3><ul>
       <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.1.0</b> · Casca, Início, Treinos e Aplicar</span></li>
       <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.2.0</b> · Sala ao vivo, chave, QR e telão</span></li>
-      <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.3.0</b> · Editor de perguntas e versões</span></li>
+      <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.3.0</b> · Editor de perguntas e versões</span></li>
       <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.4.0</b> · Celular do participante</span></li>
       <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.5.0</b> · Relatórios, PDF e conferência</span></li>
       <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.6.0 a v1.0.0</b> · Reforço, pessoas, mensagens e acabamento</span></li></ul></section>`;
@@ -726,7 +809,7 @@ function dlgNovo(passo = "menu") {
   const fecha = `<button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button>`;
   if (passo === "menu") d.innerHTML = `<div class="dl"><header><h2>Novo treinamento</h2>${fecha}</header>
     <button class="opcao" data-act="dlg" data-v="modelos"><span class="pic">${ic("book")}</span><span><b>Modelo pronto</b><span class="d">Perguntas prontas para revisar com o seu material.</span></span></button>
-    <button class="opcao" data-act="dlg" data-v="zero"><span class="pic">${ic("plus")}</span><span><b>Começar do zero</b><span class="d">Só o título e a meta. As perguntas entram no editor (v0.3).</span></span></button>
+    <button class="opcao" data-act="dlg" data-v="zero"><span class="pic">${ic("plus")}</span><span><b>Começar do zero</b><span class="d">Só o título e a meta. Depois você escreve as perguntas no editor.</span></span></button>
     <button class="opcao" data-act="impor"><span class="pic">${ic("upload")}</span><span><b>Importar arquivo</b><span class="d">Treinamento .json exportado do EFCquiz ou do Sabiá.</span></span></button></div>`;
   else if (passo === "modelos") d.innerHTML = `<div class="dl"><header><button class="b ic g" data-act="dlg" data-v="menu" aria-label="Voltar">${ic("back")}</button><h2>Modelos prontos</h2>${fecha}</header>
     ${MODELOS.map(m => `<button class="opcao" data-act="usarmodelo" data-id="${m.id}"><span class="pic">${ic("leaf")}</span><span><b>${esc(m.titulo)}</b><span class="d">${m.itens.filter(isQ).length} perguntas · meta ${m.meta}%</span></span></button>`).join("")}
@@ -786,8 +869,271 @@ document.addEventListener("change", e => {
 });
 document.addEventListener("submit", e => {
   const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault();
-  if (f.dataset.form === "zero") { const t = criarDoZero($("#z-t").value, Math.min(100, Math.max(1, Math.round(Number($("#z-m").value) || 80)))); $("#dlg").close(); ir("#/treinos"); render(); aviso(`"${t.titulo}" criado como rascunho`); }
+  if (f.dataset.form === "zero") { const t = criarDoZero($("#z-t").value, Math.min(100, Math.max(1, Math.round(Number($("#z-m").value) || 80)))); $("#dlg").close(); ir("#/editar/" + t.id); aviso(`"${t.titulo}" criado. Escreva a primeira pergunta.`); }
   else if (f.dataset.form === "setor") { const i = $("#c-set"), n = i.value.trim(); if (n && !S.cfg.setores.includes(n)) { S.cfg.setores.push(n); salvar(); render(); } }
+});
+
+/* ===== v0.3.0 · editor de perguntas e versões ===== */
+const TIPOS = {multipla: "Múltipla escolha", vf: "Verdadeiro ou falso", ordenar: "Ordenar", explicacao: "Explicação"};
+const TIPOS_CURTO = {multipla: "Múltipla", vf: "V ou F", ordenar: "Ordenar", explicacao: "Explicação"};
+const USOS = {avaliacao: "Vale nota", gincana: "Gincana (vale nota)", ensaio: "Teste (não vale nota)"};
+const TEMPOS = [10, 15, 20, 30, 45, 60, 90, 120];
+const MAX_ALT = 4, MAX_ORD = 5;
+const clone = o => JSON.parse(JSON.stringify(o));
+const agora = () => new Date().toISOString();
+const novoItem = tipo => ({
+  explicacao: {tipo: "explicacao", enunciado: "", texto: ""},
+  multipla: {tipo: "multipla", enunciado: "", alternativas: ["", "", "", ""], correta: null, tempo: 20, uso: "avaliacao", porque: ""},
+  vf: {tipo: "vf", enunciado: "", alternativas: ["Verdadeiro", "Falso"], correta: null, tempo: 20, uso: "avaliacao", porque: ""},
+  ordenar: {tipo: "ordenar", enunciado: "", alternativas: ["", "", ""], tempo: 45, uso: "avaliacao", porque: ""}
+}[tipo]);
+
+/* ---------- conferência de cada pergunta ---------- */
+function problemasItem(it) {
+  const p = [];
+  if (!String(it.enunciado || "").trim()) p.push("Falta o enunciado");
+  if (it.tipo === "multipla") {
+    const a = it.alternativas || [];
+    if (a.some(x => !String(x).trim())) p.push("Há alternativa em branco");
+    if (!Number.isInteger(it.correta) || it.correta < 0 || it.correta >= a.length) p.push("Marque a resposta certa");
+  } else if (it.tipo === "vf") {
+    if (!Number.isInteger(it.correta) || it.correta < 0 || it.correta > 1) p.push("Marque verdadeiro ou falso");
+  } else if (it.tipo === "ordenar") {
+    const a = it.alternativas || [];
+    if (a.length < 3) p.push("Use pelo menos 3 passos");
+    if (a.some(x => !String(x).trim())) p.push("Há passo em branco");
+  }
+  return p;
+}
+const problemasTreino = t => t.itens.map((it, i) => ({i, m: problemasItem(it)})).filter(x => x.m.length);
+const numeroItem = (t, i) => { const it = t.itens[i]; if (it.tipo === "explicacao") return "E"; if (it.uso === "ensaio") return "T"; return String(t.itens.slice(0, i + 1).filter(x => x.tipo !== "explicacao" && x.uso !== "ensaio").length); };
+
+/* ---------- versões ---------- */
+function garantirSnap(t) {
+  const v = (t.versoes || []).find(x => x.n === t.versao);
+  if (v && !v.itens && !t.sujo) { v.itens = clone(t.itens); v.titulo = t.titulo; v.meta = t.meta; }
+}
+function editou(t) { garantirSnap(t); t.sujo = true; t.atualizado = agora(); salvar(); }
+function salvarVersao(t, nota) {
+  garantirSnap(t);
+  const n = (t.versoes || []).reduce((m, x) => Math.max(m, x.n), -1) + 1;
+  t.versoes.push({n, nota: nota || "Ajustes nas perguntas", quando: agora(), titulo: t.titulo, meta: t.meta, itens: clone(t.itens)});
+  t.versao = n; t.sujo = false; salvar(); return n;
+}
+function fixarVersao(t) { if (t.sujo) salvarVersao(t, "Fixada ao aplicar"); }
+const chaveItem = i => String(i.enunciado || "").trim().toLowerCase();
+function difVersao(v, t) {
+  const a = v.itens || [], b = t.itens, ma = new Map(a.map(i => [chaveItem(i), i])), mb = new Map(b.map(i => [chaveItem(i), i]));
+  let novas = b.filter(i => !ma.has(chaveItem(i))), removidas = a.filter(i => !mb.has(chaveItem(i)));
+  const alteradas = b.filter(i => ma.has(chaveItem(i)) && JSON.stringify(ma.get(chaveItem(i))) !== JSON.stringify(i));
+  /* pergunta que só mudou o enunciado, na mesma posição e formato, conta como alterada e não como nova + removida */
+  b.forEach((i, k) => { const o = a[k]; if (o && novas.includes(i) && removidas.includes(o) && o.tipo === i.tipo) { novas = novas.filter(x => x !== i); removidas = removidas.filter(x => x !== o); alteradas.push(i); } });
+  const mesmas = !novas.length && !removidas.length;
+  const reordenou = mesmas && a.length === b.length && a.some((i, k) => chaveItem(i) !== chaveItem(b[k]));
+  return {novas, removidas, alteradas, reordenou, titulo: v.titulo !== undefined && v.titulo !== t.titulo, meta: v.meta !== undefined && v.meta !== t.meta, igual: mesmas && !alteradas.length && !reordenou && !(v.titulo !== undefined && v.titulo !== t.titulo) && !(v.meta !== undefined && v.meta !== t.meta)};
+}
+const curto = (s, n = 70) => { s = String(s || "(sem enunciado)"); return s.length > n ? s.slice(0, n - 1) + "…" : s; };
+function difHTML(d, v, t) {
+  if (d.igual) return `<div class="df"><span>Igual ao rascunho atual.</span></div>`;
+  const li = (c, s, l) => l.map(i => `<div class="${c}"><i>${s}</i><span>${esc(curto(i.enunciado))}</span></div>`).join("");
+  return `<div class="df">${li("ad", "+", d.novas)}${li("rm", "−", d.removidas)}${li("ch", "~", d.alteradas)}${d.reordenou ? `<div class="ch"><i>~</i><span>Ordem das perguntas mudou</span></div>` : ""}${d.titulo ? `<div class="ch"><i>~</i><span>Título era "${esc(curto(v.titulo, 50))}"</span></div>` : ""}${d.meta ? `<div class="ch"><i>~</i><span>Meta era ${v.meta}%</span></div>` : ""}<span class="mut">Comparado com o rascunho atual. + nova, − removida, ~ alterada.</span></div>`;
+}
+function dlgVersoes() {
+  const t = treino(UI.ed && UI.ed.id); if (!t) return;
+  garantirSnap(t);
+  const d = $("#dlg"), prox = (t.versoes || []).reduce((m, x) => Math.max(m, x.n), -1) + 1;
+  const vs = (t.versoes || []).slice().sort((a, b) => b.n - a.n);
+  const p2 = n => "v" + String(n).padStart(2, "0");
+  d.innerHTML = `<div class="dl"><header><h2>Versões</h2><button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header>
+    <p class="sm mut" style="margin:0">${esc(t.titulo)} · versão atual ${p2(t.versao)}${t.sujo ? " · com alterações ainda sem versão" : ""}</p>
+    <form class="vs" data-form="versao"><div class="fd"><label for="v-nota">Nota da versão (opcional)</label><input class="in" id="v-nota" maxlength="80" placeholder="Ex.: troquei a pergunta 3" ${t.sujo ? "" : "disabled"}></div><button class="b p" type="submit" ${t.sujo ? "" : "disabled"}>${ic("check")}Salvar ${p2(prox)}</button></form>
+    ${t.sujo ? "" : `<p class="sm mut" style="margin:0">Sem alterações desde a ${p2(t.versao)}.</p>`}
+    <div class="vl">${vs.map(v => {
+      const tem = !!v.itens, atual = v.n === t.versao, nq = tem ? v.itens.filter(i => i.tipo !== "explicacao").length : null;
+      return `<div class="vr" data-v="${v.n}"><div class="vh"><b class="num">${p2(v.n)}</b><span class="sm mut">${dm(v.quando)} ${new Date(v.quando).toLocaleTimeString("pt-BR", {hour: "2-digit", minute: "2-digit"})}${tem ? " · " + nq + " pergunta" + (nq === 1 ? "" : "s") : ""}</span>${atual ? `<span class="chip ok">atual</span>` : ""}<span class="grow"></span>
+        <button class="b sm" data-act="verscmp" data-n="${v.n}" ${tem ? "" : "disabled"}>Comparar</button><button class="b sm" data-act="versrest" data-n="${v.n}" ${tem && !(atual && !t.sujo) ? "" : "disabled"}>Restaurar</button></div>
+        <div class="nt">${esc(v.nota || "")}${tem ? "" : " (sem cópia das perguntas)"}</div>${UI.cmp === v.n && tem ? difHTML(difVersao(v, t), v, t) : ""}</div>`;
+    }).join("")}</div>
+    <p class="dica">Restaurar traz a versão para o rascunho. Para guardar, salve como nova versão.</p></div>`;
+  if (!d.open) d.showModal();
+}
+
+/* ---------- tela do editor ---------- */
+function vEditar(id) {
+  const t = treino(id); if (!t) { ir("#/treinos"); return; }
+  garantirSnap(t);
+  if (!UI.ed || UI.ed.id !== id) UI.ed = {id, sel: 0, prev: "pergunta"};
+  UI.ed.sel = Math.max(0, Math.min(UI.ed.sel, t.itens.length - 1));
+  topo(t.titulo || "Treinamento", "", "", "#/treinos");
+  $("#app").className = "body";
+  $("#app").innerHTML = `<div class="edit">
+    <div class="edl">
+      <section class="k ed-meta">
+        <div class="fd full"><label for="et-titulo">Título</label><input class="in" id="et-titulo" data-et="titulo" maxlength="120" value="${esc(t.titulo)}"></div>
+        <div class="fd"><label for="et-desc">Descrição</label><input class="in" id="et-desc" data-et="descricao" maxlength="400" value="${esc(t.descricao || "")}" placeholder="Opcional"></div>
+        <div class="fd"><label for="et-meta">Meta %</label><input class="in" id="et-meta" data-et="meta" type="number" min="1" max="100" inputmode="numeric" value="${t.meta}"></div>
+      </section>
+      <section class="k" style="display:grid;gap:8px;padding:10px 10px 12px"><div class="lbl" style="padding:0 4px">Perguntas</div><div class="qlist" id="edLista"></div><div class="stt" id="edSt"></div>
+        <div class="adds">${["multipla", "vf", "ordenar", "explicacao"].map(k => `<button class="b" data-act="edadd" data-v="${k}">${ic("plus", 'style="width:16px;height:16px"')}${TIPOS_CURTO[k]}</button>`).join("")}</div></section>
+    </div>
+    <div class="edc" id="edCentro"></div>
+    <aside class="edr" id="edDir"></aside></div>`;
+  pintaTudo();
+}
+function pintaTudo() { pintaTopo(); pintaLista(); pintaCentro(); pintaPrev(); }
+function pintaTopo() {
+  const t = treino(UI.ed.id); if (!t) return;
+  const v = "v" + String(t.versao).padStart(2, "0");
+  topo(t.titulo || "Sem título", `${t.itens.filter(i => i.tipo !== "explicacao").length} perguntas · ${v}${t.sujo ? " · alterações sem versão" : " · versão salva"}`,
+    `<button class="b" data-act="versoes" aria-label="Versões">${ic("clock")}<span class="lbl-m">Versões</span></button><a class="b p" href="#/aplicar/${t.id}" aria-label="Aplicar" ${t.itens.some(i => i.tipo !== "explicacao") ? "" : 'aria-disabled="true" style="opacity:.5;pointer-events:none"'}>${ic("play")}<span class="lbl-m">Aplicar</span></a>`, "#/treinos");
+}
+function pintaLista() {
+  const t = treino(UI.ed.id), el = $("#edLista"); if (!t || !el) return;
+  el.innerHTML = t.itens.length ? t.itens.map((it, i) => {
+    const pr = problemasItem(it), sel = i === UI.ed.sel;
+    return `<button class="qi" data-act="edsel" data-i="${i}" ${sel ? 'aria-current="true"' : ""}><span class="qn">${numeroItem(t, i)}</span><span class="qt"><b>${esc(it.enunciado || "Sem enunciado")}</b><span>${TIPOS_CURTO[it.tipo]}${it.tipo !== "explicacao" ? " · " + (it.tempo || 20) + " s" : ""}${it.uso === "ensaio" ? " · teste" : ""}</span></span>${pr.length ? `<span class="qw" title="${esc(pr.join(". "))}">${ic("warn", 'style="width:18px;height:18px"')}<span class="sr">${pr.length} ponto(s) a revisar</span></span>` : ""}</button>`;
+  }).join("") : `<span class="sm mut" style="padding:6px 4px">Nenhuma pergunta ainda.</span>`;
+  const pt = problemasTreino(t), nq = t.itens.filter(i => i.tipo !== "explicacao").length;
+  $("#edSt").innerHTML = t.itens.length ? (pt.length ? `<span class="chip warn">${pt.length} para revisar</span>` : (nq ? `<span class="chip ok">Pronto para aplicar</span>` : `<span class="chip warn">Só explicações</span>`)) + `<span>${nq} pergunta${nq === 1 ? "" : "s"}</span>` : "";
+  const ac = el.querySelector('[aria-current="true"]'); if (ac && ac.scrollIntoView && el.scrollHeight > el.clientHeight) ac.scrollIntoView({block: "nearest"});
+}
+function altLinha(it, k) {
+  const a = it.alternativas[k], tp = it.tipo;
+  const shape = `<span class="shp" style="background:${COR_ALT[k % 4]}"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span>`;
+  const radio = `<label class="rd" title="Marcar como certa"><input type="radio" name="cor" data-e="correta" value="${k}" ${it.correta === k ? "checked" : ""} aria-label="Marcar a alternativa ${"ABCD"[k]} como certa"></label>`;
+  if (tp === "vf") return `<div class="alt v">${radio}${shape}<span class="vfx">${esc(a)}</span></div>`;
+  if (tp === "ordenar") return `<div class="alt o"><span class="qn">${k + 1}</span><input class="in" data-ealt="${k}" maxlength="200" value="${esc(a)}" placeholder="Passo ${k + 1}" aria-label="Passo ${k + 1}">
+    <button class="b ic g" data-act="altup" data-k="${k}" aria-label="Subir passo ${k + 1}" ${k === 0 ? "disabled" : ""}>${ic("up")}</button><button class="b ic g" data-act="altdown" data-k="${k}" aria-label="Descer passo ${k + 1}" ${k === it.alternativas.length - 1 ? "disabled" : ""}>${ic("down")}</button>
+    <button class="b ic g bad" data-act="altdel" data-k="${k}" aria-label="Remover passo ${k + 1}" ${it.alternativas.length <= 3 ? "disabled" : ""}>${ic("x")}</button></div>`;
+  return `<div class="alt">${radio}${shape}<input class="in" data-ealt="${k}" maxlength="200" value="${esc(a)}" placeholder="Alternativa ${"ABCD"[k]}" aria-label="Alternativa ${"ABCD"[k]}"><button class="b ic g bad" data-act="altdel" data-k="${k}" aria-label="Remover alternativa ${"ABCD"[k]}" ${it.alternativas.length <= 2 ? "disabled" : ""}>${ic("x")}</button></div>`;
+}
+function pintaCentro() {
+  const t = treino(UI.ed.id), el = $("#edCentro"); if (!t || !el) return;
+  if (!t.itens.length) {
+    el.innerHTML = `<section class="k" style="display:grid;gap:10px"><h2 style="font-size:19px">Comece pela primeira pergunta</h2><p class="mut" style="margin:0">Escolha o formato. Dá para trocar depois.</p>
+      ${["multipla", "vf", "ordenar", "explicacao"].map(k => `<button class="opcao" data-act="edadd" data-v="${k}"><span class="pic">${ic(k === "explicacao" ? "book" : "plus")}</span><span><b>${TIPOS[k]}</b><span class="d">${{multipla: "Até 4 alternativas, uma certa.", vf: "Uma afirmação para marcar verdadeiro ou falso.", ordenar: "A turma coloca os passos na ordem certa.", explicacao: "Um slide de conversa do instrutor, sem nota."}[k]}</span></span></button>`).join("")}</section>`;
+    return;
+  }
+  const i = UI.ed.sel, it = t.itens[i], q = it.tipo !== "explicacao";
+  let corpo = `<div class="fd"><label for="e-en">Enunciado</label><textarea class="in ta" id="e-en" data-e="enunciado" rows="2" maxlength="400" placeholder="${q ? "Escreva a pergunta como a turma vai ler" : "Título do assunto que o instrutor vai explicar"}">${esc(it.enunciado)}</textarea></div>`;
+  if (it.tipo === "explicacao") corpo += `<div class="fd"><label for="e-tx">Texto de apoio no telão (opcional)</label><textarea class="in ta" id="e-tx" data-e="texto" rows="4" maxlength="4000" placeholder="Pontos principais, um por linha">${esc(it.texto || "")}</textarea></div>`;
+  else {
+    const dica = it.tipo === "ordenar" ? "Escreva os passos na ordem certa. O telão embaralha para a turma." : "Marque o círculo da resposta certa. A cor e a forma de cada alternativa aparecem no telão.";
+    corpo += `<div class="alts" role="group" aria-label="Alternativas">${it.alternativas.map((_, k) => altLinha(it, k)).join("")}</div>
+      ${(it.tipo === "multipla" && it.alternativas.length < MAX_ALT) || (it.tipo === "ordenar" && it.alternativas.length < MAX_ORD) ? `<button class="b sm" style="justify-self:start" data-act="altadd">${ic("plus", 'style="width:16px;height:16px"')}Adicionar ${it.tipo === "ordenar" ? "passo" : "alternativa"}</button>` : ""}<p class="dica">${dica}</p>
+      <div class="row2"><div class="fd"><label for="e-tp">Tempo para responder</label><select class="in" id="e-tp" data-e="tempo">${TEMPOS.concat(TEMPOS.includes(it.tempo) ? [] : [it.tempo]).sort((a, b) => a - b).map(x => `<option value="${x}" ${x === it.tempo ? "selected" : ""}>${x >= 60 ? (x / 60) + " min" : x + " s"}</option>`).join("")}</select></div>
+      <div class="fd"><label for="e-us">Como conta</label><select class="in" id="e-us" data-e="uso">${Object.entries(USOS).map(([k, v]) => `<option value="${k}" ${it.uso === k ? "selected" : ""}>${v}</option>`).join("")}</select></div></div>
+      <div class="fd"><label for="e-po">Por que está certa (aparece depois da resposta)</label><textarea class="in ta" id="e-po" data-e="porque" rows="2" maxlength="600" placeholder="Explique em uma ou duas frases">${esc(it.porque || "")}</textarea></div>`;
+  }
+  el.innerHTML = `<section class="k" style="display:grid;gap:12px">
+    <div class="edh"><h2>${it.tipo === "explicacao" ? "Explicação" : (it.uso === "ensaio" ? "Pergunta de teste" : "Pergunta " + numeroItem(t, i))}</h2>
+      <button class="b ic g" data-act="edup" aria-label="Mover para cima" title="Mover para cima" ${i === 0 ? "disabled" : ""}>${ic("up")}</button><button class="b ic g" data-act="eddown" aria-label="Mover para baixo" title="Mover para baixo" ${i === t.itens.length - 1 ? "disabled" : ""}>${ic("down")}</button>
+      <button class="b ic g" data-act="eddup" aria-label="Duplicar pergunta" title="Duplicar">${ic("copy")}</button><button class="b ic g bad" data-act="eddel" aria-label="Excluir pergunta" title="Excluir">${ic("trash")}</button></div>
+    <div class="seg" role="group" aria-label="Formato">${["multipla", "vf", "ordenar", "explicacao"].map(k => `<button type="button" data-act="edtipo" data-v="${k}" aria-pressed="${it.tipo === k}">${TIPOS_CURTO[k]}</button>`).join("")}</div>
+    <div class="avs" id="edAv"></div>${corpo}</section>`;
+  pintaAvisos();
+}
+function pintaAvisos() {
+  const t = treino(UI.ed.id), el = $("#edAv"); if (!t || !el) return; const it = t.itens[UI.ed.sel]; if (!it) return;
+  el.innerHTML = problemasItem(it).map(m => `<span class="chip warn">${ic("warn", 'style="width:14px;height:14px"')}${esc(m)}</span>`).join("");
+}
+function snapPrev(t, i, modo) {
+  const it = t.itens[i], qs = t.itens.filter(x => x.tipo !== "explicacao"), q = it.tipo !== "explicacao", rev = q && modo === "resultado";
+  const alts = (it.alternativas || []).map(a => String(a).trim() || "…"), n = alts.length, ok = Number.isInteger(it.correta) ? it.correta : -1;
+  let dist = null;
+  if (rev) dist = it.tipo === "ordenar" ? {acertos: 7, total: 10} : alts.map((_, k) => ok < 0 ? Math.round(10 / n) : (k === ok ? 6 : Math.floor(4 / (n - 1)) + (k === (ok === 0 ? 1 : 0) ? 4 % (n - 1) : 0)));
+  return {id: "prev", chave: "482915", titulo: t.titulo || "Treinamento", instrutor: S.cfg.instrutor || "", meta: t.meta, tela: S.cfg.telao || "escuro", som: "desligado", ranking: true, entrada: true,
+    fase: {etapa: !q ? "explicacao" : (rev ? "resultado" : "pergunta"), idx: i, t0: 0, dur: 0}, min: 5, nPart: 12, part: [], nPerg: qs.length, totalPerg: qs.length, numPerg: q ? qs.indexOf(it) + 1 : 0, resp: rev ? 10 : 0, dist, url: "",
+    item: {tipo: it.tipo, enunciado: it.enunciado || (q ? "Escreva o enunciado da pergunta" : "Título da explicação"), texto: it.texto || "", alts, ordem: it.tipo === "ordenar" ? embaralhado(n, i) : null, correta: rev && ok >= 0 ? ok : null, porque: rev ? (it.porque || "") : "", ensaio: it.uso === "ensaio"}};
+}
+function resumoTreino(t) {
+  const r = roteiro(t), vale = t.itens.filter(i => i.tipo !== "explicacao" && i.uso !== "ensaio").length, teste = t.itens.filter(i => i.uso === "ensaio").length, ex = t.itens.filter(i => i.tipo === "explicacao").length, pr = problemasTreino(t).length;
+  return `<section class="k rsm"><div><b>${vale}</b><span>valem nota</span></div><div><b>${r.min} min</b><span>de duração</span></div><div><b>${t.meta}%</b><span>de meta</span></div><div><b>${ex}</b><span>explicaç${ex === 1 ? "ão" : "ões"}</span></div><div><b>${teste}</b><span>de teste</span></div><div class="${pr ? "w" : ""}"><b>${pr}</b><span>a revisar</span></div></section>`;
+}
+function pintaPrev() {
+  const t = treino(UI.ed.id), el = $("#edDir"); if (!t || !el) return;
+  if (!t.itens.length) { el.innerHTML = `<section class="k"><p class="pvn" style="margin:0">A prévia do telão aparece aqui quando houver uma pergunta.</p></section>`; return; }
+  const it = t.itens[UI.ed.sel], q = it.tipo !== "explicacao";
+  const modo = q ? UI.ed.prev : "pergunta";
+  el.innerHTML = `<section class="k" style="display:grid;gap:8px"><div class="pvh"><b>Como aparece no telão</b>${q ? `<div class="seg" role="group" aria-label="Momento"><button type="button" data-act="edprev" data-v="pergunta" aria-pressed="${modo === "pergunta"}">Pergunta</button><button type="button" data-act="edprev" data-v="resultado" aria-pressed="${modo === "resultado"}">Resultado</button></div>` : ""}</div>
+    <div class="telwrap" id="edTel">${telaoHTML(snapPrev(t, UI.ed.sel, modo))}</div><p class="pvn">Prévia com 12 pessoas de exemplo. A resposta certa só aparece no Resultado.</p></section>${resumoTreino(t)}`;
+  escalar();
+}
+
+/* ---------- ações ---------- */
+function comUndo(t, msg, fn) {
+  const antes = JSON.stringify({itens: t.itens, sel: UI.ed.sel, sujo: t.sujo});
+  editou(t); fn(); salvar();
+  aviso(msg, "Desfazer", () => { const o = JSON.parse(antes); t.itens = o.itens; UI.ed.sel = o.sel; t.sujo = o.sujo; salvar(); if (rota().v === "editar") pintaTudo(); });
+}
+function trocarTipo(it, tipo) {
+  const base = novoItem(tipo), vel = it.alternativas || [];
+  const r = Object.assign({}, base, {enunciado: it.enunciado || "", texto: it.texto || ""});
+  if (tipo !== "explicacao") { r.tempo = it.tempo || base.tempo; r.uso = it.uso || "avaliacao"; r.porque = it.porque || ""; }
+  if (tipo === "multipla") { const f = vel.filter(x => String(x).trim()); if (f.length >= 2 && it.tipo !== "ordenar") { r.alternativas = vel.slice(0, MAX_ALT); while (r.alternativas.length < 2) r.alternativas.push(""); r.correta = Number.isInteger(it.correta) && it.correta < r.alternativas.length ? it.correta : null; } }
+  if (tipo === "vf" && it.tipo === "multipla" && Number.isInteger(it.correta) && it.correta < 2) r.correta = it.correta;
+  if (tipo === "ordenar" && it.tipo === "multipla") { r.alternativas = vel.slice(0, MAX_ORD); while (r.alternativas.length < 3) r.alternativas.push(""); }
+  if (tipo === "ordenar") delete r.correta;
+  return r;
+}
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el) return;
+  const a = el.dataset.act, v = el.dataset.v;
+  if (!["edsel", "edtipo", "edadd", "edup", "eddown", "eddup", "eddel", "altadd", "altdel", "altup", "altdown", "edprev", "versoes", "verscmp", "versrest"].includes(a)) return;
+  const t = treino(UI.ed && UI.ed.id); if (!t) return;
+  const i = UI.ed.sel, it = t.itens[i], k = Number(el.dataset.k);
+  if (a === "edsel") { UI.ed.sel = Number(el.dataset.i); pintaLista(); pintaCentro(); pintaPrev(); }
+  else if (a === "edprev") { UI.ed.prev = v; pintaPrev(); }
+  else if (a === "edadd") { editou(t); t.itens.push(novoItem(v)); UI.ed.sel = t.itens.length - 1; pintaTudo(); const f = $("#e-en"); if (f) f.focus(); }
+  else if (a === "edtipo") { if (it.tipo === v) return; comUndo(t, "Formato trocado", () => { t.itens[i] = trocarTipo(it, v); }); pintaTudo(); }
+  else if (a === "edup" || a === "eddown") { const j = a === "edup" ? i - 1 : i + 1; if (j < 0 || j >= t.itens.length) return; editou(t); [t.itens[i], t.itens[j]] = [t.itens[j], t.itens[i]]; UI.ed.sel = j; pintaTudo(); const b = $(`[data-act="${a}"]`); if (b && !b.disabled) b.focus(); }
+  else if (a === "eddup") { editou(t); const c = clone(it); t.itens.splice(i + 1, 0, c); UI.ed.sel = i + 1; pintaTudo(); aviso("Pergunta duplicada"); }
+  else if (a === "eddel") { comUndo(t, "Pergunta excluída", () => { t.itens.splice(i, 1); UI.ed.sel = Math.min(i, t.itens.length - 1); }); pintaTudo(); }
+  else if (a === "altadd") { editou(t); it.alternativas.push(""); pintaCentro(); pintaLista(); pintaPrev(); const f = $(`[data-ealt="${it.alternativas.length - 1}"]`); if (f) f.focus(); }
+  else if (a === "altdel") {
+    const min = it.tipo === "ordenar" ? 3 : 2; if (it.alternativas.length <= min) return;
+    editou(t); it.alternativas.splice(k, 1);
+    if (it.tipo === "multipla") { if (it.correta === k) it.correta = null; else if (Number.isInteger(it.correta) && it.correta > k) it.correta--; }
+    pintaCentro(); pintaLista(); pintaPrev();
+  }
+  else if (a === "altup" || a === "altdown") { const j = a === "altup" ? k - 1 : k + 1; if (j < 0 || j >= it.alternativas.length) return; editou(t); [it.alternativas[k], it.alternativas[j]] = [it.alternativas[j], it.alternativas[k]]; pintaCentro(); pintaPrev(); const b = $(`[data-act="${a}"][data-k="${j}"]`); if (b) b.focus(); }
+  else if (a === "versoes") { UI.cmp = null; dlgVersoes(); }
+  else if (a === "verscmp") { const n = Number(el.dataset.n); UI.cmp = UI.cmp === n ? null : n; dlgVersoes(); }
+  else if (a === "versrest") {
+    const n = Number(el.dataset.n), ver = t.versoes.find(x => x.n === n); if (!ver || !ver.itens) return;
+    const antes = JSON.stringify({itens: t.itens, titulo: t.titulo, meta: t.meta, sujo: t.sujo});
+    t.itens = clone(ver.itens); if (ver.titulo !== undefined) t.titulo = ver.titulo; if (ver.meta !== undefined) t.meta = ver.meta;
+    t.sujo = n !== t.versao; t.atualizado = agora(); UI.ed.sel = 0; UI.cmp = null; salvar();
+    $("#dlg").close(); render();
+    aviso(`v${String(n).padStart(2, "0")} trazida para o rascunho`, "Desfazer", () => { const o = JSON.parse(antes); Object.assign(t, o); salvar(); if (rota().v === "editar") render(); });
+  }
+});
+document.addEventListener("input", e => {
+  const x = e.target; if (rota().v !== "editar" || !UI.ed) return;
+  const t = treino(UI.ed.id); if (!t) return;
+  if (x.dataset.et) {
+    const f = x.dataset.et; editou(t);
+    if (f === "meta") { const m = Math.round(Number(x.value)); if (m >= 1 && m <= 100) t.meta = m; }
+    else t[f] = x.value;
+    if (f === "titulo") pintaTopo(); else if (f === "meta") pintaPrev();
+  } else if (x.dataset.ealt !== undefined) {
+    const it = t.itens[UI.ed.sel]; if (!it) return; editou(t); it.alternativas[Number(x.dataset.ealt)] = x.value; pintaLista(); pintaAvisos(); pintaPrev();
+  } else if (x.dataset.e && x.tagName !== "SELECT" && x.type !== "radio") {
+    const it = t.itens[UI.ed.sel]; if (!it) return; editou(t); it[x.dataset.e] = x.value; pintaLista(); pintaAvisos(); pintaPrev();
+  }
+});
+document.addEventListener("change", e => {
+  const x = e.target; if (rota().v !== "editar" || !UI.ed || !x.dataset.e) return;
+  const t = treino(UI.ed.id), it = t && t.itens[UI.ed.sel]; if (!it) return;
+  if (x.type === "radio") { editou(t); it.correta = Number(x.value); }
+  else if (x.tagName === "SELECT") { editou(t); it[x.dataset.e] = x.dataset.e === "tempo" ? Number(x.value) : x.value; if (x.dataset.e === "uso") pintaCentro(); }
+  else return;
+  pintaTopo(); pintaLista(); pintaAvisos(); pintaPrev();
+});
+document.addEventListener("submit", e => {
+  const f = e.target.closest("[data-form='versao']"); if (!f) return; e.preventDefault();
+  const t = treino(UI.ed && UI.ed.id); if (!t || !t.sujo) return;
+  const n = salvarVersao(t, $("#v-nota").value.trim()); UI.cmp = null; $("#dlg").close(); pintaTopo(); aviso(`Versão v${String(n).padStart(2, "0")} salva`);
 });
 
 /* ===== v0.2.0 · sala ao vivo, chave, QR e telão ===== */
@@ -822,7 +1168,7 @@ function novaChave() {
 }
 function abrirSalaDe(sessao) {
   const t = treino(sessao.treinoId); if (!t) { aviso("O treinamento dessa sessão foi removido"); return; }
-  if (!sessao.itens) sessao.itens = JSON.parse(JSON.stringify(t.itens));
+  if (!sessao.itens) { fixarVersao(t); sessao.itens = clone(t.itens); }
   Object.assign(sessao, {titulo: t.titulo, meta: t.meta, versao: t.versao, estado: "sala", chave: sessao.chave || novaChave(), entrada: true,
     part: sessao.part || [], resp: sessao.resp || {}, fase: sessao.fase || {etapa: "espera", idx: -1, t0: 0, dur: 0}, sim: sessao.sim || {on: true, alvo: 12}});
   AO.id = sessao.id; salvar(); ir("#/sala/" + sessao.id);
@@ -1109,6 +1455,7 @@ function render() {
   if (r.v === "inicio") vInicio();
   else if (r.v === "treinos") vTreinos();
   else if (r.v === "aplicar") vAplicar(r.id);
+  else if (r.v === "editar") vEditar(r.id);
   else if (r.v === "sala") vSala(r.id);
   else if (r.v === "telao") vTelao(r.id);
   else if (r.v === "ajustes") vAjustes();

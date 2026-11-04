@@ -1,6 +1,6 @@
 # MEMÓRIA DO PROJETO · Sabiá (antigo EFCquiz v2.8.8)
 
-Atualizado na v0.2.0 (04/11/2026). Este arquivo sobe junto com cada versão. Toda regra nova do Elias entra aqui.
+Atualizado na v0.3.0 (04/11/2026). Este arquivo sobe junto com cada versão. Toda regra nova do Elias entra aqui.
 
 ## O que é
 App PWA de treinamento e avaliação de eficácia da Fazenda Matriz (MERI POBO), da família EFClaudian. O Sabiá é o rework do EFCquiz:
@@ -26,17 +26,22 @@ mesmas funções, cara nova. Versões recomeçam do zero (v0.1.0 até v1.0.0).
 | Versão | Estado | Conteúdo |
 |---|---|---|
 | v0.1.0 | aprovada pelo Elias em 04/11 | Casca, Início, Treinos, Novo (modelo, zero, importar), exportar, duplicar, excluir com desfazer, Aplicar (3 formatos, setores, registro, ajustes, roteiro), Ajustes, offline |
-| v0.2.0 | pronta, aguardando aprovação | Sala ao vivo: chave de 6 números, QR, link, convite WhatsApp, telão em outra janela (BroadcastChannel), controle, participantes simulados, ranking, pódio, aba Encerradas |
-| v0.3.0 | a fazer | Editor de perguntas e versões |
+| v0.2.0 | aprovada pelo Elias em 04/11 e publicada no GitHub | Sala ao vivo: chave de 6 números, QR, link, convite WhatsApp, telão em outra janela (BroadcastChannel), controle, participantes simulados, ranking, pódio, aba Encerradas |
+| v0.3.0 | pronta, aguardando aprovação | Editor de perguntas (4 formatos, tempo, como conta, porquê, mover, duplicar, excluir com desfazer, avisos, prévia do telão, resumo) e versões (salvar com nota, comparar, restaurar, fixar ao aplicar) |
 | v0.4.0 | a fazer | Celular do participante e assinatura |
 | v0.5.0 | a fazer | Relatórios, PDF, lista de presença, conferir registro |
 | v0.6.0 a v1.0.0 | a fazer | Reforço, pessoas, mensagens, integração EFClaudian, acabamento |
 
 ## Paridade com o EFCquiz (79 funções)
-v0.1.0: 10 prontas e 11 parciais. v0.2.0 completa as opções de Aplicar, o controle ao vivo e o telão (detalhe em features.csv).
+v0.1.0: 10 prontas e 11 parciais. v0.2.0 completa as opções de Aplicar, o controle ao vivo e o telão. v0.3.0 entrega o editor e as versões (detalhe em features.csv).
 
 ## Medidas (régua de espaço vazio)
-Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 treinamentos de exemplo e sem sessões.
+Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 treinamentos de exemplo e sem sessões. Editor v0.3.0: 34% (múltipla) e 31% (ordenar com resultado) a 1280 px; a tela antiga é uma lista única rolável, então não é comparável item a item.
+
+## Regras do editor (v0.3.0)
+- Múltipla: 2 a 4 alternativas (o telão tem 4 cores e formas). Ordenar: 3 a 5 passos digitados na ordem certa; o telão embaralha. Verdadeiro ou falso: 2 linhas fixas.
+- Versão: `versao` é o número da última salva; `sujo` marca alterações sem versão. Aplicar fixa a versão sozinho. A sessão guarda `versao` e a cópia das perguntas.
+- Comparar usa o enunciado como chave; pergunta com só o enunciado mudado, na mesma posição e formato, conta como alterada.
 
 ## Pendências e perguntas abertas
 - Repositório: https://github.com/EliasGrigori/EFC-Sabi--Quiz (criado pelo Elias em 04/11/2026). v0.1.0 e v0.2.0 publicadas na branch main (aprovadas por ele). Tags v0.1.0/v0.2.0 existem só no clone local (o envio de tags é bloqueado daqui). GitHub Pages: o Claude não consegue ligar pela API, o Elias liga em Settings > Pages > main / raiz.

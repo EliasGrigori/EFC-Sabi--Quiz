@@ -30,7 +30,7 @@ function novaChave() {
 }
 function abrirSalaDe(sessao) {
   const t = treino(sessao.treinoId); if (!t) { aviso("O treinamento dessa sessão foi removido"); return; }
-  if (!sessao.itens) sessao.itens = JSON.parse(JSON.stringify(t.itens));
+  if (!sessao.itens) { fixarVersao(t); sessao.itens = clone(t.itens); }
   Object.assign(sessao, {titulo: t.titulo, meta: t.meta, versao: t.versao, estado: "sala", chave: sessao.chave || novaChave(), entrada: true,
     part: sessao.part || [], resp: sessao.resp || {}, fase: sessao.fase || {etapa: "espera", idx: -1, t0: 0, dur: 0}, sim: sessao.sim || {on: true, alvo: 12}});
   AO.id = sessao.id; salvar(); ir("#/sala/" + sessao.id);
