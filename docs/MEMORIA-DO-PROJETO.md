@@ -39,7 +39,7 @@ v0.1.0: 10 prontas e 11 parciais. v0.2.0 completa as opções de Aplicar, o cont
 Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 treinamentos de exemplo e sem sessões.
 
 ## Pendências e perguntas abertas
-- Repositório: Elias pediu para criar "Sabiá Quiz". O Claude não cria repositório novo daqui. Sugestão: Elias cria o repositório vazio e público `EliasGrigori/sabia-quiz`; o Claude publica v0.1.0 e v0.2.0 e liga o GitHub Pages.
+- Repositório: https://github.com/EliasGrigori/EFC-Sabi--Quiz (criado pelo Elias em 04/11/2026). v0.1.0 e v0.2.0 publicadas na branch main (aprovadas por ele). Tags v0.1.0/v0.2.0 existem só no clone local (o envio de tags é bloqueado daqui). GitHub Pages: o Claude não consegue ligar pela API, o Elias liga em Settings > Pages > main / raiz.
 - Entrada real de participantes só funciona com o celular (v0.4.0); a sincronização do telão usa BroadcastChannel (mesmo navegador/computador).
 - Firebase: nada a configurar até a v0.8 (integração). Nenhuma configuração é necessária agora.
 - Personagens: decidir depois (galeria de bonecos prontos ou ilustrações simples).
