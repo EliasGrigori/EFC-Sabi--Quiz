@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0E4A48">
+<title>Sabiá</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:wght@400;500;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<script>try{var t=localStorage.getItem("sabia-tema");if(t==="claro"||t==="escuro")document.documentElement.setAttribute("data-theme",t==="escuro"?"dark":"light")}catch(e){}</script>
+<style>
+/* Sabiá v0.1.0 · sistema visual: petróleo + laranja sabiá · Bricolage Grotesque + Atkinson Hyperlegible */
+:root{
+  --bg:#EDF1F1;--surface:#FFFFFF;--surface2:#F5F8F8;--sunk:#E2E9E8;--ink:#122120;--ink2:#4A5C5B;--ink3:#6B7F7D;--line:#D5DEDD;
+  --brand:#0E4A48;--brand-hi:#18645F;--on-brand:#E4F2F0;--on-brand-2:#9BC3BF;--brand-ink:#0F5A56;
+  --sabia:#D45D17;--sabia-hi:#B84D10;--sabia-soft:#FBE6D8;--on-sabia:#FFFFFF;
+  --ok:#1B7A4B;--ok-soft:#DCF0E4;--warn:#9A6200;--warn-soft:#F7EACD;--bad:#B3302A;--bad-soft:#F6DCD9;
+  --e1:0 1px 2px rgb(18 33 32/.06),0 2px 8px rgb(18 33 32/.06);
+  --e2:0 2px 4px rgb(18 33 32/.06),0 10px 28px rgb(18 33 32/.10);
+  --e3:0 4px 10px rgb(18 33 32/.08),0 22px 56px rgb(18 33 32/.18);
+  --f-disp:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible Next","Atkinson Hyperlegible",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"Atkinson Hyperlegible Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --r:16px;--rs:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C1514;--surface:#14201F;--surface2:#192826;--sunk:#0A1110;--ink:#E5EEED;--ink2:#A6B8B6;--ink3:#8CA19E;--line:#253634;
+  --brand:#0A2F2E;--brand-hi:#15514D;--on-brand:#DDEDEB;--on-brand-2:#86AEA9;--brand-ink:#5CC2B9;
+  --sabia:#EE7631;--sabia-hi:#FF8A47;--sabia-soft:#3A2416;--on-sabia:#1A0C04;
+  --ok:#4FC587;--ok-soft:#14301F;--warn:#E3A83A;--warn-soft:#33270F;--bad:#F0716A;--bad-soft:#3A1715;
+  --e1:0 1px 2px rgb(0 0 0/.3),0 2px 8px rgb(0 0 0/.25);--e2:0 2px 4px rgb(0 0 0/.3),0 10px 28px rgb(0 0 0/.35);--e3:0 4px 10px rgb(0 0 0/.35),0 22px 56px rgb(0 0 0/.5);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C1514;--surface:#14201F;--surface2:#192826;--sunk:#0A1110;--ink:#E5EEED;--ink2:#A6B8B6;--ink3:#8CA19E;--line:#253634;
+  --brand:#0A2F2E;--brand-hi:#15514D;--on-brand:#DDEDEB;--on-brand-2:#86AEA9;--brand-ink:#5CC2B9;
+  --sabia:#EE7631;--sabia-hi:#FF8A47;--sabia-soft:#3A2416;--on-sabia:#1A0C04;
+  --ok:#4FC587;--ok-soft:#14301F;--warn:#E3A83A;--warn-soft:#33270F;--bad:#F0716A;--bad-soft:#3A1715;
+  --e1:0 1px 2px rgb(0 0 0/.3),0 2px 8px rgb(0 0 0/.25);--e2:0 2px 4px rgb(0 0 0/.3),0 10px 28px rgb(0 0 0/.35);--e3:0 4px 10px rgb(0 0 0/.35),0 22px 56px rgb(0 0 0/.5);
+  color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--f-body);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--f-disp);margin:0;letter-spacing:-.01em;text-wrap:balance}
+button,input,select,textarea{font:inherit;color:inherit}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.num,.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.mut{color:var(--ink2)}
+.sm{font-size:13px}
+:focus-visible{outline:2px solid var(--sabia);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* casca */
+.app{display:grid;grid-template-columns:84px minmax(0,1fr);height:100dvh}
+.rail{background:var(--brand);color:var(--on-brand);display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 8px;padding-left:max(8px,env(safe-area-inset-left))}
+.rail .lg{width:48px;height:48px;border-radius:16px;background:var(--brand-hi);display:grid;place-items:center;margin-bottom:10px;box-shadow:inset 0 1px 0 rgb(255 255 255/.14)}
+.rail .lg svg{width:32px;height:32px}
+.ri{width:68px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0 6px;border:0;background:none;color:var(--on-brand-2);font-size:12px;font-weight:500;cursor:pointer;text-decoration:none;position:relative;border-radius:12px}
+.ri .pill{width:52px;height:30px;border-radius:15px;display:grid;place-items:center;transition:background .15s}
+.ri:hover .pill{background:rgb(255 255 255/.08)}
+.ri[aria-current="page"]{color:#fff}
+.ri[aria-current="page"] .pill{background:var(--sabia);color:var(--on-sabia)}
+.ri .n{position:absolute;top:2px;right:8px;min-width:18px;height:18px;border-radius:9px;background:var(--sabia);color:var(--on-sabia);font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 5px}
+.rail .sp{flex:1}
+.mn{display:flex;flex-direction:column;min-width:0;min-height:0}
+.tb{display:flex;align-items:center;gap:12px;padding:14px 24px 10px;padding-right:max(24px,env(safe-area-inset-right));flex-wrap:wrap}
+.tb h1{font-size:24px;font-weight:800;line-height:1.1}
+.tb .sub{color:var(--ink2);font-size:14px}
+.tb .grow{flex:1}
+.body{flex:1;overflow:auto;padding:4px 24px 24px;padding-right:max(24px,env(safe-area-inset-right));display:grid;gap:14px;align-content:start}
+.bnav{display:none}
+
+/* botões e campos */
+.b{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:15px;cursor:pointer;text-decoration:none;color:var(--ink);box-shadow:var(--e1);white-space:nowrap}
+.b:hover{border-color:var(--ink3)}
+.b.p{background:var(--sabia);border-color:var(--sabia);color:var(--on-sabia)}
+.b.p:hover{background:var(--sabia-hi)}
+.b.s{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.b.g{box-shadow:none;background:transparent}
+.b.ic{width:44px;padding:0;flex:none}
+.b.sm{min-height:36px;padding:0 12px;font-size:14px;border-radius:10px}
+.b[disabled]{opacity:.5;cursor:not-allowed}
+.b.bad{color:var(--bad)}
+.fd{display:grid;gap:4px;min-width:0}
+.fd label,.lbl{font-size:12px;font-weight:700;color:var(--ink2)}
+.in{min-height:44px;width:100%;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:0 12px}
+select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink3) 50%),linear-gradient(135deg,var(--ink3) 50%,transparent 50%);background-position:calc(100% - 18px) 19px,calc(100% - 13px) 19px;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}
+.k{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--e1);padding:14px 16px;min-width:0}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;background:var(--sunk);color:var(--ink2)}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}.chip.warn{background:var(--warn-soft);color:var(--warn)}.chip.bad{background:var(--bad-soft);color:var(--bad)}.chip.br{background:var(--sabia-soft);color:var(--sabia-hi)}
+
+/* início */
+.home{grid-template-columns:repeat(12,minmax(0,1fr));align-items:start}
+.coach{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;background:var(--brand);color:var(--on-brand);border-color:transparent}
+.coach .ms{width:52px;height:52px;border-radius:16px;background:var(--brand-hi);display:grid;place-items:center}
+.coach .ms svg{width:34px;height:34px}
+.coach .eb{font-size:12px;font-weight:700;color:var(--on-brand-2);text-transform:uppercase;letter-spacing:.06em}
+.coach h2{font-size:20px;color:#fff;margin:2px 0}
+.coach p{margin:0;color:var(--on-brand-2);font-size:14px}
+.coach .acts{display:flex;gap:8px;flex-wrap:wrap}
+.coach .b.g{color:var(--on-brand);border-color:var(--on-brand-2)}
+.kpis{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding:0}
+.kp{padding:12px 16px;border-right:1px solid var(--line)}
+.kp:last-child{border:0}
+.kp .v{font-family:var(--f-disp);font-weight:800;font-size:28px;line-height:1.1}
+.kp .l{font-size:13px;color:var(--ink2)}
+.mini{grid-column:span 6}
+.mini .kh{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.mini h3{font-size:16px}
+.rows{display:grid}
+.row{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row>div{flex:1;min-width:0}
+.row b{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbl{grid-column:1/-1;padding:0;overflow:hidden}
+
+/* lista de treinamentos */
+.tbar{display:flex;gap:10px;align-items:center;padding:12px 16px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.seg{display:inline-flex;background:var(--sunk);border-radius:12px;padding:3px}
+.seg button{border:0;background:none;min-height:38px;padding:0 14px;border-radius:9px;font-weight:600;font-size:14px;color:var(--ink2);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--e1)}
+.seg i{font-style:normal;font-family:var(--f-mono);font-size:12px;color:var(--ink3)}
+.srch{position:relative;flex:1;min-width:180px}
+.srch svg{position:absolute;left:12px;top:12px;color:var(--ink3);width:20px;height:20px}
+.srch .in{padding-left:40px}
+.fpan{display:flex;gap:12px;flex-wrap:wrap;padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--line)}
+.tr{display:grid;grid-template-columns:minmax(0,2.4fr) 64px 92px 150px 232px;gap:12px;align-items:center;padding:10px 16px;border-top:1px solid var(--line)}
+.tr.h{border-top:0;font-size:12px;font-weight:700;color:var(--ink2);padding-block:8px;background:var(--surface2)}
+.tr .t b{display:block;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tr .t span{font-size:13px;color:var(--ink2)}
+.tr .acts{display:flex;gap:6px;justify-content:flex-end}
+.meta-bar{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden;margin-top:4px}
+.meta-bar i{display:block;height:100%;background:var(--brand-ink)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;padding:14px 16px}
+.card{border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;background:var(--surface)}
+.card b{font-family:var(--f-disp);font-size:17px}
+.vazio{padding:28px 16px;text-align:center;color:var(--ink2);display:grid;gap:10px;justify-items:center}
+
+/* aplicar */
+.apl{grid-template-columns:minmax(0,1fr) 340px;align-items:start}
+.apl .lc{display:grid;gap:12px}
+.sec h3{font-size:16px;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.st{width:26px;height:26px;border-radius:50%;background:var(--brand);color:var(--on-brand);display:grid;place-items:center;font-size:13px;font-weight:700;font-family:var(--f-mono)}
+.pres{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pr{border:1.5px solid var(--line);border-radius:14px;padding:12px;background:var(--surface);text-align:left;cursor:pointer;display:grid;gap:4px;align-content:start}
+.pr[aria-pressed="true"]{border-color:var(--sabia);background:var(--sabia-soft)}
+.pr .pic{width:40px;height:40px;border-radius:12px;background:var(--sunk);display:grid;place-items:center;color:var(--brand-ink);margin-bottom:2px}
+.pr[aria-pressed="true"] .pic{background:var(--sabia);color:var(--on-sabia)}
+.pr b{font-family:var(--f-disp);font-size:16px}
+.pr span{font-size:13px;color:var(--ink2)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.sc{min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.sc[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.fields{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+details.adv{padding:0}
+details.adv summary{list-style:none;display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;min-height:56px}
+details.adv summary::-webkit-details-marker{display:none}
+details.adv .chev{margin-left:auto;transition:transform .15s;display:grid;place-items:center;width:24px;height:24px}
+details.adv .chev svg{width:20px;height:20px}
+details.adv[open] .chev{transform:rotate(180deg)}
+.advg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 20px;padding:4px 16px 16px;border-top:1px solid var(--line);padding-top:14px}
+.opt{display:flex;gap:10px;align-items:flex-start;min-height:44px}
+.opt input{width:22px;height:22px;margin-top:2px;accent-color:var(--sabia);flex:none}
+.opt small{display:block;color:var(--ink2);font-size:12px;line-height:1.3}
+.sum{position:sticky;top:4px;display:grid;gap:10px}
+.sum .hd b{font-family:var(--f-disp);font-size:18px;display:block}
+.tl{display:grid;gap:0}
+.tli{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;padding:6px 0;border-top:1px dashed var(--line);font-size:14px}
+.tli:first-child{border-top:0}
+.tli .tx{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nd{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:12px;font-weight:700;font-family:var(--f-mono)}
+.nd.e{background:var(--sabia-soft);color:var(--sabia-hi);border-color:transparent}
+
+/* ajustes e páginas simples */
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.page{max-width:980px}
+.road{display:grid;gap:6px}
+.road li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line)}
+.road ul{list-style:none;margin:0;padding:0}
+.road li:first-child{border-top:0}
+
+/* diálogo e aviso */
+dialog{border:0;border-radius:20px;padding:0;background:var(--surface);color:var(--ink);box-shadow:var(--e3);width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 24px)}
+dialog::backdrop{background:rgb(8 20 19/.55)}
+.dl{display:grid;gap:12px;padding:18px}
+.dl header{display:flex;align-items:center;gap:10px}
+.dl header h2{font-size:20px;flex:1}
+.opcao{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:10px 12px;min-height:56px;cursor:pointer}
+.opcao:hover{border-color:var(--sabia)}
+.opcao .pic{width:40px;height:40px;border-radius:12px;background:var(--sunk);display:grid;place-items:center;color:var(--brand-ink);flex:none}
+.opcao b{display:block}
+.opcao span.d{font-size:13px;color:var(--ink2)}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:50;display:flex;gap:14px;align-items:center;background:var(--ink);color:var(--bg);border-radius:14px;padding:10px 12px 10px 16px;box-shadow:var(--e3);max-width:calc(100vw - 24px)}
+#toast button{border:0;background:none;color:var(--sabia);font-weight:700;cursor:pointer;min-height:36px;padding:0 8px}
+:root[data-theme="dark"] #toast button,:root:not([data-theme="light"]) #toast button{color:var(--sabia)}
+
+@media (max-width:1100px){.apl{grid-template-columns:1fr}.sum{position:static}.mini{grid-column:1/-1}.kpis{grid-template-columns:repeat(2,1fr)}.kp:nth-child(2){border-right:0}.kp:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+@media (max-width:760px){
+  .app{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto}
+  .rail{display:none}
+  .bnav{display:grid;grid-template-columns:repeat(5,1fr);background:var(--brand);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  .bnav a{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--on-brand-2);font-size:11px;font-weight:500;text-decoration:none;min-height:48px;justify-content:center;position:relative}
+  .bnav a[aria-current="page"]{color:#fff}
+  .bnav a[aria-current="page"] .pill{background:var(--sabia);color:var(--on-sabia)}
+  .bnav .pill{width:48px;height:28px;border-radius:14px;display:grid;place-items:center}
+  .tb{padding:12px 16px 8px}.tb h1{font-size:21px}
+  .body{padding:4px 16px 16px}
+  .coach{grid-template-columns:1fr}.coach .ms{display:none}.coach h2{font-size:18px}
+  .tb{flex-wrap:nowrap}.tb .lbl-m{display:none}.tb .b.p{width:44px;padding:0}
+  .pres,.fields,.cols,.advg{grid-template-columns:1fr}
+  .pr{grid-template-columns:44px 1fr;column-gap:12px;align-items:center;padding:10px 12px}.pr .pic{grid-row:span 2;margin:0}.pr span:not(.pic){grid-column:2}
+  .tr{grid-template-columns:minmax(0,1fr) auto;gap:6px 10px}
+  .tr.h{display:none}.tr .hide-m{display:none}
+  .tbar .srch{flex-basis:100%;order:3}
+  #toast{bottom:calc(76px + env(safe-area-inset-bottom))}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/*__LIVE_CSS__*/
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo" viewBox="0 0 48 48"><path d="M10 29c0-8 6-14 13-14 4 0 6 2 9 2l7-4-3 8c1 8-5 17-15 17-6 0-11-4-11-9z" fill="#FFFFFF"/><path d="M24 33c3-1 8-4 9-9-3 3-7 4-9 4z" fill="#D45D17"/><circle cx="31" cy="19" r="1.8" fill="#0E4A48"/><path d="M38 13l5 1.5-5 2z" fill="#F4B15A"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h5v-6h4v6h5V10"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></symbol>
+    <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M17.5 14c2.6.2 4 2 4 5"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-screen" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V5M7 9l5-5 5 5M5 20h14"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C5 10 10 5 20 4c0 10-5 15-14 15z"/><path d="M5 19l8-8"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5c3-1 5-1 8 1 3-2 5-2 8-1v13c-3-1-5-1-8 1-3-2-5-2-8-1z"/><path d="M12 6v13"/></symbol>
+  </defs>
+</svg>
+
+<div class="app">
+  <nav class="rail" aria-label="Principal" id="rail"></nav>
+  <div class="mn">
+    <header class="tb" id="tb"></header>
+    <main class="body" id="app" tabindex="-1"></main>
+  </div>
+  <nav class="bnav" aria-label="Principal" id="bnav"></nav>
+</div>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+<dialog id="dlg"></dialog>
+<input type="file" id="arq" accept=".json,application/json" hidden>
+
+<script>/*__QR__*/</script>
+<script>
+"use strict";
+const VERSAO = "0.2.0";
+const MODELOS = __MODELOS__;
+const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ic = (n, x = "") => `<svg class="i" ${x} aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2));
+const dm = iso => { try { return new Date(iso).toLocaleDateString("pt-BR", {day:"2-digit", month:"2-digit"}); } catch(e) { return ""; } };
+const isQ = i => i.tipo !== "explicacao";
+
+/* ---------- dados: IndexedDB com reserva em localStorage ---------- */
+const DB = {
+  db: null,
+  abrir() { return new Promise(ok => { try { const r = indexedDB.open("sabia", 1); r.onupgradeneeded = () => r.result.createObjectStore("kv"); r.onsuccess = () => { DB.db = r.result; ok(true); }; r.onerror = () => ok(false); r.onblocked = () => ok(false); } catch(e) { ok(false); } }); },
+  ler(k) { return new Promise(ok => { if (!DB.db) return ok(null); try { const q = DB.db.transaction("kv").objectStore("kv").get(k); q.onsuccess = () => ok(q.result ?? null); q.onerror = () => ok(null); } catch(e) { ok(null); } }); },
+  gravar(k, v) { return new Promise(ok => { if (!DB.db) return ok(false); try { const t = DB.db.transaction("kv", "readwrite"); t.objectStore("kv").put(v, k); t.oncomplete = () => ok(true); t.onerror = () => ok(false); } catch(e) { ok(false); } }); }
+};
+let S = null;
+const novoEstado = () => ({v: 1, treinamentos: [], sessoes: [], pessoas: [], mensagens: [], cfg: {instrutor: "", empresa: "", local: "", setores: SETORES_PADRAO.slice(), tema: "auto"}});
+let tSalvar = 0;
+async function gravarAgora() {
+  tSalvar = 0;
+  const txt = JSON.stringify(S);
+  const ok = await DB.gravar("estado", txt);
+  if (!ok) { try { localStorage.setItem("sabia-estado", txt); } catch(e) { aviso("Sem espaço para guardar. Exporte seus dados em Ajustes."); } }
+  else { try { localStorage.removeItem("sabia-estado"); } catch(e) {} }
+}
+/* grava no máximo a cada 120 ms, sempre o estado mais recente (sem adiar para sempre) */
+function salvar() { if (!tSalvar) tSalvar = setTimeout(gravarAgora, 120); }
+/* ao fechar ou recarregar com gravação pendente, guarda de forma síncrona e o próximo carregamento aproveita */
+window.addEventListener("pagehide", () => { if (tSalvar && S) { try { localStorage.setItem("sabia-estado", JSON.stringify(S)); } catch(e) {} } });
+async function carregar() {
+  let txt = null;
+  if (await DB.abrir()) txt = await DB.ler("estado");
+  try { const ls = localStorage.getItem("sabia-estado"); if (ls) txt = ls; } catch(e) {}
+  S = novoEstado();
+  if (txt) { try { const o = JSON.parse(txt); if (o && o.v === 1) S = Object.assign(S, o, {cfg: Object.assign(S.cfg, o.cfg || {})}); } catch(e) {} }
+}
+
+/* ---------- tema ---------- */
+function aplicarTema() {
+  const t = S.cfg.tema;
+  if (t === "claro") document.documentElement.setAttribute("data-theme", "light");
+  else if (t === "escuro") document.documentElement.setAttribute("data-theme", "dark");
+  else document.documentElement.removeAttribute("data-theme");
+  try { localStorage.setItem("sabia-tema", t); } catch(e) {}
+}
+
+/* ---------- avisos ---------- */
+let tToast = 0;
+function aviso(msg, acao, fn) {
+  const el = $("#toast"); clearTimeout(tToast);
+  el.innerHTML = `<span>${esc(msg)}</span>${acao ? `<button type="button" id="tAcao">${esc(acao)}</button>` : ""}`;
+  el.hidden = false;
+  if (acao) $("#tAcao").onclick = () => { el.hidden = true; clearTimeout(tToast); fn && fn(); };
+  tToast = setTimeout(() => { el.hidden = true; }, acao ? 3000 : 3500);
+}
+
+/* ---------- navegação ---------- */
+const NAV = [
+  ["inicio", "Início", "home"], ["treinos", "Treinos", "list"], ["pessoas", "Pessoas", "people"],
+  ["mensagens", "Mensagens", "chat"], ["relatorios", "Relatórios", "chart"]
+];
+const NAV2 = [["conferir", "Conferir", "shield"], ["ajustes", "Ajustes", "gear"]];
+function rota() { const h = (location.hash || "#/inicio").replace(/^#\//, "").split("/"); return {v: h[0] || "inicio", id: h[1] || null}; }
+function ir(h) { if (location.hash === h) render(); else location.hash = h; }
+function menu(v) {
+  const at = v === "aplicar" || v === "sala" ? "treinos" : v;
+  const item = ([id, nome, i]) => `<a class="ri" href="#/${id}" ${at === id ? 'aria-current="page"' : ""}><span class="pill">${ic(i)}</span>${nome}</a>`;
+  $("#rail").innerHTML = `<div class="lg" aria-hidden="true"><svg viewBox="0 0 48 48"><use href="#logo"/></svg></div>${NAV.map(item).join("")}<div class="sp"></div>${NAV2.map(item).join("")}`;
+  const bi = ([id, nome, i]) => `<a href="#/${id}" ${at === id ? 'aria-current="page"' : ""}><span class="pill">${ic(i)}</span>${nome}</a>`;
+  $("#bnav").innerHTML = NAV.filter(x => x[0] !== "mensagens").concat([NAV2[1]]).map(bi).join("");
+}
+function topo(titulo, sub, extra = "", voltar = "") {
+  $("#tb").innerHTML = `${voltar ? `<a class="b ic g" href="${voltar}" aria-label="Voltar">${ic("back")}</a>` : ""}<div><h1>${esc(titulo)}</h1>${sub ? `<div class="sub">${esc(sub)}</div>` : ""}</div><div class="grow"></div>${extra}`;
+}
+
+/* ---------- estado de tela (só em memória) ---------- */
+const UI = {q: "", aba: "ativos", ord: "recentes", vista: "lista", filtro: false, apl: null};
+const ORD = {recentes: "Mais recentes", nome: "Ordem alfabética", perguntas: "Mais perguntas", meta: "Maior meta"};
+const AJ_PADRAO = {teste: false, tempo: "fecha", ranking: true, embaralhar: false, confirmar: false, gincana: false, prepos: false, extra: false, onde: "aparelho", equipe: "nao", telao: "escuro", som: "ligado"};
+const PRESETS = {
+  aovivo: {nome: "Ao vivo no telão", desc: "Você projeta e a turma responde no celular, todos juntos.", icone: "screen", aj: {tempo: "fecha", ranking: true}},
+  ritmo: {nome: "No ritmo de cada um", desc: "Cada pessoa faz no seu tempo, sem telão. Bom para turnos.", icone: "clock", aj: {tempo: "livre", ranking: false}},
+  roda: {nome: "Um celular na roda", desc: "O aparelho passa de mão em mão. Funciona sem internet.", icone: "hand", aj: {tempo: "livre", ranking: false, equipe: "nao"}}
+};
+
+/* ---------- ações sobre treinamentos ---------- */
+const treino = id => S.treinamentos.find(t => t.id === id);
+function criarDeModelo(m) {
+  const t = {id: uid(), titulo: m.titulo, meta: m.meta, descricao: m.descricao || "", itens: JSON.parse(JSON.stringify(m.itens)), versao: 0, versoes: [{n: 0, nota: "Criado a partir do modelo pronto", quando: new Date().toISOString()}], atualizado: new Date().toISOString(), modelo: m.id};
+  S.treinamentos.unshift(t); salvar(); return t;
+}
+function criarDoZero(titulo, meta) {
+  const t = {id: uid(), titulo: titulo.trim(), meta: meta, descricao: "", itens: [], versao: 0, versoes: [{n: 0, nota: "Criado do zero", quando: new Date().toISOString()}], atualizado: new Date().toISOString()};
+  S.treinamentos.unshift(t); salvar(); return t;
+}
+function excluir(id) {
+  const i = S.treinamentos.findIndex(t => t.id === id); if (i < 0) return;
+  const [t] = S.treinamentos.splice(i, 1); salvar(); render();
+  aviso(`"${t.titulo}" excluído`, "Desfazer", () => { S.treinamentos.splice(Math.min(i, S.treinamentos.length), 0, t); salvar(); render(); });
+}
+function duplicar(id) {
+  const t = treino(id); if (!t) return;
+  const c = JSON.parse(JSON.stringify(t)); c.id = uid(); c.titulo = t.titulo + " (cópia)"; c.atualizado = new Date().toISOString(); c.versao = 0;
+  c.versoes = [{n: 0, nota: "Cópia de " + t.titulo, quando: c.atualizado}];
+  S.treinamentos.unshift(c); salvar(); render(); aviso("Cópia criada");
+}
+function baixar(nome, obj) {
+  const b = new Blob([JSON.stringify(obj, null, 2)], {type: "application/json"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = nome; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+const slug = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "treinamento";
+function validaTreino(o) {
+  if (!o || typeof o !== "object" || typeof o.titulo !== "string" || !Array.isArray(o.itens)) return null;
+  const itens = o.itens.filter(i => i && typeof i === "object" && ["explicacao", "multipla", "vf", "ordenar"].includes(i.tipo)).map(i => ({
+    tipo: i.tipo, enunciado: String(i.enunciado || "").slice(0, 400), texto: String(i.texto || "").slice(0, 4000),
+    alternativas: Array.isArray(i.alternativas) ? i.alternativas.slice(0, 8).map(a => String(a).slice(0, 200)) : undefined,
+    correta: Number.isInteger(i.correta) ? i.correta : undefined, tempo: Number(i.tempo) > 0 ? Math.min(600, Number(i.tempo)) : 20,
+    uso: ["avaliacao", "gincana", "ensaio"].includes(i.uso) ? i.uso : "avaliacao", porque: String(i.porque || "").slice(0, 600)
+  }));
+  const meta = Number(o.meta); const ag = new Date().toISOString();
+  return {id: uid(), titulo: o.titulo.slice(0, 120), meta: meta > 0 && meta <= 100 ? Math.round(meta) : 80, descricao: String(o.descricao || "").slice(0, 400), itens, versao: 0, versoes: [{n: 0, nota: "Importado de arquivo", quando: ag}], atualizado: ag};
+}
+function importarArquivo(f) {
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const o = JSON.parse(String(r.result));
+      if (o && o.sabia === "tudo" && o.dados) {
+        const d = o.dados; if (d.v !== 1) throw new Error("versão");
+        S = Object.assign(novoEstado(), d, {cfg: Object.assign(novoEstado().cfg, d.cfg || {})}); salvar(); aplicarTema(); render(); aviso("Todos os dados foram importados"); return;
+      }
+      const lista = Array.isArray(o) ? o : (o && Array.isArray(o.treinamentos) ? o.treinamentos : [o]);
+      const novos = lista.map(validaTreino).filter(Boolean);
+      if (!novos.length) throw new Error("vazio");
+      S.treinamentos.unshift(...novos); salvar(); render(); aviso(novos.length === 1 ? "Treinamento importado" : novos.length + " treinamentos importados");
+    } catch(e) { aviso("Esse arquivo não parece um treinamento do Sabiá ou do EFCquiz"); }
+  };
+  r.readAsText(f);
+}
+
+/* ---------- telas ---------- */
+function filtrar(aba) {
+  let l = S.treinamentos.slice();
+  const q = UI.q.trim().toLowerCase();
+  if (q) l = l.filter(t => t.titulo.toLowerCase().includes(q));
+  if (UI.ord === "nome") l.sort((a, b) => a.titulo.localeCompare(b.titulo, "pt-BR"));
+  else if (UI.ord === "perguntas") l.sort((a, b) => b.itens.filter(isQ).length - a.itens.filter(isQ).length);
+  else if (UI.ord === "meta") l.sort((a, b) => b.meta - a.meta);
+  else l.sort((a, b) => String(b.atualizado).localeCompare(String(a.atualizado)));
+  return aba === "ativos" ? l : [];
+}
+function linhaTreino(t) {
+  const nq = t.itens.filter(isQ).length, pode = nq > 0;
+  return `<div class="tr"><div class="t"><b>${esc(t.titulo)}</b><span>${nq} pergunta${nq === 1 ? "" : "s"} · atualizado ${dm(t.atualizado)}</span></div>
+    <span class="num hide-m">v${String(t.versao).padStart(2, "0")}</span><span class="hide-m"><span class="num">${t.meta}%</span><div class="meta-bar" aria-hidden="true"><i style="width:${t.meta}%"></i></div></span>
+    <span class="hide-m">${pode ? `<span class="chip ok">Pronto para aplicar</span>` : `<span class="chip warn">Rascunho</span>`}</span>
+    <div class="acts"><a class="b sm p" href="#/aplicar/${t.id}" ${pode ? "" : 'aria-disabled="true" tabindex="-1" style="opacity:.5;pointer-events:none"'}>${ic("play", 'style="width:16px;height:16px"')}Aplicar</a>
+    <button class="b sm ic" data-act="exportar" data-id="${t.id}" aria-label="Exportar ${esc(t.titulo)}" title="Exportar .json">${ic("download", 'style="width:18px;height:18px"')}</button>
+    <button class="b sm ic" data-act="duplicar" data-id="${t.id}" aria-label="Duplicar ${esc(t.titulo)}" title="Duplicar">${ic("copy", 'style="width:18px;height:18px"')}</button>
+    <button class="b sm ic bad" data-act="excluir" data-id="${t.id}" aria-label="Excluir ${esc(t.titulo)}" title="Excluir">${ic("trash", 'style="width:18px;height:18px"')}</button></div></div>`;
+}
+function cartaoTreino(t) {
+  const nq = t.itens.filter(isQ).length;
+  return `<div class="card"><b>${esc(t.titulo)}</b><span class="sm mut">${nq} pergunta${nq === 1 ? "" : "s"} · meta <span class="num">${t.meta}%</span> · v${String(t.versao).padStart(2, "0")}</span>
+    <div style="display:flex;gap:6px"><a class="b sm p" style="flex:1" href="#/aplicar/${t.id}" ${nq ? "" : 'aria-disabled="true" style="opacity:.5;pointer-events:none"'}>Aplicar</a>
+    <button class="b sm ic" data-act="exportar" data-id="${t.id}" aria-label="Exportar ${esc(t.titulo)}">${ic("download", 'style="width:18px;height:18px"')}</button>
+    <button class="b sm ic bad" data-act="excluir" data-id="${t.id}" aria-label="Excluir ${esc(t.titulo)}">${ic("trash", 'style="width:18px;height:18px"')}</button></div></div>`;
+}
+function vazioLista() {
+  return `<div class="vazio">${ic("leaf", 'style="width:32px;height:32px;color:var(--brand-ink)"')}<b>Nenhum treinamento ainda</b><span class="sm">Comece por um modelo pronto, importe um do EFCquiz ou crie do zero.</span><button class="b p" data-act="novo">${ic("plus")}Novo treinamento</button></div>`;
+}
+function tabela(limite) {
+  const todos = S.treinamentos.length;
+  const l = filtrar(UI.aba), vis = limite ? l.slice(0, limite) : l;
+  const encl = S.sessoes.filter(x => x.estado === "encerrada").slice().reverse();
+  const abas = [["ativos", "Ativos", todos], ["reforco", "Em reforço", 0], ["encerradas", "Encerradas", encl.length]];
+  let corpo;
+  if (!todos) corpo = vazioLista();
+  else if (UI.aba === "encerradas" && encl.length) corpo = `<div class="tr h" style="grid-template-columns:minmax(0,2.4fr) 120px 150px 170px"><span>Sessão</span><span class="hide-m">Pessoas</span><span class="hide-m">Acerto</span><span class="hide-m">Meta</span></div>${encl.map(x => `<div class="tr" style="grid-template-columns:minmax(0,2.4fr) 120px 150px 170px"><div class="t"><b>${esc(x.titulo)}</b><span>${dm(x.fim)} · ${esc(x.instrutor || "sem instrutor")}${x.local ? " · " + esc(x.local) : ""}</span></div><span class="num hide-m">${x.resultado.pessoas}</span><span class="num hide-m">${x.resultado.pct}%</span><span class="hide-m"><span class="chip ${x.resultado.metaOk ? "ok" : "warn"}">${x.resultado.metaOk ? "meta atingida" : "abaixo da meta"}</span></span></div>`).join("")}`;
+  else if (UI.aba !== "ativos") corpo = `<div class="vazio"><b>${UI.aba === "reforco" ? "Ninguém em reforço" : "Nenhuma sessão encerrada"}</b><span class="sm">${UI.aba === "reforco" ? "O reforço aparece quando uma sessão registra pessoas abaixo da meta (v0.6)." : "Quando você encerrar uma sala, a sessão aparece aqui."}</span></div>`;
+  else if (!vis.length) corpo = `<div class="vazio"><b>Nada encontrado</b><span class="sm">Nenhum treinamento com "${esc(UI.q)}".</span></div>`;
+  else if (UI.vista === "cartoes") corpo = `<div class="cards">${vis.map(cartaoTreino).join("")}</div>`;
+  else corpo = `<div class="tr h"><span>Treinamento</span><span class="hide-m">Versão</span><span class="hide-m">Meta</span><span class="hide-m">Situação</span><span></span></div>${vis.map(linhaTreino).join("")}`;
+  return `<section class="k tbl" aria-label="Treinamentos"><div class="tbar">
+    <div class="seg" role="group" aria-label="Situação">${abas.map(([id, n, c]) => `<button data-act="aba" data-v="${id}" aria-pressed="${UI.aba === id}">${n}<i>${c}</i></button>`).join("")}</div>
+    <label class="srch"><span class="sr">Procurar treinamento</span>${ic("search")}<input class="in" type="search" id="busca" placeholder="Procurar treinamento" value="${esc(UI.q)}" autocomplete="off"></label>
+    <button class="b" data-act="filtro" aria-expanded="${UI.filtro}">${ic("filter")}Filtro <span class="mut sm">${esc(ORD[UI.ord])}</span></button>
+    <div class="seg" role="group" aria-label="Vista"><button data-act="vista" data-v="lista" aria-pressed="${UI.vista === "lista"}" aria-label="Lista">${ic("list", 'style="width:18px;height:18px"')}</button><button data-act="vista" data-v="cartoes" aria-pressed="${UI.vista === "cartoes"}" aria-label="Cartões">${ic("grid", 'style="width:18px;height:18px"')}</button></div>
+    ${limite ? "" : `<button class="b s" data-act="novo">${ic("plus")}Novo treinamento</button>`}</div>
+    ${UI.filtro ? `<div class="fpan"><div class="fd" style="min-width:220px"><label for="ord">Ordenar por</label><select class="in" id="ord">${Object.entries(ORD).map(([k, v]) => `<option value="${k}" ${UI.ord === k ? "selected" : ""}>${v}</option>`).join("")}</select></div></div>` : ""}
+    ${corpo}${limite && l.length > limite && UI.aba === "ativos" ? `<div style="padding:10px 16px;border-top:1px solid var(--line)"><a href="#/treinos">Ver todos os ${l.length} treinamentos</a></div>` : ""}</section>`;
+}
+function vInicio() {
+  const h = new Date().getHours(), sal = h < 12 ? "Bom dia" : h < 18 ? "Boa tarde" : "Boa noite";
+  const nome = (S.cfg.instrutor || "").split(" ")[0];
+  const dt = new Date().toLocaleDateString("pt-BR", {weekday: "long", day: "numeric", month: "long"});
+  topo(`${sal}${nome ? ", " + nome : ""}`, dt.charAt(0).toUpperCase() + dt.slice(1) + (S.cfg.empresa ? " · " + S.cfg.empresa : ""), `<button class="b p" data-act="novo" aria-label="Novo treinamento">${ic("plus")}<span class="lbl-m">Novo treinamento</span></button>`);
+  const nT = S.treinamentos.length, nP = S.treinamentos.reduce((a, t) => a + t.itens.filter(isQ).length, 0);
+  const prontos = S.treinamentos.filter(t => t.itens.some(isQ));
+  let coach;
+  if (!nT) coach = {t: "Comece por um treinamento", p: "Use um modelo pronto de segurança ou higiene, importe um do EFCquiz ou crie o seu.", a: `<button class="b p" data-act="novo">${ic("plus")}Escolher um modelo</button>`};
+  else if (!S.sessoes.length && prontos.length) coach = {t: `${prontos[0].titulo} está pronto para aplicar`, p: "Escolha como vai ser, quem participa e prepare a sessão em um minuto.", a: `<a class="b p" href="#/aplicar/${prontos[0].id}">${ic("play")}Aplicar agora</a>`};
+  else if (S.sessoes.some(x => x.estado === "sala")) { const x = S.sessoes.find(y => y.estado === "sala"); coach = {t: `A sala de "${x.titulo}" está aberta`, p: `Chave ${x.chave.slice(0, 3)} ${x.chave.slice(3)} · ${x.part.length} pessoa${x.part.length === 1 ? "" : "s"} na sala.`, a: `<button class="b p" data-act="voltarsala" data-id="${x.id}">${ic("play")}Voltar à sala</button>`}; }
+  else if (prontos.length && S.sessoes.length) coach = {t: "Pronto para a próxima turma", p: "Escolha como vai ser, quem participa e abra a sala com chave e telão.", a: `<a class="b p" href="#/aplicar/${prontos[0].id}">${ic("play")}Aplicar agora</a>`};
+  else coach = {t: "Treinamentos sem perguntas", p: "O editor de perguntas chega na v0.3. Enquanto isso, importe ou use um modelo.", a: `<button class="b p" data-act="novo">${ic("plus")}Novo treinamento</button>`};
+  const enc = S.sessoes.filter(x => x.estado === "encerrada");
+  const kp = [[nT, "Treinamentos"], [nP, "Perguntas no total"], [enc.length, "Sessões realizadas"], enc.length ? [Math.round(enc.reduce((a, x) => a + x.resultado.pct, 0) / enc.length) + "%", "Acerto médio"] : [nT ? Math.round(S.treinamentos.reduce((a, t) => a + t.meta, 0) / nT) + "%" : "–", "Meta média"]];
+  const usados = new Set(S.treinamentos.map(t => t.modelo));
+  const modelos = MODELOS.filter(m => !usados.has(m.id));
+  const planejadas = S.sessoes.filter(x => x.estado !== "encerrada").slice().reverse().slice(0, 3);
+  const span = modelos.length ? "" : ' style="grid-column:1/-1"';
+  $("#app").className = "body home";
+  $("#app").innerHTML = `
+    <section class="k coach"><div class="ms" aria-hidden="true"><svg viewBox="0 0 48 48"><use href="#logo"/></svg></div><div><div class="eb">Próximo passo</div><h2>${esc(coach.t)}</h2><p>${esc(coach.p)}</p></div><div class="acts">${coach.a}</div></section>
+    <section class="k kpis" aria-label="Resumo">${kp.map(([v, l]) => `<div class="kp"><div class="v num">${v}</div><div class="l">${l}</div></div>`).join("")}</section>
+    ${modelos.length ? `<section class="k mini"><div class="kh">${ic("book", 'style="color:var(--brand-ink)"')}<h3>Modelos prontos</h3><span class="chip">${modelos.length}</span></div><div class="rows">${modelos.map(m => `<div class="row"><div><b>${esc(m.titulo)}</b><span class="sm mut">${m.itens.filter(isQ).length} perguntas · meta ${m.meta}%</span></div><button class="b sm" data-act="usarmodelo" data-id="${m.id}">Usar</button></div>`).join("")}</div></section>` : ""}
+    <section class="k mini"${span}><div class="kh">${ic("clock", 'style="color:var(--sabia)"')}<h3>Sessões em aberto</h3><span class="chip">${planejadas.length}</span></div>
+      ${planejadas.length ? `<div class="rows">${planejadas.map(s => { const t = treino(s.treinoId); return `<div class="row"><div><b>${esc(t ? t.titulo : "Treinamento removido")}</b><span class="sm mut">${esc(PRESETS[s.preset].nome)} · ${s.setores.length ? esc(s.setores.join(", ")) : "todos os setores"}</span></div>${t ? `<button class="b sm ${s.estado === "sala" ? "p" : ""}" data-act="voltarsala" data-id="${s.id}">${s.estado === "sala" ? "Voltar à sala" : "Abrir sala"}</button>` : `<span class="chip warn">removido</span>`}</div>`; }).join("")}</div>` : `<div class="sm mut" style="padding:6px 0">Nenhuma ainda. Sessões preparadas ou com a sala aberta aparecem aqui.</div>`}</section>
+    ${tabela(5)}`;
+}
+function vTreinos() {
+  topo("Treinos", `${S.treinamentos.length} treinamento${S.treinamentos.length === 1 ? "" : "s"} neste aparelho`);
+  $("#app").className = "body";
+  $("#app").innerHTML = tabela(0);
+}
+
+/* ---------- aplicar ---------- */
+function roteiro(t) {
+  const passos = []; let n = 0, seg = 0;
+  t.itens.forEach(i => {
+    if (i.tipo === "explicacao") { passos.push({n: "E", txt: i.enunciado, s: 120, e: true}); seg += 120; }
+    else if (i.uso === "ensaio") { passos.push({n: "T", txt: i.enunciado + " (teste, não vale nota)", s: i.tempo || 20}); seg += i.tempo || 20; }
+    else { n++; passos.push({n: String(n), txt: i.enunciado, s: i.tempo || 20}); seg += (i.tempo || 20) + 8; }
+  });
+  return {passos, min: Math.max(1, Math.round(seg / 60))};
+}
+const fmtS = s => s >= 90 ? Math.round(s / 60) + " min" : s + " s";
+function vAplicar(id) {
+  const t = treino(id);
+  if (!t) { topo("Aplicar", "", "", "#/treinos"); $("#app").className = "body"; $("#app").innerHTML = `<div class="k vazio"><b>Treinamento não encontrado</b><a class="b" href="#/treinos">Voltar para Treinos</a></div>`; return; }
+  if (!UI.apl || UI.apl.id !== id) UI.apl = {id, preset: "aovivo", setores: [], instrutor: S.cfg.instrutor, local: S.cfg.local, horas: "1", aj: Object.assign({}, AJ_PADRAO, PRESETS.aovivo.aj)};
+  const a = UI.apl, nq = t.itens.filter(isQ).length, r = roteiro(t);
+  const ajTxt = [a.aj.teste ? "sessão de teste" : "sessão real", `meta ${t.meta}%`, a.aj.tempo === "fecha" ? "tempo fecha a pergunta" : "sem bloqueio de tempo", a.aj.ranking ? "ranking ligado" : "sem ranking", a.aj.prepos ? "com pré-teste" : "sem pré-teste"].join(" · ");
+  const op = (k, tt, d, dis) => `<label class="opt"><input type="checkbox" data-aj="${k}" ${a.aj[k] ? "checked" : ""} ${dis ? "disabled" : ""}><span>${tt}<small>${d}</small></span></label>`;
+  topo(`Aplicar: ${t.titulo}`, `Versão v${String(t.versao).padStart(2, "0")} · ${nq} pergunta${nq === 1 ? "" : "s"}`, "", "#/treinos");
+  $("#app").className = "body apl";
+  $("#app").innerHTML = `<div class="lc">
+    <section class="k sec"><h3><span class="st">1</span>Como vai ser?</h3><div class="pres" role="group" aria-label="Formato">${Object.entries(PRESETS).map(([k, p]) => `<button type="button" class="pr" data-act="preset" data-v="${k}" aria-pressed="${a.preset === k}"><span class="pic">${ic(p.icone)}</span><b>${p.nome}</b><span>${p.desc}</span></button>`).join("")}</div></section>
+    <section class="k sec"><h3><span class="st">2</span>Quem participa?<span class="mut sm" style="font-weight:400;margin-left:auto">${a.setores.length ? a.setores.length + " setor" + (a.setores.length > 1 ? "es" : "") : "todos os setores"}</span></h3>
+      <div class="chips" role="group" aria-label="Setores">${S.cfg.setores.map(s => `<button type="button" class="sc" data-act="setor" data-v="${esc(s)}" aria-pressed="${a.setores.includes(s)}">${esc(s)}</button>`).join("") || '<span class="sm mut">Cadastre setores em Ajustes.</span>'}</div></section>
+    <section class="k sec"><h3><span class="st">3</span>Para o registro</h3><div class="fields">
+      <div class="fd"><label for="f-ins">Instrutor (sai no PDF)</label><input class="in" id="f-ins" data-f="instrutor" value="${esc(a.instrutor)}" autocomplete="name"></div>
+      <div class="fd"><label for="f-loc">Local</label><input class="in" id="f-loc" data-f="local" value="${esc(a.local)}" placeholder="Ex.: Refeitório"></div>
+      <div class="fd"><label for="f-h">Carga horária</label><select class="in" id="f-h" data-f="horas">${["0.5", "1", "1.5", "2", "3", "4", "8"].map(h => `<option value="${h}" ${a.horas === h ? "selected" : ""}>${h.replace(".", ",")} h</option>`).join("")}</select></div></div></section>
+    ${a.preset === "aovivo" ? `<section class="k sec"><h3><span class="st">4</span>Como fica o telão?</h3><div class="fields">
+      <div class="fd"><label for="f-tel">Visual do telão</label><select class="in" id="f-tel" data-aj-sel="telao"><option value="escuro" ${a.aj.telao === "escuro" ? "selected" : ""}>Escuro, alto contraste</option><option value="claro" ${a.aj.telao === "claro" ? "selected" : ""}>Claro, para sala iluminada</option></select></div>
+      <div class="fd"><label for="f-som">Som e confete</label><select class="in" id="f-som" data-aj-sel="som"><option value="ligado" ${a.aj.som === "ligado" ? "selected" : ""}>Ligados</option><option value="desligado" ${a.aj.som === "desligado" ? "selected" : ""}>Desligados</option></select></div>
+      <div class="fd"><label>Onde abre</label><div class="in" style="display:flex;align-items:center;gap:8px;color:var(--ink2)">${ic("screen", 'style="width:18px;height:18px"')}Outra janela ou tela</div></div></div></section>` : ""}
+    <details class="k adv sec"><summary>${ic("gear", 'style="color:var(--ink3)"')}<div><b>Ajustes da sessão</b><div class="sm mut" id="ajTxt">${esc(ajTxt)}</div></div><span class="chev">${ic("down")}</span></summary>
+      <div class="advg">
+        ${op("teste", "Sessão de teste", "Fica fora do registro oficial.")}
+        ${op("ranking", "Ranking", "Mostra a classificação ao final.")}
+        ${op("tempo_fecha", "Tempo fecha a pergunta", "Desligado: sem bloqueio, cada um no seu ritmo.")}
+        ${op("embaralhar", "Embaralhar alternativas", "A ordem muda para cada pessoa.")}
+        ${op("confirmar", "Confirmar antes de enviar", "Evita toque sem querer.")}
+        ${op("gincana", "Gincana por rapidez", "Quem responde certo mais rápido ganha mais.")}
+        ${op("prepos", "Pré-teste e pós-teste", "Mede o ganho de aprendizado.")}
+        ${op("extra", "Tempo extra para quem tem dificuldade", "Dá mais segundos a quem precisar.")}
+        <div class="fd"><label for="f-onde">Onde a turma responde</label><select class="in" id="f-onde" data-aj-sel="onde"><option value="aparelho" ${a.aj.onde === "aparelho" ? "selected" : ""}>Só neste aparelho</option><option value="nuvem" ${a.aj.onde === "nuvem" ? "selected" : ""}>Na nuvem (conta do EFClaudian)</option></select></div>
+        <div class="fd"><label for="f-eq">Equipes</label><select class="in" id="f-eq" data-aj-sel="equipe"><option value="nao" ${a.aj.equipe === "nao" ? "selected" : ""}>Individual</option><option value="um" ${a.aj.equipe === "um" ? "selected" : ""}>Equipe num aparelho</option><option value="cada" ${a.aj.equipe === "cada" ? "selected" : ""}>Cada um na sua equipe</option></select></div>
+      </div></details></div>
+    <aside class="k sum" aria-label="Roteiro"><div class="hd"><span class="mut sm" style="font-weight:700">O que vai acontecer</span><b>Cerca de ${r.min} minuto${r.min > 1 ? "s" : ""}, em ${r.passos.length} etapa${r.passos.length === 1 ? "" : "s"}</b></div>
+      <div class="tl">${r.passos.map(p => `<div class="tli"><span class="nd ${p.e ? "e" : ""}">${p.n}</span><span class="tx" title="${esc(p.txt)}">${esc(p.txt)}</span><span class="mut sm">${fmtS(p.s)}</span></div>`).join("")}<div class="tli"><span class="nd" style="background:var(--ok-soft);color:var(--ok);border-color:transparent">${ic("check", 'style="width:14px;height:14px"')}</span><span class="tx">Resultado e lista de presença</span><span class="mut sm"></span></div></div>
+      <button class="b p" data-act="abrirsala">${ic("play")}Abrir sala e gerar chave</button>
+      <button class="b g" data-act="preparar">Só guardar a sessão para depois</button>
+      <span class="mut sm" style="text-align:center">A sala abre com chave de 6 números, QR e telão em outra janela.</span></aside>`;
+  // o interruptor "tempo fecha" é o inverso do campo guardado
+  const c = $("[data-aj='tempo_fecha']"); if (c) c.checked = a.aj.tempo === "fecha";
+}
+function preparar() {
+  const a = UI.apl, t = treino(a.id); if (!t) return;
+  S.sessoes.push({id: uid(), treinoId: t.id, preset: a.preset, setores: a.setores.slice(), instrutor: a.instrutor.trim(), local: a.local.trim(), horas: a.horas, aj: Object.assign({}, a.aj), estado: "preparada", criada: new Date().toISOString()});
+  if (a.instrutor.trim() && !S.cfg.instrutor) S.cfg.instrutor = a.instrutor.trim();
+  salvar(); UI.apl = null; aviso("Sessão preparada. Ela aparece no Início."); ir("#/inicio");
+}
+
+/* ---------- ajustes ---------- */
+function vAjustes() {
+  topo("Ajustes", `Sabiá v${VERSAO}`);
+  const c = S.cfg; $("#app").className = "body page";
+  $("#app").innerHTML = `<div class="cols">
+    <section class="k"><h3 style="margin-bottom:10px">Identificação</h3><div style="display:grid;gap:10px">
+      <div class="fd"><label for="c-ins">Seu nome (instrutor)</label><input class="in" id="c-ins" data-c="instrutor" value="${esc(c.instrutor)}" autocomplete="name"></div>
+      <div class="fd"><label for="c-emp">Empresa ou unidade</label><input class="in" id="c-emp" data-c="empresa" value="${esc(c.empresa)}"></div>
+      <div class="fd"><label for="c-loc">Local padrão</label><input class="in" id="c-loc" data-c="local" value="${esc(c.local)}"></div></div></section>
+    <section class="k"><h3 style="margin-bottom:10px">Aparência</h3><div class="seg" role="group" aria-label="Tema" style="display:flex">${[["auto", "Automático"], ["claro", "Claro"], ["escuro", "Escuro"]].map(([k, n]) => `<button style="flex:1" data-act="tema" data-v="${k}" aria-pressed="${c.tema === k}">${n}</button>`).join("")}</div>
+      <p class="sm mut" style="margin:10px 0 0">Automático segue o claro ou escuro do aparelho.</p></section>
+    <section class="k"><h3 style="margin-bottom:10px">Setores</h3><div class="chips">${c.setores.map(s => `<span class="sc" style="cursor:default">${esc(s)}<button class="b sm ic g bad" style="min-height:28px;width:28px;border:0" data-act="rmsetor" data-v="${esc(s)}" aria-label="Remover ${esc(s)}">${ic("x", 'style="width:14px;height:14px"')}</button></span>`).join("")}</div>
+      <form data-form="setor" style="display:flex;gap:8px;margin-top:12px"><label class="sr" for="c-set">Novo setor</label><input class="in" id="c-set" placeholder="Novo setor" maxlength="40" required><button class="b s" type="submit">${ic("plus")}Adicionar</button></form></section>
+    <section class="k"><h3 style="margin-bottom:10px">Armazenamento</h3><p class="sm mut" style="margin:0 0 10px">Tudo fica neste aparelho. Exporte para guardar uma cópia ou levar para outro aparelho.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="b" data-act="exptudo">${ic("download")}Exportar tudo</button><button class="b" data-act="impor">${ic("upload")}Importar arquivo</button><button class="b bad" data-act="apagartudo">${ic("trash")}Apagar tudo</button></div></section></div>`;
+}
+
+/* ---------- páginas que chegam depois ---------- */
+const FUTURO = {
+  pessoas: ["Pessoas", "people", "v0.7.0", "Cadastro por setor, histórico de cada pessoa, selos de constância e quem precisa refazer ou reavaliar em 30, 60 ou 90 dias.", "Aqui você vai ver quem precisa de reforço com um toque."],
+  mensagens: ["Mensagens", "chat", "v0.7.0", "Elogios, sugestões, reclamações e perguntas que a turma envia durante a sessão, com resposta e filtro.", "Os comentários da turma chegam aqui."],
+  relatorios: ["Relatórios", "chart", "v0.5.0", "Resumo, mapa da turma, assertividade por pergunta, setores, PDF de registro e lista de presença com carga horária.", "Os resultados de cada sessão ficam aqui."],
+  entrar: ["Entrar na sala", "people", "v0.4.0", "O celular do participante: achar o nome com 3 letras, escolher o boneco, responder e assinar a presença.", "A entrada pelo celular chega na v0.4.0."],
+  conferir: ["Conferir registro", "shield", "v0.5.0", "Digite o código do rodapé do PDF e o Sabiá recalcula para provar que o registro não foi alterado.", "Para auditorias do Global G.A.P., Ecocert e Fair for Life."]
+};
+function vFuturo(v) {
+  const [nome, i, ver, desc, dica] = FUTURO[v];
+  topo(nome, `Chega na ${ver}`); $("#app").className = "body page";
+  $("#app").innerHTML = `<section class="k" style="display:grid;gap:8px;justify-items:start"><span class="chip br">Em construção · ${ver}</span><h2 style="font-size:20px">${esc(dica)}</h2><p class="mut" style="margin:0">${esc(desc)}</p><a class="b" href="#/treinos">${ic("list")}Ir para Treinos</a></section>
+    <section class="k road"><h3 style="margin-bottom:6px">Mapa das versões</h3><ul>
+      <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.1.0</b> · Casca, Início, Treinos e Aplicar</span></li>
+      <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.2.0</b> · Sala ao vivo, chave, QR e telão</span></li>
+      <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.3.0</b> · Editor de perguntas e versões</span></li>
+      <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.4.0</b> · Celular do participante</span></li>
+      <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.5.0</b> · Relatórios, PDF e conferência</span></li>
+      <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.6.0 a v1.0.0</b> · Reforço, pessoas, mensagens e acabamento</span></li></ul></section>`;
+}
+
+/* ---------- diálogo: novo treinamento ---------- */
+function dlgNovo(passo = "menu") {
+  const d = $("#dlg");
+  const fecha = `<button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button>`;
+  if (passo === "menu") d.innerHTML = `<div class="dl"><header><h2>Novo treinamento</h2>${fecha}</header>
+    <button class="opcao" data-act="dlg" data-v="modelos"><span class="pic">${ic("book")}</span><span><b>Modelo pronto</b><span class="d">Perguntas prontas para revisar com o seu material.</span></span></button>
+    <button class="opcao" data-act="dlg" data-v="zero"><span class="pic">${ic("plus")}</span><span><b>Começar do zero</b><span class="d">Só o título e a meta. As perguntas entram no editor (v0.3).</span></span></button>
+    <button class="opcao" data-act="impor"><span class="pic">${ic("upload")}</span><span><b>Importar arquivo</b><span class="d">Treinamento .json exportado do EFCquiz ou do Sabiá.</span></span></button></div>`;
+  else if (passo === "modelos") d.innerHTML = `<div class="dl"><header><button class="b ic g" data-act="dlg" data-v="menu" aria-label="Voltar">${ic("back")}</button><h2>Modelos prontos</h2>${fecha}</header>
+    ${MODELOS.map(m => `<button class="opcao" data-act="usarmodelo" data-id="${m.id}"><span class="pic">${ic("leaf")}</span><span><b>${esc(m.titulo)}</b><span class="d">${m.itens.filter(isQ).length} perguntas · meta ${m.meta}%</span></span></button>`).join("")}
+    <p class="sm mut" style="margin:0">Revise as perguntas com o POP da fazenda antes de aplicar.</p></div>`;
+  else d.innerHTML = `<form class="dl" data-form="zero"><header><button type="button" class="b ic g" data-act="dlg" data-v="menu" aria-label="Voltar">${ic("back")}</button><h2>Começar do zero</h2>${fecha}</header>
+    <div class="fd"><label for="z-t">Título</label><input class="in" id="z-t" maxlength="120" required placeholder="Ex.: Calibração do pHmetro"></div>
+    <div class="fd"><label for="z-m">Meta de acerto (%)</label><input class="in" id="z-m" type="number" min="1" max="100" value="80" required></div>
+    <button class="b p" type="submit">${ic("check")}Criar treinamento</button></form>`;
+  if (!d.open) d.showModal();
+  const f = d.querySelector("input,button.opcao"); if (f) f.focus();
+}
+
+/* ---------- eventos ---------- */
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el) return;
+  const a = el.dataset.act, v = el.dataset.v, id = el.dataset.id;
+  if (a === "novo") dlgNovo("menu");
+  else if (a === "dlg") dlgNovo(v);
+  else if (a === "fechar") $("#dlg").close();
+  else if (a === "usarmodelo") { const m = MODELOS.find(x => x.id === id); if (m) { const t = criarDeModelo(m); $("#dlg").open && $("#dlg").close(); render(); aviso(`"${t.titulo}" criado`); } }
+  else if (a === "aba") { UI.aba = v; render(); }
+  else if (a === "vista") { UI.vista = v; render(); }
+  else if (a === "filtro") { UI.filtro = !UI.filtro; render(); }
+  else if (a === "excluir") excluir(id);
+  else if (a === "duplicar") duplicar(id);
+  else if (a === "exportar") { const t = treino(id); if (t) baixar(slug(t.titulo) + ".json", {sabia: "treinamento", versao: VERSAO, titulo: t.titulo, meta: t.meta, descricao: t.descricao, itens: t.itens}); }
+  else if (a === "preset") { const p = PRESETS[v]; UI.apl.preset = v; Object.assign(UI.apl.aj, AJ_PADRAO, p.aj); render(); }
+  else if (a === "setor") { const l = UI.apl.setores, i = l.indexOf(v); if (i < 0) l.push(v); else l.splice(i, 1); render(); }
+  else if (a === "preparar") preparar();
+  else if (a === "tema") { S.cfg.tema = v; aplicarTema(); salvar(); render(); }
+  else if (a === "rmsetor") { S.cfg.setores = S.cfg.setores.filter(s => s !== v); salvar(); render(); }
+  else if (a === "impor") { $("#arq").value = ""; $("#arq").click(); }
+  else if (a === "exptudo") baixar("sabia-dados-" + new Date().toISOString().slice(0, 10) + ".json", {sabia: "tudo", versao: VERSAO, dados: S});
+  else if (a === "apagartudo") {
+    const d = $("#dlg"); d.innerHTML = `<div class="dl"><header><h2>Apagar tudo?</h2><button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header><p style="margin:0">Treinamentos, sessões e ajustes deste aparelho serão apagados. Exporte antes se quiser guardar uma cópia.</p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="b" data-act="fechar">Cancelar</button><button class="b p" data-act="apagarok">Apagar tudo</button></div></div>`; d.showModal();
+  }
+  else if (a === "apagarok") { S = novoEstado(); salvar(); aplicarTema(); $("#dlg").close(); ir("#/inicio"); aviso("Dados apagados"); }
+});
+document.addEventListener("input", e => {
+  const t = e.target;
+  if (t.id === "busca") { UI.q = t.value; const p = t.selectionStart; render(); const b = $("#busca"); if (b) { b.focus(); b.setSelectionRange(p, p); } }
+  else if (t.dataset.f && UI.apl) UI.apl[t.dataset.f] = t.value;
+  else if (t.dataset.c) { S.cfg[t.dataset.c] = t.value; salvar(); }
+});
+document.addEventListener("change", e => {
+  const t = e.target;
+  if (t.id === "ord") { UI.ord = t.value; render(); }
+  else if (t.dataset.f && UI.apl) UI.apl[t.dataset.f] = t.value;
+  else if (t.dataset.aj && UI.apl) {
+    const k = t.dataset.aj;
+    if (k === "tempo_fecha") UI.apl.aj.tempo = t.checked ? "fecha" : "livre"; else UI.apl.aj[k] = t.checked;
+    const txt = $("#ajTxt"); const x = UI.apl.aj, tr = treino(UI.apl.id);
+    if (txt && tr) txt.textContent = [x.teste ? "sessão de teste" : "sessão real", `meta ${tr.meta}%`, x.tempo === "fecha" ? "tempo fecha a pergunta" : "sem bloqueio de tempo", x.ranking ? "ranking ligado" : "sem ranking", x.prepos ? "com pré-teste" : "sem pré-teste"].join(" · ");
+  }
+  else if (t.dataset.ajSel && UI.apl) UI.apl.aj[t.dataset.ajSel] = t.value;
+  else if (t.id === "arq" && t.files[0]) { importarArquivo(t.files[0]); const d = $("#dlg"); if (d.open) d.close(); }
+});
+document.addEventListener("submit", e => {
+  const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault();
+  if (f.dataset.form === "zero") { const t = criarDoZero($("#z-t").value, Math.min(100, Math.max(1, Math.round(Number($("#z-m").value) || 80)))); $("#dlg").close(); ir("#/treinos"); render(); aviso(`"${t.titulo}" criado como rascunho`); }
+  else if (f.dataset.form === "setor") { const i = $("#c-set"), n = i.value.trim(); if (n && !S.cfg.setores.includes(n)) { S.cfg.setores.push(n); salvar(); render(); } }
+});
+
+/*__LIVE_JS__*/
+function render() {
+  if (!S) return;
+  const r = rota(); menu(r.v);
+  document.body.classList.toggle("modo-telao", r.v === "telao");
+  if (r.v === "inicio") vInicio();
+  else if (r.v === "treinos") vTreinos();
+  else if (r.v === "aplicar") vAplicar(r.id);
+  else if (r.v === "sala") vSala(r.id);
+  else if (r.v === "telao") vTelao(r.id);
+  else if (r.v === "ajustes") vAjustes();
+  else if (FUTURO[r.v]) vFuturo(r.v);
+  else { location.replace("#/inicio"); return; }
+  document.title = "Sabiá" + (r.v === "inicio" ? "" : " · " + (($("#tb h1") || {}).textContent || ""));
+}
+let ultimaRota = "";
+window.addEventListener("hashchange", () => { const r = rota(); if (r.v !== ultimaRota) { ultimaRota = r.v; const m = $("#app"); render(); m && m.scrollTo && m.scrollTo(0, 0); } else render(); });
+(async function init() {
+  await carregar(); aplicarTema();
+  if (new URLSearchParams(location.search).get("demo") === "1" && !S.treinamentos.length) { MODELOS.forEach(m => criarDeModelo(m)); }
+  ultimaRota = rota().v; render();
+  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(() => {});
+})();
+</script>
+</body>
+</html>

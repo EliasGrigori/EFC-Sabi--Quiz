@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const http=require('http'),fs=require('fs'),path=require('path');
+const D=process.argv[2];
+const srv=http.createServer((q,r)=>{let f=path.join(D,q.url.split('?')[0]);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,b)=>{if(e){r.writeHead(404);r.end();return}const t={'.html':'text/html','.js':'text/javascript','.png':'image/png','.webmanifest':'application/manifest+json'}[path.extname(f)]||'application/octet-stream';r.writeHead(200,{'content-type':t});r.end(b)})});
+(async()=>{await new Promise(r=>srv.listen(0,r));const U='http://localhost:'+srv.address().port+'/';
+const b=await chromium.launch();const c=await b.newContext();const p=await c.newPage();
+await p.goto(U+'?demo=1');await p.waitForSelector('.coach');
+await p.evaluate(()=>navigator.serviceWorker.ready);await p.waitForTimeout(800);
+await c.setOffline(true);await p.reload();await p.waitForSelector('.coach',{timeout:8000});
+console.log('offline reload OK, treinamentos:',await p.locator('.kp .v').first().textContent());
+const m=await p.evaluate(async()=>{const r=await fetch('manifest.webmanifest');return (await r.json()).name});console.log('manifest',m);
+await b.close();srv.close()})().catch(e=>{console.log('FALHA',e.message);process.exit(1)});
