@@ -7,6 +7,7 @@ function tvSalvar() { try { localStorage.setItem("sabia-telao-modo", TV.modo); }
 const tvAtalhos = "Espaço ou seta para a direita avança · A sai da apresentação";
 function tvBarra() {
   return `<div class="tvbar" id="tvbar" role="toolbar" aria-label="Opções do telão">
+    <button class="b" data-act="tvmat" hidden title="Abrir o capítulo do material desta explicação (M)"><span>Material</span><kbd>M</kbd></button>
     <button class="b" data-act="tvfull" aria-pressed="false" title="Tela cheia (F)">${ic("screen")}<span>Tela cheia</span><kbd>F</kbd></button>
     <button class="b" data-act="tvmodo" data-v="projetor" aria-pressed="false" title="Fundo claro e contraste forte, para projetor fraco (P)"><span>Projetor</span><kbd>P</kbd></button>
     <button class="b" data-act="tvmodo" data-v="apresentacao" aria-pressed="false" title="Tela cheia, sem mouse e avanço pelo teclado (A)"><span>Apresentação</span><kbd>A</kbd></button></div>
@@ -53,7 +54,7 @@ document.addEventListener("fullscreenchange", () => {
 });
 ["pointermove", "pointerdown", "touchstart"].forEach(ev => document.addEventListener(ev, () => { if (rota().v === "telao") tvMostrar(); }, {passive: true}));
 document.addEventListener("keydown", e => {
-  if (rota().v !== "telao" || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (rota().v !== "telao" || e.ctrlKey || e.metaKey || e.altKey || document.querySelector(".matov")) return;
   const k = e.key, tg = e.target && e.target.tagName; if (tg === "INPUT" || tg === "TEXTAREA" || tg === "SELECT") return;
   if (k === "f" || k === "F") { e.preventDefault(); tvFull(); tvMostrar(); }
   else if (k === "p" || k === "P") { e.preventDefault(); tvModo("projetor"); }
@@ -191,11 +192,11 @@ function pnComentarios(t, D) {
 }
 function pnCorpo(t) {
   const D = pnDados(t);
-  return PN.aba === "versoes" ? pnVersoes(t, D) : PN.aba === "coment" ? pnComentarios(t, D) : pnGeral(t, D);
+  return PN.aba === "versoes" ? pnVersoes(t, D) : PN.aba === "coment" ? pnComentarios(t, D) : PN.aba === "material" ? pnMaterial(t) : pnGeral(t, D);
 }
 function dlgPainel() {
   const t = treino(UI.ed && UI.ed.id); if (!t) return;
-  const d = $("#dlg"), ab = [["geral", "Visão geral"], ["versoes", "Acerto por versão"], ["coment", "Comentários"]];
+  const d = $("#dlg"), ab = [["geral", "Visão geral"], ["versoes", "Acerto por versão"], ["coment", "Comentários"], ["material", "Material"]];
   d.innerHTML = `<div class="dl pn"><header><h2>Painel do treinamento</h2><button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header>
     <p class="sm mut" style="margin:0">${esc(t.titulo)}</p>
     <div class="chips pn-t" role="group" aria-label="Seções do painel">${ab.map(([k, n]) => `<button type="button" class="sc" data-act="pntab" data-v="${k}" aria-pressed="${PN.aba === k}">${n}</button>`).join("")}</div>

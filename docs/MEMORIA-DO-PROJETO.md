@@ -36,7 +36,8 @@ mesmas funções, cara nova. Versões recomeçam do zero (v0.1.0 até v1.0.0).
 | v1.0.0 | publicada em 05/11/2026 (commit e4a0c99, junto com v0.6.0, v0.7.0 e v0.8.0 num commit só, porque o código-fonte intermediário não foi guardado) | Banco de perguntas, criar com IA (texto pronto + leitura do JSON), pergunta de teste no começo da sessão, voz gravada no telão, ouvir a pergunta no celular, carimbo de tempo do servidor do Firebase, regras do Firebase mais firmes |
 | v1.0.1 | publicada em 05/11/2026 (commit ced5447) | Ícone novo do app (desenho do Elias com contornos reforçados e fundo petróleo em relevo): icon-192, icon-512, icon-maskable-512 e apple-touch-icon. Só o ícone mudou |
 | v1.1.0 | publicada em 05/11/2026 (commit ca59807) | Telão com tela cheia, modo projetor e modo apresentação; folha de reforço em PDF; painel do treinamento (gaveta no editor); logotipo de dentro do app trocado pelo desenho novo; fundo do ícone no verde do app |
-| v1.2.0 | pronta, aguardando aprovação | Meta em pontos (ou em %) no editor: 1.000 pontos por acerto, sem o bônus de rapidez; conversão ao trocar o tipo; versões, relatório, PDF, telão, lista, exportar e importar entendem a meta em pontos |
+| v1.2.0 | publicada em 05/11/2026 (commit e18f189) | Meta em pontos (ou em %) no editor: 1.000 pontos por acerto, sem o bônus de rapidez; conversão ao trocar o tipo; versões, relatório, PDF, telão, lista, exportar e importar entendem a meta em pontos |
+| v1.3.0 | pronta, aguardando aprovação | Material de apoio por treinamento (PPTX de preferência, PDF ou HTML, guardado só no aparelho), capítulos ligados às explicações, aba Material no painel, botões "Mostrar no telão" e "Ver aqui" na sala, tecla M no telão |
 
 ## Paridade com o EFCquiz (79 funções)
 v0.1.0: 10 prontas e 11 parciais. v0.2.0 completa as opções de Aplicar, o controle ao vivo e o telão. v0.3.0 entrega o editor e as versões. v0.4.0 entrega o celular do participante. v0.5.0 entrega relatórios, PDFs e conferência. v0.6.0 entrega reforço, reavaliação, pré e pós-teste e rever no celular v0.7.0 entrega pessoas, mensagens, comentário no celular e desafio entre setores (detalhe em features.csv: 67 prontas, 11 parciais, 1 faltando de 79 (v0.8.0 entrega perfis, porta de entrada, conta do EFClaudian, Ajustes completo e observações; v1.0.0 entrega banco de perguntas, criar com IA, pergunta de teste, voz, ouvir, carimbo e regras do Firebase mais firmes)).
@@ -101,7 +102,7 @@ Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 tre
 - `window.EFC_API`: versao(), perfil(), conta(), abrir(rota).
 - Ajustes: `AJ_IND` (índice de 10 seções); `S.cfg.telaoPadrao` e `somPadrao` alimentam `AJ_PADRAO`; `S.cfg.obs`. Observações do treinamento em `t.obs` [{id, txt, por, em}], fora do versionamento.
 - Os testes (teste-integra.js) usam um SDK de mentira injetado por rota; só a conta real prova o login.
-- `dist/sw.js` continua manual: cache `sabia-1.2.0` (subir a cada versão).
+- `dist/sw.js` continua manual: cache `sabia-1.3.0` (subir a cada versão).
 
 ## v1.0.0 · acabamento (src/v10.js e src/v10.css; prefixos `bn-`, `ia-`, `vz-`, `selo`, `ouv`, `tvoz`)
 - **Banco de perguntas**: `S.banco` [{bid, de, quando, ...pergunta sem áudio}], máximo 500, sem repetir (formato + enunciado). Diálogo `dlgBanco` com busca (sem acento), filtro por formato, Inserir, Excluir com Desfazer dentro do diálogo (o aviso flutuante fica escondido atrás do diálogo modal, por isso não serve). Vai no "Exportar tudo".
@@ -146,4 +147,15 @@ Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 tre
 - Mostram "N pontos": lista de treinamentos, editor e resumo, telão (fatos e pódio), relatório (texto e situação), PDF de registro (campo "Meta de acerto" e "Como a meta conta"), comparação de versões, exportar e importar. Reforço e Pessoas continuam mostrando o % equivalente.
 - Versões guardam `metaTipo`; restaurar traz o tipo de volta e Desfazer devolve o anterior.
 - Testes novos: `teste-v12.js` (33 conferências). Suítes antigas seguem verdes.
-- Ficou para a v1.3.0: material com capítulos (último "não" da lista) e a aba de material do painel.
+- Material com capítulos e a aba de material do painel entraram na v1.3.0.
+
+
+## v1.3.0 · material com capítulos (src/v13.js e src/v13.css; prefixos `mat`, `mt-`, `matov`)
+- Formato pedido pelo Elias: "de preferência PPTX, mas pode ser um PDF". Aceita PPTX, PDF e HTML, até 25 MB, validados pela extensão e pelos primeiros bytes (PK, %PDF-).
+- Armazenamento: o arquivo fica no IndexedDB à parte "sabia-material" (store "arq", chave = id do treinamento, valor {blob, nome, tipo}). No estado vai só `t.material = {nome, tipo, bytes, caps:[{t, p}], em}`. Não entra em exportar treinamento, "Exportar tudo", versões nem Firebase. `duplicar` copia o arquivo (`matCopiar`). `matLimpaOrfaos` (4 s depois de abrir) apaga chaves sem treinamento.
+- Explicação ligada: `it.cap` = índice em `t.material.caps` (só em itens `explicacao`). `validaTreino` descarta `cap` ao importar. Trocar/remover o arquivo apaga todos os `cap`; apagar um capítulo do PDF reajusta os índices; adicionar capítulo reordena por página e remapeia os `cap`.
+- PPTX: leitor de zip próprio (EOCD + diretório central, `DecompressionStream("deflate-raw")`), ordem dos slides por `presentation.xml` + rels; por slide: título (placeholder title/ctrTitle), parágrafos com nível, tabelas como "a  |  b", imagens `p:pic` (blob URLs, soltas ao fechar). Capítulo = slide ("Slide N" sem título usa a primeira linha). O visor mostra texto e imagens, não o desenho exato.
+- PDF: iframe de blob com `#page=N` (leitor do navegador) e link "Abrir em outra aba". HTML: iframe `sandbox=""` com `srcdoc` (sem scripts, sem same-origin).
+- Sala: `snap(s)` leva `mat` ({tid, nome, tipo, caps, pg}) e `item.cap` só para o telão (BroadcastChannel); `pubDe` não leva, então nada disso vai ao Firebase. Controle: `matBtnCtl(sn)` ("Mostrar no telão" envia `{t:"cmd", a:"material", id, cap}`; "Ver aqui" abre `#dlg .dl.mt`). Telão: botão `tvmat` na barra (só na explicação ligada), tecla M, overlay `.matov` com o tema do telão (padrão/claro/projetor); o handler de teclas do v11 ignora tudo enquanto `.matov` existe; o do material usa captura para não deixar Espaço/Enter avançarem a sala. `matAtualizaTelao()` roda em `pintarTelao()` e fecha o overlay ao sair da explicação.
+- Teste: Playwright com o serviço de bloqueio de service worker injeta script em iframes sandbox e gera um "erro" falso (`sandboxed and lacks allow-same-origin`); os testes o ignoram (sem esse bloqueio não aparece).
+- Testes novos: `teste-v13.js` (65 conferências), com arquivos de exemplo gerados por python-pptx (`fx13/`: aula.pptx, manual.pdf, doc.html e arquivos inválidos). O leitor de PDF do Chromium sem tela não renderiza, então o PDF só é conferido na estrutura (iframe, #page=N).

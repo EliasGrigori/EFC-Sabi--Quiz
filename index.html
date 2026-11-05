@@ -832,6 +832,49 @@ body.perfil-col [data-act=novo],body.perfil-col [data-act=excluir],body.perfil-c
 .mt-ln>*{min-width:0}
 #et-mta.warn{color:var(--bad,#B3302A)}
 
+/* ===== v1.3.0 · material com capítulos ===== */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.tvbar [hidden]{display:none}
+.mt-ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-radius:12px;background:var(--sunk);border:1px solid var(--line)}
+.mt-ctl>span{flex:1 1 160px;min-width:0;overflow-wrap:anywhere}
+.mt-dica{margin:18px 0 0!important;font-size:20px!important;color:var(--tel-ink2);display:inline-block}
+.mt-up{display:inline-flex;width:max-content;cursor:pointer}
+.mt-arq{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.mt-arq b{overflow-wrap:anywhere;min-width:0}
+.mt-acoes{display:flex;gap:8px;flex-wrap:wrap}
+label.b.sm{cursor:pointer}
+.mt-caps{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-height:46dvh;overflow:auto}
+.mt-caps li{display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.mt-n{min-width:24px;font:700 13px var(--f-mono);color:var(--ink2)}
+.mt-ct{flex:1;min-width:0;overflow-wrap:anywhere}
+.mt-add{display:grid;grid-template-columns:1fr 90px auto;gap:8px;align-items:end}
+.mt-add>*{min-width:0}
+#mt-st.warn{color:var(--bad,#B3261E);font-weight:700}
+/* visor */
+#dlg:has(.dl.mt){width:min(980px,96vw);max-width:96vw;height:min(88dvh,820px);max-height:92dvh}
+.dl.mt{display:grid;grid-template-rows:auto auto 1fr;gap:10px;height:100%;min-height:0}
+.mt-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mt-bar .mt-t{flex:1 1 200px;min-width:0;overflow-wrap:anywhere;font-family:var(--f-disp)}
+.mt-nav{display:flex;gap:6px}.mt-nav[hidden]{display:none}
+.mt-c{min-height:0;overflow:auto;display:grid;gap:10px;align-content:start;border-radius:12px}
+.mt-fr{width:100%;height:100%;min-height:50dvh;border:1px solid var(--line);border-radius:12px;background:#fff}
+.mt-sl{display:grid;gap:12px;padding:10px 16px}
+.mt-sl h2{font-size:clamp(24px,3.2vw,36px);margin:0}
+.mt-sl ul{margin:0;padding-left:26px;display:grid;gap:8px;font-size:clamp(17px,2vw,22px)}
+.mt-im{display:flex;gap:12px;flex-wrap:wrap}.mt-im img{max-width:100%;max-height:46dvh;border-radius:10px;border:1px solid var(--line);object-fit:contain}
+.mt-av{margin:0}.mt-er{padding:20px;margin:0}
+.matov{--m-bg:#0A2C2B;--m-ink:#F2F7F6;--m-ink2:#A6C3C0;--m-line:#22524F;position:fixed;inset:0;z-index:60;display:grid;grid-template-rows:auto 1fr;gap:12px;padding:calc(16px + env(safe-area-inset-top,0px)) calc(20px + env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) calc(20px + env(safe-area-inset-left,0px));background:var(--m-bg);color:var(--m-ink)}
+.matov.claro{--m-bg:#F3F7F6;--m-ink:#122120;--m-ink2:#4A5C5B;--m-line:#CBD8D6}
+.matov.proj{--m-bg:#FFFFFF;--m-ink:#000000;--m-ink2:#1E2D2C;--m-line:#6F8785}
+.matov .b{background:transparent;color:var(--m-ink);border-color:var(--m-line);box-shadow:none}
+.matov .b:disabled{opacity:.4}
+.matov .mut{color:var(--m-ink2)}
+.matov .mt-im img{border-color:var(--m-line)}
+.matov .mt-c:focus{outline:none}
+.matov .mt-c{min-height:0}
+.matov .mt-sl h2{font-size:clamp(30px,4.4vw,58px)}.matov .mt-sl ul{font-size:clamp(22px,3vw,36px)}
+.matov .mt-im img{max-height:52dvh}
+@media (max-width:520px){.mt-add{grid-template-columns:1fr 80px}.mt-add button{grid-column:1/-1}#dlg:has(.dl.mt){width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border-radius:0}}
+
 </style>
 </head>
 <body>
@@ -894,7 +937,7 @@ body.perfil-col [data-act=novo],body.perfil-col [data-act=excluir],body.perfil-c
 </script>
 <script>
 "use strict";
-const VERSAO = "1.2.0";
+const VERSAO = "1.3.0";
 const MODELOS = [{"id":"m-epi","titulo":"Equipamentos de proteção no trabalho","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Para que serve o equipamento de proteção e quando usar","texto":""},{"tipo":"multipla","enunciado":"Quando o equipamento de proteção deve ser usado?","alternativas":["Só quando o responsável está olhando","Durante toda a atividade que exige o equipamento","Só nos dias de muito calor","Só no começo do turno"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"A proteção vale durante toda a atividade. Tirar no meio do serviço deixa a pessoa exposta."},{"tipo":"vf","enunciado":"Pode emprestar o seu equipamento de proteção de uso individual a um colega.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"O equipamento é de uso pessoal. O colega deve pedir o dele ao responsável."},{"tipo":"multipla","enunciado":"O equipamento rasgou ou quebrou durante o trabalho. O que fazer?","alternativas":["Continuar e trocar no fim do mês","Avisar o responsável e trocar antes de continuar","Remendar com fita","Trabalhar sem ele"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Equipamento danificado não protege. Avise e troque antes de voltar à atividade."},{"tipo":"vf","enunciado":"O equipamento de proteção precisa ser do tamanho certo para quem usa.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Equipamento folgado ou apertado atrapalha e protege mal."},{"tipo":"ordenar","enunciado":"Coloque na ordem o cuidado com o equipamento depois do uso.","alternativas":["Limpar conforme a orientação","Conferir se há rasgo ou defeito","Guardar em local limpo e seco"],"tempo":45,"uso":"avaliacao","porque":"Limpar, conferir e guardar: assim ele está pronto e seguro para o próximo uso."},{"tipo":"multipla","enunciado":"Onde guardar o equipamento de proteção?","alternativas":["Em local limpo, seco e conhecido por todos","No chão, perto do trabalho","Dentro do carro","Onde der"],"correta":0,"tempo":20,"uso":"gincana","porque":"Guardado no lugar certo, o equipamento dura mais e é fácil de achar."}]},{"id":"m-hig","titulo":"Higiene das mãos e pessoal","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Higiene pessoal protege quem trabalha e quem é atendido","texto":""},{"tipo":"multipla","enunciado":"Você acordou com febre ou diarreia. O que fazer antes de começar o dia?","alternativas":["Trabalhar normalmente","Avisar o responsável antes de entrar na área","Tomar um remédio e entrar","Só usar máscara"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Doença passa de pessoa para pessoa e para os alimentos. O responsável decide a sua atividade antes de você entrar."},{"tipo":"vf","enunciado":"Corte na mão deve ficar coberto com curativo e luva.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Curativo e luva impedem contato do ferimento com o que a pessoa toca."},{"tipo":"multipla","enunciado":"Onde se pode comer e beber durante o turno?","alternativas":["No meio da atividade","Só na área definida para isso","Dentro da área de trabalho","Em qualquer lugar"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Comida e bebida só na área definida, longe do trabalho e do material."},{"tipo":"vf","enunciado":"Unha comprida ou com esmalte é permitida na área de manuseio.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Unha comprida acumula sujeira e o esmalte pode soltar."},{"tipo":"ordenar","enunciado":"Coloque na ordem a entrada na área de manuseio.","alternativas":["Prender o cabelo e colocar a touca","Lavar as mãos","Calçar as luvas, se a atividade pedir"],"tempo":45,"uso":"avaliacao","porque":"Touca primeiro, depois mãos lavadas e por último as luvas: assim as mãos limpas não tocam o cabelo."},{"tipo":"vf","enunciado":"Brinco, anel e pulseira devem ser retirados antes de entrar.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":15,"uso":"gincana","porque":"Adornos acumulam sujeira e podem cair."}]},{"id":"m-inc","titulo":"Como comunicar um problema ou acidente","meta":75,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Avisar logo evita que o problema cresça","texto":""},{"tipo":"multipla","enunciado":"Quando avisar o responsável sobre um problema ou acidente?","alternativas":["Só no fim da semana","O quanto antes","Só se alguém perguntar","Nunca, se for pequeno"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Quanto antes o responsável souber, mais cedo ele resolve e evita que se repita."},{"tipo":"multipla","enunciado":"O que não pode faltar no aviso?","alternativas":["Só o nome de quem viu","O que aconteceu, onde e quando","Nada, o responsável descobre","Só o horário"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Sem saber o que, onde e quando, fica difícil achar a causa e resolver."},{"tipo":"vf","enunciado":"Quase acidente, que não machucou ninguém, também deve ser avisado.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"O quase acidente mostra o risco antes que alguém se machuque."},{"tipo":"vf","enunciado":"Pode mexer no local do acidente antes de o responsável chegar, para arrumar tudo.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Mexer apaga as pistas do que aconteceu. Só mexa se for preciso para socorrer alguém ou evitar outro risco."},{"tipo":"ordenar","enunciado":"Coloque as etapas na ordem certa.","alternativas":["Garantir a segurança de todos","Avisar o responsável","Registrar o que aconteceu","Acompanhar a solução"],"tempo":60,"uso":"avaliacao","porque":"Primeiro a segurança, depois o aviso, o registro e o acompanhamento: cada etapa depende da anterior."},{"tipo":"multipla","enunciado":"Quem deve avisar um problema?","alternativas":["Só o chefe","Qualquer pessoa que perceber","Só quem se machucou","Só quem está de plantão"],"correta":1,"tempo":20,"uso":"gincana","porque":"Quem percebe primeiro tem o dever de avisar. Todos ajudam a evitar o problema."}]}];
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -1003,7 +1046,7 @@ function duplicar(id) {
   const t = treino(id); if (!t) return;
   const c = JSON.parse(JSON.stringify(t)); c.id = uid(); c.titulo = t.titulo + " (cópia)"; c.atualizado = new Date().toISOString(); c.versao = 0;
   c.versoes = [{n: 0, nota: "Cópia de " + t.titulo, quando: c.atualizado}];
-  S.treinamentos.unshift(c); salvar(); render(); aviso("Cópia criada");
+  S.treinamentos.unshift(c); if (c.material) matCopiar(t.id, c); salvar(); render(); aviso("Cópia criada");
 }
 function baixar(nome, obj) {
   const b = new Blob([JSON.stringify(obj, null, 2)], {type: "application/json"});
@@ -1462,7 +1505,7 @@ function pintaCentro() {
       <button class="b ic g" data-act="edup" aria-label="Mover para cima" title="Mover para cima" ${i === 0 ? "disabled" : ""}>${ic("up")}</button><button class="b ic g" data-act="eddown" aria-label="Mover para baixo" title="Mover para baixo" ${i === t.itens.length - 1 ? "disabled" : ""}>${ic("down")}</button>
       <button class="b ic g" data-act="eddup" aria-label="Duplicar pergunta" title="Duplicar">${ic("copy")}</button><button class="b ic g" data-act="bnguardar" aria-label="Guardar no banco de perguntas" title="Guardar no banco">${ic("book")}</button><button class="b ic g bad" data-act="eddel" aria-label="Excluir pergunta" title="Excluir">${ic("trash")}</button></div>
     <div class="seg" role="group" aria-label="Formato">${["multipla", "vf", "ordenar", "explicacao"].map(k => `<button type="button" data-act="edtipo" data-v="${k}" aria-pressed="${it.tipo === k}">${TIPOS_CURTO[k]}</button>`).join("")}</div>
-    <div class="avs" id="edAv"></div>${corpo}${vozHtml(it)}</section>`;
+    <div class="avs" id="edAv"></div>${corpo}${vozHtml(it)}${capHtml(t, it)}</section>`;
   pintaAvisos();
 }
 function pintaAvisos() {
@@ -1559,7 +1602,7 @@ document.addEventListener("change", e => {
   const x = e.target; if (rota().v !== "editar" || !UI.ed || !x.dataset.e) return;
   const t = treino(UI.ed.id), it = t && t.itens[UI.ed.sel]; if (!it) return;
   if (x.type === "radio") { editou(t); it.correta = Number(x.value); }
-  else if (x.tagName === "SELECT") { editou(t); it[x.dataset.e] = x.dataset.e === "tempo" ? Number(x.value) : x.value; if (x.dataset.e === "uso") pintaCentro(); }
+  else if (x.tagName === "SELECT") { editou(t); if (x.dataset.e === "cap") { if (x.value === "") delete it.cap; else it.cap = Number(x.value); } else it[x.dataset.e] = x.dataset.e === "tempo" ? Number(x.value) : x.value; if (x.dataset.e === "uso") pintaCentro(); }
   else return;
   pintaTopo(); pintaLista(); pintaAvisos(); pintaPrev();
 });
@@ -2289,14 +2332,14 @@ function snap(s) {
   const revela = f.etapa === "resultado";
   let item = null, dist = null, resp = 0;
   if (it) {
-    item = {tipo: it.tipo, enunciado: it.enunciado, texto: it.texto || "", alts: it.alternativas || [], ordem: it.tipo === "ordenar" ? embaralhado(it.alternativas.length, f.idx) : null, correta: revela ? it.correta : null, porque: revela ? (it.porque || "") : "", ensaio: it.uso === "ensaio", voz: audioOk(it.audio) ? it.audio : ""};
+    item = {tipo: it.tipo, enunciado: it.enunciado, texto: it.texto || "", alts: it.alternativas || [], ordem: it.tipo === "ordenar" ? embaralhado(it.alternativas.length, f.idx) : null, correta: revela ? it.correta : null, porque: revela ? (it.porque || "") : "", ensaio: it.uso === "ensaio", voz: audioOk(it.audio) ? it.audio : "", cap: Number.isInteger(it.cap) ? it.cap : null};
     if (ehPergunta(it)) {
       const rs = s.part.map(p => (s.resp[p.id] || {})[f.idx]).filter(Boolean); resp = rs.length;
       if (revela) dist = it.tipo === "ordenar" ? {acertos: rs.filter(r => r.ok).length, total: rs.length} : it.alternativas.map((_, k) => rs.filter(r => r.r === k).length);
     }
   }
   return {id: s.id, chave: s.chave, titulo: s.titulo, instrutor: s.instrutor, meta: s.meta, metaTxt: metaTxtS(s), mom: s.mom || "", tela: s.aj.telao, som: s.aj.som, ranking: s.aj.ranking, entrada: s.entrada,
-    fase: f, min: Math.max(1, Math.round(s.itens.reduce((a, x) => a + (ehPergunta(x) ? (x.tempo || 20) + 8 : 120), 0) / 60)), nPart: s.part.length, part: s.part.slice(-60).map(p => ({n: p.nome, c: p.cor})), item, numPerg, totalPerg, nPerg, resp, dist, url: linkEntrar(s),
+    mat: matSnap(s), fase: f, min: Math.max(1, Math.round(s.itens.reduce((a, x) => a + (ehPergunta(x) ? (x.tempo || 20) + 8 : 120), 0) / 60)), nPart: s.part.length, part: s.part.slice(-60).map(p => ({n: p.nome, c: p.cor})), item, numPerg, totalPerg, nPerg, resp, dist, url: linkEntrar(s),
     resumo: f.etapa === "podio" ? {porPerg: s.itens.map((x, i) => [x, i]).filter(([x]) => vale(x)).map(([, i], k) => ({n: k + 1, pct: s.part.length ? Math.round(100 * s.part.filter(p => ((s.resp[p.id] || {})[i] || {}).ok).length / s.part.length) : 0})), pct: c.pct, efic: c.efic, reforco: c.reforco, metaOk: c.metaOk, nq: c.nq, top: c.ranking.slice(0, 10).map(p => ({n: p.nome, c: p.cor, ac: p.ac, pts: p.pts}))} : null};
 }
 function publicar(s, vazioId) {
@@ -2334,7 +2377,7 @@ function telaoHTML(sn) {
         <div class="facts"><div><b>${sn.nPerg}</b><span>perguntas valendo</span></div><div><b>${sn.min} min</b><span>de duração</span></div><div><b>${sn.metaTxt || sn.meta + "%"}</b><span>de meta</span></div></div></div></div>
       <div class="tfoot"><span>Começa quando o instrutor tocar em <b>Iniciar</b> · ${sn.nPerg} perguntas</span></div>`;
   } else if (f.etapa === "explicacao") {
-    corpo = `${topo(`<b>${esc(sn.titulo)}</b>`)}<div class="expl"><h2>${esc(it.enunciado)}${btnTelVoz(it)}</h2>${it.texto ? `<p>${esc(it.texto)}</p>` : ""}</div><div class="tfoot"><span>Atenção na explicação do instrutor</span></div>`;
+    corpo = `${topo(`<b>${esc(sn.titulo)}</b>`)}<div class="expl"><h2>${esc(it.enunciado)}${btnTelVoz(it)}</h2>${it.texto ? `<p>${esc(it.texto)}</p>` : ""}${matDicaTel(sn, it)}</div><div class="tfoot"><span>Atenção na explicação do instrutor</span></div>`;
   } else if (f.etapa === "pergunta" || f.etapa === "resultado") {
     const rev = f.etapa === "resultado", n = it.alts.length;
     const rel = f.dur ? `<div class="ring"><svg viewBox="0 0 110 110"><circle cx="55" cy="55" r="48" fill="none" stroke="var(--tel-line)" stroke-width="9"/><circle data-k="c" data-fim="${f.t0 + f.dur}" data-dur="${f.dur}" cx="55" cy="55" r="48" fill="none" stroke="#D45D17" stroke-width="9" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="0"/></svg><span data-k="n" data-fim="${f.t0 + f.dur}" data-dur="${f.dur}">${Math.ceil(f.dur / 1000)}</span></div>` : "";
@@ -2372,7 +2415,7 @@ function escalar() {
   document.querySelectorAll(".telwrap").forEach(w => { const k = w.clientWidth / 1280, t = w.firstElementChild; if (!t) return; w.style.height = (720 * k) + "px"; t.style.transform = `scale(${k})`; });
   document.querySelectorAll(".telfull").forEach(w => { const k = Math.min(innerWidth / 1280, innerHeight / 720), t = w.firstElementChild; if (!t) return; t.style.transform = `translate(${-640 * k}px,${-360 * k}px) scale(${k})`; });
 }
-function pintarTelao() { const w = $(".telfull"); if (!w) return; w.innerHTML = telaoHTML(AO.snap); hidratarQR(w); escalar(); tickTempo(); vozAuto(); }
+function pintarTelao() { const w = $(".telfull"); if (!w) return; w.innerHTML = telaoHTML(AO.snap); matAtualizaTelao(); hidratarQR(w); escalar(); tickTempo(); vozAuto(); }
 function vTelao(id) {
   document.body.classList.add("modo-telao"); $("#app").className = "body";
   $("#app").innerHTML = `<div class="telfull" role="img" aria-label="Telão da sala"></div>${tvBarra()}`;
@@ -2430,6 +2473,7 @@ function vSala(id) {
     <section class="k etapa" aria-live="polite"><div class="eh"><span class="chip br">${ETAPA[f.etapa]}</span>${it && f.etapa !== "espera" && f.etapa !== "podio" ? `<span class="sm mut">${ehPergunta(it) ? (it.uso === "ensaio" ? "pergunta de teste" : "pergunta " + sn.numPerg + " de " + sn.totalPerg) : "explicação"}</span>` : ""}${tempo}</div>
       ${it && f.etapa !== "espera" && f.etapa !== "podio" ? `<div style="font-weight:600">${esc(it.enunciado)}</div>` : ""}${barra}
       <button class="b p go" data-act="proxima" ${ap.dis ? "disabled" : ""}>${ic(ap.i)}${ap.t}</button>
+      ${matBtnCtl(sn)}
       ${ap.dis ? `<span class="sm mut">Espere alguém entrar, ou ligue os participantes simulados abaixo.</span>` : ""}
       <div class="tl2" role="list" aria-label="Etapas">${passos}</div></section>
     <section class="k"><div class="chave"><div><div class="lbl">Chave da sala</div><div class="cod" id="cod">${fmtChave(s.chave)}</div></div><span class="chip ${s.entrada ? "ok" : "warn"}">${s.entrada ? "entrada aberta" : "entrada fechada"}</span></div>
@@ -4176,6 +4220,7 @@ function tvSalvar() { try { localStorage.setItem("sabia-telao-modo", TV.modo); }
 const tvAtalhos = "Espaço ou seta para a direita avança · A sai da apresentação";
 function tvBarra() {
   return `<div class="tvbar" id="tvbar" role="toolbar" aria-label="Opções do telão">
+    <button class="b" data-act="tvmat" hidden title="Abrir o capítulo do material desta explicação (M)"><span>Material</span><kbd>M</kbd></button>
     <button class="b" data-act="tvfull" aria-pressed="false" title="Tela cheia (F)">${ic("screen")}<span>Tela cheia</span><kbd>F</kbd></button>
     <button class="b" data-act="tvmodo" data-v="projetor" aria-pressed="false" title="Fundo claro e contraste forte, para projetor fraco (P)"><span>Projetor</span><kbd>P</kbd></button>
     <button class="b" data-act="tvmodo" data-v="apresentacao" aria-pressed="false" title="Tela cheia, sem mouse e avanço pelo teclado (A)"><span>Apresentação</span><kbd>A</kbd></button></div>
@@ -4222,7 +4267,7 @@ document.addEventListener("fullscreenchange", () => {
 });
 ["pointermove", "pointerdown", "touchstart"].forEach(ev => document.addEventListener(ev, () => { if (rota().v === "telao") tvMostrar(); }, {passive: true}));
 document.addEventListener("keydown", e => {
-  if (rota().v !== "telao" || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (rota().v !== "telao" || e.ctrlKey || e.metaKey || e.altKey || document.querySelector(".matov")) return;
   const k = e.key, tg = e.target && e.target.tagName; if (tg === "INPUT" || tg === "TEXTAREA" || tg === "SELECT") return;
   if (k === "f" || k === "F") { e.preventDefault(); tvFull(); tvMostrar(); }
   else if (k === "p" || k === "P") { e.preventDefault(); tvModo("projetor"); }
@@ -4360,11 +4405,11 @@ function pnComentarios(t, D) {
 }
 function pnCorpo(t) {
   const D = pnDados(t);
-  return PN.aba === "versoes" ? pnVersoes(t, D) : PN.aba === "coment" ? pnComentarios(t, D) : pnGeral(t, D);
+  return PN.aba === "versoes" ? pnVersoes(t, D) : PN.aba === "coment" ? pnComentarios(t, D) : PN.aba === "material" ? pnMaterial(t) : pnGeral(t, D);
 }
 function dlgPainel() {
   const t = treino(UI.ed && UI.ed.id); if (!t) return;
-  const d = $("#dlg"), ab = [["geral", "Visão geral"], ["versoes", "Acerto por versão"], ["coment", "Comentários"]];
+  const d = $("#dlg"), ab = [["geral", "Visão geral"], ["versoes", "Acerto por versão"], ["coment", "Comentários"], ["material", "Material"]];
   d.innerHTML = `<div class="dl pn"><header><h2>Painel do treinamento</h2><button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header>
     <p class="sm mut" style="margin:0">${esc(t.titulo)}</p>
     <div class="chips pn-t" role="group" aria-label="Seções do painel">${ab.map(([k, n]) => `<button type="button" class="sc" data-act="pntab" data-v="${k}" aria-pressed="${PN.aba === k}">${n}</button>`).join("")}</div>
@@ -4414,6 +4459,226 @@ function metaRepinta(t, trocou) {
   i.min = p ? PTS_ACERTO : 1; i.max = p ? PTS_MAX : 100; i.step = p ? PTS_ACERTO : 1; i.value = t.meta;
 }
 function metaValida(t, m) { return metaPts(t) ? (m >= 1 && m <= PTS_MAX) : (m >= 1 && m <= 100); }
+
+/* ===== v1.3.0 · material de apoio com capítulos ligados às explicações (PPTX, PDF ou HTML, neste aparelho) ===== */
+/* O arquivo fica no IndexedDB "sabia-material" (chave = id do treinamento); no estado vai só t.material = {nome, tipo, bytes, caps:[{t,p}]}.
+   PPTX: os slides viram capítulos e aparecem como texto + imagens (o arquivo é lido aqui, sem enviar a lugar nenhum).
+   PDF: abre no leitor do navegador na página do capítulo. HTML: abre o documento inteiro, sem scripts. */
+const MAT_MAX = 25 * 1024 * 1024;
+const MAT = {aberto: null, urls: [], pn: null};
+const MAT_TIPOS = {pptx: "PPTX", pdf: "PDF", html: "HTML"};
+
+/* ---------- guardar o arquivo (IndexedDB à parte, para não pesar no estado) ---------- */
+function matDb() {
+  return new Promise((ok, no) => { try { const r = indexedDB.open("sabia-material", 1); r.onupgradeneeded = () => r.result.createObjectStore("arq"); r.onsuccess = () => ok(r.result); r.onerror = () => no(r.error); } catch (e) { no(e); } });
+}
+async function matOp(modo, fn) {
+  const db = await matDb();
+  return new Promise((ok, no) => { const tx = db.transaction("arq", modo), st = tx.objectStore("arq"); const r = fn(st); tx.oncomplete = () => { db.close(); ok(r && r.result); }; tx.onerror = tx.onabort = () => { db.close(); no(tx.error); }; });
+}
+const matGravar = (id, v) => matOp("readwrite", s => s.put(v, id));
+const matLer = id => matOp("readonly", s => s.get(id));
+const matApagar = id => matOp("readwrite", s => s.delete(id));
+/* cópia do treinamento leva o arquivo junto; se o navegador não deixar, a cópia fica sem material */
+async function matCopiar(de, c) { try { const r = await matLer(de); if (!r) throw 0; await matGravar(c.id, r); } catch (e) { delete c.material; c.itens.forEach(i => { delete i.cap; }); salvar(); } }
+async function matLimpaOrfaos() {
+  if (!S || !Array.isArray(S.treinamentos) || !S.treinamentos.length) return;
+  try { const ks = await matOp("readonly", s => s.getAllKeys()); for (const k of ks || []) if (!S.treinamentos.some(t => t.id === k && t.material)) await matApagar(k); } catch (e) {}
+}
+setTimeout(matLimpaOrfaos, 4000);
+
+/* ---------- ler PPTX (zip + XML) ---------- */
+async function zipLer(buf) {
+  const u8 = new Uint8Array(buf), dv = new DataView(buf); let e = u8.length - 22;
+  while (e >= 0 && dv.getUint32(e, true) !== 0x06054b50) e--;
+  if (e < 0) throw new Error("O arquivo não é um zip válido.");
+  const n = dv.getUint16(e + 10, true); let off = dv.getUint32(e + 16, true); const idx = {};
+  for (let i = 0; i < n; i++) {
+    if (dv.getUint32(off, true) !== 0x02014b50) break;
+    const met = dv.getUint16(off + 10, true), csz = dv.getUint32(off + 20, true), nl = dv.getUint16(off + 28, true), el = dv.getUint16(off + 30, true), cl = dv.getUint16(off + 32, true), lh = dv.getUint32(off + 42, true);
+    idx[new TextDecoder().decode(u8.subarray(off + 46, off + 46 + nl))] = {met, csz, lh}; off += 46 + nl + el + cl;
+  }
+  const bytes = async nome => {
+    const z = idx[nome]; if (!z) return null;
+    const ini = z.lh + 30 + dv.getUint16(z.lh + 26, true) + dv.getUint16(z.lh + 28, true), raw = u8.subarray(ini, ini + z.csz);
+    if (z.met === 0) return raw;
+    if (z.met !== 8 || typeof DecompressionStream === "undefined") throw new Error("Este navegador não consegue abrir o PPTX. Use o PDF.");
+    const sd = new Blob([raw]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+    return new Uint8Array(await new Response(sd).arrayBuffer());
+  };
+  return {nomes: Object.keys(idx), bytes, texto: async n => { const b = await bytes(n); return b ? new TextDecoder().decode(b) : null; }};
+}
+const xmlDoc = s => new DOMParser().parseFromString(s, "application/xml");
+const filhos = (n, nome) => Array.from(n.getElementsByTagNameNS("*", nome));
+const caminhoRel = (base, alvo) => { if (alvo.startsWith("/")) return alvo.slice(1); const p = base.split("/"); p.pop(); alvo.split("/").forEach(x => { if (x === "..") p.pop(); else if (x !== ".") p.push(x); }); return p.join("/"); };
+const MIME_IMG = {png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", gif: "image/gif", svg: "image/svg+xml", webp: "image/webp", bmp: "image/bmp"};
+async function pptxLer(buf, comImagens) {
+  const z = await zipLer(buf), pres = await z.texto("ppt/presentation.xml"); if (!pres) throw new Error("Não achei os slides neste arquivo.");
+  const rels = {}; filhos(xmlDoc(await z.texto("ppt/_rels/presentation.xml.rels") || "<r/>"), "Relationship").forEach(r => { rels[r.getAttribute("Id")] = r.getAttribute("Target"); });
+  const ids = filhos(xmlDoc(pres), "sldId").map(x => x.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships", "id") || x.getAttribute("r:id"));
+  const slides = [];
+  for (const rid of ids) {
+    const alvo = rels[rid]; if (!alvo) continue; const cam = caminhoRel("ppt/presentation.xml", alvo), xml = await z.texto(cam); if (!xml) continue;
+    const d = xmlDoc(xml), sl = {titulo: "", linhas: [], imgs: []};
+    filhos(d, "sp").forEach(sp => {
+      const ph = filhos(sp, "ph")[0], tipo = ph && ph.getAttribute("type"), ehTit = tipo === "title" || tipo === "ctrTitle";
+      filhos(sp, "p").forEach(p => {
+        const t = filhos(p, "t").map(x => x.textContent).join("").replace(/\s+/g, " ").trim(); if (!t) return;
+        if (ehTit && !sl.titulo) sl.titulo = t; else sl.linhas.push({t, n: Number((filhos(p, "pPr")[0] || {getAttribute: () => 0}).getAttribute("lvl")) || 0});
+      });
+    });
+    filhos(d, "tbl").forEach(tb => filhos(tb, "tr").forEach(tr => { const t = filhos(tr, "tc").map(c => filhos(c, "t").map(x => x.textContent).join("").trim()).filter(Boolean).join("  |  "); if (t) sl.linhas.push({t, n: 0}); }));
+    if (comImagens) {
+      const relS = {}; const rx = await z.texto(caminhoRel(cam, "_rels/" + cam.split("/").pop() + ".rels")); if (rx) filhos(xmlDoc(rx), "Relationship").forEach(r => { relS[r.getAttribute("Id")] = r.getAttribute("Target"); });
+      for (const bl of filhos(d, "blip")) {
+        const emb = bl.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships", "embed") || bl.getAttribute("r:embed"), t = emb && relS[emb]; if (!t) continue;
+        const nome = caminhoRel(cam, t), ext = nome.split(".").pop().toLowerCase(), b = MIME_IMG[ext] ? await z.bytes(nome) : null; if (b) sl.imgs.push(new Blob([b], {type: MIME_IMG[ext]}));
+      }
+    }
+    slides.push(sl);
+  }
+  return slides;
+}
+
+/* ---------- guardar o material de um treinamento ---------- */
+const extDe = n => (String(n).split(".").pop() || "").toLowerCase();
+async function matAnexar(t, file) {
+  const ext = extDe(file.name), tipo = ext === "pptx" ? "pptx" : ext === "pdf" ? "pdf" : ext === "html" || ext === "htm" ? "html" : "";
+  if (!tipo) return {ok: false, msg: "Use um arquivo PPTX, PDF ou HTML."};
+  if (file.size > MAT_MAX) return {ok: false, msg: "O arquivo passa de 25 MB. Reduza as imagens ou use um PDF menor."};
+  const buf = await file.arrayBuffer(), u8 = new Uint8Array(buf.slice(0, 5));
+  if (tipo === "pptx" && !(u8[0] === 0x50 && u8[1] === 0x4B)) return {ok: false, msg: "Este arquivo não parece um PPTX (o formato antigo .ppt não serve; salve como .pptx)."};
+  if (tipo === "pdf" && String.fromCharCode(...u8) !== "%PDF-") return {ok: false, msg: "Este arquivo não parece um PDF."};
+  let caps;
+  try {
+    if (tipo === "pptx") { const sl = await pptxLer(buf, false); if (!sl.length) return {ok: false, msg: "Não achei slides neste PPTX."}; caps = sl.map((x, i) => ({t: x.titulo || x.linhas.map(l => l.t)[0] || "Slide " + (i + 1), p: i})); }
+    else if (tipo === "pdf") caps = [{t: "Documento inteiro", p: 1}];
+    else caps = [{t: "Documento inteiro", p: 0}];
+  } catch (e) { return {ok: false, msg: String(e.message || "Não consegui ler o arquivo.")}; }
+  try { await matGravar(t.id, {blob: new Blob([buf], {type: tipo === "pdf" ? "application/pdf" : tipo === "html" ? "text/html" : "application/vnd.openxmlformats-officedocument.presentationml.presentation"}), nome: file.name, tipo}); }
+  catch (e) { return {ok: false, msg: "O navegador não deixou guardar o arquivo (pouco espaço?)."}; }
+  t.itens.forEach(i => { delete i.cap; });
+  t.material = {nome: file.name, tipo, bytes: file.size, caps, em: new Date().toISOString()}; salvar();
+  return {ok: true, caps: caps.length};
+}
+async function matRemover(t) { t.itens.forEach(i => { delete i.cap; }); delete t.material; try { await matApagar(t.id); } catch (e) {} salvar(); }
+const capTxt = (t, i) => { const c = t.material && t.material.caps[i]; return c ? (t.material.tipo === "pptx" ? "Slide " + (i + 1) + ": " : "") + c.t : ""; };
+
+/* ---------- ver o material (dentro do telão ou numa janela do controle) ---------- */
+function matSoltaUrls() { MAT.urls.forEach(u => { try { URL.revokeObjectURL(u); } catch (e) {} }); MAT.urls = []; }
+const matUrl = b => { const u = URL.createObjectURL(b); MAT.urls.push(u); return u; };
+async function matPintar(box, m, cap) {
+  const corpo = box.querySelector(".mt-c"), tit = box.querySelector(".mt-t"), ant = box.querySelector("[data-act=matant]"), prox = box.querySelector("[data-act=matprox]");
+  const reg = await matLer(m.tid).catch(() => null);
+  if (!MAT.aberto || !box.isConnected) return;   // fechou enquanto o arquivo era lido
+  if (!reg) { corpo.innerHTML = `<p class="mt-er">O arquivo não está neste aparelho. Abra o treinamento no aparelho onde o material foi anexado.</p>`; return; }
+  matSoltaUrls(); const n = m.caps.length; cap = Math.max(0, Math.min(n - 1, cap)); MAT.aberto.cap = cap;
+  tit.textContent = (m.tipo === "pptx" ? "Slide " + (cap + 1) + " de " + n + " · " : "") + m.caps[cap];
+  if (ant) ant.disabled = cap <= 0; if (prox) prox.disabled = cap >= n - 1; box.querySelector(".mt-nav").hidden = m.tipo !== "pptx" || n < 2;
+  if (m.tipo === "pdf") {
+    const u = matUrl(reg.blob), p = (m.pg && m.pg[cap]) || (MAT.aberto.pg) || 1;
+    corpo.innerHTML = `<iframe class="mt-fr" title="${esc(m.nome)}" src="${u}#page=${p}"></iframe><a class="b sm" href="${u}#page=${p}" target="_blank" rel="noopener">Abrir em outra aba</a>`;
+  } else if (m.tipo === "html") {
+    const f = document.createElement("iframe"); f.className = "mt-fr"; f.title = m.nome; f.setAttribute("sandbox", ""); f.srcdoc = await reg.blob.text(); corpo.innerHTML = ""; corpo.appendChild(f);
+  } else {
+    let sl; try { sl = (await pptxLer(await reg.blob.arrayBuffer(), true))[cap]; } catch (e) { if (box.isConnected) corpo.innerHTML = `<p class="mt-er">${esc(e.message || "Não consegui abrir o PPTX.")}</p>`; return; }
+    if (!MAT.aberto || !box.isConnected || MAT.aberto.cap !== cap) return;   // fechou ou trocou de slide durante a leitura
+    corpo.innerHTML = `<article class="mt-sl">${sl.titulo ? `<h2>${esc(sl.titulo)}</h2>` : ""}<ul>${sl.linhas.map(l => `<li style="margin-left:${Math.min(l.n, 4) * 22}px">${esc(l.t)}</li>`).join("")}</ul>${sl.imgs.length ? `<div class="mt-im">${sl.imgs.map(b => `<img alt="" src="${matUrl(b)}">`).join("")}</div>` : ""}</article><p class="sm mut mt-av">Versão em texto e imagens dos slides. Para ver o desenho exato, use o PDF.</p>`;
+  }
+}
+function matCaixaHtml(m) {
+  return `<div class="mt-bar"><b class="mt-t"></b><span class="mt-nav"><button class="b sm" data-act="matant" aria-label="Slide anterior">${ic("back", 'style="width:16px;height:16px"')}</button><button class="b sm" data-act="matprox" aria-label="Próximo slide">${ic("back", 'style="width:16px;height:16px;transform:scaleX(-1)"')}</button></span><button class="b sm" data-act="matfechar">${ic("x", 'style="width:16px;height:16px"')}Fechar</button></div><div class="mt-c" tabindex="0"></div>`;
+}
+function matFechar() { const o = document.querySelector(".matov"); if (o) o.remove(); const d = $("#dlg"); if (d && d.querySelector(".dl.mt") && d.open) d.close(); matSoltaUrls(); MAT.aberto = null; }
+async function matAbrir(m, cap, onde, pg) {
+  matFechar(); MAT.aberto = {m, cap, onde, pg};
+  if (onde === "tel") { const o = document.createElement("div"); o.className = "matov" + (document.querySelector(".telfull.proj") ? " proj" : document.querySelector(".tel.claro") ? " claro" : ""); o.setAttribute("role", "dialog"); o.setAttribute("aria-label", "Material de apoio"); o.innerHTML = matCaixaHtml(m); document.body.appendChild(o); await matPintar(o, m, cap); o.querySelector(".mt-c").focus(); }
+  else { const d = $("#dlg"); d.innerHTML = `<div class="dl mt"><header><h2>Material de apoio</h2></header>${matCaixaHtml(m)}</div>`; if (!d.open) d.showModal(); await matPintar(d.querySelector(".dl.mt"), m, cap); }
+}
+const matCaixa = () => document.querySelector(".matov") || (document.querySelector("#dlg .dl.mt") || null);
+document.addEventListener("close", e => { if (e.target && e.target.id === "dlg" && MAT.aberto && MAT.aberto.onde === "ctl") { matSoltaUrls(); MAT.aberto = null; } }, true);
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act;
+  if (a === "matfechar") matFechar();
+  else if ((a === "matant" || a === "matprox") && MAT.aberto) { const box = matCaixa(); if (box) matPintar(box, MAT.aberto.m, MAT.aberto.cap + (a === "matprox" ? 1 : -1)); }
+  else if (a === "matver" || a === "mattel") {   // controle: ver aqui ou mandar para o telão
+    const sn = AO.snap, it = sn && sn.item; if (!sn || !sn.mat || !it || it.cap === null || it.cap === undefined) return;
+    if (a === "matver") matAbrir(sn.mat, it.cap, "ctl"); else if (AO.ch) { try { AO.ch.postMessage({t: "cmd", a: "material", id: sn.id, cap: it.cap}); } catch (e2) {} aviso("Material enviado ao telão"); }
+  } else if (a === "tvmat") { const sn = AO.snap; if (sn && sn.mat && sn.item && sn.item.cap !== null && sn.item.cap !== undefined) matAbrir(sn.mat, sn.item.cap, "tel"); }
+});
+document.addEventListener("keydown", e => {
+  if (!MAT.aberto) return; const box = matCaixa(); if (!box) return;
+  if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); matFechar(); }
+  else if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); e.stopPropagation(); matPintar(box, MAT.aberto.m, MAT.aberto.cap + 1); }
+  else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); e.stopPropagation(); matPintar(box, MAT.aberto.m, MAT.aberto.cap - 1); }
+  else if (e.key === "m" || e.key === "M") { e.preventDefault(); e.stopPropagation(); matFechar(); }
+}, true);
+/* o controle manda o capítulo para o telão */
+if (AO.ch) AO.ch.addEventListener("message", e => {
+  const m = e.data || {}; if (m.t !== "cmd" || rota().v !== "telao") return;
+  if (m.a === "material") { const sn = AO.snap; if (sn && sn.mat && (!m.id || m.id === sn.id)) matAbrir(sn.mat, Number(m.cap) || 0, "tel"); }
+});
+document.addEventListener("keydown", e => {
+  if (rota().v !== "telao" || MAT.aberto || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.key === "m" || e.key === "M") { const sn = AO.snap; if (sn && sn.mat && sn.item && sn.item.cap !== null && sn.item.cap !== undefined) { e.preventDefault(); matAbrir(sn.mat, sn.item.cap, "tel"); } }
+});
+/* botão do telão: aparece só quando a explicação atual tem capítulo */
+function matAtualizaTelao() {
+  const b = $("#tvbar [data-act=tvmat]"), sn = AO.snap, tem = !!(sn && sn.mat && sn.item && sn.item.cap !== null && sn.item.cap !== undefined && sn.fase && sn.fase.etapa === "explicacao");
+  if (b) b.hidden = !tem;
+  if (!tem && MAT.aberto && MAT.aberto.onde === "tel" && sn && sn.fase && sn.fase.etapa !== "explicacao") matFechar();
+}
+const matBtnCtl = sn => {
+  const it = sn.item; if (!sn.mat || !it || it.cap === null || it.cap === undefined || sn.fase.etapa !== "explicacao") return "";
+  return `<div class="mt-ctl"><span class="sm mut">Material: ${esc(sn.mat.caps[it.cap] || "")}</span><button class="b sm" data-act="mattel">${ic("screen", 'style="width:16px;height:16px"')}Mostrar no telão</button><button class="b sm" data-act="matver">Ver aqui</button></div>`;
+};
+const matDicaTel = (sn, it) => sn.mat && it.cap !== null && it.cap !== undefined ? `<p class="mt-dica">Material: ${esc(sn.mat.caps[it.cap] || "")} · tecla M</p>` : "";
+function matSnap(s) {
+  const t = treino(s.treinoId); return t && t.material ? {tid: t.id, nome: t.material.nome, tipo: t.material.tipo, caps: t.material.caps.map(c => c.t), pg: t.material.caps.map(c => c.p)} : null;
+}
+
+/* ---------- editor: ligar a explicação a um capítulo ---------- */
+function capHtml(t, it) {
+  if (it.tipo !== "explicacao" || !t.material || !t.material.caps.length) return "";
+  return `<div class="fd"><label for="e-cap">Capítulo do material</label><select class="in" id="e-cap" data-e="cap"><option value="">Nenhum</option>${t.material.caps.map((c, i) => `<option value="${i}" ${it.cap === i ? "selected" : ""}>${esc(capTxt(t, i))}</option>`).join("")}</select><span class="sm mut">Na sala, o instrutor abre este capítulo por cima do telão.</span></div>`;
+}
+
+/* ---------- painel: aba Material ---------- */
+function pnMaterial(t) {
+  const m = t.material;
+  if (!m) return `<p class="sm mut" style="margin:0">Anexe a apresentação (PPTX, de preferência), um PDF ou um HTML. O arquivo fica só neste aparelho, funciona sem internet e não vai para o Firebase nem para os celulares. Cada explicação pode abrir um capítulo por cima do telão.</p>
+    <label class="b p mt-up" for="mt-arq">${ic("upload")}Anexar arquivo</label><input type="file" id="mt-arq" class="sr" accept=".pptx,.pdf,.html,.htm" data-mt="arq"><span class="sm mut" id="mt-st" role="status"></span>`;
+  const usos = i => t.itens.map((x, k) => [x, k]).filter(([x]) => x.tipo === "explicacao" && x.cap === i).map(([, k]) => numeroItem(t, k) + (t.itens.slice(0, k + 1).filter(y => y.tipo === "explicacao").length));
+  const mb = (m.bytes / 1048576).toFixed(m.bytes > 1048576 ? 1 : 2).replace(".", ",");
+  return `<div class="mt-arq"><b>${esc(m.nome)}</b><span class="chip">${MAT_TIPOS[m.tipo]}</span><span class="sm mut">${mb} MB</span></div>
+    <div class="mt-acoes"><label class="b sm" for="mt-arq">${ic("upload", 'style="width:16px;height:16px"')}Trocar arquivo</label><input type="file" id="mt-arq" class="sr" accept=".pptx,.pdf,.html,.htm" data-mt="arq"><button class="b sm g" data-act="mtprev">Ver o material</button><button class="b sm g" data-act="mtdel">${ic("trash", 'style="width:16px;height:16px"')}Remover</button></div>
+    <span class="sm mut" id="mt-st" role="status">Trocar ou remover o arquivo desliga as ligações com as explicações.</span>
+    <ul class="mt-caps" aria-label="Capítulos">${m.caps.map((c, i) => { const u = usos(i); return `<li><span class="mt-n">${m.tipo === "pptx" ? i + 1 : ""}</span><span class="mt-ct">${esc(c.t)}${m.tipo === "pdf" ? ` <span class="sm mut">página ${c.p}</span>` : ""}</span>${u.length ? `<span class="chip ok">${u.length} explicaç${u.length === 1 ? "ão" : "ões"}</span>` : ""}${m.tipo === "pdf" && m.caps.length > 1 ? `<button class="b ic g" data-act="mtcdel" data-i="${i}" aria-label="Apagar o capítulo ${esc(c.t)}">${ic("x", 'style="width:16px;height:16px"')}</button>` : ""}</li>`; }).join("")}</ul>
+    ${m.tipo === "pdf" ? `<form class="mt-add" data-form="mtcap"><div class="fd"><label for="mt-ct">Novo capítulo</label><input class="in" id="mt-ct" maxlength="80" placeholder="Ex.: Lavagem das mãos"></div><div class="fd"><label for="mt-cp">Página</label><input class="in" id="mt-cp" type="number" min="1" max="2000" value="1" inputmode="numeric"></div><button class="b" type="submit">Adicionar</button></form>` : ""}`;
+}
+function mtRepinta() { const t = treino(UI.ed && UI.ed.id); const c = $("#pn-corpo"); if (t && c && PN.aba === "material") c.innerHTML = pnMaterial(t); }
+document.addEventListener("change", async e => {
+  const x = e.target; if (!x.dataset || x.dataset.mt !== "arq" || !x.files[0]) return;
+  const t = treino(UI.ed && UI.ed.id); if (!t) return; const st = $("#mt-st"); if (st) st.textContent = "Lendo o arquivo...";
+  const r = await matAnexar(t, x.files[0]); x.value = "";
+  if (!r.ok) { const s2 = $("#mt-st"); if (s2) { s2.textContent = r.msg; s2.classList.add("warn"); } return; }
+  mtRepinta(); aviso(r.caps > 1 ? `Material anexado: ${r.caps} capítulos` : "Material anexado"); if (rota().v === "editar") pintaCentro();
+});
+document.addEventListener("click", async e => {
+  const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act, t = treino(UI.ed && UI.ed.id);
+  if (a === "mtdel" && t) { await matRemover(t); mtRepinta(); pintaCentro(); aviso("Material removido"); }
+  else if (a === "mtcdel" && t && t.material) { const i = Number(el.dataset.i); t.material.caps.splice(i, 1); t.itens.forEach(x => { if (x.cap === i) delete x.cap; else if (x.cap > i) x.cap--; }); salvar(); mtRepinta(); pintaCentro(); }
+  else if (a === "mtprev" && t && t.material) matAbrir({tid: t.id, nome: t.material.nome, tipo: t.material.tipo, caps: t.material.caps.map(c => c.t), pg: t.material.caps.map(c => c.p)}, 0, "ctl");
+});
+document.addEventListener("submit", e => {
+  if (e.target.dataset.form !== "mtcap") return; e.preventDefault();
+  const t = treino(UI.ed && UI.ed.id); if (!t || !t.material || t.material.tipo !== "pdf") return;
+  const nome = $("#mt-ct").value.trim().slice(0, 80), pg = Math.round(Number($("#mt-cp").value));
+  if (!nome || !(pg >= 1 && pg <= 2000)) { const s = $("#mt-st"); if (s) { s.textContent = "Escreva o título e uma página entre 1 e 2000."; s.classList.add("warn"); } return; }
+  const lig = t.itens.map(x => t.material.caps[x.cap]);   // guarda as ligações pelo capítulo, não pelo número, porque a lista é reordenada
+  t.material.caps.push({t: nome, p: pg}); t.material.caps.sort((p, q) => p.p - q.p);
+  t.itens.forEach((x, k) => { if (lig[k]) x.cap = t.material.caps.indexOf(lig[k]); }); salvar(); mtRepinta(); pintaCentro();
+});
 
 function render() {
   if (!S) return;

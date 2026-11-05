@@ -160,7 +160,7 @@ function pintaCentro() {
       <button class="b ic g" data-act="edup" aria-label="Mover para cima" title="Mover para cima" ${i === 0 ? "disabled" : ""}>${ic("up")}</button><button class="b ic g" data-act="eddown" aria-label="Mover para baixo" title="Mover para baixo" ${i === t.itens.length - 1 ? "disabled" : ""}>${ic("down")}</button>
       <button class="b ic g" data-act="eddup" aria-label="Duplicar pergunta" title="Duplicar">${ic("copy")}</button><button class="b ic g" data-act="bnguardar" aria-label="Guardar no banco de perguntas" title="Guardar no banco">${ic("book")}</button><button class="b ic g bad" data-act="eddel" aria-label="Excluir pergunta" title="Excluir">${ic("trash")}</button></div>
     <div class="seg" role="group" aria-label="Formato">${["multipla", "vf", "ordenar", "explicacao"].map(k => `<button type="button" data-act="edtipo" data-v="${k}" aria-pressed="${it.tipo === k}">${TIPOS_CURTO[k]}</button>`).join("")}</div>
-    <div class="avs" id="edAv"></div>${corpo}${vozHtml(it)}</section>`;
+    <div class="avs" id="edAv"></div>${corpo}${vozHtml(it)}${capHtml(t, it)}</section>`;
   pintaAvisos();
 }
 function pintaAvisos() {
@@ -257,7 +257,7 @@ document.addEventListener("change", e => {
   const x = e.target; if (rota().v !== "editar" || !UI.ed || !x.dataset.e) return;
   const t = treino(UI.ed.id), it = t && t.itens[UI.ed.sel]; if (!it) return;
   if (x.type === "radio") { editou(t); it.correta = Number(x.value); }
-  else if (x.tagName === "SELECT") { editou(t); it[x.dataset.e] = x.dataset.e === "tempo" ? Number(x.value) : x.value; if (x.dataset.e === "uso") pintaCentro(); }
+  else if (x.tagName === "SELECT") { editou(t); if (x.dataset.e === "cap") { if (x.value === "") delete it.cap; else it.cap = Number(x.value); } else it[x.dataset.e] = x.dataset.e === "tempo" ? Number(x.value) : x.value; if (x.dataset.e === "uso") pintaCentro(); }
   else return;
   pintaTopo(); pintaLista(); pintaAvisos(); pintaPrev();
 });

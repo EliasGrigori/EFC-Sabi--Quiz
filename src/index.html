@@ -229,6 +229,7 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 /*__V10_CSS__*/
 /*__V11_CSS__*/
 /*__V12_CSS__*/
+/*__V13_CSS__*/
 </style>
 </head>
 <body>
@@ -290,7 +291,7 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 <script>/*__QR__*/</script>
 <script>
 "use strict";
-const VERSAO = "1.2.0";
+const VERSAO = "1.3.0";
 const MODELOS = __MODELOS__;
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -399,7 +400,7 @@ function duplicar(id) {
   const t = treino(id); if (!t) return;
   const c = JSON.parse(JSON.stringify(t)); c.id = uid(); c.titulo = t.titulo + " (cópia)"; c.atualizado = new Date().toISOString(); c.versao = 0;
   c.versoes = [{n: 0, nota: "Cópia de " + t.titulo, quando: c.atualizado}];
-  S.treinamentos.unshift(c); salvar(); render(); aviso("Cópia criada");
+  S.treinamentos.unshift(c); if (c.material) matCopiar(t.id, c); salvar(); render(); aviso("Cópia criada");
 }
 function baixar(nome, obj) {
   const b = new Blob([JSON.stringify(obj, null, 2)], {type: "application/json"});
@@ -708,6 +709,7 @@ document.addEventListener("submit", e => {
 /*__V10_JS__*/
 /*__V11_JS__*/
 /*__V12_JS__*/
+/*__V13_JS__*/
 function render() {
   if (!S) return;
   const r = rota(); if (intAntesRender(r.v)) return; menu(r.v);

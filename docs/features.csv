@@ -24,9 +24,9 @@ Mover / excluir / marcar correta / alternativas,Criação,must,yes,yes,
 Voz gravada na pergunta (X03) e ouvir a pergunta,Criação,should,yes,yes,"Instrutor grava até 30 s no editor; toca no telão (sozinho ao abrir a pergunta e por botão); no celular o participante usa ""Ouvir a pergunta"", lida pela voz do aparelho; a gravação nunca vai ao Firebase (v1.0.0)"
 Banco de perguntas,Criação,should,yes,yes,"Guardar pergunta ou treinamento inteiro no banco, buscar, filtrar por formato, inserir no editor e excluir com desfazer; vai no Exportar tudo (v1.0.0)"
 Versões do treinamento (v00 v01...) com nota do que mudou,Versões,must,yes,yes,"v00, v01...; nota, comparar e restaurar"
-Painel lateral: visão geral / acerto por versão / comentários / material,Versões,must,yes,partial,"Gaveta ""Painel do treinamento"" no editor: visão geral, acerto por versão e comentários; falta a aba de material (v1.1.0)"
+Painel lateral: visão geral / acerto por versão / comentários / material,Versões,must,yes,yes,"Gaveta ""Painel do treinamento"" no editor: visão geral, acerto por versão, comentários e material (v1.3.0)"
 Observações do treinamento,Versões,should,yes,yes,Observações com autor e data no editor; só Primário e Líder estrela (v0.8.0)
-Material (PDF/HTML/PPTX neste aparelho) com capítulos ligados à explicação (M02),Material,should,yes,no,abre por cima da tela
+Material (PDF/HTML/PPTX neste aparelho) com capítulos ligados à explicação (M02),Material,should,yes,yes,"v1.3.0: PPTX (slides viram capítulos), PDF (capítulos digitados, abre na página) e HTML; arquivo só neste aparelho; abre por cima do telão (tecla M) ou no controle"
 Exportar e importar treinamento .json,Dados,must,yes,yes,
 Excluir com desfazer por 3 segundos,Dados,must,yes,yes,v2.8.8
 Aplicar: instrutor / local / meta,Aplicar,must,yes,partial,
