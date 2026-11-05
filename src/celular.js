@@ -1,11 +1,14 @@
 /* ===== v0.4.0 · celular do participante (#/entrar/CHAVE/BANCO) ===== */
 const CE = {chave: null, sg: null, base: null, pid: null, nome: "", cor: 0, pub: null, res: null, ouvPub: null, ouvRes: null, st: "off", visto: false, entrou: false, jaEntrou: false,
-  resp: {}, t0: 0, kf: "", sel: null, ord: [], enviando: false, assinou: false, tracos: 0, html: "", erro: "", tela: ""};
+  resp: {}, t0: 0, kf: "", sel: null, ord: [], enviando: false, assinou: false, tracos: 0, html: "", erro: "", tela: "", rev: {}, ref: {}, vista: "", rf: null,
+  cm: {tipo: "sugestao", texto: "", env: [], erro: ""}, rsp: null, ouvRsp: null};
 const chaveLS = k => k + CE.chave;
+const gravaLS = (k, o) => { try { localStorage.setItem(chaveLS(k), JSON.stringify(o)); } catch(e) {} };
+const lerLS = k => { try { const o = JSON.parse(localStorage.getItem(chaveLS(k)) || "null"); return o && typeof o === "object" ? o : {}; } catch(e) { return {}; } };
 const semAcento = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
 function pararCel() {
-  if (CE.ouvPub) CE.ouvPub.fechar(); if (CE.ouvRes) CE.ouvRes.fechar();
-  Object.assign(CE, {chave: null, sg: null, base: null, pid: null, pub: null, res: null, ouvPub: null, ouvRes: null, st: "off", visto: false, entrou: false, jaEntrou: false, resp: {}, kf: "", sel: null, ord: [], enviando: false, assinou: false, tracos: 0, html: "", erro: "", tela: ""});
+  if (CE.ouvPub) CE.ouvPub.fechar(); if (CE.ouvRes) CE.ouvRes.fechar(); if (CE.ouvRsp) CE.ouvRsp.fechar();
+  Object.assign(CE, {cm: {tipo: "sugestao", texto: "", env: [], erro: ""}, rsp: null, ouvRsp: null, chave: null, sg: null, base: null, pid: null, pub: null, res: null, ouvPub: null, ouvRes: null, st: "off", visto: false, entrou: false, jaEntrou: false, resp: {}, kf: "", sel: null, ord: [], enviando: false, assinou: false, tracos: 0, html: "", erro: "", tela: "", rev: {}, ref: {}, vista: "", rf: null});
 }
 function vCelular(chave, sg) {
   document.body.classList.add("modo-cel"); $("#app").className = "body cel";
@@ -23,6 +26,7 @@ function iniciarCel(chave, sg) {
   let salvo = null; try { salvo = JSON.parse(localStorage.getItem(chaveLS("sabia-p-")) || "null"); } catch(e) {}
   if (salvo && salvo.pid) { CE.pid = salvo.pid; CE.nome = salvo.nome; CE.cor = salvo.cor || 0; CE.entrou = true; CE.jaEntrou = true; }
   try { CE.assinou = localStorage.getItem(chaveLS("sabia-a-")) === "1"; } catch(e) {}
+  CE.rev = lerLS("sabia-rv-"); CE.ref = lerLS("sabia-rf-"); CE.cm.env = Array.isArray(lerLS("sabia-cm-").l) ? lerLS("sabia-cm-").l : [];
   CE.ouvPub = Rede.ouvir(base, "/salas/" + chave + "/pub", M => { CE.pub = M && M.meta ? M : null; CE.visto = true; aoPub(); }, st => { CE.st = st; pintaCel(); });
   if (CE.entrou) {
     Rede.req(base, "GET", "/salas/" + chave + "/part/" + CE.pid).then(v => { if (!v) { CE.entrou = false; CE.jaEntrou = false; try { localStorage.removeItem(chaveLS("sabia-p-")); } catch(e) {} pintaCel(); } }).catch(() => {});
@@ -31,13 +35,15 @@ function iniciarCel(chave, sg) {
 }
 function ligarRes() {
   if (CE.ouvRes || !CE.pid) return;
-  CE.ouvRes = Rede.ouvir(CE.base, "/salas/" + CE.chave + "/res/" + CE.pid, M => { CE.res = M; pintaCel(); });
+  CE.ouvRes = Rede.ouvir(CE.base, "/salas/" + CE.chave + "/res/" + CE.pid, M => { CE.res = M; guardaRev(); pintaCel(); });
+  if (!CE.ouvRsp) CE.ouvRsp = Rede.ouvir(CE.base, "/salas/" + CE.chave + "/part/" + CE.pid + "/rsp", M => { CE.rsp = M && typeof M === "object" ? M : null; pintaCel(); });   // respostas do instrutor aos comentários (v0.7.0)
 }
 function aoPub() {
   const f = CE.pub && CE.pub.fase; if (!f) { pintaCel(); return; }
   const k = f.k + "|" + f.etapa;
   if (k !== CE.kf) {
     CE.kf = k; CE.t0 = Date.now(); CE.sel = null; CE.ord = []; CE.enviando = false; CE.tracos = 0;
+    if (f.etapa !== "podio") { CE.vista = ""; CE.rf = null; }
     if (f.etapa === "pergunta" && CE.entrou && CE.resp[f.idx] === undefined) {
       const idx = f.idx;
       Rede.req(CE.base, "GET", "/salas/" + CE.chave + "/resp/" + CE.pid + "/" + idx).then(v => { if (v && v.r !== undefined) { CE.resp[idx] = v.r; pintaCel(); } }).catch(() => {});
@@ -46,7 +52,26 @@ function aoPub() {
       Rede.req(CE.base, "GET", "/salas/" + CE.chave + "/ass/" + CE.pid).then(v => { if (v) { CE.assinou = true; pintaCel(); } }).catch(() => {});
     }
   }
-  pintaCel();
+  guardaRev(); pintaCel();
+}
+
+/* guarda no aparelho cada pergunta já revelada, para rever e treinar depois */
+function guardaRev() {
+  const f = CE.pub && CE.pub.fase, m = CE.pub && CE.pub.meta; if (!CE.entrou || !f || f.etapa !== "resultado" || !m || m.mom === "pre") return;
+  const it = itemCel(); if (!it || it.ensaio || CE.rev[f.idx]) return;
+  const r = CE.res && CE.res.i === f.idx ? CE.res : null; if (!r || ![1, 0, -1].includes(r.ok)) return;
+  const mine = CE.resp[f.idx];
+  CE.rev[f.idx] = {n: f.numPerg, e: it.enunciado, t: it.tipo, a: it.alts, o: it.ordem || null, c: Number.isInteger(it.correta) ? it.correta : null, p: it.porque || "", m: mine === undefined ? null : (typeof mine === "object" ? lista(mine).map(Number) : mine), ok: r.ok};
+  gravaLS("sabia-rv-", CE.rev);
+}
+const errosCel = () => Object.entries(CE.rev).map(([i, x]) => Object.assign({i: Number(i)}, x)).filter(x => x.ok !== 1).sort((a, b) => a.n - b.n);
+const refFim = i => { const r = CE.ref[i]; return !!r && (r.ok === 1 || r.t >= 3); };
+const certasCel = () => Object.values(CE.rev).filter(x => x.ok === 1).length;
+function progCel(f) {
+  const tot = f && f.totalPerg; if (!tot || (f.etapa !== "pergunta" && f.etapa !== "resultado")) return "";
+  const rv = Object.values(CE.rev), fe = rv.length, ac = certasCel();
+  const seg = Array.from({length: tot}, (_, k) => { const n = k + 1, r = rv.find(x => x.n === n); return `<i class="${r ? (r.ok === 1 ? "c" : "e") : n === f.numPerg ? "a" : ""}"></i>`; }).join("");
+  return `<div class="prg" role="img" aria-label="Pergunta ${f.numPerg} de ${tot}${fe ? ", " + ac + " de " + fe + " certas até aqui" : ""}">${seg}</div>${fe ? `<div class="prgt"><b>${ac}</b> de ${fe} certa${fe === 1 ? "" : "s"} até aqui</div>` : ""}`;
 }
 
 /* ---------- telas ---------- */
@@ -58,8 +83,10 @@ function pintaCel() {
   const a = document.activeElement;
   if (CE.tela === "nome" && a && a.closest && a.closest(".cel") && (a.tagName === "INPUT" || a.tagName === "SELECT")) return;
   if (CE.tela === "podio" && CE.tracos > 0) return;
+  if (a && a.id === "cm-t") return;   // não apaga o comentário que a pessoa está escrevendo
   const {tela, html} = montaCel();
   if (html === CE.html && tela === CE.tela) return;
+  if (tela !== CE.tela) ouvirParar();
   CE.tela = tela; CE.html = html; $("#app").innerHTML = html; pintaTelaCel();
 }
 function pintaTelaCel() { tickTempo(); const c = $("#cassin"); if (c) prepararAssinatura(c); }
@@ -69,8 +96,9 @@ function montaCel() {
     <div class="fd"><label for="ce-k">Chave da sala</label><input class="in big" id="ce-k" inputmode="numeric" pattern="[0-9 ]*" maxlength="7" autocomplete="off" placeholder="000 000"></div><button class="b p g2" type="submit">Entrar</button></form></div>`};
   if (CE.erro === "semdb") return {tela: "erro", html: `<div class="cc">${cabCel()}<div class="cb"><h1>Use o QR ou o link</h1><p class="mut" style="margin:0">Este aparelho ainda não sabe onde fica a sala. Aponte a câmera para o QR do telão ou abra o link que o instrutor enviou. Nas próximas vezes basta digitar a chave.</p><a class="b" href="#/entrar">Digitar outra chave</a></div></div>`};
   if (!CE.visto) return {tela: "conectando", html: `<div class="cc">${cabCel()}<div class="cb ct"><div class="rodar"></div><h1>${CE.st === "erro" ? "Não consegui conectar" : "Conectando à sala..."}</h1><p class="mut" style="margin:0">${CE.st === "erro" ? "Confira a internet e tente de novo." : "Aguarde um instante."}</p>${CE.st === "erro" ? `<button class="b" data-act="cretry">Tentar de novo</button>` : ""}</div></div>`};
+  if (CE.vista && (CE.entrou || CE.jaEntrou) && errosCel().length) return CE.vista === "rever" ? telaRever() : telaRefazer();
   if (!CE.pub) return CE.jaEntrou
-    ? {tela: "fim", html: `<div class="cc">${cabCel()}<div class="cb ct"><h1>A sala foi encerrada</h1><p class="mut" style="margin:0">Obrigado por participar.</p><a class="b" href="#/entrar">Entrar em outra sala</a></div></div>`}
+    ? {tela: "fim", html: `<div class="cc">${cabCel()}<div class="cb ct"><h1>A sala foi encerrada</h1><p class="mut" style="margin:0">Obrigado por participar.</p>${blocoRevisao()}<a class="b" href="#/entrar">Entrar em outra sala</a></div></div>`}
     : {tela: "naoachou", html: `<div class="cc">${cabCel()}<div class="cb ct"><h1>Sala não encontrada</h1><p class="mut" style="margin:0">Confira a chave ${esc(fmtChave(CE.chave))} com o instrutor. A sala pode já ter sido encerrada.</p><a class="b p" href="#/entrar">Digitar outra chave</a></div></div>`};
   if (!CE.entrou) {
     if (!m.entrada) return {tela: "fechada", html: `<div class="cc">${cabCel()}<div class="cb ct"><h1>Entrada fechada</h1><p class="mut" style="margin:0">O instrutor fechou a entrada desta sala. Fale com ele para entrar.</p></div></div>`};
@@ -83,8 +111,8 @@ function montaCel() {
       <p class="erro" id="ce-erro" role="alert">${esc(CE.erro || "")}</p><button class="b p g2" type="submit">Entrar na sala</button></form></div>`};
   }
   const it = itemCel(), t = f.etapa, np = m.nPart || 0;
-  const faixa = (txt, tm) => `<div class="fx"><span>${txt}</span>${eu()}</div>${tm || ""}`;
-  if (t === "espera") return {tela: "espera", html: `<div class="cc">${cabCel()}<div class="cb ct"><div class="ok-i">${ic("check", 'style="width:34px;height:34px"')}</div><h1>Você está na sala</h1><div class="eu2">${av(CE.nome, CE.cor)}<b>${esc(CE.nome)}</b></div><p class="mut" style="margin:0">${np} ${np === 1 ? "pessoa na sala" : "pessoas na sala"}. Aguarde o instrutor iniciar.</p><button class="b g" data-act="cnaosou">Não sou eu</button></div></div>`};
+  const faixa = (txt, tm) => `<div class="fx"><span>${txt}</span>${eu()}</div>${progCel(f)}${tm || ""}`;
+  if (t === "espera") return {tela: "espera", html: `<div class="cc">${cabCel()}<div class="cb ct"><div class="ok-i">${ic("check", 'style="width:34px;height:34px"')}</div><h1>Você está na sala</h1><div class="eu2">${av(CE.nome, CE.cor)}<b>${esc(CE.nome)}</b></div><p class="mut" style="margin:0">${np} ${np === 1 ? "pessoa na sala" : "pessoas na sala"}. Aguarde o instrutor iniciar.</p><button class="b g" data-act="cnaosou">Não sou eu</button><button class="b g" data-act="cprox">Outra pessoa vai usar este celular</button></div></div>`};
   if (t === "explicacao") return {tela: "expl", html: `<div class="cc">${cabCel()}<div class="cb">${faixa("Explicação")}<h1>${esc(it ? it.enunciado : "")}</h1>${it && it.texto ? `<p style="margin:0;white-space:pre-line">${esc(it.texto)}</p>` : ""}<p class="mut" style="margin:0">Atenção na explicação do instrutor.</p></div></div>`};
   if (t === "pergunta" && it) {
     const idx = f.idx, resp = CE.resp[idx], tempo = f.dur ? `<div class="pbar"><i data-k="b" data-fim="${CE.t0 + f.dur}" data-dur="${f.dur}"></i></div>` : "";
@@ -101,7 +129,7 @@ function montaCel() {
       corpo = `<div class="tiles">${it.alts.map((a, k) => `<button class="ct2 ${CE.sel === k ? "sel" : ""}" style="background:${COR_ALT[k % 4]}" data-act="cresp" data-k="${k}" ${CE.enviando ? "disabled" : ""}><span class="sh2"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span><span>${esc(a)}</span></button>`).join("")}</div>
         ${m.confirmar ? `<button class="b p g2" data-act="cconf" ${CE.sel === null || CE.enviando ? "disabled" : ""}>${CE.enviando ? "Enviando..." : "Confirmar resposta"}</button>` : ""}`;
     }
-    return {tela: "pergunta", html: `<div class="cc">${cabCel()}<div class="cb">${faixa(rot, tempo)}<h1 class="q">${esc(it.enunciado)}</h1>${corpo}</div></div>`};
+    return {tela: "pergunta", html: `<div class="cc">${cabCel()}<div class="cb">${faixa(rot, tempo)}<h1 class="q">${esc(it.enunciado)}</h1>${btnOuvir("p")}${corpo}</div></div>`};
   }
   if (t === "resultado" && it) {
     const r = CE.res && CE.res.i === f.idx ? CE.res : null, rank = m.ranking && r && r.pos ? `<p class="rk2">Você está em <b>${r.pos}º</b> de ${r.np}${it.ensaio ? "" : " · " + r.tot + " pontos"}</p>` : "";
@@ -112,16 +140,108 @@ function montaCel() {
     else if (r.ok === 1) topo2 = `<div class="rs ac"><div class="ok-i">${ic("check", 'style="width:34px;height:34px"')}</div><h1>Você acertou</h1>${it.ensaio ? `<p class="mut" style="margin:0">Pergunta de teste, não vale nota.</p>` : `<p class="pts">+${r.pts} pontos</p>`}${rank}</div>`;
     else if (r.ok === 0) topo2 = `<div class="rs er"><div class="ok-i er">${ic("x", 'style="width:34px;height:34px"')}</div><h1>Não foi dessa vez</h1><p class="lbl" style="margin:6px 0 0">A resposta certa</p>${certa}${rank}</div>`;
     else topo2 = `<div class="rs er"><h1>Você não respondeu</h1><p class="lbl" style="margin:6px 0 0">A resposta certa</p>${certa}${rank}</div>`;
-    return {tela: "resultado", html: `<div class="cc">${cabCel()}<div class="cb">${faixa(it.ensaio ? "Pergunta de teste" : `Pergunta ${f.numPerg} de ${f.totalPerg}`)}${topo2}${porque}<p class="mut sm" style="margin:0">Aguarde a próxima pergunta.</p></div></div>`};
+    return {tela: "resultado", html: `<div class="cc">${cabCel()}<div class="cb">${faixa(it.ensaio ? "Pergunta de teste" : `Pergunta ${f.numPerg} de ${f.totalPerg}`)}${topo2}${porque}${btnOuvir("r")}<p class="mut sm" style="margin:0">Aguarde a próxima pergunta.</p></div></div>`};
   }
   if (t === "podio") {
     const r = CE.res && CE.res.i === -1 ? CE.res : null;
-    const fim = r ? `<div class="rs ${r.ok ? "ac" : "er"}"><h1>${r.ac} de ${r.nq} certas</h1><p class="pts ${r.ok ? "" : "w"}">${r.pct}% de acerto</p><span class="chip ${r.ok ? "ok" : "warn"}">${r.ok ? "Meta atingida" : "Abaixo da meta, vai para o reforço"}</span>${m.ranking && r.pos ? `<p class="rk2">Você ficou em <b>${r.pos}º</b> de ${r.np} · ${r.tot} pontos</p>` : ""}</div>` : `<div class="rs"><h1>Fim da sessão</h1><p class="mut" style="margin:0">Calculando seu resultado...</p></div>`;
+    const fim = m.mom === "pre" ? `<div class="rs ac"><div class="ok-i">${ic("check", 'style="width:34px;height:34px"')}</div><h1>Pré-teste concluído</h1><p class="mut" style="margin:0">Suas respostas foram registradas. O resultado aparece depois do conteúdo.</p></div>` : r ? `<div class="rs ${r.ok ? "ac" : "er"}"><h1>${r.ac} de ${r.nq} certas</h1><p class="pts ${r.ok ? "" : "w"}">${r.pct}% de acerto</p><span class="chip ${r.ok ? "ok" : "warn"}">${r.ok ? "Meta atingida" : "Abaixo da meta, vai para o reforço"}</span>${m.ranking && r.pos ? `<p class="rk2">Você ficou em <b>${r.pos}º</b> de ${r.np} · ${r.tot} pontos</p>` : ""}</div>` : `<div class="rs"><h1>Fim da sessão</h1><p class="mut" style="margin:0">Calculando seu resultado...</p></div>`;
     const ass = CE.assinou ? `<div class="rs ac"><div class="ok-i">${ic("check", 'style="width:34px;height:34px"')}</div><h1>Presença registrada</h1><p class="mut" style="margin:0">Obrigado por participar.</p></div>`
       : `<div class="as"><label class="lbl" for="cassin">Assine aqui para registrar a presença</label><canvas id="cassin" width="600" height="240" aria-label="Campo de assinatura"></canvas><div class="bar2"><button class="b" data-act="climpar">Limpar</button><button class="b p" data-act="cassinar">Assinar presença</button></div></div>`;
-    return {tela: "podio", html: `<div class="cc">${cabCel()}<div class="cb">${faixa("Fim da sessão")}${fim}${ass}</div></div>`};
+    return {tela: "podio", html: `<div class="cc">${cabCel()}<div class="cb">${faixa("Fim da sessão")}${fim}${m.mom === "pre" ? "" : blocoRevisao()}${ass}${blocoComentario()}<button class="b g2 g" data-act="cprox">Outra pessoa vai usar este celular</button></div></div>`};
   }
   return {tela: "espera2", html: `<div class="cc">${cabCel()}<div class="cb ct"><h1>Aguarde</h1></div></div>`};
+}
+
+
+/* ---------- rever o que errei e treinar de novo (v0.6.0) ---------- */
+function blocoRevisao() {
+  const rv = Object.keys(CE.rev).length; if (!rv) return "";
+  const er = errosCel(); if (!er.length) return `<div class="rv"><span class="chip ok">${ic("check", 'style="width:16px;height:16px"')}Você acertou tudo</span></div>`;
+  const rec = er.filter(x => (CE.ref[x.i] || {}).ok === 1).length;
+  return `<div class="rv"><h2>${er.length} ${er.length === 1 ? "pergunta para rever" : "perguntas para rever"}</h2>
+    <div class="rv-b"><button class="b g2" data-act="crever">Rever o que errei</button><button class="b p g2" data-act="crefazer">${rec && rec === er.length ? "Treinar mais uma vez" : "Treinar de novo"}</button></div>
+    <p class="mut sm" style="margin:0">${rec ? `Você já recuperou ${rec} de ${er.length}. ` : ""}É só treino: não muda sua nota. Em cada pergunta você tem até 3 tentativas.</p></div>`;
+}
+const minhaResp = x => {
+  if (x.m === null || x.m === undefined) return null;
+  if (x.t === "ordenar") return Array.isArray(x.m) ? x.m.map(k => x.a[k]).filter(Boolean) : null;
+  return x.a[x.m] !== undefined ? x.a[x.m] : null;
+};
+const certaTxt = x => x.t === "ordenar" ? `<ol class="cert">${x.a.map(a => `<li>${esc(a)}</li>`).join("")}</ol>` : `<p class="cert"><b>${esc(x.a[x.c] || "")}</b></p>`;
+function telaRever() {
+  const er = errosCel();
+  return {tela: "rever", html: `<div class="cc">${cabCel()}<div class="cb"><div class="fx"><span>Rever o que errei</span>${eu()}</div><h1>${er.length} ${er.length === 1 ? "pergunta" : "perguntas"}</h1>
+    ${er.map(x => { const mr = minhaResp(x); return `<section class="rvq"><span class="lbl">Pergunta ${x.n}</span><h2>${esc(x.e)}</h2>
+      <p class="lbl" style="margin:8px 0 2px">Você respondeu</p>${mr === null ? `<p class="rvm">Não respondeu</p>` : Array.isArray(mr) ? `<ol class="rvm">${mr.map(a => `<li>${esc(a)}</li>`).join("")}</ol>` : `<p class="rvm">${esc(mr)}</p>`}
+      <p class="lbl" style="margin:8px 0 2px">A resposta certa</p>${certaTxt(x)}${x.p ? `<p class="por">${esc(x.p)}</p>` : ""}</section>`; }).join("")}
+    <div class="rv-b"><button class="b g2" data-act="cvolta">Voltar</button><button class="b p g2" data-act="crefazer">Treinar de novo</button></div></div></div>`};
+}
+function proximoRefazer() { return errosCel().find(x => !refFim(x.i)); }
+function telaRefazer() {
+  const er = errosCel(), feitos = er.filter(x => refFim(x.i)).length, rec = er.filter(x => (CE.ref[x.i] || {}).ok === 1).length;
+  CE.rf = CE.rf || {i: null, sel: null, ord: [], fb: null};
+  const rf = CE.rf, atual = rf.i !== null && CE.rev[rf.i] ? Object.assign({i: rf.i}, CE.rev[rf.i]) : null;
+  const cab = `<div class="fx"><span>Treino · ${Math.min(feitos + (atual && !rf.fb ? 1 : 0), er.length) || 1} de ${er.length}</span>${eu()}</div><div class="prg">${er.map(x => `<i class="${refFim(x.i) ? ((CE.ref[x.i] || {}).ok === 1 ? "c" : "e") : atual && x.i === atual.i ? "a" : ""}"></i>`).join("")}</div>`;
+  if (!atual) {
+    const prox = proximoRefazer();
+    if (prox) { rf.i = prox.i; rf.fb = null; return telaRefazer(); }
+    return {tela: "refeito", html: `<div class="cc">${cabCel()}<div class="cb ct"><div class="ok-i ${rec === er.length ? "" : "er"}">${ic(rec === er.length ? "check" : "x", 'style="width:34px;height:34px"')}</div><h1>${rec} de ${er.length} recuperada${rec === 1 ? "" : "s"}</h1><p class="mut" style="margin:0">${rec === er.length ? "Você acertou tudo que tinha errado." : "As que sobraram aparecem em Rever o que errei, com a resposta certa."}</p><div class="rv-b"><button class="b g2" data-act="crever">Rever o que errei</button><button class="b p g2" data-act="cvolta">Concluir</button></div></div></div>`};
+  }
+  const st = CE.ref[atual.i] || {t: 0, ok: 0}, tent = Math.min(3, st.t + (rf.fb ? 0 : 1));
+  if (rf.fb) {
+    const fb = rf.fb, ult = !fb.ok && st.t >= 3;
+    return {tela: "refazfb", html: `<div class="cc">${cabCel()}<div class="cb">${cab}<h1 class="q">${esc(atual.e)}</h1>
+      <div class="rs ${fb.ok ? "ac" : "er"}"><div class="ok-i ${fb.ok ? "" : "er"}">${ic(fb.ok ? "check" : "x", 'style="width:34px;height:34px"')}</div><h1>${fb.ok ? "Agora sim" : ult ? "Não foi dessa vez" : "Ainda não"}</h1>
+        <p class="mut" style="margin:6px 0 0">Tentativa ${st.t} de 3</p>${fb.ok || ult ? `<p class="lbl" style="margin:8px 0 0">A resposta certa</p>${certaTxt(atual)}${atual.p ? `<p class="por">${esc(atual.p)}</p>` : ""}` : ""}</div>
+      <button class="b p g2" data-act="${fb.ok || ult ? "crprox" : "crtenta"}">${fb.ok || ult ? (proximoRefazer() && proximoRefazer().i !== atual.i ? "Próxima" : "Ver o resultado") : "Tentar de novo"}</button></div></div>`};
+  }
+  let corpo;
+  if (atual.t === "ordenar") {
+    const ord = atual.o || atual.a.map((_, k) => k), pos = k => rf.ord.indexOf(k);
+    corpo = `<div class="ords">${ord.map(k => `<button class="ot ${pos(k) >= 0 ? "on" : ""}" data-act="crord" data-k="${k}" ${pos(k) >= 0 ? "disabled" : ""}><b>${pos(k) >= 0 ? pos(k) + 1 : ""}</b><span>${esc(atual.a[k])}</span></button>`).join("")}</div>
+      <div class="bar2"><button class="b" data-act="crordz" ${rf.ord.length ? "" : "disabled"}>Desfazer</button><button class="b p" data-act="crordok" ${rf.ord.length === ord.length ? "" : "disabled"}>Conferir ordem</button></div><p class="mut sm" style="margin:0">Toque nos passos na ordem certa.</p>`;
+  } else corpo = `<div class="tiles">${atual.a.map((a, k) => `<button class="ct2" style="background:${COR_ALT[k % 4]}" data-act="crtoca" data-k="${k}"><span class="sh2"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span><span>${esc(a)}</span></button>`).join("")}</div>`;
+  return {tela: "refazer", html: `<div class="cc">${cabCel()}<div class="cb">${cab}<p class="mut sm" style="margin:0"><b>Tentativa ${tent} de 3</b> · não vale nota</p><h1 class="q">${esc(atual.e)}</h1>${corpo}<button class="b g" data-act="cvolta">Sair do treino</button></div></div>`};
+}
+function refazerResp(r) {
+  const rf = CE.rf; if (!rf || rf.i === null || rf.fb) return; const x = CE.rev[rf.i]; if (!x) return;
+  const st = CE.ref[rf.i] = CE.ref[rf.i] || {t: 0, ok: 0}; if (st.t >= 3 || st.ok === 1) return;
+  const ok = x.t === "ordenar" ? (Array.isArray(r) && r.length === x.a.length && r.every((v, k) => v === k)) : r === x.c;
+  st.t++; if (ok) st.ok = 1;
+  gravaLS("sabia-rf-", CE.ref); enviarRef(rf.i, st);
+  rf.fb = {ok}; rf.sel = null; rf.ord = []; CE.html = ""; pintaCel();
+}
+function enviarRef(i, st) {
+  if (!CE.pub || !CE.base || !CE.pid) return;
+  Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/part/" + CE.pid + "/ref/" + i, {t: st.t, ok: st.ok === 1 ? 1 : 0}).catch(() => {});
+}
+
+/* ---------- comentário rápido e aparelho compartilhado (v0.7.0) ---------- */
+function blocoComentario() {
+  const c = CE.cm, rsp = CE.rsp || {}, ja = c.env.length;
+  const lista = c.env.map(x => `<div class="cmt-e"><span class="chip br">${esc(TIPO_MSG[x.k] || "")}</span><span>${esc(x.x)}</span>${rsp[x.id] && rsp[x.id].x ? `<p class="cmt-r"><b>Resposta do instrutor:</b> ${esc(rsp[x.id].x)}</p>` : ""}</div>`).join("");
+  const form = ja >= 3 ? `<p class="mut sm" style="margin:0">Você já enviou 3 comentários nesta sala.</p>`
+    : `<div class="cmt-t" role="group" aria-label="Tipo de comentário">${Object.entries(TIPO_MSG).map(([k, n]) => `<button type="button" data-act="ccmtipo" data-k="${k}" aria-pressed="${c.tipo === k}">${n}</button>`).join("")}</div>
+      <label class="sr" for="cm-t">Seu comentário</label><textarea class="in ta" id="cm-t" rows="3" maxlength="300" placeholder="Escreva em poucas palavras">${esc(c.texto)}</textarea>
+      <p class="erro" role="alert">${esc(c.erro || "")}</p><button class="b g2" data-act="ccmenv" ${c.enviando ? "disabled" : ""}>${c.enviando ? "Enviando..." : "Enviar comentário"}</button>`;
+  return `<div class="cmt"><h2>Deixe um comentário</h2><p class="mut sm" style="margin:0">Elogio, sugestão, reclamação ou pergunta para o instrutor. Vai com o seu nome.</p>${lista}${form}</div>`;
+}
+async function enviarCom() {
+  const c = CE.cm, tx = c.texto.replace(/[\u0000-\u001f<>]/g, " ").replace(/\s+/g, " ").trim().slice(0, 300);
+  if (!CE.pid || !CE.pub || c.enviando || c.env.length >= 3) return;
+  if (tx.length < 3) { c.erro = "Escreva pelo menos 3 letras."; CE.html = ""; pintaCel(); return; }
+  const id = uid().replace(/[^a-zA-Z0-9]/g, "").slice(0, 10) || String(Date.now());
+  c.enviando = true; c.erro = ""; CE.html = ""; pintaCel();
+  try { await Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/part/" + CE.pid + "/com/" + id, {k: c.tipo, x: tx, t: Date.now()}); c.env.push({id, k: c.tipo, x: tx}); c.texto = ""; gravaLS("sabia-cm-", {l: c.env}); }
+  catch (e) { c.erro = "Não enviou. Confira a internet e toque de novo."; }
+  c.enviando = false; CE.html = ""; pintaCel();
+}
+/* o mesmo celular passa para outra pessoa: some tudo o que é da pessoa anterior neste aparelho */
+function proxPessoaCel() {
+  if (CE.ouvRes) CE.ouvRes.fechar(); if (CE.ouvRsp) CE.ouvRsp.fechar();
+  ["sabia-p-", "sabia-a-", "sabia-rv-", "sabia-rf-", "sabia-cm-"].forEach(k => { try { localStorage.removeItem(chaveLS(k)); } catch (e) {} });
+  Object.assign(CE, {pid: null, nome: "", entrou: false, jaEntrou: false, res: null, rsp: null, ouvRes: null, ouvRsp: null, resp: {}, rev: {}, ref: {}, assinou: false, tracos: 0, vista: "", rf: null, sel: null, ord: [], erro: "", cm: {tipo: "sugestao", texto: "", env: [], erro: ""}, html: ""});
+  pintaCel(); scrollTo(0, 0);
 }
 
 /* ---------- assinatura ---------- */
@@ -157,7 +277,9 @@ async function entrarCel(nome, setor) {
   nome = limpaNome(nome);
   if (nome.length < 3) { CE.erro = "Digite seu nome."; return; }
   if (ro.length) { const ach = ro.find(x => semAcento(x) === semAcento(nome)); if (!ach) { CE.erro = "Escolha seu nome na lista. Não achou? Fale com o instrutor."; return; } nome = ach; }
-  const se = lista(m.setores); if (se.length > 1 && !setor) { CE.erro = "Escolha o seu setor."; return; }
+  const se = lista(m.setores);
+  if (se.length > 1 && !setor && ro.length) { const i = ro.indexOf(nome), auto = i >= 0 ? lista(m.rs)[i] : ""; if (auto && se.includes(auto)) setor = auto; }   // setor vem do cadastro de Pessoas
+  if (se.length > 1 && !setor) { CE.erro = "Escolha o seu setor."; return; }
   CE.erro = "";
   let pid = uid();
   try { const todos = await Rede.req(CE.base, "GET", "/salas/" + CE.chave + "/part"); const ex = Object.entries(todos || {}).find(([, v]) => v && semAcento(v.n) === semAcento(nome)); if (ex) pid = ex[0]; } catch(e) {}
@@ -169,7 +291,7 @@ async function entrarCel(nome, setor) {
 }
 document.addEventListener("click", e => {
   const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act;
-  if (!["ccor", "cresp", "cconf", "cord", "cordz", "cordok", "cnaosou", "cretry", "cassinar", "climpar", "csug"].includes(a)) return;
+  if (!["ccor", "cresp", "cconf", "cord", "cordz", "cordok", "cnaosou", "cretry", "cassinar", "climpar", "csug", "crever", "crefazer", "cvolta", "crtoca", "crord", "crordz", "crordok", "crprox", "crtenta", "ccmtipo", "ccmenv", "cprox"].includes(a)) return;
   const k = Number(el.dataset.k);
   if (a === "ccor") { CE.cor = k; const n = $("#ce-n"); if (n) CE.nome = n.value; CE.html = ""; pintaCel(); atualizaSug(); }
   else if (a === "csug") { const i = $("#ce-n"); if (i) { i.value = el.dataset.v; CE.nome = el.dataset.v; atualizaSug(); } }
@@ -180,6 +302,18 @@ document.addEventListener("click", e => {
   else if (a === "cordok") { const n = (itemCel() || {alts: []}).alts.length; if (CE.ord.length === n) enviarResp(CE.ord.slice()); }
   else if (a === "cnaosou") { Rede.req(CE.base, "DELETE", "/salas/" + CE.chave + "/part/" + CE.pid).catch(() => {}); if (CE.ouvRes) CE.ouvRes.fechar(); CE.ouvRes = null; try { localStorage.removeItem(chaveLS("sabia-p-")); } catch(x) {} Object.assign(CE, {entrou: false, jaEntrou: false, pid: null, nome: "", res: null, resp: {}, html: ""}); pintaCel(); }
   else if (a === "cretry") { const c = CE.chave, s = CE.sg; pararCel(); iniciarCel(c, s); CE.html = ""; pintaCel(); }
+  else if (a === "crever") { CE.vista = "rever"; CE.html = ""; pintaCel(); scrollTo(0, 0); }
+  else if (a === "crefazer") { CE.vista = "refazer"; CE.rf = {i: null, sel: null, ord: [], fb: null}; CE.html = ""; pintaCel(); scrollTo(0, 0); }
+  else if (a === "cvolta") { CE.vista = ""; CE.rf = null; CE.html = ""; pintaCel(); }
+  else if (a === "crtoca") refazerResp(k);
+  else if (a === "crord") { if (CE.rf && !CE.rf.ord.includes(k)) { CE.rf.ord.push(k); CE.html = ""; pintaCel(); } }
+  else if (a === "crordz") { if (CE.rf) { CE.rf.ord.pop(); CE.html = ""; pintaCel(); } }
+  else if (a === "crordok") { if (CE.rf) refazerResp(CE.rf.ord.slice()); }
+  else if (a === "crprox") { if (CE.rf) { CE.rf.i = null; CE.rf.fb = null; CE.html = ""; pintaCel(); } }
+  else if (a === "crtenta") { if (CE.rf) { CE.rf.fb = null; CE.html = ""; pintaCel(); } }
+  else if (a === "ccmtipo") { CE.cm.tipo = el.dataset.k; CE.html = ""; pintaCel(); }
+  else if (a === "ccmenv") enviarCom();
+  else if (a === "cprox") proxPessoaCel();
   else if (a === "cassinar") assinarCel();
   else if (a === "climpar") { const c = $("#cassin"); if (c) { const x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height); CE.tracos = 0; } }
 });
@@ -190,7 +324,7 @@ function atualizaSug() {
   const ach = ro.filter(n => semAcento(n).split(" ").some(p => p.startsWith(q)) || semAcento(n).includes(q)).slice(0, 5);
   el.innerHTML = ach.length ? ach.map(n => `<button type="button" class="sg" data-act="csug" data-v="${esc(n)}">${esc(n)}</button>`).join("") : `<span class="mut sm">Nenhum nome encontrado. Fale com o instrutor.</span>`;
 }
-document.addEventListener("input", e => { if (e.target.id === "ce-n") { CE.nome = e.target.value; atualizaSug(); } });
+document.addEventListener("input", e => { if (e.target.id === "ce-n") { CE.nome = e.target.value; atualizaSug(); } else if (e.target.id === "cm-t") CE.cm.texto = e.target.value; });
 document.addEventListener("submit", e => {
   const f = e.target.closest("[data-form]"); if (!f) return;
   if (f.dataset.form === "celchave") { e.preventDefault(); const k = $("#ce-k").value.replace(/\D/g, ""); if (k.length === 6) location.hash = "#/entrar/" + k; else aviso("A chave tem 6 números."); }

@@ -1,0 +1,29 @@
+/* ===== v0.8.0 · integração, perfis, porta de entrada, Ajustes (classes int-, aj-, obs-) ===== */
+.aj-ind{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px}
+.cols section[id]{scroll-margin-top:64px}
+.int-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:12px}
+.int-g h4{margin:0 0 8px;font-size:14px;font-family:var(--f-disp)}
+.int-st{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.int-ac{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.int-conta{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.int-er{color:var(--bad,#B3261E);margin:6px 0 0;min-height:0}
+.int-er:empty{display:none}
+.int-g textarea.in,.int-f textarea.in{min-height:88px;font-family:var(--f-mono);font-size:12px}
+body.modo-porta .rail,body.modo-porta .bnav,body.modo-porta .tb{display:none!important}
+body.modo-porta .app{grid-template-columns:1fr;grid-template-rows:1fr}
+.int-porta{min-height:100%;display:grid;place-items:center;padding:16px}
+.int-pc{max-width:420px;width:100%;display:grid;gap:12px;padding:22px}
+.int-pc h1{font-size:22px;margin:0;font-family:var(--f-disp);text-wrap:balance}
+.int-pc p{margin:0}
+.int-f{display:grid;gap:10px}
+.int-lg{width:48px;height:48px;border-radius:16px;background:var(--brand-hi);display:grid;place-items:center}
+.int-lg svg{width:32px;height:32px}
+body.int-demo::after{content:"Demonstração · sessões de teste, fora do registro";position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));background:var(--sabia);color:#fff;font-size:12px;font-weight:700;padding:6px 14px;border-radius:999px;z-index:30;pointer-events:none;white-space:nowrap;max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis}
+@media (min-width:900px){body.int-demo::after{bottom:16px}}
+.obs-f{display:flex;gap:8px}
+.obs-f .in{flex:1;min-width:0}
+.obs-l{display:grid;gap:6px;max-height:220px;overflow:auto}
+.obs-i{display:flex;gap:8px;align-items:flex-start;justify-content:space-between;border-top:1px solid var(--line);padding:6px 4px 0}
+.obs-i>div{display:grid;gap:2px;min-width:0}
+.obs-i span{overflow-wrap:anywhere}
+body.perfil-col [data-act=novo],body.perfil-col [data-act=excluir],body.perfil-col [data-act=duplicar],body.perfil-col [data-act=impor],body.perfil-col [data-act=usarmodelo],body.perfil-col a[href^="#/aplicar"],body.perfil-col a[href^="#/editar"]{display:none!important}

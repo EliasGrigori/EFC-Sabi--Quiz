@@ -1,0 +1,26 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "_teste": { ".read": true, ".write": true, ".validate": "newData.isString() && newData.val().length < 40" },
+    "salas": {
+      "$chave": {
+        ".read": true,
+        "pub": { ".write": true },
+        "res": { ".write": true },
+        "part": { "$pid": {
+          ".write": true,
+          ".validate": "newData.hasChildren(['n']) && newData.child('n').isString() && newData.child('n').val().length <= 60"
+        } },
+        "resp": { "$pid": { "$idx": {
+          ".write": "!data.exists() || !newData.exists()",
+          ".validate": "newData.hasChild('r')"
+        } } },
+        "ass": { "$pid": {
+          ".write": "!data.exists() || !newData.exists()",
+          ".validate": "newData.isString() && newData.val().length < 40000"
+        } }
+      }
+    }
+  }
+}

@@ -58,3 +58,29 @@ ol.cert{text-align:left;padding-left:26px}
 .pbar{height:8px;border-radius:99px;background:var(--sunk);overflow:hidden}
 .pbar i{display:block;height:100%;background:var(--sabia);width:0}
 .pts.w{color:var(--warn)}
+
+/* ===== v0.6.0 · progresso, rever e refazer ===== */
+.prg{display:flex;gap:4px}
+.prg i{flex:1;height:8px;border-radius:4px;background:var(--line);min-width:6px}
+.prg i.c{background:var(--ok)}
+.prg i.e{background:var(--sabia);background-image:repeating-linear-gradient(135deg,rgb(255 255 255/.55) 0 3px,transparent 3px 6px)}
+.prg i.a{background:var(--brand);opacity:.55}
+.prgt{font-size:13px;color:var(--ink2)}
+.prgt b{font-family:var(--f-mono);color:var(--ink)}
+.rv{display:grid;gap:10px;width:100%;text-align:left}
+.rv h2{font-size:18px}
+.rv-b{display:grid;gap:8px;width:100%}
+.rvq{display:grid;gap:2px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
+.rvq h2{font-size:17px;line-height:1.25}
+.rvm{margin:0;color:var(--bad);font-weight:600}
+ol.rvm{padding-left:20px;margin:0}
+
+/* ===== v0.7.0 · comentário rápido e aparelho compartilhado (classes cmt-) ===== */
+.cmt{display:grid;gap:10px;width:100%;text-align:left;border-top:1px solid var(--line);padding-top:14px}
+.cmt h2{font-size:18px}
+.cmt .ta{min-height:96px;padding:10px 12px;font-family:inherit;resize:vertical}
+.cmt-t{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.cmt-t button{min-height:48px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font-weight:600;font-size:15px;cursor:pointer}
+.cmt-t button[aria-pressed="true"]{border-color:var(--sabia);background:var(--sabia-soft)}
+.cmt-e{display:grid;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;justify-items:start}
+.cmt-r{margin:0;background:var(--sunk);border-radius:10px;padding:8px 10px;width:100%}

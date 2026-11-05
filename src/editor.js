@@ -97,9 +97,14 @@ function vEditar(id) {
         <div class="fd full"><label for="et-titulo">Título</label><input class="in" id="et-titulo" data-et="titulo" maxlength="120" value="${esc(t.titulo)}"></div>
         <div class="fd"><label for="et-desc">Descrição</label><input class="in" id="et-desc" data-et="descricao" maxlength="400" value="${esc(t.descricao || "")}" placeholder="Opcional"></div>
         <div class="fd"><label for="et-meta">Meta %</label><input class="in" id="et-meta" data-et="meta" type="number" min="1" max="100" inputmode="numeric" value="${t.meta}"></div>
+        <div class="fd full"><label for="et-per">Validade do treinamento</label><select class="in" id="et-per">${VALIDADES.map(([d, n]) => `<option value="${d}" ${(t.per || 0) === d ? "selected" : ""}>${n}</option>`).join("")}</select><span class="sm mut">Depois desse prazo a pessoa aparece em Pendências para renovar.</span></div>
+        <div class="fd full"><span class="lbl" id="et-rv-l">Reavaliar depois de</span><div class="chips" role="group" aria-labelledby="et-rv-l">${REAV_DIAS.map(d => `<button type="button" class="sc" data-act="edreav" data-d="${d}" aria-pressed="${(t.reav || []).includes(d)}">${d} dias</button>`).join("")}</div><span class="sm mut">Quem passou aparece em Pendências 14 dias antes de cada prazo, para medir o que ficou.</span></div>
       </section>
+      ${iaAviso(t)}
+      <section class="k" id="obs-box" style="display:grid;gap:8px;padding:10px 10px 12px">${obsHtml(t)}</section>
       <section class="k" style="display:grid;gap:8px;padding:10px 10px 12px"><div class="lbl" style="padding:0 4px">Perguntas</div><div class="qlist" id="edLista"></div><div class="stt" id="edSt"></div>
-        <div class="adds">${["multipla", "vf", "ordenar", "explicacao"].map(k => `<button class="b" data-act="edadd" data-v="${k}">${ic("plus", 'style="width:16px;height:16px"')}${TIPOS_CURTO[k]}</button>`).join("")}</div></section>
+        <div class="adds">${["multipla", "vf", "ordenar", "explicacao"].map(k => `<button class="b" data-act="edadd" data-v="${k}">${ic("plus", 'style="width:16px;height:16px"')}${TIPOS_CURTO[k]}</button>`).join("")}</div>
+        <button class="b" data-act="bnabrir" style="justify-self:start">${ic("book", 'style="width:16px;height:16px"')}Inserir do banco de perguntas</button></section>
     </div>
     <div class="edc" id="edCentro"></div>
     <aside class="edr" id="edDir"></aside></div>`;
@@ -153,9 +158,9 @@ function pintaCentro() {
   el.innerHTML = `<section class="k" style="display:grid;gap:12px">
     <div class="edh"><h2>${it.tipo === "explicacao" ? "Explicação" : (it.uso === "ensaio" ? "Pergunta de teste" : "Pergunta " + numeroItem(t, i))}</h2>
       <button class="b ic g" data-act="edup" aria-label="Mover para cima" title="Mover para cima" ${i === 0 ? "disabled" : ""}>${ic("up")}</button><button class="b ic g" data-act="eddown" aria-label="Mover para baixo" title="Mover para baixo" ${i === t.itens.length - 1 ? "disabled" : ""}>${ic("down")}</button>
-      <button class="b ic g" data-act="eddup" aria-label="Duplicar pergunta" title="Duplicar">${ic("copy")}</button><button class="b ic g bad" data-act="eddel" aria-label="Excluir pergunta" title="Excluir">${ic("trash")}</button></div>
+      <button class="b ic g" data-act="eddup" aria-label="Duplicar pergunta" title="Duplicar">${ic("copy")}</button><button class="b ic g" data-act="bnguardar" aria-label="Guardar no banco de perguntas" title="Guardar no banco">${ic("book")}</button><button class="b ic g bad" data-act="eddel" aria-label="Excluir pergunta" title="Excluir">${ic("trash")}</button></div>
     <div class="seg" role="group" aria-label="Formato">${["multipla", "vf", "ordenar", "explicacao"].map(k => `<button type="button" data-act="edtipo" data-v="${k}" aria-pressed="${it.tipo === k}">${TIPOS_CURTO[k]}</button>`).join("")}</div>
-    <div class="avs" id="edAv"></div>${corpo}</section>`;
+    <div class="avs" id="edAv"></div>${corpo}${vozHtml(it)}</section>`;
   pintaAvisos();
 }
 function pintaAvisos() {
@@ -169,7 +174,7 @@ function snapPrev(t, i, modo) {
   if (rev) dist = it.tipo === "ordenar" ? {acertos: 7, total: 10} : alts.map((_, k) => ok < 0 ? Math.round(10 / n) : (k === ok ? 6 : Math.floor(4 / (n - 1)) + (k === (ok === 0 ? 1 : 0) ? 4 % (n - 1) : 0)));
   return {id: "prev", chave: "482915", titulo: t.titulo || "Treinamento", instrutor: S.cfg.instrutor || "", meta: t.meta, tela: S.cfg.telao || "escuro", som: "desligado", ranking: true, entrada: true,
     fase: {etapa: !q ? "explicacao" : (rev ? "resultado" : "pergunta"), idx: i, t0: 0, dur: 0}, min: 5, nPart: 12, part: [], nPerg: qs.length, totalPerg: qs.length, numPerg: q ? qs.indexOf(it) + 1 : 0, resp: rev ? 10 : 0, dist, url: "",
-    item: {tipo: it.tipo, enunciado: it.enunciado || (q ? "Escreva o enunciado da pergunta" : "Título da explicação"), texto: it.texto || "", alts, ordem: it.tipo === "ordenar" ? embaralhado(n, i) : null, correta: rev && ok >= 0 ? ok : null, porque: rev ? (it.porque || "") : "", ensaio: it.uso === "ensaio"}};
+    item: {tipo: it.tipo, enunciado: it.enunciado || (q ? "Escreva o enunciado da pergunta" : "Título da explicação"), texto: it.texto || "", alts, ordem: it.tipo === "ordenar" ? embaralhado(n, i) : null, correta: rev && ok >= 0 ? ok : null, porque: rev ? (it.porque || "") : "", ensaio: it.uso === "ensaio", voz: audioOk(it.audio) ? it.audio : ""}};
 }
 function resumoTreino(t) {
   const r = roteiro(t), vale = t.itens.filter(i => i.tipo !== "explicacao" && i.uso !== "ensaio").length, teste = t.itens.filter(i => i.uso === "ensaio").length, ex = t.itens.filter(i => i.tipo === "explicacao").length, pr = problemasTreino(t).length;

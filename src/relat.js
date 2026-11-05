@@ -9,7 +9,7 @@ const dtc = iso => { try { return new Date(iso).toLocaleString("pt-BR", {day: "2
 const dtd = iso => { try { return new Date(iso).toLocaleDateString("pt-BR"); } catch (e) { return ""; } };
 const horasTxt = h => String(h || "").replace(".", ",") + " h";
 const verTxt = s => "v" + String(s.versao ?? 0).padStart(2, "0");
-const situ = (s, p) => !(s.resp[p.id] && Object.keys(s.resp[p.id]).length) ? "Não respondeu" : p.pct >= s.meta ? "Atingiu a meta" : "Abaixo da meta";
+const situ = (s, p) => s.mom === "pre" ? "Linha de base" : !(s.resp[p.id] && Object.keys(s.resp[p.id]).length) ? "Não respondeu" : p.pct >= s.meta ? "Atingiu a meta" : "Abaixo da meta";
 
 /* ---------- números da sessão ---------- */
 function estat(s) {
@@ -30,7 +30,7 @@ function estat(s) {
   const setores = Object.entries(por).map(([nome, l]) => ({nome, n: l.length, pct: Math.round(l.reduce((a, p) => a + p.pct, 0) / l.length), efic: l.filter(p => p.pct >= s.meta).length}))
     .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
   const pessoas = c.pessoas.map(p => { const o = s.part.find(x => x.id === p.id) || {}; return Object.assign({}, p, {sim: !!o.sim, ass: o.ass || "", sit: situ(s, p)}); });
-  return {c, perg, nota, tempo: nMs ? somaMs / nMs / 1000 : 0, setores, pessoas, abaixo: pessoas.filter(p => p.pct < s.meta), fracas: perg.filter(q => q.resp && q.pct < 60)};
+  return {c, perg, nota, tempo: nMs ? somaMs / nMs / 1000 : 0, setores, pessoas, abaixo: s.mom === "pre" ? [] : pessoas.filter(p => p.pct < s.meta), fracas: perg.filter(q => q.resp && q.pct < 60)};
 }
 const tempoTxt = t => t ? (Math.round(t * 10) / 10).toString().replace(".", ",") + " s" : "–";
 
@@ -42,7 +42,9 @@ function canonSessao(s) {
     return [p.nome, p.setor || "", p.ac, p.pts, p.pct, qs.map(([, i]) => rs[i] ? (rs[i].ok ? "1" : "0") : "-").join(""), o.ass ? sha256(o.ass).slice(0, 16) : ""];
   }).sort((a, b) => a[0].localeCompare(b[0], "pt-BR") || a[1].localeCompare(b[1], "pt-BR") || a[6].localeCompare(b[6]));
   const perguntas = sha256(JSON.stringify(qs.map(([it]) => [it.tipo, it.enunciado, it.alternativas || null, it.correta ?? null]))).slice(0, 16);
-  return JSON.stringify({v: 1, t: s.titulo, ver: s.versao ?? 0, fim: s.fim, ins: s.instrutor || "", loc: s.local || "", h: String(s.horas || ""), meta: s.meta, np: qs.length, q: perguntas, teste: !!(s.aj && s.aj.teste), sim: s.part.some(p => p.sim), p: pessoas});
+  const o = {v: 1, t: s.titulo, ver: s.versao ?? 0, fim: s.fim, ins: s.instrutor || "", loc: s.local || "", h: String(s.horas || ""), meta: s.meta, np: qs.length, q: perguntas, teste: !!(s.aj && s.aj.teste), sim: s.part.some(p => p.sim), p: pessoas};
+  if (s.mom) { o.mom = s.mom; o.dias = s.dias || 0; o.base = s.base && s.base.itens ? sha256(JSON.stringify(s.base.itens.map(x => [x.nome, x.pct]).sort())).slice(0, 16) : ""; }
+  return JSON.stringify(o);
 }
 function codigoDe(s) { return "SAB-" + sha256(canonSessao(s)).slice(0, 20).toUpperCase().match(/.{4}/g).join("-"); }
 function garantirCodigo(s) { if (!s.cod) { s.cod = codigoDe(s); s.codTardio = true; s.codEm = new Date().toISOString(); salvar(); } return s.cod; }
@@ -62,9 +64,10 @@ const nomeArq = (pre, s, ext) => `${pre}-${slug(s.titulo)}-${(s.fim || "").slice
 const celCsv = v => { let t = String(v ?? ""); if (/^[=+\-@\t\r]/.test(t)) t = "'" + t; return /[";\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
 function csvSessao(s) {
   const e = estat(s);
-  const cab = ["Nome", "Setor", "Acertos", "Perguntas", "Percentual", "Pontos", "Situação", "Assinou", ...e.perg.map(q => "P" + q.n)];
-  const linhas = e.pessoas.map(p => { const rs = s.resp[p.id] || {}; return [p.nome, p.setor || "", p.ac, e.c.nq, p.pct, p.pts, p.sit, p.ass ? "Sim" : "Não", ...e.perg.map(q => rs[q.i] ? (rs[q.i].ok ? "Certo" : "Errado") : "-")]; });
-  const topo = [["Treinamento", s.titulo], ["Versão", verTxt(s)], ["Data", dtc(s.fim)], ["Instrutor", s.instrutor || ""], ["Local", s.local || ""], ["Carga horária", horasTxt(s.horas)], ["Meta", s.meta + "%"], ["Tipo", TIPO_TXT[tipoSessao(s)]], ["Código de conferência", garantirCodigo(s)], []];
+  const cmp = comparativo(s), cm = cmp ? new Map(cmp.lin.map(x => [nk(x.nome), x])) : null;
+  const cab = ["Nome", "Setor", "Acertos", "Perguntas", "Percentual", "Pontos", "Situação", "Assinou", ...e.perg.map(q => "P" + q.n), ...(cm ? [cmp.rot + " (%)", "Variação (pp)"] : [])];
+  const linhas = e.pessoas.map(p => { const rs = s.resp[p.id] || {}; return [p.nome, p.setor || "", p.ac, e.c.nq, p.pct, p.pts, p.sit, p.ass ? "Sim" : "Não", ...e.perg.map(q => rs[q.i] ? (rs[q.i].ok ? "Certo" : "Errado") : "-"), ...(cm ? (() => { const x = cm.get(nk(p.nome)); return x ? [x.antes, x.dif] : ["", ""]; })() : [])]; });
+  const topo = [["Treinamento", s.titulo], ["Versão", verTxt(s)], ["Data", dtc(s.fim)], ["Instrutor", s.instrutor || ""], ["Local", s.local || ""], ["Carga horária", horasTxt(s.horas)], ["Meta", s.meta + "%"], ["Tipo", TIPO_TXT[tipoSessao(s)]], ...(s.mom ? [["Momento", MOM_TXT[s.mom] + (s.dias ? " de " + s.dias + " dias" : "")]] : []), ["Código de conferência", garantirCodigo(s)], []];
   return "﻿" + topo.concat([cab], linhas).map(l => l.map(celCsv).join(";")).join("\r\n") + "\r\n";
 }
 function abrirPdf(bytes) { const u = URL.createObjectURL(new Blob([bytes], {type: "application/pdf"})); const w = window.open(u, "_blank"); if (!w) aviso("O navegador bloqueou a janela. Use o botão de baixar."); setTimeout(() => URL.revokeObjectURL(u), 60000); }
@@ -116,12 +119,25 @@ const corSit = t => t === "Atingiu a meta" ? "#1B7A4B" : t === "Abaixo da meta" 
 function pdfRegistro(s) {
   const e = estat(s), d = pdfBase(s, "Registro de treinamento"), {W, M} = d;
   pdfTopo(d, s, "Registro de treinamento");
-  pdfCampos(d, [["Treinamento", `${s.titulo} (${verTxt(s)})`], ["Data e hora do encerramento", dtc(s.fim)], ["Instrutor", s.instrutor], ["Local", s.local], ["Carga horária", horasTxt(s.horas)], ["Meta de acerto", s.meta + "%"], ["Setores", (s.setores || []).length ? s.setores.join(", ") : "Todos"], ["Perguntas que valem nota", String(e.c.nq)]]);
-  pdfIndicadores(d, [[e.nota + "%", "Nota média"], [`${e.c.efic} de ${e.c.pessoas.length}`, "Atingiram a meta"], [e.c.pct + "%", "Acerto geral"], [tempoTxt(e.tempo), "Tempo médio por resposta"]]);
+  pdfCampos(d, [["Treinamento", `${s.titulo} (${verTxt(s)})`], ["Data e hora do encerramento", dtc(s.fim)], ["Instrutor", s.instrutor], ["Local", s.local], ["Carga horária", horasTxt(s.horas)], ["Meta de acerto", s.meta + "%"], ...(s.mom ? [["Momento", MOM_TXT[s.mom] + (s.dias ? " de " + s.dias + " dias" : "")]] : []), ...seloCampo(s), ["Setores", (s.setores || []).length ? s.setores.join(", ") : "Todos"], ["Perguntas que valem nota", String(e.c.nq)]]);
+  pdfIndicadores(d, [[e.nota + "%", "Nota média"], s.mom === "pre" ? [String(e.c.pessoas.length), "Pessoas"] : [`${e.c.efic} de ${e.c.pessoas.length}`, "Atingiram a meta"], [e.c.pct + "%", "Acerto geral"], [tempoTxt(e.tempo), "Tempo médio por resposta"]]);
   pdfSecao(d, "Presença e resultado");
   const ord = e.pessoas.slice().sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
   d.tabela([{t: "#", w: 22}, {t: "Nome", w: 150}, {t: "Setor", w: 80}, {t: "Acertos", w: 46, al: "cen"}, {t: "%", w: 34, al: "dir"}, {t: "Pontos", w: 46, al: "dir"}, {t: "Situação", w: 82}, {t: "Assinatura", w: 96, al: "cen"}],
     ord.map((p, i) => [String(i + 1), p.nome, p.setor || "–", `${p.ac}/${e.c.nq}`, p.pct + "%", String(p.pts), {txt: p.sit, neg: true, cor: corSit(p.sit)}, {img: p.ass, h: 22, vazio: "sem assinatura"}]));
+  const cmp = comparativo(s);
+  if (cmp && cmp.n) {
+    pdfSecao(d, cmpTitulo(s), 40 + cmp.n * 18);
+    d.tabela([{t: "Nome", w: 200}, {t: cmp.rot + " (%)", w: 90, al: "dir"}, {t: "Agora (%)", w: 70, al: "dir"}, {t: "Variacao (pp)", w: 80, al: "dir"}, {t: "Ganho norm.", w: 70, al: "dir"}],
+      cmp.lin.map(x => [x.nome, String(x.antes), String(x.agora), {txt: sinal(x.dif), neg: true, cor: x.dif > 0 ? "#1B7A4B" : x.dif < 0 ? "#9A6200" : "#6b7c7b"}, x.g === null ? "-" : x.g + "%"]));
+    d.par(M, d.y + 4, `Media antes ${cmp.antes}%, media agora ${cmp.agora}% (${sinal(cmp.dif)} pp).${cmp.g !== null ? " Ganho normalizado da turma: " + cmp.g + "%." : ""} Ganho normalizado = (agora - antes) / (100 - antes).`, W - 2 * M, {tam: 8, cor: "#5a6b6a"}); d.y += 22;
+  }
+  const rfz = resumoRefaz(s);
+  if (rfz) {
+    pdfSecao(d, "Treino feito no celular", 40 + rfz.lin.length * 18);
+    d.tabela([{t: "Nome", w: 210}, {t: "Erros", w: 50, al: "cen"}, {t: "Treinou", w: 50, al: "cen"}, {t: "Recuperou", w: 70, al: "cen"}, {t: "Tentativas", w: 70, al: "cen"}], rfz.lin.map(x => [x.nome, String(x.erros), String(x.fez), String(x.rec), String(x.tent)]));
+    d.par(M, d.y + 4, "O treino feito no celular nao altera a nota, o ranking, o codigo de conferencia nem a fila de reforco.", W - 2 * M, {tam: 8, cor: "#5a6b6a"}); d.y += 18;
+  }
   if (e.perg.length) {
     pdfSecao(d, "Assertividade por pergunta");
     d.tabela([{t: "#", w: 22}, {t: "Pergunta", w: 230}, {t: "Respostas", w: 50, al: "cen"}, {t: "Acertos", w: 46, al: "cen"}, {t: "%", w: 36, al: "dir"}, {t: "Errada mais escolhida", w: 150}],
@@ -159,7 +175,7 @@ function pdfPresenca(s) {
 function reaplicar(s) {
   const t = treino(s.treinoId); if (!t) { aviso("O treinamento desta sessão foi removido"); return; }
   const e = estat(s); if (!e.abaixo.length) { aviso("Todos atingiram a meta"); return; }
-  UI.apl = {id: t.id, preset: "aovivo", setores: (s.setores || []).slice(), instrutor: s.instrutor || S.cfg.instrutor, local: s.local || S.cfg.local, horas: s.horas || "1", aj: Object.assign({}, AJ_PADRAO, PRESETS.aovivo.aj), roster: e.abaixo.map(p => p.nome), reaplicaDe: s.id};
+  UI.apl = {id: t.id, preset: "aovivo", setores: (s.setores || []).slice(), instrutor: s.instrutor || S.cfg.instrutor, local: s.local || S.cfg.local, horas: s.horas || "1", aj: Object.assign({}, AJ_PADRAO, PRESETS.aovivo.aj), roster: e.abaixo.map(p => p.nome), reaplicaDe: s.id, mom: "ref", base: {rot: "Resultado anterior", itens: e.abaixo.map(p => ({nome: p.nome, pct: p.pct, fim: s.fim}))}};
   ir("#/aplicar/" + t.id);
 }
 async function salvarFoto(s, arq) {
@@ -178,10 +194,11 @@ function sessaoRel(id) {
   return (id && l.find(x => x.id === id)) || (REL.sid && l.find(x => x.id === REL.sid)) || l.find(x => tipoSessao(x) === "real") || l[0] || null;
 }
 function vRelatorios(id) {
+  if (id === "desafio") { vDesafio(); return; }
   const l = encerradas();
   topo("Relatórios", l.length ? `${l.length} sessão${l.length === 1 ? "" : "ões"} encerrada${l.length === 1 ? "" : "s"}` : "");
   $("#app").className = "body rel";
-  if (!l.length) { $("#app").innerHTML = `<section class="k vazio">${ic("chart", 'style="width:32px;height:32px;color:var(--brand-ink)"')}<b>Nenhuma sessão encerrada ainda</b><span class="sm">Quando você encerrar uma sala, o resultado, a lista de presença e o PDF de registro aparecem aqui.</span><a class="b p" href="#/treinos">${ic("list")}Ir para Treinos</a></section>`; return; }
+  if (!l.length) { $("#app").innerHTML = `${relModo("sessoes")}<section class="k vazio">${ic("chart", 'style="width:32px;height:32px;color:var(--brand-ink)"')}<b>Nenhuma sessão encerrada ainda</b><span class="sm">Quando você encerrar uma sala, o resultado, a lista de presença e o PDF de registro aparecem aqui.</span><a class="b p" href="#/treinos">${ic("list")}Ir para Treinos</a></section>`; return; }
   const s = sessaoRel(id); REL.sid = s.id; garantirCodigo(s);
   const e = estat(s), tp = tipoSessao(s), t = treino(s.treinoId);
   const opt = l.map(x => `<option value="${x.id}" ${x.id === s.id ? "selected" : ""}>${esc(x.titulo)} · ${dtd(x.fim)}${tipoSessao(x) === "teste" ? " (teste)" : tipoSessao(x) === "ensaio" ? " (ensaio)" : ""}</option>`).join("");
@@ -191,11 +208,12 @@ function vRelatorios(id) {
   else if (REL.aba === "mapa") corpo = relMapa(s, e);
   else if (REL.aba === "pergunta") corpo = relPerguntas(s, e);
   else corpo = relSetores(s, e);
-  $("#app").innerHTML = `<section class="k rl-top">
+  $("#app").innerHTML = `${relModo("sessoes")}<section class="k rl-top">
       <div class="fd"><label for="rl-s">Sessão</label><select class="in" id="rl-s">${opt}</select></div>
-      <div class="rl-meta" aria-label="Dados da sessão"><span class="chip ${tp === "real" ? "ok" : "warn"}">${TIPO_TXT[tp]}</span><span class="chip">${dtc(s.fim)}</span><span class="chip">${esc(s.instrutor || "sem instrutor")}</span>${s.local ? `<span class="chip">${esc(s.local)}</span>` : ""}<span class="chip">${horasTxt(s.horas)}</span><span class="chip">${verTxt(s)}</span>${s.reaplicaDe ? '<span class="chip br">Reaplicação</span>' : ""}</div>
+      <div class="rl-meta" aria-label="Dados da sessão"><span class="chip ${tp === "real" ? "ok" : "warn"}">${TIPO_TXT[tp]}</span>${s.mom ? `<span class="chip br">${MOM_TXT[s.mom]}${s.dias ? " · " + s.dias + " dias" : ""}</span>` : ""}<span class="chip">${dtc(s.fim)}</span><span class="chip">${esc(s.instrutor || "sem instrutor")}</span>${s.local ? `<span class="chip">${esc(s.local)}</span>` : ""}<span class="chip">${horasTxt(s.horas)}</span><span class="chip">${verTxt(s)}</span>${s.reaplicaDe ? '<span class="chip br">Reaplicação</span>' : ""}</div>
       <div class="rl-docs"><button class="b p" data-act="relpdf">${ic("file")}PDF de registro</button><button class="b" data-act="relpres">${ic("file")}Lista de presença</button><details class="mais"><summary class="b">Mais${ic("down", 'style="width:16px;height:16px"')}</summary><div class="mp2"><button class="b g" data-act="relcsv">${ic("sheet")}Planilha (CSV)</button><button class="b g" data-act="reljson">${ic("download")}Sessão (.json)</button><button class="b g" data-act="relabrir" title="Abre o PDF de registro em outra aba para imprimir">${ic("print")}Imprimir</button></div></details></div>
       <div class="rl-cod sm"><span class="mut">Código de conferência</span> <b class="mono" id="relcod">${esc(s.cod)}</b> <button class="b sm g" data-act="copiacod" aria-label="Copiar o código" title="Copiar">${ic("copy", 'style="width:16px;height:16px"')}</button>${s.codTardio ? '<span class="chip warn" title="Sessão encerrada antes da v0.5.0: o código foi gerado quando você abriu o relatório pela primeira vez">gerado depois</span>' : ""}</div>
+      ${carimboHtml(s)}
     </section>
     <div class="seg rl-abas" role="group" aria-label="Relatório">${abas.map(([k, n]) => `<button data-act="relaba" data-v="${k}" aria-pressed="${REL.aba === k}">${n}</button>`).join("")}</div>
     ${corpo}`;
@@ -208,7 +226,9 @@ function relResumo(s, e, t) {
   const th = (c, n, cl = "") => `<th class="${cl}"><button data-act="relord" data-v="${c}" aria-label="Ordenar por ${n}">${n}${REL.ord.c === c ? ic(REL.ord.d > 0 ? "up" : "down", 'style="width:14px;height:14px"') : ""}</button></th>`;
   const semAss = e.pessoas.filter(p => !p.ass && !p.sim).length;
   const ac = [];
-  ac.push(e.abaixo.length
+  ac.push(s.mom === "pre"
+    ? `<li><span class="ai">${ic("clock")}</span><span><b>Pré-teste: ponto de partida de ${e.nota}%</b><br><span class="sm mut">Nenhuma resposta certa foi mostrada. Depois do conteúdo, aplique o pós-teste para medir o ganho de aprendizado.</span></span><button class="b sm p" data-act="aplicarpos" data-id="${s.id}" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Aplicar pós-teste</button></li>`
+    : e.abaixo.length
     ? `<li><span class="ai warn">${ic("warn")}</span><span><b>${e.abaixo.length} pessoa${e.abaixo.length === 1 ? "" : "s"} abaixo da meta de ${s.meta}%</b><br><span class="sm mut">${esc(e.abaixo.slice(0, 4).map(p => p.nome).join(", "))}${e.abaixo.length > 4 ? " e mais " + (e.abaixo.length - 4) : ""}</span></span><button class="b sm p" data-act="reaplicar" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Reaplicar para elas</button></li>`
     : `<li><span class="ai ok">${ic("check")}</span><span><b>Todos atingiram a meta de ${s.meta}%</b></span><span></span></li>`);
   if (e.fracas.length) ac.push(`<li><span class="ai warn">${ic("edit")}</span><span><b>${e.fracas.length} pergunta${e.fracas.length === 1 ? "" : "s"} com menos de 60% de acerto</b><br><span class="sm mut">${e.fracas.map(q => "P" + q.n).join(", ")}: vale rever o texto ou reforçar o conteúdo.</span></span>${t ? `<a class="b sm" href="#/editar/${t.id}">${ic("edit", 'style="width:16px;height:16px"')}Revisar no editor</a>` : "<span></span>"}</li>`);
@@ -216,8 +236,9 @@ function relResumo(s, e, t) {
   ac.push(s.foto
     ? `<li><span class="ai ok">${ic("check")}</span><span><b>Foto da turma guardada</b><br><span class="sm mut">Sai no PDF de registro. ${dtc(s.fotoEm || s.fim)}</span></span><span class="acs"><label class="b sm" for="rl-foto">Trocar</label><button class="b sm bad" data-act="rmfoto">Remover</button></span></li>`
     : `<li><span class="ai">${ic("camera")}</span><span><b>Sem foto da turma</b><br><span class="sm mut">É a evidência impressa no PDF de registro.</span></span><label class="b sm" for="rl-foto">${ic("camera", 'style="width:16px;height:16px"')}Adicionar foto</label></li>`);
-  return `<div class="k rsm q4"><div><b>${e.nota}%</b><span>Nota média</span></div><div class="${e.c.efic < e.c.pessoas.length ? "w" : ""}"><b>${e.c.efic} de ${e.c.pessoas.length}</b><span>Atingiram a meta</span></div><div><b>${e.c.pct}%</b><span>Acerto geral</span></div><div><b>${tempoTxt(e.tempo)}</b><span>Tempo médio por resposta</span></div></div>
+  return `<div class="k rsm q4"><div><b>${e.nota}%</b><span>Nota média</span></div>${s.mom === "pre" ? `<div><b>${e.c.pessoas.length}</b><span>Pessoas</span></div>` : `<div class="${e.c.efic < e.c.pessoas.length ? "w" : ""}"><b>${e.c.efic} de ${e.c.pessoas.length}</b><span>Atingiram a meta</span></div>`}<div><b>${e.c.pct}%</b><span>Acerto geral</span></div><div><b>${tempoTxt(e.tempo)}</b><span>Tempo médio por resposta</span></div></div>
     <section class="k"><h3 class="rh">O que fazer agora</h3><ul class="acoes">${ac.join("")}</ul><input type="file" id="rl-foto" accept="image/*" class="sr"></section>
+    ${relCmp(s)}${relRefaz(s)}
     <section class="k"><h3 class="rh">Presença e resultado</h3><div class="rtw"><table class="rtb"><thead><tr>${th("nome", "Nome")}${th("setor", "Setor", "hide-m")}${th("ac", "Acertos", "n")}${th("pct", "%", "n")}${th("pts", "Pontos", "n hide-m")}${th("sit", "Situação")}<th class="n">Assinatura</th></tr></thead><tbody>${ordp.map(p => `<tr><td><b>${esc(p.nome)}</b>${p.sim ? ' <span class="chip">simulado</span>' : ""}</td><td class="hide-m">${esc(p.setor || "–")}</td><td class="n num">${p.ac}/${e.c.nq}</td><td class="n num">${p.pct}%</td><td class="n num hide-m">${p.pts}</td><td><span class="chip ${p.sit === "Atingiu a meta" ? "ok" : p.sit === "Abaixo da meta" ? "warn" : ""}">${p.sit}</span></td><td class="n">${p.ass ? `<button class="asm" data-act="verass" data-id="${p.id}" aria-label="Ver assinatura de ${esc(p.nome)}"><img src="${p.ass}" alt="" width="64" height="26"></button>` : '<span class="mut sm">–</span>'}</td></tr>`).join("")}</tbody></table></div></section>`;
 }
 function relMapa(s, e) {
@@ -232,7 +253,7 @@ function relMapa(s, e) {
     <div class="leg sm"><span><i class="mc ok">${ic("check")}</i>Acertou</span><span><i class="mc no">${ic("x")}</i>Errou</span><span><i class="mc nr">–</i>Sem resposta</span></div></section>`;
 }
 function relTempo(s) {
-  const l = encerradas().filter(x => x.treinoId === s.treinoId && (x.id === s.id || tipoSessao(x) === "real")).sort((a, b) => String(a.fim).localeCompare(String(b.fim))).slice(-8);
+  const l = encerradas().filter(x => x.treinoId === s.treinoId && (x.id === s.id || tipoSessao(x) === "real") && x.mom !== "pre").sort((a, b) => String(a.fim).localeCompare(String(b.fim))).slice(-8);
   if (l.length < 2) return `<section class="k"><h3 class="rh">Ao longo do tempo</h3><p class="sm mut" style="margin:0">Só há uma sessão registrada deste treinamento. Quando houver mais, o acerto de cada uma aparece aqui, comparado com a meta.</p></section>`;
   return `<section class="k"><h3 class="rh">Ao longo do tempo</h3><p class="sm mut" style="margin:0 0 8px">Acerto geral de cada sessão deste treinamento (só registros oficiais e a sessão aberta). A linha vertical é a meta de ${s.meta}%.</p>
     <div class="tmp">${l.map(x => { const pc = x.resultado ? x.resultado.pct : 0; return `<div class="tl-s ${x.id === s.id ? "at" : ""}"><span class="sm">${dtd(x.fim)}${x.id === s.id ? ' <span class="chip br">esta</span>' : ""}</span><div class="bar" role="img" aria-label="${pc}% de acerto"><i style="width:${pc}%" class="${pc < x.meta ? "fr" : ""}"></i><u style="left:${x.meta}%"></u></div><b class="num">${pc}%</b></div>`; }).join("")}</div></section>`;
@@ -260,11 +281,12 @@ function vConferir() {
       <form data-form="conferir" class="cf-f"><div class="fd" style="flex:1;min-width:240px"><label for="cf-c">Código de conferência</label><input class="in mono" id="cf-c" value="${esc(CF.cod)}" placeholder="SAB-XXXX-XXXX-XXXX-XXXX-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false"></div><button class="b p" type="submit">${ic("shield")}Conferir</button></form>
       <div class="cf-ou sm mut">ou confira um arquivo de sessão exportado: <label class="b sm" for="cf-arq">${ic("upload", 'style="width:16px;height:16px"')}Escolher .json</label><input type="file" id="cf-arq" accept=".json,application/json" class="sr"></div></section>
     ${msg}
+    ${seloConsulta()}
     <section class="k"><h3 class="rh">Sessões guardadas neste aparelho</h3>${l.length ? `<div class="rtw"><table class="rtb"><thead><tr><th>Sessão</th><th class="hide-m">Data</th><th>Código</th><th>Integridade</th></tr></thead><tbody>${l.map(x => { const ok = integra(x); return `<tr><td><b>${esc(x.titulo)}</b><br><span class="sm mut">${esc(TIPO_TXT[tipoSessao(x)])}</span></td><td class="hide-m sm">${dtc(x.fim)}</td><td class="mono sm">${esc(x.cod)}${x.codTardio ? ' <span class="chip">gerado depois</span>' : ""}</td><td><span class="chip ${ok ? "ok" : "bad"}">${ok ? "Íntegro" : "Alterado depois de encerrar"}</span></td></tr>`; }).join("")}</tbody></table></div>` : '<p class="sm mut" style="margin:0">Nenhuma sessão encerrada ainda.</p>'}</section>
     <section class="k"><h3 class="rh">Como funciona</h3><ul class="chg sm" style="margin:0">
       <li>O código sai de um cálculo (SHA-256) sobre o título, a versão e as perguntas, a data, o instrutor, o local, a carga horária, a meta e, para cada pessoa, nome, setor, acertos, pontos e assinatura. Mudou qualquer um, o código muda.</li>
       <li>Para uma auditoria, guarde o PDF e confira o código no aparelho em que a sessão foi aplicada, ou num aparelho onde você importou os dados em Ajustes.</li>
-      <li>Limite: não há senha nem carimbo de tempo externo. Quem tem o aparelho consegue gerar outro registro com outro código; o que o código prova é que o PDF impresso é igual ao que está guardado.</li></ul></section>`;
+      <li>Limite: não há senha. O carimbo de tempo, que é opcional, usa o relógio do servidor do seu próprio Firebase e não vale como carimbo de uma autoridade certificadora. Quem tem o aparelho consegue gerar outro registro com outro código; o que o código prova é que o PDF impresso é igual ao que está guardado.</li></ul></section>`;
 }
 function conferirCodigo(txt) {
   CF.cod = txt;

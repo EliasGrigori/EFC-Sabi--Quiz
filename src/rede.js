@@ -2,14 +2,24 @@
 /* Estrutura em /salas/{chave}:
    pub  {meta, fase, item}   instrutor escreve, celulares leem (nunca traz a resposta certa antes do resultado)
    res  {pid: {...}}         instrutor escreve o resultado de cada pessoa
-   part {pid: {n, c, s, t}}  celular escreve ao entrar
+   part {pid: {n, c, s, t, ref, com, rsp}}  celular escreve ao entrar; ref {idx: {t, ok}} é o reforço refeito no celular; com {id: {k, x, t}} comentários; rsp {id: {x}} respostas do instrutor
    resp {pid: {idx: {r}}}    celular escreve a resposta (uma vez)
-   ass  {pid: "data:image"}  celular escreve a assinatura                                  */
+   ass  {pid: "data:image"}  celular escreve a assinatura
+   /selos/{codigo} {t}       carimbo de tempo do servidor, gravado uma só vez (v1.0.0)                */
 const REGRAS_FIREBASE = `{
   "rules": {
     ".read": false,
     ".write": false,
     "_teste": { ".read": true, ".write": true, ".validate": "newData.isString() && newData.val().length < 40" },
+    "selos": {
+      "$codigo": {
+        ".read": true,
+        ".write": "!data.exists()",
+        ".validate": "$codigo.matches(/^SAB-[0-9A-F]{4}(-[0-9A-F]{4}){4}$/) && newData.hasChildren(['t']) && newData.child('t').isNumber() && newData.child('t').val() === now",
+        "t": {},
+        "$outro": { ".validate": false }
+      }
+    },
     "salas": {
       "$chave": {
         ".read": true,
@@ -17,7 +27,30 @@ const REGRAS_FIREBASE = `{
         "res": { ".write": true },
         "part": { "$pid": {
           ".write": true,
-          ".validate": "newData.hasChildren(['n']) && newData.child('n').isString() && newData.child('n').val().length <= 60"
+          ".validate": "newData.hasChildren(['n']) && newData.child('n').isString() && newData.child('n').val().length <= 60",
+          "n": {},
+          "c": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 64" },
+          "s": { ".validate": "newData.isString() && newData.val().length <= 60" },
+          "t": { ".validate": "newData.isNumber()" },
+          "ref": { "$i": {
+            ".validate": "newData.hasChildren(['t', 'ok'])",
+            "t": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 3" },
+            "ok": { ".validate": "newData.isNumber() && (newData.val() === 0 || newData.val() === 1)" },
+            "$outro": { ".validate": false }
+          } },
+          "com": { "$id": {
+            ".validate": "newData.hasChildren(['k', 'x', 't'])",
+            "k": { ".validate": "newData.isString() && newData.val().length <= 20" },
+            "x": { ".validate": "newData.isString() && newData.val().length <= 300" },
+            "t": { ".validate": "newData.isNumber()" },
+            "$outro": { ".validate": false }
+          } },
+          "rsp": { "$id": {
+            ".validate": "newData.hasChildren(['x'])",
+            "x": { ".validate": "newData.isString() && newData.val().length <= 300" },
+            "$outro": { ".validate": false }
+          } },
+          "$outro": { ".validate": false }
         } },
         "resp": { "$pid": { "$idx": {
           ".write": "!data.exists() || !newData.exists()",
@@ -124,13 +157,14 @@ const lista = v => Array.isArray(v) ? v : (v && typeof v === "object" ? Object.k
 function pubDe(s) {
   const sn = snap(s), f = s.fase;
   return {
-    meta: {sid: s.id, titulo: s.titulo, instrutor: s.instrutor || "", meta: s.meta, entrada: !!s.entrada, ranking: !!s.aj.ranking, confirmar: !!s.aj.confirmar, setores: s.setores || [], roster: s.roster || [], nPart: s.part.length, nPerg: sn.nPerg},
+    meta: {sid: s.id, mom: s.mom || "", titulo: s.titulo, instrutor: s.instrutor || "", meta: s.meta, entrada: !!s.entrada, ranking: !!s.aj.ranking, confirmar: !!s.aj.confirmar, setores: s.setores || [], roster: s.roster || [], rs: (s.roster || []).map(n => (pessoaPorNome(n) || {}).setor || ""), nPart: s.part.length, nPerg: sn.nPerg},
     fase: {etapa: f.etapa, idx: f.idx, k: f.idx + ":" + f.t0, dur: f.dur || 0, numPerg: sn.numPerg, totalPerg: sn.totalPerg},
-    item: sn.item || null
+    item: sn.item ? Object.assign({}, sn.item, {voz: undefined}) : null   /* a voz gravada fica no aparelho do instrutor: nunca vai para o Firebase */
   };
 }
 function resDe(s) {
   const f = s.fase; if (f.etapa !== "resultado" && f.etapa !== "podio") return null;
+  if (s.mom === "pre") return null; // pré-teste: ninguém vê acerto nem pontos
   const c = calc(s), pos = new Map(c.ranking.map((p, k) => [p.id, k + 1])), out = {};
   c.pessoas.forEach(p => {
     const pt = s.part.find(x => x.id === p.id); if (!pt || !pt.real) return;
@@ -153,7 +187,8 @@ function ingerir(s, M) {
   Object.entries(partes).forEach(([pid, v]) => {
     if (!v || typeof v.n !== "string" || s.part.some(p => p.id === pid)) return;
     const nome = limpaNome(v.n); if (!nome) return;
-    const setor = (s.setores || []).includes(v.s) ? v.s : "";
+    let setor = (s.setores || []).includes(v.s) ? v.s : "";
+    if (!setor) { const pe = pessoaPorNome(nome); if (pe && pe.setor) setor = pe.setor; }   // setor do cadastro de Pessoas
     s.part.push({id: pid, nome, setor, cor: Number.isInteger(v.c) && v.c >= 0 && v.c < CORES_AV.length ? v.c : undefined, real: true}); mud = true;
   });
   if (Rede.carregado && s.fase.etapa === "espera") { const antes = s.part.length; s.part = s.part.filter(p => !p.real || partes[p.id]); if (s.part.length !== antes) mud = true; }
@@ -166,6 +201,16 @@ function ingerir(s, M) {
       registrar(s, p, i, r); mud = true;
     });
   });
+  Object.entries(partes).forEach(([pid, v]) => {
+    const p = s.part.find(x => x.id === pid); if (!p || !v || typeof v.ref !== "object" || !v.ref) return;
+    Object.entries(v.ref).forEach(([idx, o]) => {
+      const i = Number(idx), it = s.itens[i]; if (!Number.isInteger(i) || !it || !vale(it) || !o) return;
+      const t = Number(o.t), ok = Number(o.ok) === 1 ? 1 : 0; if (!Number.isInteger(t) || t < 1 || t > 3) return;
+      const R = (s.refaz = s.refaz || {}), L = (R[pid] = R[pid] || {}), a = L[i];
+      if (!a || a.t !== t || a.ok !== ok) { L[i] = {t, ok}; mud = true; }
+    });
+  });
+  const nCom = ingerirCom(s, partes); if (nCom) { mud = true; setTimeout(pesAviso, 0); }
   Object.entries(M.ass && typeof M.ass === "object" ? M.ass : {}).forEach(([pid, d]) => {
     const p = s.part.find(x => x.id === pid);
     if (p && !p.ass && typeof d === "string" && /^data:image\/(png|jpeg);base64,[A-Za-z0-9+/=]+$/.test(d) && d.length < 40000) { p.ass = d; mud = true; }

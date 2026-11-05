@@ -1,8 +1,8 @@
 feature,area,priority,original,clone,notes
-Abrir só em aparelho ativado pelo EFClaudian (porta de entrada),Acesso,must,yes,no,gate(); teste rápido libera demonstração
-Login com a conta do EFClaudian (nuvem Firebase),Acesso,must,yes,no,Configurações > Integração; foto e nome da conta (v2.8.7)
-Perfis Primário / Líder estrela / Colaborador,Acesso,must,yes,no,controla quem edita (pode())
-Teste rápido e modo demonstração (simulado ou pessoas reais com sessões TESTE),Acesso,must,yes,no,?demo=1; faixa de aviso; roteiro na tela
+Abrir só em aparelho ativado pelo EFClaudian (porta de entrada),Acesso,must,yes,yes,Porta de entrada opcional (Ajustes > Integração): só abre em aparelho ativado por ?ativar=1 ou conta de responsável; participante sempre entra pelo celular (v0.8.0)
+Login com a conta do EFClaudian (nuvem Firebase),Acesso,must,yes,partial,"Login por conta do EFClaudian (SDK do Firebase, perfil vem de sv2_users); implementado e testado com SDK de mentira; falta conferir com conta real (v0.8.0)"
+Perfis Primário / Líder estrela / Colaborador,Acesso,must,yes,yes,"Primário, Líder estrela e Colaborador controlam o que cada um vê e faz (v0.8.0)"
+Teste rápido e modo demonstração (simulado ou pessoas reais com sessões TESTE),Acesso,must,yes,yes,?demo=1 e Ajustes > Demonstração: exemplos e sessões de teste fora do registro (v0.8.0)
 Tema seguindo o EFClaudian (claro/escuro/temas),Aparência,must,yes,yes,localStorage sv2-theme
 Funciona sem internet (service worker + IndexedDB),Base,must,yes,yes,aviso de espaço cheio
 Lista de treinamentos com resumo (avaliações / em reforço / acerto médio),Treinamentos,must,yes,yes,KPIs no topo
@@ -11,21 +11,21 @@ Busca e filtro recolhível único,Treinamentos,must,yes,yes,preferência do Elia
 Vista em lista ou cartões,Treinamentos,should,yes,yes,
 Novo treinamento: modelo pronto (X06),Criação,must,yes,yes,revisar com o POP antes de aplicar
 Novo treinamento: começar do zero,Criação,must,yes,yes,
-Novo treinamento: criar com uma IA (prompt pronto para colar),Criação,should,yes,no,importa a resposta
+Novo treinamento: criar com uma IA (prompt pronto para colar),Criação,should,yes,yes,"O Sabiá monta o texto para colar em qualquer IA e lê a resposta em JSON (sem chamar IA nenhuma); treinamento criado fica marcado ""criado com IA"" até o responsável revisar (v1.0.0)"
 Editor: título / meta em pontos ou % / descrição,Criação,must,yes,partial,"meta em %, título e descrição; falta meta em pontos"
-Editor: periodicidade (refazer a cada N dias) e vencidos (M09),Criação,must,yes,no,
-Editor: reavaliação de eficácia em 30/60/90 dias (M07),Criação,must,yes,no,
+Editor: periodicidade (refazer a cada N dias) e vencidos (M09),Criação,must,yes,yes,v0.6.0: validade 6 meses/1/2 anos no editor; aviso em Pendências 30 dias antes e vencidos
+Editor: reavaliação de eficácia em 30/60/90 dias (M07),Criação,must,yes,yes,v0.6.0: 30/60/90 dias no editor; aviso 14 dias antes e atrasados em Pendências
 Item explicação (momento de explicar no telão),Criação,must,yes,yes,
 Pergunta múltipla escolha,Criação,must,yes,yes,cores A-D
 Pergunta verdadeiro ou falso,Criação,must,yes,yes,
 Pergunta ordenar etapas,Criação,must,yes,yes,
-Pergunta de teste automática que não vale nota,Criação,must,yes,partial,uso Teste (não vale nota) por pergunta; falta a pergunta de teste automática no começo
+Pergunta de teste automática que não vale nota,Criação,must,yes,yes,"Opção ""Começar com uma pergunta de teste"" em Aplicar (desligada por padrão); entra no começo da sessão, fora da nota e fora do código de conferência (v1.0.0)"
 Mover / excluir / marcar correta / alternativas,Criação,must,yes,yes,
-Voz gravada na pergunta (X03) e ouvir a pergunta,Criação,should,yes,no,acessibilidade para quem lê pouco
-Banco de perguntas,Criação,should,yes,no,
+Voz gravada na pergunta (X03) e ouvir a pergunta,Criação,should,yes,yes,"Instrutor grava até 30 s no editor; toca no telão (sozinho ao abrir a pergunta e por botão); no celular o participante usa ""Ouvir a pergunta"", lida pela voz do aparelho; a gravação nunca vai ao Firebase (v1.0.0)"
+Banco de perguntas,Criação,should,yes,yes,"Guardar pergunta ou treinamento inteiro no banco, buscar, filtrar por formato, inserir no editor e excluir com desfazer; vai no Exportar tudo (v1.0.0)"
 Versões do treinamento (v00 v01...) com nota do que mudou,Versões,must,yes,yes,"v00, v01...; nota, comparar e restaurar"
 Painel lateral: visão geral / acerto por versão / comentários / material,Versões,must,yes,no,
-Observações do treinamento,Versões,should,yes,no,Principal e Líder editam
+Observações do treinamento,Versões,should,yes,yes,Observações com autor e data no editor; só Primário e Líder estrela (v0.8.0)
 Material (PDF/HTML/PPTX neste aparelho) com capítulos ligados à explicação (M02),Material,should,yes,no,abre por cima da tela
 Exportar e importar treinamento .json,Dados,must,yes,yes,
 Excluir com desfazer por 3 segundos,Dados,must,yes,yes,v2.8.8
@@ -39,7 +39,7 @@ Aplicar: carga horária na lista de presença (M12),Aplicar,must,yes,yes,carga h
 Aplicar: tempo extra para quem tem dificuldade,Aplicar,should,yes,yes,
 Aplicar: sessão de teste fora do registro,Aplicar,must,yes,partial,
 Aplicar: ranking / embaralhar / confirmar antes de enviar / gincana por rapidez,Aplicar,should,yes,partial,
-Pré-teste e pós-teste com ganho de aprendizado (M06),Aplicar,should,yes,partial,
+Pré-teste e pós-teste com ganho de aprendizado (M06),Aplicar,should,yes,yes,"v0.6.0: momento pré/pós em Aplicar,  ganho normalizado e comparativo no relatório"
 Controle: chave de 6 números + QR + link,Ao vivo,must,yes,yes,
 Convidar participantes por WhatsApp (M03),Ao vivo,should,yes,yes,
 Telão em janela separada (2º monitor/projetor) por BroadcastChannel (M01),Ao vivo,must,yes,yes,
@@ -52,20 +52,20 @@ Telão: explicação / pergunta com régua de tempo / revelar resultado,Telão,m
 Telão: pódio proporcional com confete e sons,Telão,should,yes,yes,V11; Web Audio
 Telão: modo projetor / tela cheia / modo apresentação,Telão,should,yes,partial,
 Participante: entrar pela chave / QR / link,Participante,must,yes,yes,"QR, link ou chave; precisa do Firebase do instrutor"
-Participante: achar o nome com 3 letras ou se cadastrar com setor,Participante,must,yes,partial,3 letras na lista do instrutor ou nome livre; setor escolhido; falta cadastro de pessoas (v0.7)
+Participante: achar o nome com 3 letras ou se cadastrar com setor,Participante,must,yes,yes,Lista do cadastro com 3 letras; o setor vem do cadastro (v0.7.0); nome livre quando não há lista
 Participante: escolher o boneco (9 partes: rosto / pele / cabelo / cor / barba / expressão / roupa / cor da roupa / EPI) (A01),Participante,must,yes,partial,escolhe uma de 8 cores; sem boneco por decisão do Elias
-Participante: responder / ouvir / ver certo ou errado com o porquê,Participante,must,yes,partial,responde e vê certo ou errado com o porquê; falta ouvir a pergunta
-Participante: mini linha de progresso e acertos até agora,Participante,must,yes,no,
-Participante: resultado final + assinatura de presença com o dedo,Participante,must,yes,partial,resultado final e assinatura com o dedo; falta rever o que errei
-Participante: rever o que errei,Participante,must,yes,no,
-Participante: comentário rápido (elogio / sugestão / reclamação / pergunta),Participante,should,yes,no,
-Participante: perfil com histórico e selos de constância (X02 / X07),Participante,should,yes,no,
-Aparelho compartilhado: próxima pessoa,Participante,must,yes,no,
-Refazer: rever a explicação e refazer em até 3 tentativas (M15) + folha em PDF,Reforço,must,yes,no,
-Reforço pendente com um toque (X01),Reforço,must,yes,no,
-Quem deve reavaliar (30/60/90),Reforço,must,yes,no,
-Mensagens: novas / reclamações / sugestões / elogios + filtro,Mensagens,must,yes,no,
-Mensagens: responder / marcar lida / excluir,Mensagens,must,yes,no,
+Participante: responder / ouvir / ver certo ou errado com o porquê,Participante,must,yes,yes,"Responde, ouve a pergunta e a resposta pela voz do aparelho e vê certo ou errado com o porquê (v1.0.0)"
+Participante: mini linha de progresso e acertos até agora,Participante,must,yes,yes,v0.6.0: barra de progresso e pergunta n de N no celular
+Participante: resultado final + assinatura de presença com o dedo,Participante,must,yes,yes,"v0.6.0: resultado final,  assinatura e rever o que errei"
+Participante: rever o que errei,Participante,must,yes,yes,"v0.6.0: Rever o que errei e Treinar de novo (prática,  3 tentativas por pergunta)"
+Participante: comentário rápido (elogio / sugestão / reclamação / pergunta),Participante,should,yes,yes,"4 tipos no fim da sessão, até 3 por pessoa; chega ao instrutor com a sala aberta (v0.7.0)"
+Participante: perfil com histórico e selos de constância (X02 / X07),Participante,should,yes,partial,"Perfil com histórico e 6 selos no lado do instrutor (v0.7.0); sem perfil no celular do participante (precisa de login, v1.0)"
+Aparelho compartilhado: próxima pessoa,Participante,must,yes,yes,"""Outra pessoa vai usar este celular"" apaga os dados da anterior (v0.7.0); serve para entrar e assinar"
+Refazer: rever a explicação e refazer em até 3 tentativas (M15) + folha em PDF,Reforço,must,yes,partial,"v0.6.0: 3 tentativas oficiais (2ª no mesmo dia,  3ª no dia seguinte) e só as erradas; falta a folha em PDF"
+Reforço pendente com um toque (X01),Reforço,must,yes,yes,"v0.6.0: Pendências > Reforço com Aplicar reforço,  dar baixa e desfazer"
+Quem deve reavaliar (30/60/90),Reforço,must,yes,yes,v0.6.0: Pendências > Reavaliar (quem deve reavaliar 30/60/90)
+Mensagens: novas / reclamações / sugestões / elogios + filtro,Mensagens,must,yes,yes,Filtro por tipo e situação (v0.7.0)
+Mensagens: responder / marcar lida / excluir,Mensagens,must,yes,yes,"Responder (volta ao celular com a sala aberta), marcar lida, excluir com desfazer (v0.7.0)"
 Relatório: escolher sessão e ver Resumo / Mapa da turma / Assertividade / Setores,Relatório,must,yes,yes,Resumo / Mapa da turma / Assertividade (por pergunta e ao longo do tempo) / Setores (v0.5.0); sem equipes nem gincana
 Relatório: indicadores (nota média / atingiram a meta / acerto geral / tempo médio),Relatório,must,yes,yes,"nota média, atingiram a meta, acerto geral, tempo médio por resposta (v0.5.0)"
 Relatório: O que fazer agora + reaplicar para quem ficou abaixo,Relatório,must,yes,yes,"abaixo da meta, perguntas fracas, sem assinatura, foto; reaplicar com lista de nomes (v0.5.0)"
@@ -74,7 +74,7 @@ Exportar PDF / planilha CSV / sessão .json,Relatório,must,yes,yes,"PDF de regi
 Lista de presença em PDF com carga horária,Relatório,must,yes,yes,"com carga horária, assinaturas e linha do instrutor (v0.5.0)"
 Imprimir evidência (foto da turma),Relatório,must,yes,yes,foto da turma no PDF de registro; botão Imprimir abre o PDF (v0.5.0)
 Logotipo da instituição no PDF,Relatório,must,yes,yes,"em Ajustes, sai no cabeçalho dos PDFs (v0.5.0)"
-Desafio entre setores: placar do mês sem nomes (X05),Relatório,could,yes,no,
+Desafio entre setores: placar do mês sem nomes (X05),Relatório,could,yes,yes,"Mês e ano, mínimo de 3 pessoas por setor, tela grande (v0.7.0)"
 Conferir registro pelo código do rodapé do PDF,Conferir,must,yes,yes,código SAB-... no rodapé do PDF; recalcula e confere com os dados guardados ou com o .json (v0.5.0)
-Configurações: identificação / perfil / aparência / telão / demonstração / setores e pessoas / armazenamento / integração / observações,Configurações,must,yes,no,página única com índice
-Caixa de mensagens do responsável (X02),Mensagens,should,yes,no,
+Configurações: identificação / perfil / aparência / telão / demonstração / setores e pessoas / armazenamento / integração / observações,Configurações,must,yes,yes,Ajustes com índice de 10 seções (v0.8.0)
+Caixa de mensagens do responsável (X02),Mensagens,should,yes,partial,Mensagens do instrutor com contador no menu e aviso no Início; sem separar por responsável (v0.7.0)

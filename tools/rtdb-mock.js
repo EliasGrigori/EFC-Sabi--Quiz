@@ -1,6 +1,11 @@
 /* Servidor de teste que imita o Realtime Database (REST + eventos em tempo real). Só para os testes, não é o Firebase. */
 const http = require("http");
-function criar() {
+function criar(opc) {
+  opc = opc || {};
+  const SIM = require("./rules-sim.js");
+  let regras = opc.regras || (process.env.SABIA_REGRAS ? JSON.parse(require("fs").readFileSync(process.env.SABIA_REGRAS === "1" ? [__dirname + "/docs/firebase-rules.json", __dirname + "/../docs/firebase-rules.json"].find(x => require("fs").existsSync(x)) : process.env.SABIA_REGRAS, "utf8")) : null);
+  const negadas = [];
+  if (regras) process.on("exit", () => { if (negadas.length) console.error("REGRAS NEGARAM " + negadas.length + ":\n  " + negadas.slice(0, 12).join("\n  ")); });
   let tree = null; const ouvintes = new Set(); const reqs = [];
   const seg = p => p.split("/").filter(Boolean);
   const pega = (t, s) => { for (const k of s) { if (t === null || typeof t !== "object") return null; t = t[k] === undefined ? null : t[k]; } return t; };
@@ -26,15 +31,18 @@ function criar() {
         r.on("close", () => ouvintes.delete(o)); return;
       }
       const j = (c, v) => { r.writeHead(c, Object.assign({"content-type": "application/json"}, cors)); r.end(JSON.stringify(v)); };
+      if (regras && q.method === "GET" && !(q.headers.accept || "").includes("text/event-stream") && !SIM.podeLer(regras, caminho, tree)) { negadas.push("GET " + caminho); return j(401, {error: "Permission denied"}); }
       if (q.method === "GET") return j(200, pega(tree, s));
       let v = null; try { v = corpo ? JSON.parse(corpo) : null; } catch(e) { return j(400, {error: "json"}); }
-      if (q.method === "PUT") { poe(s, v); avisa(); return j(200, v); }
-      if (q.method === "DELETE") { poe(s, null); avisa(); return j(200, null); }
-      if (q.method === "PATCH") { Object.keys(v || {}).forEach(k => poe(s.concat(seg(k)), v[k] === undefined ? null : v[k])); avisa(); return j(200, v); }
+      const agoraSv = x => { if (x && typeof x === "object") { if (Object.keys(x).length === 1 && x[".sv"] === "timestamp") return Date.now(); for (const k of Object.keys(x)) x[k] = agoraSv(x[k]); } return x; };
+      const tenta = (cam, val) => { if (!regras) { poe(seg(cam), val === null ? null : agoraSv(val)); return true; } const r = SIM.gravar(regras, tree, cam, val); if (!r.ok) { negadas.push(q.method + " " + cam + " :: " + r.motivo); return false; } tree = r.arvore; return true; };
+      if (q.method === "PUT") { if (!tenta(caminho, v)) return j(401, {error: "Permission denied"}); avisa(); return j(200, v); }
+      if (q.method === "DELETE") { if (!tenta(caminho, null)) return j(401, {error: "Permission denied"}); avisa(); return j(200, null); }
+      if (q.method === "PATCH") { for (const k of Object.keys(v || {})) { if (!tenta("/" + s.concat(seg(k)).join("/"), v[k] === undefined ? null : v[k])) return j(401, {error: "Permission denied"}); } avisa(); return j(200, v); }
       j(405, {});
     });
   });
-  return new Promise(ok => srv.listen(0, "127.0.0.1", () => ok({url: "http://127.0.0.1:" + srv.address().port, tree: () => tree, reqs, fecha: () => { ouvintes.forEach(o => o.res.end()); srv.close(); }})));
+  return new Promise(ok => srv.listen(0, "127.0.0.1", () => ok({url: "http://127.0.0.1:" + srv.address().port, tree: () => tree, reqs, negadas, regras: () => regras, fecha: () => { ouvintes.forEach(o => o.res.end()); srv.close(); }})));
 }
 module.exports = {criar};
 if (require.main === module) criar().then(m => console.log(m.url));
