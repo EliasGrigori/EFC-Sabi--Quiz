@@ -1,11 +1,11 @@
-# Roteiro de verificação do Grok · Sabiá (v0.1.0 a v1.3.0, tudo em um só)
+# Roteiro de verificação do Grok · Sabiá (v0.1.0 a v1.3.1, tudo em um só)
 
 Como usar: confira as versões na ordem. Cada parte diz o que foi feito, como conferir e outros erros para procurar.
 Use um navegador no computador e um celular (ou janela de 390 px). Não use dados reais de pessoas.
 A parte da v0.4.0 precisa de um Realtime Database do Firebase configurado (veja PASSO-A-PASSO-FIREBASE-v0.4.0.md). A da v0.5.0 precisa de uma sessão encerrada. A da v0.6.0 precisa de 4 ou 5 pessoas de teste (nomes inventados). A da v0.7.0 precisa do Firebase e de um celular. A da v0.8.0 precisa de contas do EFClaudian.
 Escreva os achados em `CAIXA-DO-GROK.md`, dizendo a versão de cada um. Não altere outros arquivos.
 
-Partes: v0.1.0, v0.2.0, v0.3.0, v0.4.0, v0.5.0, v0.6.0, v0.7.0, v0.8.0, v1.0.0, v1.0.1, v1.1.0, v1.2.0 e v1.3.0, nesta ordem. A v1.0.0 muda as regras do Firebase: publique as regras novas antes de conferir as partes que usam celular.
+Partes: v0.1.0, v0.2.0, v0.3.0, v0.4.0, v0.5.0, v0.6.0, v0.7.0, v0.8.0, v1.0.0, v1.0.1, v1.1.0, v1.2.0, v1.3.0 e v1.3.1, nesta ordem. A v1.0.0 muda as regras do Firebase: publique as regras novas antes de conferir as partes que usam celular.
 
 Lembrete: o que está na seção "Ainda não existe" de uma versão pode já existir numa versão mais nova deste arquivo.
 
@@ -521,3 +521,23 @@ Cada treinamento pode ter um **material de apoio** (PPTX de preferência, ou PDF
 - Apresentação: Espaço avançando a sala com o material aberto (não deve).
 - Material aberto no telão sobrando ao encerrar a sala ou trocar de rota.
 - Ctrl+F5: Ajustes deve mostrar "Sabiá v1.3.0".
+
+---
+
+# Roteiro do Grok · Sabiá v1.3.1 (material grande, só no aparelho)
+
+## O que foi feito
+Regra nova do Elias: o material pode ser **grande** (PPTX e PDF até 300 MB; HTML até 30 MB), mas **nunca vai para a nuvem**. O arquivo fica só no aparelho; o título e os capítulos viajam na exportação do treinamento. Em outro aparelho é preciso anexar de novo o mesmo documento.
+
+## Como conferir
+1. Anexe um PPTX ou PDF de uns 50 a 100 MB (Painel > Material): é aceito, mostra o tamanho em MB e abre rápido. Um arquivo acima de 300 MB, ou HTML acima de 30 MB, é recusado com aviso.
+2. Exporte o treinamento (.json) e abra o arquivo no bloco de notas: tem `material` com nome, tipo, tamanho e capítulos, e `cap` nas explicações, mas **nada do conteúdo do arquivo**.
+3. Em outro navegador (ou perfil novo), importe o .json. Painel > Material mostra o nome, os capítulos e o aviso "O arquivo não está neste aparelho". Na sala, "Ver aqui" diz o mesmo.
+4. Clique em "Anexar o mesmo arquivo": PDF no lugar de PPTX é recusado; PPTX com outro número de slides é recusado; o mesmo arquivo volta a funcionar e as ligações das explicações continuam.
+5. Confirme no Firebase (Realtime Database) que **nenhum** dado de material aparece.
+
+## Outros erros para procurar
+- Espaço do navegador: arquivo grande com disco quase cheio deve dar aviso, não travar.
+- PPTX gigante de outro programa que o leitor não abra (ZIP64): deve mandar usar PDF.
+- Importar um .json de material com tipo estranho: o material é ignorado e as ligações somem.
+- Ctrl+F5: Ajustes deve mostrar "Sabiá v1.3.1".

@@ -2,7 +2,7 @@
 /* O arquivo fica no IndexedDB "sabia-material" (chave = id do treinamento); no estado vai só t.material = {nome, tipo, bytes, caps:[{t,p}]}.
    PPTX: os slides viram capítulos e aparecem como texto + imagens (o arquivo é lido aqui, sem enviar a lugar nenhum).
    PDF: abre no leitor do navegador na página do capítulo. HTML: abre o documento inteiro, sem scripts. */
-const MAT_MAX = 25 * 1024 * 1024;
+const MAT_MAX = 300 * 1024 * 1024, MAT_MAX_HTML = 30 * 1024 * 1024;   // arquivos grandes ficam só neste aparelho
 const MAT = {aberto: null, urls: [], pn: null};
 const MAT_TIPOS = {pptx: "PPTX", pdf: "PDF", html: "HTML"};
 
@@ -26,23 +26,24 @@ async function matLimpaOrfaos() {
 setTimeout(matLimpaOrfaos, 4000);
 
 /* ---------- ler PPTX (zip + XML) ---------- */
-async function zipLer(buf) {
-  const u8 = new Uint8Array(buf), dv = new DataView(buf); let e = u8.length - 22;
-  while (e >= 0 && dv.getUint32(e, true) !== 0x06054b50) e--;
+async function zipLer(blob) {
+  const tam = blob.size, ini = Math.max(0, tam - 70000), cauda = new Uint8Array(await blob.slice(ini).arrayBuffer()), dc = new DataView(cauda.buffer);
+  let e = cauda.length - 22; while (e >= 0 && dc.getUint32(e, true) !== 0x06054b50) e--;
   if (e < 0) throw new Error("O arquivo não é um zip válido.");
-  const n = dv.getUint16(e + 10, true); let off = dv.getUint32(e + 16, true); const idx = {};
+  const n = dc.getUint16(e + 10, true), cdTam = dc.getUint32(e + 12, true), cdOff = dc.getUint32(e + 16, true);
+  if (cdOff === 0xFFFFFFFF || cdTam === 0xFFFFFFFF) throw new Error("PPTX grande demais para este leitor. Exporte como PDF.");
+  const cd = new Uint8Array(await blob.slice(cdOff, cdOff + cdTam).arrayBuffer()), dv = new DataView(cd.buffer); let off = 0; const idx = {};
   for (let i = 0; i < n; i++) {
-    if (dv.getUint32(off, true) !== 0x02014b50) break;
+    if (off + 46 > cd.length || dv.getUint32(off, true) !== 0x02014b50) break;
     const met = dv.getUint16(off + 10, true), csz = dv.getUint32(off + 20, true), nl = dv.getUint16(off + 28, true), el = dv.getUint16(off + 30, true), cl = dv.getUint16(off + 32, true), lh = dv.getUint32(off + 42, true);
-    idx[new TextDecoder().decode(u8.subarray(off + 46, off + 46 + nl))] = {met, csz, lh}; off += 46 + nl + el + cl;
+    idx[new TextDecoder().decode(cd.subarray(off + 46, off + 46 + nl))] = {met, csz, lh}; off += 46 + nl + el + cl;
   }
   const bytes = async nome => {
     const z = idx[nome]; if (!z) return null;
-    const ini = z.lh + 30 + dv.getUint16(z.lh + 26, true) + dv.getUint16(z.lh + 28, true), raw = u8.subarray(ini, ini + z.csz);
-    if (z.met === 0) return raw;
+    const h = new DataView(await blob.slice(z.lh, z.lh + 30).arrayBuffer()), ini2 = z.lh + 30 + h.getUint16(26, true) + h.getUint16(28, true), raw = blob.slice(ini2, ini2 + z.csz);
+    if (z.met === 0) return new Uint8Array(await raw.arrayBuffer());
     if (z.met !== 8 || typeof DecompressionStream === "undefined") throw new Error("Este navegador não consegue abrir o PPTX. Use o PDF.");
-    const sd = new Blob([raw]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
-    return new Uint8Array(await new Response(sd).arrayBuffer());
+    return new Uint8Array(await new Response(raw.stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer());
   };
   return {nomes: Object.keys(idx), bytes, texto: async n => { const b = await bytes(n); return b ? new TextDecoder().decode(b) : null; }};
 }
@@ -50,8 +51,8 @@ const xmlDoc = s => new DOMParser().parseFromString(s, "application/xml");
 const filhos = (n, nome) => Array.from(n.getElementsByTagNameNS("*", nome));
 const caminhoRel = (base, alvo) => { if (alvo.startsWith("/")) return alvo.slice(1); const p = base.split("/"); p.pop(); alvo.split("/").forEach(x => { if (x === "..") p.pop(); else if (x !== ".") p.push(x); }); return p.join("/"); };
 const MIME_IMG = {png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", gif: "image/gif", svg: "image/svg+xml", webp: "image/webp", bmp: "image/bmp"};
-async function pptxLer(buf, comImagens) {
-  const z = await zipLer(buf), pres = await z.texto("ppt/presentation.xml"); if (!pres) throw new Error("Não achei os slides neste arquivo.");
+async function pptxLer(blob, comImagens) {
+  const z = await zipLer(blob), pres = await z.texto("ppt/presentation.xml"); if (!pres) throw new Error("Não achei os slides neste arquivo.");
   const rels = {}; filhos(xmlDoc(await z.texto("ppt/_rels/presentation.xml.rels") || "<r/>"), "Relationship").forEach(r => { rels[r.getAttribute("Id")] = r.getAttribute("Target"); });
   const ids = filhos(xmlDoc(pres), "sldId").map(x => x.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships", "id") || x.getAttribute("r:id"));
   const slides = [];
@@ -80,24 +81,29 @@ async function pptxLer(buf, comImagens) {
 
 /* ---------- guardar o material de um treinamento ---------- */
 const extDe = n => (String(n).split(".").pop() || "").toLowerCase();
-async function matAnexar(t, file) {
+const MB = n => n < 1048576 ? Math.max(1, Math.round(n / 1024)) + " KB" : (n / 1048576).toFixed(n >= 10485760 ? 0 : 1).replace(".", ",") + " MB";
+async function matAnexar(t, file, manter) {   // manter = anexar de novo o mesmo arquivo (títulos e ligações ficam)
   const ext = extDe(file.name), tipo = ext === "pptx" ? "pptx" : ext === "pdf" ? "pdf" : ext === "html" || ext === "htm" ? "html" : "";
   if (!tipo) return {ok: false, msg: "Use um arquivo PPTX, PDF ou HTML."};
-  if (file.size > MAT_MAX) return {ok: false, msg: "O arquivo passa de 25 MB. Reduza as imagens ou use um PDF menor."};
-  const buf = await file.arrayBuffer(), u8 = new Uint8Array(buf.slice(0, 5));
+  if (manter && t.material && tipo !== t.material.tipo) return {ok: false, msg: "Anexe um arquivo do mesmo tipo (" + MAT_TIPOS[t.material.tipo] + ")."};
+  if (file.size > (tipo === "html" ? MAT_MAX_HTML : MAT_MAX)) return {ok: false, msg: tipo === "html" ? "O HTML passa de 30 MB. Use um PDF." : "O arquivo passa de 300 MB. Exporte com imagens menores."};
+  const u8 = new Uint8Array(await file.slice(0, 5).arrayBuffer());
   if (tipo === "pptx" && !(u8[0] === 0x50 && u8[1] === 0x4B)) return {ok: false, msg: "Este arquivo não parece um PPTX (o formato antigo .ppt não serve; salve como .pptx)."};
   if (tipo === "pdf" && String.fromCharCode(...u8) !== "%PDF-") return {ok: false, msg: "Este arquivo não parece um PDF."};
+  try { const e = navigator.storage && navigator.storage.estimate && await navigator.storage.estimate(); if (e && e.quota && e.quota - (e.usage || 0) < file.size * 1.05) return {ok: false, msg: "Não há espaço no navegador para este arquivo (" + MB(file.size) + "). Libere espaço ou use um arquivo menor."}; } catch (e) {}
   let caps;
   try {
-    if (tipo === "pptx") { const sl = await pptxLer(buf, false); if (!sl.length) return {ok: false, msg: "Não achei slides neste PPTX."}; caps = sl.map((x, i) => ({t: x.titulo || x.linhas.map(l => l.t)[0] || "Slide " + (i + 1), p: i})); }
+    if (tipo === "pptx") { const sl = await pptxLer(file, false); if (!sl.length) return {ok: false, msg: "Não achei slides neste PPTX."}; caps = sl.map((x, i) => ({t: x.titulo || x.linhas.map(l => l.t)[0] || "Slide " + (i + 1), p: i})); }
     else if (tipo === "pdf") caps = [{t: "Documento inteiro", p: 1}];
     else caps = [{t: "Documento inteiro", p: 0}];
   } catch (e) { return {ok: false, msg: String(e.message || "Não consegui ler o arquivo.")}; }
-  try { await matGravar(t.id, {blob: new Blob([buf], {type: tipo === "pdf" ? "application/pdf" : tipo === "html" ? "text/html" : "application/vnd.openxmlformats-officedocument.presentationml.presentation"}), nome: file.name, tipo}); }
+  if (manter && t.material && tipo === "pptx" && caps.length !== t.material.caps.length) return {ok: false, msg: "Este PPTX tem " + caps.length + " slides e o original tinha " + t.material.caps.length + ". Anexe o mesmo arquivo, ou use \"Trocar arquivo\" (desliga as ligações)."};
+  try { try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) {} await matGravar(t.id, {blob: file.slice(0, file.size, tipo === "pdf" ? "application/pdf" : tipo === "html" ? "text/html" : "application/vnd.openxmlformats-officedocument.presentationml.presentation"), nome: file.name, tipo}); }
   catch (e) { return {ok: false, msg: "O navegador não deixou guardar o arquivo (pouco espaço?)."}; }
-  t.itens.forEach(i => { delete i.cap; });
-  t.material = {nome: file.name, tipo, bytes: file.size, caps, em: new Date().toISOString()}; salvar();
-  return {ok: true, caps: caps.length};
+  if (manter && t.material) { t.material.nome = file.name; t.material.bytes = file.size; t.material.em = new Date().toISOString(); if (tipo === "pptx") t.material.caps.forEach((c, i) => { if (/^Slide \d+$/.test(c.t)) c.t = caps[i].t; }); }
+  else { t.itens.forEach(i => { delete i.cap; }); t.material = {nome: file.name, tipo, bytes: file.size, caps, em: new Date().toISOString()}; }
+  salvar();
+  return {ok: true, caps: t.material.caps.length};
 }
 async function matRemover(t) { t.itens.forEach(i => { delete i.cap; }); delete t.material; try { await matApagar(t.id); } catch (e) {} salvar(); }
 const capTxt = (t, i) => { const c = t.material && t.material.caps[i]; return c ? (t.material.tipo === "pptx" ? "Slide " + (i + 1) + ": " : "") + c.t : ""; };
@@ -109,7 +115,7 @@ async function matPintar(box, m, cap) {
   const corpo = box.querySelector(".mt-c"), tit = box.querySelector(".mt-t"), ant = box.querySelector("[data-act=matant]"), prox = box.querySelector("[data-act=matprox]");
   const reg = await matLer(m.tid).catch(() => null);
   if (!MAT.aberto || !box.isConnected) return;   // fechou enquanto o arquivo era lido
-  if (!reg) { corpo.innerHTML = `<p class="mt-er">O arquivo não está neste aparelho. Abra o treinamento no aparelho onde o material foi anexado.</p>`; return; }
+  if (!reg) { corpo.innerHTML = `<p class="mt-er">O arquivo não está neste aparelho (só o título veio junto). Anexe de novo o mesmo arquivo na aba Material do painel do treinamento.</p>`; return; }
   matSoltaUrls(); const n = m.caps.length; cap = Math.max(0, Math.min(n - 1, cap)); MAT.aberto.cap = cap;
   tit.textContent = (m.tipo === "pptx" ? "Slide " + (cap + 1) + " de " + n + " · " : "") + m.caps[cap];
   if (ant) ant.disabled = cap <= 0; if (prox) prox.disabled = cap >= n - 1; box.querySelector(".mt-nav").hidden = m.tipo !== "pptx" || n < 2;
@@ -119,7 +125,7 @@ async function matPintar(box, m, cap) {
   } else if (m.tipo === "html") {
     const f = document.createElement("iframe"); f.className = "mt-fr"; f.title = m.nome; f.setAttribute("sandbox", ""); f.srcdoc = await reg.blob.text(); corpo.innerHTML = ""; corpo.appendChild(f);
   } else {
-    let sl; try { sl = (await pptxLer(await reg.blob.arrayBuffer(), true))[cap]; } catch (e) { if (box.isConnected) corpo.innerHTML = `<p class="mt-er">${esc(e.message || "Não consegui abrir o PPTX.")}</p>`; return; }
+    let sl; try { sl = (await pptxLer(reg.blob, true))[cap]; } catch (e) { if (box.isConnected) corpo.innerHTML = `<p class="mt-er">${esc(e.message || "Não consegui abrir o PPTX.")}</p>`; return; }
     if (!MAT.aberto || !box.isConnected || MAT.aberto.cap !== cap) return;   // fechou ou trocou de slide durante a leitura
     corpo.innerHTML = `<article class="mt-sl">${sl.titulo ? `<h2>${esc(sl.titulo)}</h2>` : ""}<ul>${sl.linhas.map(l => `<li style="margin-left:${Math.min(l.n, 4) * 22}px">${esc(l.t)}</li>`).join("")}</ul>${sl.imgs.length ? `<div class="mt-im">${sl.imgs.map(b => `<img alt="" src="${matUrl(b)}">`).join("")}</div>` : ""}</article><p class="sm mut mt-av">Versão em texto e imagens dos slides. Para ver o desenho exato, use o PDF.</p>`;
   }
@@ -187,18 +193,24 @@ function pnMaterial(t) {
   if (!m) return `<p class="sm mut" style="margin:0">Anexe a apresentação (PPTX, de preferência), um PDF ou um HTML. O arquivo fica só neste aparelho, funciona sem internet e não vai para o Firebase nem para os celulares. Cada explicação pode abrir um capítulo por cima do telão.</p>
     <label class="b p mt-up" for="mt-arq">${ic("upload")}Anexar arquivo</label><input type="file" id="mt-arq" class="sr" accept=".pptx,.pdf,.html,.htm" data-mt="arq"><span class="sm mut" id="mt-st" role="status"></span>`;
   const usos = i => t.itens.map((x, k) => [x, k]).filter(([x]) => x.tipo === "explicacao" && x.cap === i).map(([, k]) => numeroItem(t, k) + (t.itens.slice(0, k + 1).filter(y => y.tipo === "explicacao").length));
-  const mb = (m.bytes / 1048576).toFixed(m.bytes > 1048576 ? 1 : 2).replace(".", ",");
-  return `<div class="mt-arq"><b>${esc(m.nome)}</b><span class="chip">${MAT_TIPOS[m.tipo]}</span><span class="sm mut">${mb} MB</span></div>
+  setTimeout(() => mtVerifica(t), 30);
+  return `<div class="mt-arq"><b>${esc(m.nome)}</b><span class="chip">${MAT_TIPOS[m.tipo]}</span><span class="sm mut">${MB(m.bytes)}</span></div><div id="mt-falta"></div>
     <div class="mt-acoes"><label class="b sm" for="mt-arq">${ic("upload", 'style="width:16px;height:16px"')}Trocar arquivo</label><input type="file" id="mt-arq" class="sr" accept=".pptx,.pdf,.html,.htm" data-mt="arq"><button class="b sm g" data-act="mtprev">Ver o material</button><button class="b sm g" data-act="mtdel">${ic("trash", 'style="width:16px;height:16px"')}Remover</button></div>
     <span class="sm mut" id="mt-st" role="status">Trocar ou remover o arquivo desliga as ligações com as explicações.</span>
     <ul class="mt-caps" aria-label="Capítulos">${m.caps.map((c, i) => { const u = usos(i); return `<li><span class="mt-n">${m.tipo === "pptx" ? i + 1 : ""}</span><span class="mt-ct">${esc(c.t)}${m.tipo === "pdf" ? ` <span class="sm mut">página ${c.p}</span>` : ""}</span>${u.length ? `<span class="chip ok">${u.length} explicaç${u.length === 1 ? "ão" : "ões"}</span>` : ""}${m.tipo === "pdf" && m.caps.length > 1 ? `<button class="b ic g" data-act="mtcdel" data-i="${i}" aria-label="Apagar o capítulo ${esc(c.t)}">${ic("x", 'style="width:16px;height:16px"')}</button>` : ""}</li>`; }).join("")}</ul>
     ${m.tipo === "pdf" ? `<form class="mt-add" data-form="mtcap"><div class="fd"><label for="mt-ct">Novo capítulo</label><input class="in" id="mt-ct" maxlength="80" placeholder="Ex.: Lavagem das mãos"></div><div class="fd"><label for="mt-cp">Página</label><input class="in" id="mt-cp" type="number" min="1" max="2000" value="1" inputmode="numeric"></div><button class="b" type="submit">Adicionar</button></form>` : ""}`;
 }
+/* material que veio de outro aparelho: só o título e os capítulos estão aqui, o arquivo precisa ser anexado de novo */
+async function mtVerifica(t) {
+  const el = $("#mt-falta"); if (!el || !t.material) return;
+  const r = await matLer(t.id).catch(() => null); if (r || !$("#mt-falta")) return;
+  $("#mt-falta").innerHTML = `<div class="mt-falta"><b>O arquivo não está neste aparelho.</b><span class="sm">Só o título e os capítulos vieram com o treinamento. Anexe de novo o mesmo arquivo (${esc(t.material.nome)}) e as ligações com as explicações continuam valendo.</span><label class="b p sm" for="mt-re">${ic("upload", 'style="width:16px;height:16px"')}Anexar o mesmo arquivo</label><input type="file" id="mt-re" class="sr" accept=".pptx,.pdf,.html,.htm" data-mt="re"></div>`;
+}
 function mtRepinta() { const t = treino(UI.ed && UI.ed.id); const c = $("#pn-corpo"); if (t && c && PN.aba === "material") c.innerHTML = pnMaterial(t); }
 document.addEventListener("change", async e => {
-  const x = e.target; if (!x.dataset || x.dataset.mt !== "arq" || !x.files[0]) return;
+  const x = e.target; if (!x.dataset || x.dataset.mt !== "arq" && x.dataset.mt !== "re" || !x.files[0]) return;
   const t = treino(UI.ed && UI.ed.id); if (!t) return; const st = $("#mt-st"); if (st) st.textContent = "Lendo o arquivo...";
-  const r = await matAnexar(t, x.files[0]); x.value = "";
+  const r = await matAnexar(t, x.files[0], x.dataset.mt === "re"); x.value = "";
   if (!r.ok) { const s2 = $("#mt-st"); if (s2) { s2.textContent = r.msg; s2.classList.add("warn"); } return; }
   mtRepinta(); aviso(r.caps > 1 ? `Material anexado: ${r.caps} capítulos` : "Material anexado"); if (rota().v === "editar") pintaCentro();
 });
@@ -217,3 +229,11 @@ document.addEventListener("submit", e => {
   t.material.caps.push({t: nome, p: pg}); t.material.caps.sort((p, q) => p.p - q.p);
   t.itens.forEach((x, k) => { if (lig[k]) x.cap = t.material.caps.indexOf(lig[k]); }); salvar(); mtRepinta(); pintaCentro();
 });
+
+/* título e capítulos viajam na exportação do treinamento; o arquivo não (importar leva ao "anexe de novo") */
+function matValida(m) {
+  if (!m || typeof m !== "object" || !MAT_TIPOS[m.tipo] || typeof m.nome !== "string" || !Array.isArray(m.caps) || !m.caps.length || m.caps.length > 1000) return null;
+  const caps = m.caps.map(c => c && typeof c.t === "string" && Number.isInteger(c.p) && c.p >= 0 && c.p <= 5000 ? {t: c.t.slice(0, 80), p: c.p} : null);
+  if (caps.some(c => !c)) return null;
+  return {nome: m.nome.slice(0, 200), tipo: m.tipo, bytes: Number(m.bytes) > 0 ? Number(m.bytes) : 0, caps, em: new Date().toISOString()};
+}

@@ -15,7 +15,8 @@ const tem = async (p, txt, sel = 'body', ms = 8000) => espera(p, ([t, s]) => { c
   const b = await chromium.launch({args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--autoplay-policy=no-user-gesture-required']});
   const errs = [];
   const pagina = async (ctx, nome) => { const p = await ctx.newPage(); p.on('pageerror', e => !/sandboxed and lacks/.test(e.message) && errs.push(nome + ' pageerror@' + log.length + ' ' + e.message)); p.on('console', m => { if (m.type() === 'error' && !/fonts\.g|ERR_|Failed to load resource|Blocked script execution in 'about:srcdoc'/.test(m.text())) errs.push(nome + ' ' + m.text()) }); return p; };
-  const GRANDE = path.resolve(OUT, 'grande.pdf'); fs.writeFileSync(GRANDE, Buffer.concat([Buffer.from('%PDF-1.4\n'), Buffer.alloc(26 * 1024 * 1024)]));
+  const GRANDE = path.resolve(OUT, 'grande.html'); fs.writeFileSync(GRANDE, Buffer.alloc(31 * 1024 * 1024, 32));
+  const GRANDE_PDF = path.resolve(OUT, 'grande40.pdf'); fs.writeFileSync(GRANDE_PDF, Buffer.concat([Buffer.from('%PDF-1.4\n'), Buffer.alloc(40 * 1024 * 1024)]));
   const FX = [path.join(__dirname, 'fx13/'), path.join(__dirname, '../fx13/')].find(fs.existsSync);
   const ctx = await b.newContext({viewport: {width: 1280, height: 800}, serviceWorkers: 'block'});
   const p = await pagina(ctx, 'instrutor');
@@ -35,7 +36,7 @@ const tem = async (p, txt, sel = 'body', ms = 8000) => espera(p, ([t, s]) => { c
   ok('O campo aceita só PPTX, PDF e HTML', (await p.locator('#mt-arq').getAttribute('accept')) === '.pptx,.pdf,.html,.htm');
 
   // ---------- B. arquivos inválidos
-  for (const [f, rx, nome] of [['falso.pdf', /não parece um PDF/, 'PDF falso'], ['falso.pptx', /não parece um PPTX/, 'PPTX falso'], ['velho.ppt', /PPTX, PDF ou HTML/, 'PPT antigo'], [GRANDE, /25 MB/, 'arquivo grande demais']]) {
+  for (const [f, rx, nome] of [['falso.pdf', /não parece um PDF/, 'PDF falso'], ['falso.pptx', /não parece um PPTX/, 'PPTX falso'], ['velho.ppt', /PPTX, PDF ou HTML/, 'PPT antigo'], [GRANDE, /HTML passa de 30 MB/, 'HTML grande demais']]) {
     await anexar(f);
     ok('Recusa ' + nome + ' com aviso claro', rx.test(await temp()) && await p.evaluate(t => !treino(t).material, tid), (await temp()).slice(0, 60));
   }
@@ -45,7 +46,7 @@ const tem = async (p, txt, sel = 'body', ms = 8000) => espera(p, ([t, s]) => { c
   const m = await p.evaluate(t => treino(t).material, tid);
   ok('PPTX anexado: 4 slides viram 4 capítulos', m && m.tipo === 'pptx' && m.caps.length === 4 && m.nome === 'aula.pptx', JSON.stringify(m && m.caps.map(c => c.t)));
   ok('Os títulos vêm dos slides (e o sem título usa a primeira linha)', m.caps[0].t === 'Higiene na ordenha' && m.caps[1].t === 'Lavagem das mãos' && m.caps[2].t === 'Tempos de contato' && m.caps[3].t === 'Foto sem título');
-  ok('A lista mostra nome, tipo, tamanho e os capítulos', await p.evaluate(() => { const c = document.querySelector('#pn-corpo').innerText; return c.includes('aula.pptx') && c.includes('PPTX') && c.includes('MB') && c.includes('Lavagem das mãos') && document.querySelectorAll('.mt-caps li').length === 4 }));
+  ok('A lista mostra nome, tipo, tamanho e os capítulos', await p.evaluate(() => { const c = document.querySelector('#pn-corpo').innerText; return c.includes('aula.pptx') && c.includes('PPTX') && /\d+ KB/.test(c) && c.includes('Lavagem das mãos') && document.querySelectorAll('.mt-caps li').length === 4 }));
   ok('O arquivo fica no IndexedDB "sabia-material", e não no estado', await p.evaluate(async t => { const r = await matLer(t); return !!r && r.blob.size > 1000 && !JSON.stringify(S).includes('UEsDB') && !('blob' in treino(t).material) }, tid));
   ok('Capítulos de PPTX não podem ser editados à mão', (await p.locator('.mt-add').count()) === 0 && (await p.locator('[data-act=mtcdel]').count()) === 0);
   await p.screenshot({path: path.join(OUT, 'painel-material.png')});
@@ -158,6 +159,9 @@ const tem = async (p, txt, sel = 'body', ms = 8000) => espera(p, ([t, s]) => { c
   await ir('#/editar/' + tid); await p.waitForSelector('.edit'); await p.click('[data-act=painel]'); await p.waitForSelector('.dl.pn'); await p.click('.pn-t [data-v=material]');
   await anexar('manual.pdf');
   ok('Trocar o arquivo desliga as ligações das explicações', await p.evaluate(t => { const x = treino(t); return x.material.tipo === 'pdf' && x.itens.every(i => i.cap === undefined) }, tid));
+  await anexar(GRANDE_PDF);
+  ok('PDF de 40 MB é aceito (limite agora é 300 MB) e fica só no aparelho', await p.evaluate(async t => { const x = treino(t).material, r = await matLer(t); return x.tipo === 'pdf' && x.bytes > 40e6 && r.blob.size > 40e6 && JSON.stringify(S).length < 200000 }, tid));
+  ok('A lista mostra o tamanho em MB', (await p.locator('.mt-arq').innerText()).includes('40 MB'));
   await p.evaluate(t => { treino(t).itens[0].cap = 0; salvar(); }, tid);
   await p.evaluate(() => duplicar(UI.ed.id)); await p.waitForTimeout(600);
   ok('Duplicar o treinamento leva o material junto', await p.evaluate(async () => { const c = S.treinamentos[0]; const r = await matLer(c.id); return c.titulo.endsWith('(cópia)') && !!c.material && !!r && c.itens[0].cap === 0 }));
@@ -168,8 +172,28 @@ const tem = async (p, txt, sel = 'body', ms = 8000) => espera(p, ([t, s]) => { c
   ok('Arquivo sem treinamento (órfão) é limpo', await p.evaluate(async () => { await matGravar('orfao-x', {blob: new Blob(['x']), nome: 'x.pdf', tipo: 'pdf'}); await matLimpaOrfaos(); return !(await matLer('orfao-x')) }));
   ok('Arquivo de treinamento existente não é limpo', await p.evaluate(async t => !!(await matLer(t)), th));
   ok('O estado continua leve (sem o arquivo dentro)', await p.evaluate(() => JSON.stringify(S).length < 200000));
-  ok('Exportar o treinamento não leva o arquivo', await p.evaluate(t => { const o = treino(t); const v = validaTreino(JSON.parse(JSON.stringify({sabia: 'treinamento', titulo: o.titulo, meta: o.meta, itens: o.itens}))); return v && !v.material && v.itens.every(i => i.cap === undefined) }, tp));
+  ok('Exportar leva título e capítulos, mas não o arquivo', await p.evaluate(t => { const o = treino(t); const v = validaTreino(JSON.parse(JSON.stringify({sabia: 'treinamento', titulo: o.titulo, meta: o.meta, material: o.material, itens: o.itens}))); return v && v.material && v.material.caps.length === 2 && v.material.nome === 'manual.pdf' && !('blob' in v.material) && v.itens[0].cap === 1 }, tp));
+  ok('Material inventado ou quebrado na importação é descartado, com as ligações', await p.evaluate(t => { const o = treino(t); const v = validaTreino(JSON.parse(JSON.stringify({titulo: 'x', itens: o.itens, material: {nome: 'a', tipo: 'exe', caps: [{t: 'a', p: 1}]}}))); const w = validaTreino(JSON.parse(JSON.stringify({titulo: 'x', itens: o.itens, material: {nome: 'a.pdf', tipo: 'pdf', caps: [{t: 'a', p: 1}]}}))); return !v.material && v.itens.every(i => i.cap === undefined) && w.material && w.itens.every(i => i.cap === undefined || i.cap < 1) }, tp));
   ok('Material de um aparelho sem o arquivo avisa em vez de quebrar', await p.evaluate(async () => { const t = criarDoZero('Sem arquivo', 80); t.itens.push({tipo: 'explicacao', enunciado: 'X', texto: '', uso: 'avaliacao', tempo: 20}); t.material = {nome: 'a.pdf', tipo: 'pdf', bytes: 10, caps: [{t: 'Tudo', p: 1}]}; t.itens[0].cap = 0; await matAbrir({tid: t.id, nome: 'a.pdf', tipo: 'pdf', caps: ['Tudo'], pg: [1]}, 0, 'ctl'); const r = document.querySelector('.dl.mt').innerText.includes('não está neste aparelho'); matFechar(); S.treinamentos.shift(); return r }));
+
+
+  // ---------- J. outro aparelho: só o título viaja, o arquivo é anexado de novo
+  const tx = await p.evaluate(() => { const t = criarDoZero('Treino do PPTX', 80); t.itens.push({tipo: 'explicacao', enunciado: 'Slide 2', texto: '', uso: 'avaliacao', tempo: 20}); salvar(); return t.id });
+  await ir('#/editar/' + tx); await p.waitForSelector('.edit'); await p.click('[data-act=painel]'); await p.waitForSelector('.dl.pn'); await p.click('.pn-t [data-v=material]'); await anexar('aula.pptx');
+  await p.evaluate(t => { treino(t).itens[0].cap = 1; salvar(); }, tx);
+  const txt2 = await p.evaluate(t => { const o = treino(t); return JSON.stringify({sabia: 'treinamento', titulo: o.titulo, meta: o.meta, material: {nome: o.material.nome, tipo: o.material.tipo, bytes: o.material.bytes, caps: o.material.caps}, itens: o.itens}) }, tx);
+  await p.evaluate(() => document.querySelector('#dlg').close());
+  const ti = await p.evaluate(j => { const v = validaTreino(JSON.parse(j)); v.titulo = 'Importado em outro aparelho'; S.treinamentos.unshift(v); salvar(); return v.id }, txt2);
+  await ir('#/editar/' + ti); await p.waitForSelector('.edit'); await p.click('[data-act=painel]'); await p.waitForSelector('.dl.pn'); await p.click('.pn-t [data-v=material]');
+  ok('Importado: mostra o nome e os capítulos, e avisa que o arquivo não está aqui', await espera(p, () => { const f = document.querySelector('#mt-falta'); return !!f && f.innerText.includes('não está neste aparelho') && f.innerText.includes('aula.pptx') }, null, 3000) && (await p.locator('.mt-caps li').count()) === 4);
+  await p.screenshot({path: path.join(OUT, 'material-importado.png')});
+  await p.setInputFiles('#mt-re', FX + 'manual.pdf'); await p.waitForTimeout(500);
+  ok('Anexar outro tipo de arquivo é recusado', (await temp()).includes('mesmo tipo') && await p.evaluate(async t => !(await matLer(t)), ti));
+  await p.setInputFiles('#mt-re', FX + 'aula2.pptx'); await p.waitForTimeout(500);
+  ok('PPTX com outro número de slides é recusado', (await temp()).includes('2 slides') && (await temp()).includes('4'));
+  await p.setInputFiles('#mt-re', FX + 'aula.pptx'); await p.waitForTimeout(800);
+  ok('Anexar o mesmo arquivo volta a funcionar e mantém capítulos e ligações', await p.evaluate(async t => { const x = treino(t), r = await matLer(t); return !!r && x.material.caps.length === 4 && x.itens[0].cap === 1 && x.material.caps[1].t === 'Lavagem das mãos' }, ti) && (await p.locator('#mt-falta .mt-falta').count()) === 0);
+  await p.click('[data-act=mtprev]'); await p.waitForSelector('.dl.mt .mt-sl'); await p.keyboard.press('Escape');
 
   // ---------- I. celular e temas
   const pc = await pagina(await b.newContext({viewport: {width: 390, height: 800}, serviceWorkers: 'block', isMobile: true, hasTouch: true}), 'celular');
@@ -188,6 +212,6 @@ const tem = async (p, txt, sel = 'body', ms = 8000) => espera(p, ([t, s]) => { c
   ok('No escuro o visor usa fundo e texto do tema', await pc.evaluate(() => { const c = getComputedStyle(document.querySelector('.dl.mt')); return c.color !== 'rgb(0, 0, 0)' }));
 
   ok('Sem erros de JS', errs.length === 0, errs.slice(0, 3).join(' | '));
-  fs.rmSync(GRANDE, {force: true}); console.log(log.join('\n')); console.log('\n' + log.filter(l => l.startsWith('OK')).length + ' OK / ' + log.filter(l => l.startsWith('FALHA')).length + ' FALHAS');
+  fs.rmSync(GRANDE, {force: true}); fs.rmSync(GRANDE_PDF, {force: true}); console.log(log.join('\n')); console.log('\n' + log.filter(l => l.startsWith('OK')).length + ' OK / ' + log.filter(l => l.startsWith('FALHA')).length + ' FALHAS');
   await b.close(); srv.close(); mock.fecha();
 })().catch(e => { console.log(log.join('\n')); console.error('ERRO', e); process.exit(1); });

@@ -874,6 +874,7 @@ label.b.sm{cursor:pointer}
 .matov .mt-sl h2{font-size:clamp(30px,4.4vw,58px)}.matov .mt-sl ul{font-size:clamp(22px,3vw,36px)}
 .matov .mt-im img{max-height:52dvh}
 @media (max-width:520px){.mt-add{grid-template-columns:1fr 80px}.mt-add button{grid-column:1/-1}#dlg:has(.dl.mt){width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border-radius:0}}
+.mt-falta{display:grid;gap:8px;justify-items:start;padding:12px;border-radius:12px;background:var(--warn-soft,#FBE6D8);border:1px solid var(--line)}
 
 </style>
 </head>
@@ -937,7 +938,7 @@ label.b.sm{cursor:pointer}
 </script>
 <script>
 "use strict";
-const VERSAO = "1.3.0";
+const VERSAO = "1.3.1";
 const MODELOS = [{"id":"m-epi","titulo":"Equipamentos de proteção no trabalho","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Para que serve o equipamento de proteção e quando usar","texto":""},{"tipo":"multipla","enunciado":"Quando o equipamento de proteção deve ser usado?","alternativas":["Só quando o responsável está olhando","Durante toda a atividade que exige o equipamento","Só nos dias de muito calor","Só no começo do turno"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"A proteção vale durante toda a atividade. Tirar no meio do serviço deixa a pessoa exposta."},{"tipo":"vf","enunciado":"Pode emprestar o seu equipamento de proteção de uso individual a um colega.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"O equipamento é de uso pessoal. O colega deve pedir o dele ao responsável."},{"tipo":"multipla","enunciado":"O equipamento rasgou ou quebrou durante o trabalho. O que fazer?","alternativas":["Continuar e trocar no fim do mês","Avisar o responsável e trocar antes de continuar","Remendar com fita","Trabalhar sem ele"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Equipamento danificado não protege. Avise e troque antes de voltar à atividade."},{"tipo":"vf","enunciado":"O equipamento de proteção precisa ser do tamanho certo para quem usa.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Equipamento folgado ou apertado atrapalha e protege mal."},{"tipo":"ordenar","enunciado":"Coloque na ordem o cuidado com o equipamento depois do uso.","alternativas":["Limpar conforme a orientação","Conferir se há rasgo ou defeito","Guardar em local limpo e seco"],"tempo":45,"uso":"avaliacao","porque":"Limpar, conferir e guardar: assim ele está pronto e seguro para o próximo uso."},{"tipo":"multipla","enunciado":"Onde guardar o equipamento de proteção?","alternativas":["Em local limpo, seco e conhecido por todos","No chão, perto do trabalho","Dentro do carro","Onde der"],"correta":0,"tempo":20,"uso":"gincana","porque":"Guardado no lugar certo, o equipamento dura mais e é fácil de achar."}]},{"id":"m-hig","titulo":"Higiene das mãos e pessoal","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Higiene pessoal protege quem trabalha e quem é atendido","texto":""},{"tipo":"multipla","enunciado":"Você acordou com febre ou diarreia. O que fazer antes de começar o dia?","alternativas":["Trabalhar normalmente","Avisar o responsável antes de entrar na área","Tomar um remédio e entrar","Só usar máscara"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Doença passa de pessoa para pessoa e para os alimentos. O responsável decide a sua atividade antes de você entrar."},{"tipo":"vf","enunciado":"Corte na mão deve ficar coberto com curativo e luva.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Curativo e luva impedem contato do ferimento com o que a pessoa toca."},{"tipo":"multipla","enunciado":"Onde se pode comer e beber durante o turno?","alternativas":["No meio da atividade","Só na área definida para isso","Dentro da área de trabalho","Em qualquer lugar"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Comida e bebida só na área definida, longe do trabalho e do material."},{"tipo":"vf","enunciado":"Unha comprida ou com esmalte é permitida na área de manuseio.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Unha comprida acumula sujeira e o esmalte pode soltar."},{"tipo":"ordenar","enunciado":"Coloque na ordem a entrada na área de manuseio.","alternativas":["Prender o cabelo e colocar a touca","Lavar as mãos","Calçar as luvas, se a atividade pedir"],"tempo":45,"uso":"avaliacao","porque":"Touca primeiro, depois mãos lavadas e por último as luvas: assim as mãos limpas não tocam o cabelo."},{"tipo":"vf","enunciado":"Brinco, anel e pulseira devem ser retirados antes de entrar.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":15,"uso":"gincana","porque":"Adornos acumulam sujeira e podem cair."}]},{"id":"m-inc","titulo":"Como comunicar um problema ou acidente","meta":75,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Avisar logo evita que o problema cresça","texto":""},{"tipo":"multipla","enunciado":"Quando avisar o responsável sobre um problema ou acidente?","alternativas":["Só no fim da semana","O quanto antes","Só se alguém perguntar","Nunca, se for pequeno"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Quanto antes o responsável souber, mais cedo ele resolve e evita que se repita."},{"tipo":"multipla","enunciado":"O que não pode faltar no aviso?","alternativas":["Só o nome de quem viu","O que aconteceu, onde e quando","Nada, o responsável descobre","Só o horário"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Sem saber o que, onde e quando, fica difícil achar a causa e resolver."},{"tipo":"vf","enunciado":"Quase acidente, que não machucou ninguém, também deve ser avisado.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"O quase acidente mostra o risco antes que alguém se machuque."},{"tipo":"vf","enunciado":"Pode mexer no local do acidente antes de o responsável chegar, para arrumar tudo.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Mexer apaga as pistas do que aconteceu. Só mexa se for preciso para socorrer alguém ou evitar outro risco."},{"tipo":"ordenar","enunciado":"Coloque as etapas na ordem certa.","alternativas":["Garantir a segurança de todos","Avisar o responsável","Registrar o que aconteceu","Acompanhar a solução"],"tempo":60,"uso":"avaliacao","porque":"Primeiro a segurança, depois o aviso, o registro e o acompanhamento: cada etapa depende da anterior."},{"tipo":"multipla","enunciado":"Quem deve avisar um problema?","alternativas":["Só o chefe","Qualquer pessoa que perceber","Só quem se machucou","Só quem está de plantão"],"correta":1,"tempo":20,"uso":"gincana","porque":"Quem percebe primeiro tem o dever de avisar. Todos ajudam a evitar o problema."}]}];
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -1061,11 +1062,13 @@ function validaTreino(o) {
     alternativas: Array.isArray(i.alternativas) ? i.alternativas.slice(0, 8).map(a => String(a).slice(0, 200)) : undefined,
     correta: Number.isInteger(i.correta) ? i.correta : undefined, tempo: Number(i.tempo) > 0 ? Math.min(600, Number(i.tempo)) : 20,
     uso: ["avaliacao", "gincana", "ensaio"].includes(i.uso) ? i.uso : "avaliacao", porque: String(i.porque || "").slice(0, 600),
-    audio: audioOk(i.audio) ? i.audio : undefined
+    audio: audioOk(i.audio) ? i.audio : undefined,
+    cap: Number.isInteger(i.cap) && i.cap >= 0 && i.cap < 1000 && i.tipo === "explicacao" ? i.cap : undefined
   }));
+  const material = matValida(o.material); itens.forEach(i => { if (!material || i.cap >= material.caps.length) delete i.cap; });
   const meta = Number(o.meta), pts = o.metaTipo === "pts" && meta >= 1 && meta <= PTS_MAX; const ag = new Date().toISOString();
   const reav = Array.isArray(o.reav) ? [...new Set(o.reav.map(Number).filter(d => REAV_DIAS.includes(d)))].sort((a, b) => a - b) : [], per = VALIDADES.some(v => v[0] === Number(o.per)) ? Number(o.per) : 0;
-  return {id: uid(), titulo: o.titulo.slice(0, 120), meta: pts ? Math.round(meta) : meta > 0 && meta <= 100 ? Math.round(meta) : 80, ...(pts ? {metaTipo: "pts"} : {}), descricao: String(o.descricao || "").slice(0, 400), reav, per, itens, versao: 0, versoes: [{n: 0, nota: "Importado de arquivo", quando: ag}], atualizado: ag};
+  return {id: uid(), titulo: o.titulo.slice(0, 120), meta: pts ? Math.round(meta) : meta > 0 && meta <= 100 ? Math.round(meta) : 80, ...(pts ? {metaTipo: "pts"} : {}), descricao: String(o.descricao || "").slice(0, 400), reav, per, ...(material ? {material} : {}), itens, versao: 0, versoes: [{n: 0, nota: "Importado de arquivo", quando: ag}], atualizado: ag};
 }
 function importarArquivo(f) {
   const r = new FileReader();
@@ -1305,7 +1308,7 @@ document.addEventListener("click", e => {
   else if (a === "filtro") { UI.filtro = !UI.filtro; render(); }
   else if (a === "excluir") excluir(id);
   else if (a === "duplicar") duplicar(id);
-  else if (a === "exportar") { const t = treino(id); if (t) baixar(slug(t.titulo) + ".json", {sabia: "treinamento", versao: VERSAO, titulo: t.titulo, meta: t.meta, ...(metaPts(t) ? {metaTipo: "pts"} : {}), descricao: t.descricao, reav: t.reav || [], per: t.per || 0, itens: t.itens}); }
+  else if (a === "exportar") { const t = treino(id); if (t) baixar(slug(t.titulo) + ".json", {sabia: "treinamento", versao: VERSAO, titulo: t.titulo, meta: t.meta, ...(metaPts(t) ? {metaTipo: "pts"} : {}), descricao: t.descricao, reav: t.reav || [], per: t.per || 0, ...(t.material ? {material: {nome: t.material.nome, tipo: t.material.tipo, bytes: t.material.bytes, caps: t.material.caps}} : {}), itens: t.itens}); }
   else if (a === "preset") { const p = PRESETS[v]; UI.apl.preset = v; Object.assign(UI.apl.aj, AJ_PADRAO, p.aj); render(); }
   else if (a === "setor") { const l = UI.apl.setores, i = l.indexOf(v); if (i < 0) l.push(v); else l.splice(i, 1); render(); }
   else if (a === "preparar") preparar();
@@ -4464,7 +4467,7 @@ function metaValida(t, m) { return metaPts(t) ? (m >= 1 && m <= PTS_MAX) : (m >=
 /* O arquivo fica no IndexedDB "sabia-material" (chave = id do treinamento); no estado vai só t.material = {nome, tipo, bytes, caps:[{t,p}]}.
    PPTX: os slides viram capítulos e aparecem como texto + imagens (o arquivo é lido aqui, sem enviar a lugar nenhum).
    PDF: abre no leitor do navegador na página do capítulo. HTML: abre o documento inteiro, sem scripts. */
-const MAT_MAX = 25 * 1024 * 1024;
+const MAT_MAX = 300 * 1024 * 1024, MAT_MAX_HTML = 30 * 1024 * 1024;   // arquivos grandes ficam só neste aparelho
 const MAT = {aberto: null, urls: [], pn: null};
 const MAT_TIPOS = {pptx: "PPTX", pdf: "PDF", html: "HTML"};
 
@@ -4488,23 +4491,24 @@ async function matLimpaOrfaos() {
 setTimeout(matLimpaOrfaos, 4000);
 
 /* ---------- ler PPTX (zip + XML) ---------- */
-async function zipLer(buf) {
-  const u8 = new Uint8Array(buf), dv = new DataView(buf); let e = u8.length - 22;
-  while (e >= 0 && dv.getUint32(e, true) !== 0x06054b50) e--;
+async function zipLer(blob) {
+  const tam = blob.size, ini = Math.max(0, tam - 70000), cauda = new Uint8Array(await blob.slice(ini).arrayBuffer()), dc = new DataView(cauda.buffer);
+  let e = cauda.length - 22; while (e >= 0 && dc.getUint32(e, true) !== 0x06054b50) e--;
   if (e < 0) throw new Error("O arquivo não é um zip válido.");
-  const n = dv.getUint16(e + 10, true); let off = dv.getUint32(e + 16, true); const idx = {};
+  const n = dc.getUint16(e + 10, true), cdTam = dc.getUint32(e + 12, true), cdOff = dc.getUint32(e + 16, true);
+  if (cdOff === 0xFFFFFFFF || cdTam === 0xFFFFFFFF) throw new Error("PPTX grande demais para este leitor. Exporte como PDF.");
+  const cd = new Uint8Array(await blob.slice(cdOff, cdOff + cdTam).arrayBuffer()), dv = new DataView(cd.buffer); let off = 0; const idx = {};
   for (let i = 0; i < n; i++) {
-    if (dv.getUint32(off, true) !== 0x02014b50) break;
+    if (off + 46 > cd.length || dv.getUint32(off, true) !== 0x02014b50) break;
     const met = dv.getUint16(off + 10, true), csz = dv.getUint32(off + 20, true), nl = dv.getUint16(off + 28, true), el = dv.getUint16(off + 30, true), cl = dv.getUint16(off + 32, true), lh = dv.getUint32(off + 42, true);
-    idx[new TextDecoder().decode(u8.subarray(off + 46, off + 46 + nl))] = {met, csz, lh}; off += 46 + nl + el + cl;
+    idx[new TextDecoder().decode(cd.subarray(off + 46, off + 46 + nl))] = {met, csz, lh}; off += 46 + nl + el + cl;
   }
   const bytes = async nome => {
     const z = idx[nome]; if (!z) return null;
-    const ini = z.lh + 30 + dv.getUint16(z.lh + 26, true) + dv.getUint16(z.lh + 28, true), raw = u8.subarray(ini, ini + z.csz);
-    if (z.met === 0) return raw;
+    const h = new DataView(await blob.slice(z.lh, z.lh + 30).arrayBuffer()), ini2 = z.lh + 30 + h.getUint16(26, true) + h.getUint16(28, true), raw = blob.slice(ini2, ini2 + z.csz);
+    if (z.met === 0) return new Uint8Array(await raw.arrayBuffer());
     if (z.met !== 8 || typeof DecompressionStream === "undefined") throw new Error("Este navegador não consegue abrir o PPTX. Use o PDF.");
-    const sd = new Blob([raw]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
-    return new Uint8Array(await new Response(sd).arrayBuffer());
+    return new Uint8Array(await new Response(raw.stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer());
   };
   return {nomes: Object.keys(idx), bytes, texto: async n => { const b = await bytes(n); return b ? new TextDecoder().decode(b) : null; }};
 }
@@ -4512,8 +4516,8 @@ const xmlDoc = s => new DOMParser().parseFromString(s, "application/xml");
 const filhos = (n, nome) => Array.from(n.getElementsByTagNameNS("*", nome));
 const caminhoRel = (base, alvo) => { if (alvo.startsWith("/")) return alvo.slice(1); const p = base.split("/"); p.pop(); alvo.split("/").forEach(x => { if (x === "..") p.pop(); else if (x !== ".") p.push(x); }); return p.join("/"); };
 const MIME_IMG = {png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", gif: "image/gif", svg: "image/svg+xml", webp: "image/webp", bmp: "image/bmp"};
-async function pptxLer(buf, comImagens) {
-  const z = await zipLer(buf), pres = await z.texto("ppt/presentation.xml"); if (!pres) throw new Error("Não achei os slides neste arquivo.");
+async function pptxLer(blob, comImagens) {
+  const z = await zipLer(blob), pres = await z.texto("ppt/presentation.xml"); if (!pres) throw new Error("Não achei os slides neste arquivo.");
   const rels = {}; filhos(xmlDoc(await z.texto("ppt/_rels/presentation.xml.rels") || "<r/>"), "Relationship").forEach(r => { rels[r.getAttribute("Id")] = r.getAttribute("Target"); });
   const ids = filhos(xmlDoc(pres), "sldId").map(x => x.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships", "id") || x.getAttribute("r:id"));
   const slides = [];
@@ -4542,24 +4546,29 @@ async function pptxLer(buf, comImagens) {
 
 /* ---------- guardar o material de um treinamento ---------- */
 const extDe = n => (String(n).split(".").pop() || "").toLowerCase();
-async function matAnexar(t, file) {
+const MB = n => n < 1048576 ? Math.max(1, Math.round(n / 1024)) + " KB" : (n / 1048576).toFixed(n >= 10485760 ? 0 : 1).replace(".", ",") + " MB";
+async function matAnexar(t, file, manter) {   // manter = anexar de novo o mesmo arquivo (títulos e ligações ficam)
   const ext = extDe(file.name), tipo = ext === "pptx" ? "pptx" : ext === "pdf" ? "pdf" : ext === "html" || ext === "htm" ? "html" : "";
   if (!tipo) return {ok: false, msg: "Use um arquivo PPTX, PDF ou HTML."};
-  if (file.size > MAT_MAX) return {ok: false, msg: "O arquivo passa de 25 MB. Reduza as imagens ou use um PDF menor."};
-  const buf = await file.arrayBuffer(), u8 = new Uint8Array(buf.slice(0, 5));
+  if (manter && t.material && tipo !== t.material.tipo) return {ok: false, msg: "Anexe um arquivo do mesmo tipo (" + MAT_TIPOS[t.material.tipo] + ")."};
+  if (file.size > (tipo === "html" ? MAT_MAX_HTML : MAT_MAX)) return {ok: false, msg: tipo === "html" ? "O HTML passa de 30 MB. Use um PDF." : "O arquivo passa de 300 MB. Exporte com imagens menores."};
+  const u8 = new Uint8Array(await file.slice(0, 5).arrayBuffer());
   if (tipo === "pptx" && !(u8[0] === 0x50 && u8[1] === 0x4B)) return {ok: false, msg: "Este arquivo não parece um PPTX (o formato antigo .ppt não serve; salve como .pptx)."};
   if (tipo === "pdf" && String.fromCharCode(...u8) !== "%PDF-") return {ok: false, msg: "Este arquivo não parece um PDF."};
+  try { const e = navigator.storage && navigator.storage.estimate && await navigator.storage.estimate(); if (e && e.quota && e.quota - (e.usage || 0) < file.size * 1.05) return {ok: false, msg: "Não há espaço no navegador para este arquivo (" + MB(file.size) + "). Libere espaço ou use um arquivo menor."}; } catch (e) {}
   let caps;
   try {
-    if (tipo === "pptx") { const sl = await pptxLer(buf, false); if (!sl.length) return {ok: false, msg: "Não achei slides neste PPTX."}; caps = sl.map((x, i) => ({t: x.titulo || x.linhas.map(l => l.t)[0] || "Slide " + (i + 1), p: i})); }
+    if (tipo === "pptx") { const sl = await pptxLer(file, false); if (!sl.length) return {ok: false, msg: "Não achei slides neste PPTX."}; caps = sl.map((x, i) => ({t: x.titulo || x.linhas.map(l => l.t)[0] || "Slide " + (i + 1), p: i})); }
     else if (tipo === "pdf") caps = [{t: "Documento inteiro", p: 1}];
     else caps = [{t: "Documento inteiro", p: 0}];
   } catch (e) { return {ok: false, msg: String(e.message || "Não consegui ler o arquivo.")}; }
-  try { await matGravar(t.id, {blob: new Blob([buf], {type: tipo === "pdf" ? "application/pdf" : tipo === "html" ? "text/html" : "application/vnd.openxmlformats-officedocument.presentationml.presentation"}), nome: file.name, tipo}); }
+  if (manter && t.material && tipo === "pptx" && caps.length !== t.material.caps.length) return {ok: false, msg: "Este PPTX tem " + caps.length + " slides e o original tinha " + t.material.caps.length + ". Anexe o mesmo arquivo, ou use \"Trocar arquivo\" (desliga as ligações)."};
+  try { try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) {} await matGravar(t.id, {blob: file.slice(0, file.size, tipo === "pdf" ? "application/pdf" : tipo === "html" ? "text/html" : "application/vnd.openxmlformats-officedocument.presentationml.presentation"), nome: file.name, tipo}); }
   catch (e) { return {ok: false, msg: "O navegador não deixou guardar o arquivo (pouco espaço?)."}; }
-  t.itens.forEach(i => { delete i.cap; });
-  t.material = {nome: file.name, tipo, bytes: file.size, caps, em: new Date().toISOString()}; salvar();
-  return {ok: true, caps: caps.length};
+  if (manter && t.material) { t.material.nome = file.name; t.material.bytes = file.size; t.material.em = new Date().toISOString(); if (tipo === "pptx") t.material.caps.forEach((c, i) => { if (/^Slide \d+$/.test(c.t)) c.t = caps[i].t; }); }
+  else { t.itens.forEach(i => { delete i.cap; }); t.material = {nome: file.name, tipo, bytes: file.size, caps, em: new Date().toISOString()}; }
+  salvar();
+  return {ok: true, caps: t.material.caps.length};
 }
 async function matRemover(t) { t.itens.forEach(i => { delete i.cap; }); delete t.material; try { await matApagar(t.id); } catch (e) {} salvar(); }
 const capTxt = (t, i) => { const c = t.material && t.material.caps[i]; return c ? (t.material.tipo === "pptx" ? "Slide " + (i + 1) + ": " : "") + c.t : ""; };
@@ -4571,7 +4580,7 @@ async function matPintar(box, m, cap) {
   const corpo = box.querySelector(".mt-c"), tit = box.querySelector(".mt-t"), ant = box.querySelector("[data-act=matant]"), prox = box.querySelector("[data-act=matprox]");
   const reg = await matLer(m.tid).catch(() => null);
   if (!MAT.aberto || !box.isConnected) return;   // fechou enquanto o arquivo era lido
-  if (!reg) { corpo.innerHTML = `<p class="mt-er">O arquivo não está neste aparelho. Abra o treinamento no aparelho onde o material foi anexado.</p>`; return; }
+  if (!reg) { corpo.innerHTML = `<p class="mt-er">O arquivo não está neste aparelho (só o título veio junto). Anexe de novo o mesmo arquivo na aba Material do painel do treinamento.</p>`; return; }
   matSoltaUrls(); const n = m.caps.length; cap = Math.max(0, Math.min(n - 1, cap)); MAT.aberto.cap = cap;
   tit.textContent = (m.tipo === "pptx" ? "Slide " + (cap + 1) + " de " + n + " · " : "") + m.caps[cap];
   if (ant) ant.disabled = cap <= 0; if (prox) prox.disabled = cap >= n - 1; box.querySelector(".mt-nav").hidden = m.tipo !== "pptx" || n < 2;
@@ -4581,7 +4590,7 @@ async function matPintar(box, m, cap) {
   } else if (m.tipo === "html") {
     const f = document.createElement("iframe"); f.className = "mt-fr"; f.title = m.nome; f.setAttribute("sandbox", ""); f.srcdoc = await reg.blob.text(); corpo.innerHTML = ""; corpo.appendChild(f);
   } else {
-    let sl; try { sl = (await pptxLer(await reg.blob.arrayBuffer(), true))[cap]; } catch (e) { if (box.isConnected) corpo.innerHTML = `<p class="mt-er">${esc(e.message || "Não consegui abrir o PPTX.")}</p>`; return; }
+    let sl; try { sl = (await pptxLer(reg.blob, true))[cap]; } catch (e) { if (box.isConnected) corpo.innerHTML = `<p class="mt-er">${esc(e.message || "Não consegui abrir o PPTX.")}</p>`; return; }
     if (!MAT.aberto || !box.isConnected || MAT.aberto.cap !== cap) return;   // fechou ou trocou de slide durante a leitura
     corpo.innerHTML = `<article class="mt-sl">${sl.titulo ? `<h2>${esc(sl.titulo)}</h2>` : ""}<ul>${sl.linhas.map(l => `<li style="margin-left:${Math.min(l.n, 4) * 22}px">${esc(l.t)}</li>`).join("")}</ul>${sl.imgs.length ? `<div class="mt-im">${sl.imgs.map(b => `<img alt="" src="${matUrl(b)}">`).join("")}</div>` : ""}</article><p class="sm mut mt-av">Versão em texto e imagens dos slides. Para ver o desenho exato, use o PDF.</p>`;
   }
@@ -4649,18 +4658,24 @@ function pnMaterial(t) {
   if (!m) return `<p class="sm mut" style="margin:0">Anexe a apresentação (PPTX, de preferência), um PDF ou um HTML. O arquivo fica só neste aparelho, funciona sem internet e não vai para o Firebase nem para os celulares. Cada explicação pode abrir um capítulo por cima do telão.</p>
     <label class="b p mt-up" for="mt-arq">${ic("upload")}Anexar arquivo</label><input type="file" id="mt-arq" class="sr" accept=".pptx,.pdf,.html,.htm" data-mt="arq"><span class="sm mut" id="mt-st" role="status"></span>`;
   const usos = i => t.itens.map((x, k) => [x, k]).filter(([x]) => x.tipo === "explicacao" && x.cap === i).map(([, k]) => numeroItem(t, k) + (t.itens.slice(0, k + 1).filter(y => y.tipo === "explicacao").length));
-  const mb = (m.bytes / 1048576).toFixed(m.bytes > 1048576 ? 1 : 2).replace(".", ",");
-  return `<div class="mt-arq"><b>${esc(m.nome)}</b><span class="chip">${MAT_TIPOS[m.tipo]}</span><span class="sm mut">${mb} MB</span></div>
+  setTimeout(() => mtVerifica(t), 30);
+  return `<div class="mt-arq"><b>${esc(m.nome)}</b><span class="chip">${MAT_TIPOS[m.tipo]}</span><span class="sm mut">${MB(m.bytes)}</span></div><div id="mt-falta"></div>
     <div class="mt-acoes"><label class="b sm" for="mt-arq">${ic("upload", 'style="width:16px;height:16px"')}Trocar arquivo</label><input type="file" id="mt-arq" class="sr" accept=".pptx,.pdf,.html,.htm" data-mt="arq"><button class="b sm g" data-act="mtprev">Ver o material</button><button class="b sm g" data-act="mtdel">${ic("trash", 'style="width:16px;height:16px"')}Remover</button></div>
     <span class="sm mut" id="mt-st" role="status">Trocar ou remover o arquivo desliga as ligações com as explicações.</span>
     <ul class="mt-caps" aria-label="Capítulos">${m.caps.map((c, i) => { const u = usos(i); return `<li><span class="mt-n">${m.tipo === "pptx" ? i + 1 : ""}</span><span class="mt-ct">${esc(c.t)}${m.tipo === "pdf" ? ` <span class="sm mut">página ${c.p}</span>` : ""}</span>${u.length ? `<span class="chip ok">${u.length} explicaç${u.length === 1 ? "ão" : "ões"}</span>` : ""}${m.tipo === "pdf" && m.caps.length > 1 ? `<button class="b ic g" data-act="mtcdel" data-i="${i}" aria-label="Apagar o capítulo ${esc(c.t)}">${ic("x", 'style="width:16px;height:16px"')}</button>` : ""}</li>`; }).join("")}</ul>
     ${m.tipo === "pdf" ? `<form class="mt-add" data-form="mtcap"><div class="fd"><label for="mt-ct">Novo capítulo</label><input class="in" id="mt-ct" maxlength="80" placeholder="Ex.: Lavagem das mãos"></div><div class="fd"><label for="mt-cp">Página</label><input class="in" id="mt-cp" type="number" min="1" max="2000" value="1" inputmode="numeric"></div><button class="b" type="submit">Adicionar</button></form>` : ""}`;
 }
+/* material que veio de outro aparelho: só o título e os capítulos estão aqui, o arquivo precisa ser anexado de novo */
+async function mtVerifica(t) {
+  const el = $("#mt-falta"); if (!el || !t.material) return;
+  const r = await matLer(t.id).catch(() => null); if (r || !$("#mt-falta")) return;
+  $("#mt-falta").innerHTML = `<div class="mt-falta"><b>O arquivo não está neste aparelho.</b><span class="sm">Só o título e os capítulos vieram com o treinamento. Anexe de novo o mesmo arquivo (${esc(t.material.nome)}) e as ligações com as explicações continuam valendo.</span><label class="b p sm" for="mt-re">${ic("upload", 'style="width:16px;height:16px"')}Anexar o mesmo arquivo</label><input type="file" id="mt-re" class="sr" accept=".pptx,.pdf,.html,.htm" data-mt="re"></div>`;
+}
 function mtRepinta() { const t = treino(UI.ed && UI.ed.id); const c = $("#pn-corpo"); if (t && c && PN.aba === "material") c.innerHTML = pnMaterial(t); }
 document.addEventListener("change", async e => {
-  const x = e.target; if (!x.dataset || x.dataset.mt !== "arq" || !x.files[0]) return;
+  const x = e.target; if (!x.dataset || x.dataset.mt !== "arq" && x.dataset.mt !== "re" || !x.files[0]) return;
   const t = treino(UI.ed && UI.ed.id); if (!t) return; const st = $("#mt-st"); if (st) st.textContent = "Lendo o arquivo...";
-  const r = await matAnexar(t, x.files[0]); x.value = "";
+  const r = await matAnexar(t, x.files[0], x.dataset.mt === "re"); x.value = "";
   if (!r.ok) { const s2 = $("#mt-st"); if (s2) { s2.textContent = r.msg; s2.classList.add("warn"); } return; }
   mtRepinta(); aviso(r.caps > 1 ? `Material anexado: ${r.caps} capítulos` : "Material anexado"); if (rota().v === "editar") pintaCentro();
 });
@@ -4679,6 +4694,14 @@ document.addEventListener("submit", e => {
   t.material.caps.push({t: nome, p: pg}); t.material.caps.sort((p, q) => p.p - q.p);
   t.itens.forEach((x, k) => { if (lig[k]) x.cap = t.material.caps.indexOf(lig[k]); }); salvar(); mtRepinta(); pintaCentro();
 });
+
+/* título e capítulos viajam na exportação do treinamento; o arquivo não (importar leva ao "anexe de novo") */
+function matValida(m) {
+  if (!m || typeof m !== "object" || !MAT_TIPOS[m.tipo] || typeof m.nome !== "string" || !Array.isArray(m.caps) || !m.caps.length || m.caps.length > 1000) return null;
+  const caps = m.caps.map(c => c && typeof c.t === "string" && Number.isInteger(c.p) && c.p >= 0 && c.p <= 5000 ? {t: c.t.slice(0, 80), p: c.p} : null);
+  if (caps.some(c => !c)) return null;
+  return {nome: m.nome.slice(0, 200), tipo: m.tipo, bytes: Number(m.bytes) > 0 ? Number(m.bytes) : 0, caps, em: new Date().toISOString()};
+}
 
 function render() {
   if (!S) return;

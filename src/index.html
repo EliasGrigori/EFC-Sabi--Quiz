@@ -291,7 +291,7 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 <script>/*__QR__*/</script>
 <script>
 "use strict";
-const VERSAO = "1.3.0";
+const VERSAO = "1.3.1";
 const MODELOS = __MODELOS__;
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -415,11 +415,13 @@ function validaTreino(o) {
     alternativas: Array.isArray(i.alternativas) ? i.alternativas.slice(0, 8).map(a => String(a).slice(0, 200)) : undefined,
     correta: Number.isInteger(i.correta) ? i.correta : undefined, tempo: Number(i.tempo) > 0 ? Math.min(600, Number(i.tempo)) : 20,
     uso: ["avaliacao", "gincana", "ensaio"].includes(i.uso) ? i.uso : "avaliacao", porque: String(i.porque || "").slice(0, 600),
-    audio: audioOk(i.audio) ? i.audio : undefined
+    audio: audioOk(i.audio) ? i.audio : undefined,
+    cap: Number.isInteger(i.cap) && i.cap >= 0 && i.cap < 1000 && i.tipo === "explicacao" ? i.cap : undefined
   }));
+  const material = matValida(o.material); itens.forEach(i => { if (!material || i.cap >= material.caps.length) delete i.cap; });
   const meta = Number(o.meta), pts = o.metaTipo === "pts" && meta >= 1 && meta <= PTS_MAX; const ag = new Date().toISOString();
   const reav = Array.isArray(o.reav) ? [...new Set(o.reav.map(Number).filter(d => REAV_DIAS.includes(d)))].sort((a, b) => a - b) : [], per = VALIDADES.some(v => v[0] === Number(o.per)) ? Number(o.per) : 0;
-  return {id: uid(), titulo: o.titulo.slice(0, 120), meta: pts ? Math.round(meta) : meta > 0 && meta <= 100 ? Math.round(meta) : 80, ...(pts ? {metaTipo: "pts"} : {}), descricao: String(o.descricao || "").slice(0, 400), reav, per, itens, versao: 0, versoes: [{n: 0, nota: "Importado de arquivo", quando: ag}], atualizado: ag};
+  return {id: uid(), titulo: o.titulo.slice(0, 120), meta: pts ? Math.round(meta) : meta > 0 && meta <= 100 ? Math.round(meta) : 80, ...(pts ? {metaTipo: "pts"} : {}), descricao: String(o.descricao || "").slice(0, 400), reav, per, ...(material ? {material} : {}), itens, versao: 0, versoes: [{n: 0, nota: "Importado de arquivo", quando: ag}], atualizado: ag};
 }
 function importarArquivo(f) {
   const r = new FileReader();
@@ -659,7 +661,7 @@ document.addEventListener("click", e => {
   else if (a === "filtro") { UI.filtro = !UI.filtro; render(); }
   else if (a === "excluir") excluir(id);
   else if (a === "duplicar") duplicar(id);
-  else if (a === "exportar") { const t = treino(id); if (t) baixar(slug(t.titulo) + ".json", {sabia: "treinamento", versao: VERSAO, titulo: t.titulo, meta: t.meta, ...(metaPts(t) ? {metaTipo: "pts"} : {}), descricao: t.descricao, reav: t.reav || [], per: t.per || 0, itens: t.itens}); }
+  else if (a === "exportar") { const t = treino(id); if (t) baixar(slug(t.titulo) + ".json", {sabia: "treinamento", versao: VERSAO, titulo: t.titulo, meta: t.meta, ...(metaPts(t) ? {metaTipo: "pts"} : {}), descricao: t.descricao, reav: t.reav || [], per: t.per || 0, ...(t.material ? {material: {nome: t.material.nome, tipo: t.material.tipo, bytes: t.material.bytes, caps: t.material.caps}} : {}), itens: t.itens}); }
   else if (a === "preset") { const p = PRESETS[v]; UI.apl.preset = v; Object.assign(UI.apl.aj, AJ_PADRAO, p.aj); render(); }
   else if (a === "setor") { const l = UI.apl.setores, i = l.indexOf(v); if (i < 0) l.push(v); else l.splice(i, 1); render(); }
   else if (a === "preparar") preparar();
