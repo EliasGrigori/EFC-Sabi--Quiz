@@ -58,7 +58,7 @@ svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stro
 .app{display:grid;grid-template-columns:84px minmax(0,1fr);height:100dvh}
 .rail{background:var(--brand);color:var(--on-brand);display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 8px;padding-left:max(8px,env(safe-area-inset-left))}
 .rail .lg{width:48px;height:48px;border-radius:16px;background:var(--brand-hi);display:grid;place-items:center;margin-bottom:10px;box-shadow:inset 0 1px 0 rgb(255 255 255/.14)}
-.rail .lg svg{width:32px;height:32px}
+.rail .lg{overflow:hidden}.rail .lg svg{width:100%;height:100%;display:block}
 .ri{width:68px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0 6px;border:0;background:none;color:var(--on-brand-2);font-size:12px;font-weight:500;cursor:pointer;text-decoration:none;position:relative;border-radius:12px}
 .ri .pill{width:52px;height:30px;border-radius:15px;display:grid;place-items:center;transition:background .15s}
 .ri:hover .pill{background:rgb(255 255 255/.08)}
@@ -97,7 +97,7 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 .home{grid-template-columns:repeat(12,minmax(0,1fr));align-items:start}
 .coach{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;background:var(--brand);color:var(--on-brand);border-color:transparent}
 .coach .ms{width:52px;height:52px;border-radius:16px;background:var(--brand-hi);display:grid;place-items:center}
-.coach .ms svg{width:34px;height:34px}
+.coach .ms{overflow:hidden}.coach .ms svg{width:100%;height:100%;display:block}
 .coach .eb{font-size:12px;font-weight:700;color:var(--on-brand-2);text-transform:uppercase;letter-spacing:.06em}
 .coach h2{font-size:20px;color:#fff;margin:2px 0}
 .coach p{margin:0;color:var(--on-brand-2);font-size:14px}
@@ -736,7 +736,7 @@ body.modo-porta .app{grid-template-columns:1fr;grid-template-rows:1fr}
 .int-pc p{margin:0}
 .int-f{display:grid;gap:10px}
 .int-lg{width:48px;height:48px;border-radius:16px;background:var(--brand-hi);display:grid;place-items:center}
-.int-lg svg{width:32px;height:32px}
+.int-lg{overflow:hidden}.int-lg svg{width:100%;height:100%;display:block}
 body.int-demo::after{content:"Demonstração · sessões de teste, fora do registro";position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));background:var(--sabia);color:#fff;font-size:12px;font-weight:700;padding:6px 14px;border-radius:999px;z-index:30;pointer-events:none;white-space:nowrap;max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis}
 @media (min-width:900px){body.int-demo::after{bottom:16px}}
 .obs-f{display:flex;gap:8px}
@@ -787,12 +787,53 @@ body.perfil-col [data-act=novo],body.perfil-col [data-act=excluir],body.perfil-c
 @media (max-width:560px){.bn-i{flex-direction:column;align-items:stretch}.bn-a{justify-content:flex-end}.rl-selo .b{flex:1 1 100%}}
 @media (prefers-reduced-motion:reduce){.vz-d{animation:none}}
 
+/* ===== v1.1.0 ===== */
+/* telão: barra de opções, projetor e apresentação */
+.tvbar{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:calc(10px + env(safe-area-inset-right,0px));z-index:20;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;padding:6px;border-radius:14px;background:rgb(8 20 19/.78);backdrop-filter:blur(6px);box-shadow:var(--e3);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .18s,transform .18s}
+.tvbar.on{opacity:1;transform:none;pointer-events:auto}
+.tvbar .b{min-height:36px;padding:0 12px;gap:6px;background:transparent;color:#F2F7F6;border-color:rgb(255 255 255/.28);font-size:14px}
+.tvbar .b[aria-pressed=true]{background:var(--sabia);color:#fff;border-color:transparent}
+.tvbar .b .i{width:16px;height:16px}
+.tvbar kbd{font:600 11px var(--f-mono);padding:1px 5px;border-radius:5px;border:1px solid currentColor;opacity:.75}
+.tvdica{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:20;max-width:calc(100vw - 32px);padding:10px 18px;border-radius:999px;background:rgb(8 20 19/.88);color:#F2F7F6;font-size:15px;text-align:center}
+.telfull.idle.apr{cursor:none}
+.telfull.proj .tel{--tel-bg:#FFFFFF;--tel-bg2:#EDF2F1;--tel-card:#FFFFFF;--tel-ink:#000000;--tel-ink2:#1E2D2C;--tel-line:#6F8785;font-weight:500}
+.telfull.proj .tel .tfoot,.telfull.proj .tel .tt span{font-weight:600}
+@media (prefers-reduced-motion:reduce){.tvbar{transition:none}}
+/* painel do treinamento (lateral) */
+#dlg:has(.dl.pn){margin:0 0 0 auto;width:min(460px,100vw);max-width:100vw;height:100dvh;max-height:100dvh;border-radius:20px 0 0 20px}
+.dl.pn{display:grid;gap:12px;align-content:start;min-height:100%}
+.dl.pn>*{min-width:0}
+.pn-t{display:flex;flex-wrap:wrap;gap:6px}
+.pn-f{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pn-f div{display:grid;gap:2px;padding:10px 12px;border-radius:12px;background:var(--sunk)}
+.pn-f b{font-family:var(--f-disp);font-size:20px;line-height:1.1}
+.pn-f span{font-size:12px;color:var(--ink2)}
+.pn-l{list-style:none;margin:0;padding:0;display:grid}
+.pn-l li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.pn-l li:first-child{border-top:0}
+.pn-l li span{color:var(--ink2)}
+.pn-l li b{text-align:right}
+.pn-v,.pn-c{display:grid;gap:10px}
+.pn-vr{display:grid;gap:6px;padding:10px 12px;border:1px solid var(--line);border-radius:12px}
+.pn-vh,.pn-vf,.pn-ch{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px}
+.pn-vf b{font-size:16px}
+.pn-b{position:relative;height:10px;border-radius:5px;background:var(--sunk);overflow:visible}
+.pn-b i{display:block;height:100%;border-radius:5px;background:var(--ok)}
+.pn-b i.fr{background:var(--sabia)}
+.pn-b u{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);text-decoration:none}
+.pn-cm{padding:10px 12px;border:1px solid var(--line);border-radius:12px;display:grid;gap:4px}
+.pn-cm p{margin:0;font-size:14px;overflow-wrap:anywhere}
+.pn-r{color:var(--ink2);font-size:13px!important}
+@media (max-width:520px){#dlg:has(.dl.pn){border-radius:0}.pn-f{grid-template-columns:repeat(2,1fr)}}
+
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="logo" viewBox="0 0 48 48"><path d="M10 29c0-8 6-14 13-14 4 0 6 2 9 2l7-4-3 8c1 8-5 17-15 17-6 0-11-4-11-9z" fill="#FFFFFF"/><path d="M24 33c3-1 8-4 9-9-3 3-7 4-9 4z" fill="#D45D17"/><circle cx="31" cy="19" r="1.8" fill="#0E4A48"/><path d="M38 13l5 1.5-5 2z" fill="#F4B15A"/></symbol>
+    <clipPath id="logo-c"><rect width="48" height="48" rx="11"/></clipPath>
+    <symbol id="logo" viewBox="0 0 48 48"><image href="data:image/jpeg;base64,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" width="48" height="48" preserveAspectRatio="xMidYMid slice" clip-path="url(#logo-c)"/></symbol>
     <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h5v-6h4v6h5V10"/></symbol>
     <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></symbol>
     <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M17.5 14c2.6.2 4 2 4 5"/></symbol>
@@ -848,7 +889,7 @@ body.perfil-col [data-act=novo],body.perfil-col [data-act=excluir],body.perfil-c
 </script>
 <script>
 "use strict";
-const VERSAO = "1.0.1";
+const VERSAO = "1.1.0";
 const MODELOS = [{"id":"m-epi","titulo":"Equipamentos de proteção no trabalho","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Para que serve o equipamento de proteção e quando usar","texto":""},{"tipo":"multipla","enunciado":"Quando o equipamento de proteção deve ser usado?","alternativas":["Só quando o responsável está olhando","Durante toda a atividade que exige o equipamento","Só nos dias de muito calor","Só no começo do turno"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"A proteção vale durante toda a atividade. Tirar no meio do serviço deixa a pessoa exposta."},{"tipo":"vf","enunciado":"Pode emprestar o seu equipamento de proteção de uso individual a um colega.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"O equipamento é de uso pessoal. O colega deve pedir o dele ao responsável."},{"tipo":"multipla","enunciado":"O equipamento rasgou ou quebrou durante o trabalho. O que fazer?","alternativas":["Continuar e trocar no fim do mês","Avisar o responsável e trocar antes de continuar","Remendar com fita","Trabalhar sem ele"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Equipamento danificado não protege. Avise e troque antes de voltar à atividade."},{"tipo":"vf","enunciado":"O equipamento de proteção precisa ser do tamanho certo para quem usa.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Equipamento folgado ou apertado atrapalha e protege mal."},{"tipo":"ordenar","enunciado":"Coloque na ordem o cuidado com o equipamento depois do uso.","alternativas":["Limpar conforme a orientação","Conferir se há rasgo ou defeito","Guardar em local limpo e seco"],"tempo":45,"uso":"avaliacao","porque":"Limpar, conferir e guardar: assim ele está pronto e seguro para o próximo uso."},{"tipo":"multipla","enunciado":"Onde guardar o equipamento de proteção?","alternativas":["Em local limpo, seco e conhecido por todos","No chão, perto do trabalho","Dentro do carro","Onde der"],"correta":0,"tempo":20,"uso":"gincana","porque":"Guardado no lugar certo, o equipamento dura mais e é fácil de achar."}]},{"id":"m-hig","titulo":"Higiene das mãos e pessoal","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Higiene pessoal protege quem trabalha e quem é atendido","texto":""},{"tipo":"multipla","enunciado":"Você acordou com febre ou diarreia. O que fazer antes de começar o dia?","alternativas":["Trabalhar normalmente","Avisar o responsável antes de entrar na área","Tomar um remédio e entrar","Só usar máscara"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Doença passa de pessoa para pessoa e para os alimentos. O responsável decide a sua atividade antes de você entrar."},{"tipo":"vf","enunciado":"Corte na mão deve ficar coberto com curativo e luva.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Curativo e luva impedem contato do ferimento com o que a pessoa toca."},{"tipo":"multipla","enunciado":"Onde se pode comer e beber durante o turno?","alternativas":["No meio da atividade","Só na área definida para isso","Dentro da área de trabalho","Em qualquer lugar"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Comida e bebida só na área definida, longe do trabalho e do material."},{"tipo":"vf","enunciado":"Unha comprida ou com esmalte é permitida na área de manuseio.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Unha comprida acumula sujeira e o esmalte pode soltar."},{"tipo":"ordenar","enunciado":"Coloque na ordem a entrada na área de manuseio.","alternativas":["Prender o cabelo e colocar a touca","Lavar as mãos","Calçar as luvas, se a atividade pedir"],"tempo":45,"uso":"avaliacao","porque":"Touca primeiro, depois mãos lavadas e por último as luvas: assim as mãos limpas não tocam o cabelo."},{"tipo":"vf","enunciado":"Brinco, anel e pulseira devem ser retirados antes de entrar.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":15,"uso":"gincana","porque":"Adornos acumulam sujeira e podem cair."}]},{"id":"m-inc","titulo":"Como comunicar um problema ou acidente","meta":75,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Avisar logo evita que o problema cresça","texto":""},{"tipo":"multipla","enunciado":"Quando avisar o responsável sobre um problema ou acidente?","alternativas":["Só no fim da semana","O quanto antes","Só se alguém perguntar","Nunca, se for pequeno"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Quanto antes o responsável souber, mais cedo ele resolve e evita que se repita."},{"tipo":"multipla","enunciado":"O que não pode faltar no aviso?","alternativas":["Só o nome de quem viu","O que aconteceu, onde e quando","Nada, o responsável descobre","Só o horário"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Sem saber o que, onde e quando, fica difícil achar a causa e resolver."},{"tipo":"vf","enunciado":"Quase acidente, que não machucou ninguém, também deve ser avisado.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"O quase acidente mostra o risco antes que alguém se machuque."},{"tipo":"vf","enunciado":"Pode mexer no local do acidente antes de o responsável chegar, para arrumar tudo.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Mexer apaga as pistas do que aconteceu. Só mexa se for preciso para socorrer alguém ou evitar outro risco."},{"tipo":"ordenar","enunciado":"Coloque as etapas na ordem certa.","alternativas":["Garantir a segurança de todos","Avisar o responsável","Registrar o que aconteceu","Acompanhar a solução"],"tempo":60,"uso":"avaliacao","porque":"Primeiro a segurança, depois o aviso, o registro e o acompanhamento: cada etapa depende da anterior."},{"tipo":"multipla","enunciado":"Quem deve avisar um problema?","alternativas":["Só o chefe","Qualquer pessoa que perceber","Só quem se machucou","Só quem está de plantão"],"correta":1,"tempo":20,"uso":"gincana","porque":"Quem percebe primeiro tem o dever de avisar. Todos ajudam a evitar o problema."}]}];
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -1371,7 +1412,7 @@ function pintaTopo() {
   const t = treino(UI.ed.id); if (!t) return;
   const v = "v" + String(t.versao).padStart(2, "0");
   topo(t.titulo || "Sem título", `${t.itens.filter(i => i.tipo !== "explicacao").length} perguntas · ${v}${t.sujo ? " · alterações sem versão" : " · versão salva"}`,
-    `<button class="b" data-act="versoes" aria-label="Versões">${ic("clock")}<span class="lbl-m">Versões</span></button><a class="b p" href="#/aplicar/${t.id}" aria-label="Aplicar" ${t.itens.some(i => i.tipo !== "explicacao") ? "" : 'aria-disabled="true" style="opacity:.5;pointer-events:none"'}>${ic("play")}<span class="lbl-m">Aplicar</span></a>`, "#/treinos");
+    `<button class="b" data-act="painel" aria-label="Painel do treinamento">${ic("chart")}<span class="lbl-m">Painel</span></button><button class="b" data-act="versoes" aria-label="Versões">${ic("clock")}<span class="lbl-m">Versões</span></button><a class="b p" href="#/aplicar/${t.id}" aria-label="Aplicar" ${t.itens.some(i => i.tipo !== "explicacao") ? "" : 'aria-disabled="true" style="opacity:.5;pointer-events:none"'}>${ic("play")}<span class="lbl-m">Aplicar</span></a>`, "#/treinos");
 }
 function pintaLista() {
   const t = treino(UI.ed.id), el = $("#edLista"); if (!t || !el) return;
@@ -2327,9 +2368,9 @@ function escalar() {
 function pintarTelao() { const w = $(".telfull"); if (!w) return; w.innerHTML = telaoHTML(AO.snap); hidratarQR(w); escalar(); tickTempo(); vozAuto(); }
 function vTelao(id) {
   document.body.classList.add("modo-telao"); $("#app").className = "body";
-  $("#app").innerHTML = `<div class="telfull" role="img" aria-label="Telão da sala"></div>`;
+  $("#app").innerHTML = `<div class="telfull" role="img" aria-label="Telão da sala"></div>${tvBarra()}`;
   if (AO.snap && AO.snap.id !== id) AO.snap = null;
-  pintarTelao();
+  pintarTelao(); tvIniciar();
   if (AO.ch) AO.ch.postMessage({t: "oi", id});
 }
 function tickTempo() {
@@ -2397,7 +2438,7 @@ function vSala(id) {
     ${s.part.length && s.aj.ranking && f.etapa !== "espera" ? `<section class="k"><h3 style="font-size:16px;margin-bottom:6px">Ranking ao vivo</h3><div class="rk">${c.ranking.slice(0, 5).map((p, k) => `<div class="rr"><b class="num">${k + 1}º</b>${av(p.nome, p.cor)}<span>${esc(p.nome)}</span><span class="num">${p.pts}</span></div>`).join("")}</div></section>` : ""}
     <button class="b g bad" data-act="fechar-sala" style="justify-self:start">${ic("x")}Encerrar sala</button></div>
     <aside class="k prev" aria-label="O que a turma vê"><div style="display:flex;align-items:center;gap:8px"><b style="font-family:var(--f-disp)">O que a turma vê</b><span class="grow" style="flex:1"></span><button class="b sm" data-act="telao">${ic("screen", 'style="width:16px;height:16px"')}Abrir em outra tela</button></div>
-      <div class="telwrap">${telaoHTML(sn)}</div><span class="sm mut">Esta prévia mostra o mesmo que o telão. Em outra janela ou projetor, use "Abrir em outra tela".</span></aside>`;
+      <div class="telwrap">${telaoHTML(sn)}</div><span class="sm mut">Esta prévia mostra o mesmo que o telão. Em outra janela ou projetor, use "Abrir em outra tela". No telão: F tela cheia, P modo projetor, A apresentação (espaço avança).</span></aside>`;
   hidratarQR($("#app")); escalar(); tickTempo(); pintaRedeSt(); Rede.garantir(s);
 }
 
@@ -2822,7 +2863,7 @@ function vRelatorios(id) {
   $("#app").innerHTML = `${relModo("sessoes")}<section class="k rl-top">
       <div class="fd"><label for="rl-s">Sessão</label><select class="in" id="rl-s">${opt}</select></div>
       <div class="rl-meta" aria-label="Dados da sessão"><span class="chip ${tp === "real" ? "ok" : "warn"}">${TIPO_TXT[tp]}</span>${s.mom ? `<span class="chip br">${MOM_TXT[s.mom]}${s.dias ? " · " + s.dias + " dias" : ""}</span>` : ""}<span class="chip">${dtc(s.fim)}</span><span class="chip">${esc(s.instrutor || "sem instrutor")}</span>${s.local ? `<span class="chip">${esc(s.local)}</span>` : ""}<span class="chip">${horasTxt(s.horas)}</span><span class="chip">${verTxt(s)}</span>${s.reaplicaDe ? '<span class="chip br">Reaplicação</span>' : ""}</div>
-      <div class="rl-docs"><button class="b p" data-act="relpdf">${ic("file")}PDF de registro</button><button class="b" data-act="relpres">${ic("file")}Lista de presença</button><details class="mais"><summary class="b">Mais${ic("down", 'style="width:16px;height:16px"')}</summary><div class="mp2"><button class="b g" data-act="relcsv">${ic("sheet")}Planilha (CSV)</button><button class="b g" data-act="reljson">${ic("download")}Sessão (.json)</button><button class="b g" data-act="relabrir" title="Abre o PDF de registro em outra aba para imprimir">${ic("print")}Imprimir</button></div></details></div>
+      <div class="rl-docs"><button class="b p" data-act="relpdf">${ic("file")}PDF de registro</button><button class="b" data-act="relpres">${ic("file")}Lista de presença</button>${folhaBtn(s)}<details class="mais"><summary class="b">Mais${ic("down", 'style="width:16px;height:16px"')}</summary><div class="mp2"><button class="b g" data-act="relcsv">${ic("sheet")}Planilha (CSV)</button><button class="b g" data-act="reljson">${ic("download")}Sessão (.json)</button><button class="b g" data-act="relabrir" title="Abre o PDF de registro em outra aba para imprimir">${ic("print")}Imprimir</button></div></details></div>
       <div class="rl-cod sm"><span class="mut">Código de conferência</span> <b class="mono" id="relcod">${esc(s.cod)}</b> <button class="b sm g" data-act="copiacod" aria-label="Copiar o código" title="Copiar">${ic("copy", 'style="width:16px;height:16px"')}</button>${s.codTardio ? '<span class="chip warn" title="Sessão encerrada antes da v0.5.0: o código foi gerado quando você abriu o relatório pela primeira vez">gerado depois</span>' : ""}</div>
       ${carimboHtml(s)}
     </section>
@@ -4118,6 +4159,216 @@ function vozAuto() {
   const k = AO.snap.id + ":" + f.idx + ":" + f.t0; if (k === vozTocada) return; vozTocada = k; tocarVoz(AO.snap.item.voz);
 }
 const btnTelVoz = it => it && it.voz ? `<button type="button" class="tvoz" data-act="tvoz" aria-label="Tocar a voz da pergunta">${ic("vol", 'style="width:26px;height:26px"')}<span>Ouvir</span></button>` : "";
+
+/* ===== v1.1.0 · telão (tela cheia, projetor, apresentação), folha de reforço em PDF, painel do treinamento ===== */
+
+/* ---------- telão: tela cheia, modo projetor e modo apresentação ---------- */
+const TV = {modo: "padrao", fs: false, idle: 0, dica: 0};
+function tvLer() { try { const m = localStorage.getItem("sabia-telao-modo"); return m === "projetor" || m === "apresentacao" ? m : "padrao"; } catch (e) { return "padrao"; } }
+function tvSalvar() { try { localStorage.setItem("sabia-telao-modo", TV.modo); } catch (e) {} }
+const tvAtalhos = "Espaço ou seta para a direita avança · A sai da apresentação";
+function tvBarra() {
+  return `<div class="tvbar" id="tvbar" role="toolbar" aria-label="Opções do telão">
+    <button class="b" data-act="tvfull" aria-pressed="false" title="Tela cheia (F)">${ic("screen")}<span>Tela cheia</span><kbd>F</kbd></button>
+    <button class="b" data-act="tvmodo" data-v="projetor" aria-pressed="false" title="Fundo claro e contraste forte, para projetor fraco (P)"><span>Projetor</span><kbd>P</kbd></button>
+    <button class="b" data-act="tvmodo" data-v="apresentacao" aria-pressed="false" title="Tela cheia, sem mouse e avanço pelo teclado (A)"><span>Apresentação</span><kbd>A</kbd></button></div>
+    <div class="tvdica" id="tvdica" role="status" hidden></div>`;
+}
+function tvDica(t, ms) {
+  const d = $("#tvdica"); if (!d) return; d.textContent = t; d.hidden = false; clearTimeout(TV.dica);
+  TV.dica = setTimeout(() => { d.hidden = true; }, ms || 3500);
+}
+function tvAplicar() {
+  const w = $(".telfull"); if (!w) return;
+  w.classList.toggle("proj", TV.modo === "projetor"); w.classList.toggle("apr", TV.modo === "apresentacao");
+  document.querySelectorAll("#tvbar [data-act=tvmodo]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === TV.modo)));
+  const f = document.querySelector("#tvbar [data-act=tvfull]"); if (f) f.setAttribute("aria-pressed", String(!!document.fullscreenElement));
+}
+function tvMostrar() {
+  const w = $(".telfull"), b = $("#tvbar"); if (!w || !b) return;
+  b.classList.add("on"); w.classList.remove("idle"); clearTimeout(TV.idle);
+  TV.idle = setTimeout(() => { b.classList.remove("on"); w.classList.add("idle"); }, 2800);
+}
+function tvFull() {
+  try {
+    if (document.fullscreenElement) { document.exitFullscreen(); return; }
+    const el = document.documentElement;
+    if (el.requestFullscreen) { const p = el.requestFullscreen(); if (p && p.then) p.then(() => { TV.fs = true; tvAplicar(); }, () => tvDica("O navegador não liberou a tela cheia. Aperte F11.")); }
+    else tvDica("Aperte F11 para a tela cheia.");
+  } catch (e) { tvDica("O navegador não liberou a tela cheia. Aperte F11."); }
+}
+function tvModo(m) {
+  TV.modo = TV.modo === m ? "padrao" : m; tvSalvar(); tvAplicar(); tvMostrar();
+  if (TV.modo === "apresentacao") { if (!document.fullscreenElement) tvFull(); tvDica(tvAtalhos, 5000); }
+  else if (m === "apresentacao" && document.fullscreenElement) { try { document.exitFullscreen(); } catch (e) {} }
+}
+/* chamado por vTelao depois de montar a tela */
+function tvIniciar() {
+  TV.modo = tvLer(); tvAplicar(); tvMostrar();
+  if (TV.modo === "apresentacao") tvDica(tvAtalhos, 5000);
+}
+document.addEventListener("fullscreenchange", () => {
+  if (rota().v !== "telao") return;
+  if (!document.fullscreenElement && TV.modo === "apresentacao" && TV.fs) { TV.modo = "padrao"; tvSalvar(); }
+  if (!document.fullscreenElement) TV.fs = false;
+  tvAplicar(); escalar();
+});
+["pointermove", "pointerdown", "touchstart"].forEach(ev => document.addEventListener(ev, () => { if (rota().v === "telao") tvMostrar(); }, {passive: true}));
+document.addEventListener("keydown", e => {
+  if (rota().v !== "telao" || e.ctrlKey || e.metaKey || e.altKey) return;
+  const k = e.key, tg = e.target && e.target.tagName; if (tg === "INPUT" || tg === "TEXTAREA" || tg === "SELECT") return;
+  if (k === "f" || k === "F") { e.preventDefault(); tvFull(); tvMostrar(); }
+  else if (k === "p" || k === "P") { e.preventDefault(); tvModo("projetor"); }
+  else if (k === "a" || k === "A") { e.preventDefault(); tvModo("apresentacao"); }
+  else if (TV.modo === "apresentacao" && (k === " " || k === "Enter" || k === "ArrowRight" || k === "PageDown")) {
+    e.preventDefault(); if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+    const sn = AO.snap, id = sn && sn.id; if (!id) return;
+    if (sn.fase && sn.fase.etapa === "podio") { tvDica("No pódio, encerre a sala pelo controle do instrutor."); return; }
+    if (AO.ch) { try { AO.ch.postMessage({t: "cmd", a: "proxima", id}); } catch (e2) {} }
+    tvDica("Avançando...", 900);
+  }
+});
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act;
+  if (a === "tvfull") { tvFull(); el.blur(); } else if (a === "tvmodo") { tvModo(el.dataset.v); el.blur(); }
+});
+/* a janela de controle recebe o "avançar" do telão em modo apresentação */
+if (AO.ch) AO.ch.addEventListener("message", e => {
+  const m = e.data || {}; if (m.t !== "cmd" || m.a !== "proxima" || rota().v !== "sala") return;
+  const s = AO.id && sala(AO.id); if (!s || s.estado !== "sala" || (m.id && m.id !== s.id)) return;
+  if (s.fase.etapa === "podio" || (s.fase.etapa === "espera" && !s.part.length)) return;
+  proxima(s);
+});
+
+/* ---------- folha de reforço em PDF ---------- */
+function marcouPdf(it, r) {
+  if (!r) return "Não respondeu";
+  if (it.tipo === "ordenar") return r.ok ? "Ordem certa" : "Ordem diferente da certa";
+  const a = (it.alternativas || [])[r.r]; return a !== undefined ? String(a) : "Não respondeu";
+}
+function certaPdf(it) {
+  if (it.tipo === "ordenar") return (it.alternativas || []).map((a, k) => (k + 1) + ". " + a).join("   ");
+  return Number.isInteger(it.correta) && (it.alternativas || [])[it.correta] !== undefined ? String(it.alternativas[it.correta]) : "";
+}
+/* perguntas que a pessoa errou ou não respondeu, com a explicação que vem antes delas */
+function errosFolha(s, pid) {
+  const out = []; let n = 0, expl = null;
+  s.itens.forEach((it, i) => {
+    if (!ehPergunta(it)) { expl = it; return; }
+    if (!vale(it)) return; n++;
+    const r = (s.resp[pid] || {})[i]; if (r && r.ok) return;
+    out.push({n, it, marcou: marcouPdf(it, r), certa: certaPdf(it), expl});
+  });
+  return out;
+}
+const folhaPessoas = s => s.mom === "pre" ? [] : estat(s).abaixo;
+function pdfFolhaReforco(s) {
+  const e = estat(s), d = pdfBase(s, "Folha de reforço"), {W, M} = d, lg = W - 2 * M;
+  pdfTopo(d, s, "Folha de reforço");
+  const alvo = folhaPessoas(s).slice().sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+  const bloco = partes => {
+    const ls = partes.map(p => ({p, l: d.quebra(p.t, lg - (p.ind || 0), p.tam, p.neg).slice(0, p.max || 12)}));
+    const alt = ls.reduce((a, x) => a + x.l.length * x.p.tam * 1.35 + (x.p.esp || 0), 0) + 8;
+    d.garante(alt);
+    ls.forEach(({p, l}) => { l.forEach((ln, k) => d.texto(M + (p.ind || 0), d.y + p.tam + k * p.tam * 1.35, ln, {tam: p.tam, neg: p.neg, cor: p.cor})); d.y += l.length * p.tam * 1.35 + (p.esp || 0); });
+    d.y += 8;
+  };
+  alvo.forEach((p, k) => {
+    if (k > 0) d.nova();
+    d.garante(90);
+    d.texto(M, d.y + 14, p.nome, {tam: 15, neg: true, cor: "#0E4A48"}); d.y += 22;
+    d.texto(M, d.y + 8, `${p.setor ? p.setor + " · " : ""}acertou ${p.ac} de ${e.c.nq} (${p.pct}%) · meta ${s.meta}%`, {tam: 9, cor: "#4a5c5b"}); d.y += 16;
+    d.y += d.par(M, d.y, "Leia com calma cada pergunta abaixo, a resposta certa e o porquê. Depois refaça o treino no celular. A nota oficial não muda.", lg, {tam: 9.5, cor: "#334"}) + 6;
+    const er = errosFolha(s, p.id), vistas = new Set();
+    if (!er.length) d.y += d.par(M, d.y, "Nenhuma resposta registrada para esta pessoa.", lg, {tam: 10}) + 4;
+    er.forEach(x => {
+      d.linha(M, d.y, W - M, d.y, {cor: "#d5dedd"}); d.y += 4;
+      const ps = [{t: `P${x.n}. ${x.it.enunciado}`, tam: 10.5, neg: true, esp: 3}, {t: "Você marcou: " + x.marcou, tam: 9.5, cor: "#B3302A", ind: 10}];
+      if (x.certa) ps.push({t: "Resposta certa: " + x.certa, tam: 9.5, neg: true, cor: "#1B7A4B", ind: 10});
+      if (x.it.porque) ps.push({t: "Por quê: " + x.it.porque, tam: 9.5, cor: "#334", ind: 10});
+      if (x.expl && x.expl.texto && !vistas.has(x.expl)) { vistas.add(x.expl); ps.push({t: "Para rever: " + (x.expl.enunciado ? x.expl.enunciado + ". " : "") + x.expl.texto.replace(/\s+/g, " ").slice(0, 420), tam: 8.5, cor: "#5a6b6a", ind: 10, max: 5}); }
+      bloco(ps);
+    });
+    d.garante(60); d.y += 10;
+    d.linha(M, d.y + 24, M + 240, d.y + 24, {cor: "#334", esp: .7});
+    d.texto(M, d.y + 36, "Ciente: " + p.nome, {tam: 9, cor: "#334"}); d.texto(W - M, d.y + 36, "Data: ____/____/______", {tam: 9, cor: "#334", al: "dir"});
+    d.y += 44;
+  });
+  return d.saida();
+}
+function folhaBtn(s) {
+  const n = folhaPessoas(s).length;
+  return n ? `<button class="b" data-act="relfolha" title="Uma página por pessoa abaixo da meta, com o que errou, a resposta certa e o porquê">${ic("file")}Folha de reforço (${n})</button>` : "";
+}
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el || el.dataset.act !== "relfolha") return;
+  const s = sessaoRel(REL.sid); if (!s) return;
+  if (!folhaPessoas(s).length) { aviso("Todos atingiram a meta: não há folha de reforço"); return; }
+  baixarBlob(nomeArq("folha-reforco", s, "pdf"), new Blob([pdfFolhaReforco(s)], {type: "application/pdf"}));
+});
+
+/* ---------- painel do treinamento (lateral, no editor) ---------- */
+const PN = {aba: "geral"};
+const pnV = n => "v" + String(n).padStart(2, "0");
+function pnDados(t) {
+  const ss = S.sessoes.filter(x => x.treinoId === t.id && x.estado === "encerrada" && x.resultado && tipoSessao(x) === "real" && x.mom !== "pre");
+  const porV = new Map();
+  ss.forEach(x => {
+    const n = x.versao ?? 0, o = porV.get(n) || {n, sessoes: 0, pessoas: 0, soma: 0, ult: ""};
+    o.sessoes++; o.pessoas += x.resultado.pessoas || 0; o.soma += (x.resultado.pct || 0) * (x.resultado.pessoas || 0); o.ult = o.ult > x.fim ? o.ult : x.fim; porV.set(n, o);
+  });
+  (t.versoes || []).forEach(v => { if (!porV.has(v.n)) porV.set(v.n, {n: v.n, sessoes: 0, pessoas: 0, soma: 0, ult: ""}); });
+  const vs = [...porV.values()].sort((a, b) => b.n - a.n).map(o => Object.assign(o, {pct: o.pessoas ? Math.round(o.soma / o.pessoas) : null, nota: ((t.versoes || []).find(v => v.n === o.n) || {}).nota || "", meta: ((t.versoes || []).find(v => v.n === o.n) || {}).meta ?? t.meta}));
+  const msgs = (S.mensagens || []).filter(m => m.treinoId === t.id && !m.teste).sort((a, b) => b.em - a.em);
+  return {ss, vs, msgs, pessoas: ss.reduce((a, x) => a + (x.resultado.pessoas || 0), 0), pct: ss.length && ss.reduce((a, x) => a + (x.resultado.pessoas || 0), 0) ? Math.round(ss.reduce((a, x) => a + (x.resultado.pct || 0) * (x.resultado.pessoas || 0), 0) / ss.reduce((a, x) => a + (x.resultado.pessoas || 0), 0)) : null};
+}
+function pnGeral(t, D) {
+  const nq = t.itens.filter(vale).length, ex = t.itens.filter(i => !ehPergunta(i)).length, ens = t.itens.filter(i => ehPergunta(i) && !vale(i)).length;
+  const min = Math.max(1, Math.round(t.itens.reduce((a, x) => a + (ehPergunta(x) ? (x.tempo || 20) + 8 : 120), 0) / 60));
+  const ult = D.ss.map(x => x.fim).sort().slice(-1)[0];
+  const f = (v, r) => `<div><b>${v}</b><span>${r}</span></div>`;
+  const nl = D.msgs.filter(m => !m.lida).length;
+  return `<div class="pn-f">${f(nq, "perguntas valendo")}${f(ex, ex === 1 ? "explicação" : "explicações")}${f(min + " min", "de duração")}${f(t.meta + "%", "de meta")}${f(D.ss.length, D.ss.length === 1 ? "sessão oficial" : "sessões oficiais")}${f(D.pessoas, "pessoas atendidas")}</div>
+    <ul class="pn-l"><li><span>Acerto médio das sessões</span><b>${D.pct === null ? "sem sessão ainda" : D.pct + "%"}</b></li>
+    <li><span>Última aplicação</span><b>${ult ? dtd(ult) : "nunca aplicado"}</b></li>
+    <li><span>Versão atual</span><b>${pnV(t.versao)}${t.sujo ? " (com alterações sem versão)" : ""}</b></li>
+    <li><span>Validade</span><b>${(VALIDADES.find(v => v[0] === (t.per || 0)) || [0, "Sem validade"])[1]}</b></li>
+    <li><span>Reavaliação</span><b>${(t.reav || []).length ? (t.reav || []).join(", ") + " dias" : "não configurada"}</b></li>
+    ${ens ? `<li><span>Perguntas só de ensaio</span><b>${ens}</b></li>` : ""}
+    <li><span>Comentários da turma</span><b>${D.msgs.length}${nl ? " · " + nl + " sem ler" : ""}</b></li></ul>`;
+}
+function pnVersoes(t, D) {
+  if (!D.vs.length) return `<p class="sm mut">Este treinamento ainda não tem versões.</p>`;
+  return `<p class="sm mut" style="margin:0">Acerto médio das sessões oficiais aplicadas em cada versão. A marca vertical é a meta daquela versão.</p><div class="pn-v">${D.vs.map((v, k) => {
+    const ant = D.vs.slice(k + 1).find(x => x.pct !== null), dif = v.pct !== null && ant ? v.pct - ant.pct : null;
+    return `<div class="pn-vr"><div class="pn-vh"><b class="num">${pnV(v.n)}</b>${v.n === t.versao ? '<span class="chip br">atual</span>' : ""}<span class="sm mut">${v.sessoes ? v.sessoes + (v.sessoes === 1 ? " sessão" : " sessões") + " · " + v.pessoas + " pessoas" : "sem sessão oficial"}</span></div>
+      <div class="pn-b" role="img" aria-label="${v.pct === null ? "sem dados" : v.pct + "% de acerto"}"><i style="width:${v.pct || 0}%" class="${v.pct !== null && v.pct < v.meta ? "fr" : ""}"></i><u style="left:${v.meta}%"></u></div>
+      <div class="pn-vf"><b class="num">${v.pct === null ? "–" : v.pct + "%"}</b>${dif === null ? "" : `<span class="chip ${dif >= 0 ? "ok" : "warn"}">${dif >= 0 ? "+" : "−"}${Math.abs(dif)} pp</span>`}${v.nota ? `<span class="sm mut">${esc(v.nota)}</span>` : ""}</div></div>`;
+  }).join("")}</div>`;
+}
+function pnComentarios(t, D) {
+  if (!D.msgs.length) return `<p class="sm mut">Ninguém comentou ainda. No fim de cada sessão a turma pode mandar um comentário pelo celular.</p>`;
+  return `<div class="pn-c">${D.msgs.slice(0, 40).map(m => `<div class="pn-cm"><div class="pn-ch"><span class="chip">${esc(TIPO_MSG[m.tipo] || "Comentário")}</span><b>${esc(m.pessoa)}</b><span class="sm mut">${pnV(m.versao ?? 0)} · ${dtd(new Date(m.em).toISOString())}</span>${m.lida ? "" : '<span class="chip br">nova</span>'}</div><p>${esc(m.texto)}</p>${m.resposta ? `<p class="pn-r">Resposta: ${esc(m.resposta)}</p>` : ""}</div>`).join("")}</div>
+    <a class="b sm" href="#/mensagens">${ic("chat", 'style="width:16px;height:16px"')}Abrir Mensagens</a>`;
+}
+function pnCorpo(t) {
+  const D = pnDados(t);
+  return PN.aba === "versoes" ? pnVersoes(t, D) : PN.aba === "coment" ? pnComentarios(t, D) : pnGeral(t, D);
+}
+function dlgPainel() {
+  const t = treino(UI.ed && UI.ed.id); if (!t) return;
+  const d = $("#dlg"), ab = [["geral", "Visão geral"], ["versoes", "Acerto por versão"], ["coment", "Comentários"]];
+  d.innerHTML = `<div class="dl pn"><header><h2>Painel do treinamento</h2><button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header>
+    <p class="sm mut" style="margin:0">${esc(t.titulo)}</p>
+    <div class="chips pn-t" role="group" aria-label="Seções do painel">${ab.map(([k, n]) => `<button type="button" class="sc" data-act="pntab" data-v="${k}" aria-pressed="${PN.aba === k}">${n}</button>`).join("")}</div>
+    <div id="pn-corpo">${pnCorpo(t)}</div></div>`;
+  if (!d.open) d.showModal();
+}
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act;
+  if (a === "painel") { PN.aba = "geral"; dlgPainel(); }
+  else if (a === "pntab") { const t = treino(UI.ed && UI.ed.id); if (!t) return; PN.aba = el.dataset.v; document.querySelectorAll(".pn-t .sc").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === PN.aba))); $("#pn-corpo").innerHTML = pnCorpo(t); }
+});
 
 function render() {
   if (!S) return;

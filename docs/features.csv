@@ -24,7 +24,7 @@ Mover / excluir / marcar correta / alternativas,Criação,must,yes,yes,
 Voz gravada na pergunta (X03) e ouvir a pergunta,Criação,should,yes,yes,"Instrutor grava até 30 s no editor; toca no telão (sozinho ao abrir a pergunta e por botão); no celular o participante usa ""Ouvir a pergunta"", lida pela voz do aparelho; a gravação nunca vai ao Firebase (v1.0.0)"
 Banco de perguntas,Criação,should,yes,yes,"Guardar pergunta ou treinamento inteiro no banco, buscar, filtrar por formato, inserir no editor e excluir com desfazer; vai no Exportar tudo (v1.0.0)"
 Versões do treinamento (v00 v01...) com nota do que mudou,Versões,must,yes,yes,"v00, v01...; nota, comparar e restaurar"
-Painel lateral: visão geral / acerto por versão / comentários / material,Versões,must,yes,no,
+Painel lateral: visão geral / acerto por versão / comentários / material,Versões,must,yes,partial,"Gaveta ""Painel do treinamento"" no editor: visão geral, acerto por versão e comentários; falta a aba de material (v1.1.0)"
 Observações do treinamento,Versões,should,yes,yes,Observações com autor e data no editor; só Primário e Líder estrela (v0.8.0)
 Material (PDF/HTML/PPTX neste aparelho) com capítulos ligados à explicação (M02),Material,should,yes,no,abre por cima da tela
 Exportar e importar treinamento .json,Dados,must,yes,yes,
@@ -50,7 +50,7 @@ Ranking ao vivo e respostas desta pergunta,Ao vivo,must,yes,yes,
 Telão: sala de espera com QR / chave / bonecos de quem entrou,Telão,must,yes,yes,iniciais coloridas na cor escolhida (sem bonecos)
 Telão: explicação / pergunta com régua de tempo / revelar resultado,Telão,must,yes,yes,
 Telão: pódio proporcional com confete e sons,Telão,should,yes,yes,V11; Web Audio
-Telão: modo projetor / tela cheia / modo apresentação,Telão,should,yes,partial,
+Telão: modo projetor / tela cheia / modo apresentação,Telão,should,yes,yes,"Telão com tela cheia (F), modo projetor (P, fundo branco e contraste forte) e modo apresentação (A: tela cheia, cursor some, espaço/seta avança a sala) (v1.1.0)"
 Participante: entrar pela chave / QR / link,Participante,must,yes,yes,"QR, link ou chave; precisa do Firebase do instrutor"
 Participante: achar o nome com 3 letras ou se cadastrar com setor,Participante,must,yes,yes,Lista do cadastro com 3 letras; o setor vem do cadastro (v0.7.0); nome livre quando não há lista
 Participante: escolher o boneco (9 partes: rosto / pele / cabelo / cor / barba / expressão / roupa / cor da roupa / EPI) (A01),Participante,must,yes,partial,escolhe uma de 8 cores; sem boneco por decisão do Elias
@@ -61,7 +61,7 @@ Participante: rever o que errei,Participante,must,yes,yes,"v0.6.0: Rever o que e
 Participante: comentário rápido (elogio / sugestão / reclamação / pergunta),Participante,should,yes,yes,"4 tipos no fim da sessão, até 3 por pessoa; chega ao instrutor com a sala aberta (v0.7.0)"
 Participante: perfil com histórico e selos de constância (X02 / X07),Participante,should,yes,partial,"Perfil com histórico e 6 selos no lado do instrutor (v0.7.0); sem perfil no celular do participante (precisa de login, v1.0)"
 Aparelho compartilhado: próxima pessoa,Participante,must,yes,yes,"""Outra pessoa vai usar este celular"" apaga os dados da anterior (v0.7.0); serve para entrar e assinar"
-Refazer: rever a explicação e refazer em até 3 tentativas (M15) + folha em PDF,Reforço,must,yes,partial,"v0.6.0: 3 tentativas oficiais (2ª no mesmo dia,  3ª no dia seguinte) e só as erradas; falta a folha em PDF"
+Refazer: rever a explicação e refazer em até 3 tentativas (M15) + folha em PDF,Reforço,must,yes,yes,"v0.6.0: 3 tentativas oficiais e só as erradas; v1.1.0: folha de reforço em PDF, uma página por pessoa abaixo da meta"
 Reforço pendente com um toque (X01),Reforço,must,yes,yes,"v0.6.0: Pendências > Reforço com Aplicar reforço,  dar baixa e desfazer"
 Quem deve reavaliar (30/60/90),Reforço,must,yes,yes,v0.6.0: Pendências > Reavaliar (quem deve reavaliar 30/60/90)
 Mensagens: novas / reclamações / sugestões / elogios + filtro,Mensagens,must,yes,yes,Filtro por tipo e situação (v0.7.0)

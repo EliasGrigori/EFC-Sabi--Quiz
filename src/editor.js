@@ -115,7 +115,7 @@ function pintaTopo() {
   const t = treino(UI.ed.id); if (!t) return;
   const v = "v" + String(t.versao).padStart(2, "0");
   topo(t.titulo || "Sem título", `${t.itens.filter(i => i.tipo !== "explicacao").length} perguntas · ${v}${t.sujo ? " · alterações sem versão" : " · versão salva"}`,
-    `<button class="b" data-act="versoes" aria-label="Versões">${ic("clock")}<span class="lbl-m">Versões</span></button><a class="b p" href="#/aplicar/${t.id}" aria-label="Aplicar" ${t.itens.some(i => i.tipo !== "explicacao") ? "" : 'aria-disabled="true" style="opacity:.5;pointer-events:none"'}>${ic("play")}<span class="lbl-m">Aplicar</span></a>`, "#/treinos");
+    `<button class="b" data-act="painel" aria-label="Painel do treinamento">${ic("chart")}<span class="lbl-m">Painel</span></button><button class="b" data-act="versoes" aria-label="Versões">${ic("clock")}<span class="lbl-m">Versões</span></button><a class="b p" href="#/aplicar/${t.id}" aria-label="Aplicar" ${t.itens.some(i => i.tipo !== "explicacao") ? "" : 'aria-disabled="true" style="opacity:.5;pointer-events:none"'}>${ic("play")}<span class="lbl-m">Aplicar</span></a>`, "#/treinos");
 }
 function pintaLista() {
   const t = treino(UI.ed.id), el = $("#edLista"); if (!t || !el) return;

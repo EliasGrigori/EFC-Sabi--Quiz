@@ -58,9 +58,10 @@ gy, gx = np.gradient(Hs)
 luz = (-gx * 0.70 - gy * 0.72)                                      # luz de cima, à esquerda
 luz = luz / np.percentile(np.abs(luz), 99)
 sombra_base = 0.92 + 0.27 * np.clip(luz, -1.4, 1.4)
-vinheta = 1.10 - 0.42 * np.clip((np.hypot(xx - N / 2, yy - N * 0.45) / (N * 0.78)), 0, 1) ** 1.7
-fundo = PETROL[None, None, :] * (sombra_base * vinheta)[..., None]
-fundo += np.array([1.2, 2.4, 2.0])[None, None, :] * np.clip(luz, 0, 1.4)[..., None] * 5   # brilho leve nos topos
+vinheta = 1.04 - 0.16 * np.clip((np.hypot(xx - N / 2, yy - N * 0.45) / (N * 0.78)), 0, 1) ** 1.7
+mult = sombra_base * vinheta
+mult = mult / mult[a < 0.05].mean()          # a média do fundo fica exatamente no petróleo do app (#0E4A48)
+fundo = PETROL[None, None, :] * mult[..., None]
 
 # 4) sombra do desenho caindo no fundo (dá profundidade)
 sh = ndi.shift(ndi.gaussian_filter(a, 16), (22, 16), order=1)

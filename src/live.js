@@ -218,9 +218,9 @@ function escalar() {
 function pintarTelao() { const w = $(".telfull"); if (!w) return; w.innerHTML = telaoHTML(AO.snap); hidratarQR(w); escalar(); tickTempo(); vozAuto(); }
 function vTelao(id) {
   document.body.classList.add("modo-telao"); $("#app").className = "body";
-  $("#app").innerHTML = `<div class="telfull" role="img" aria-label="Telão da sala"></div>`;
+  $("#app").innerHTML = `<div class="telfull" role="img" aria-label="Telão da sala"></div>${tvBarra()}`;
   if (AO.snap && AO.snap.id !== id) AO.snap = null;
-  pintarTelao();
+  pintarTelao(); tvIniciar();
   if (AO.ch) AO.ch.postMessage({t: "oi", id});
 }
 function tickTempo() {
@@ -288,7 +288,7 @@ function vSala(id) {
     ${s.part.length && s.aj.ranking && f.etapa !== "espera" ? `<section class="k"><h3 style="font-size:16px;margin-bottom:6px">Ranking ao vivo</h3><div class="rk">${c.ranking.slice(0, 5).map((p, k) => `<div class="rr"><b class="num">${k + 1}º</b>${av(p.nome, p.cor)}<span>${esc(p.nome)}</span><span class="num">${p.pts}</span></div>`).join("")}</div></section>` : ""}
     <button class="b g bad" data-act="fechar-sala" style="justify-self:start">${ic("x")}Encerrar sala</button></div>
     <aside class="k prev" aria-label="O que a turma vê"><div style="display:flex;align-items:center;gap:8px"><b style="font-family:var(--f-disp)">O que a turma vê</b><span class="grow" style="flex:1"></span><button class="b sm" data-act="telao">${ic("screen", 'style="width:16px;height:16px"')}Abrir em outra tela</button></div>
-      <div class="telwrap">${telaoHTML(sn)}</div><span class="sm mut">Esta prévia mostra o mesmo que o telão. Em outra janela ou projetor, use "Abrir em outra tela".</span></aside>`;
+      <div class="telwrap">${telaoHTML(sn)}</div><span class="sm mut">Esta prévia mostra o mesmo que o telão. Em outra janela ou projetor, use "Abrir em outra tela". No telão: F tela cheia, P modo projetor, A apresentação (espaço avança).</span></aside>`;
   hidratarQR($("#app")); escalar(); tickTempo(); pintaRedeSt(); Rede.garantir(s);
 }
 

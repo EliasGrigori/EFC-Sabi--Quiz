@@ -34,10 +34,11 @@ mesmas funções, cara nova. Versões recomeçam do zero (v0.1.0 até v1.0.0).
 | v0.7.0 | pronta, aguardando aprovação (inclui a v0.6.0, que ainda não foi publicada) | Cadastro de Pessoas (setor, apelidos, importar lista, sugeridas), perfil com histórico e 6 selos, lista de entrada pelo cadastro, Mensagens com resposta, comentário rápido no celular, "outra pessoa vai usar este celular", Desafio entre setores, barra de baixo com Mais |
 | v0.8.0 | pronta, aguardando aprovação (junto com v0.6.0 e v0.7.0, não publicadas) | Perfis, conta do EFClaudian (SDK, config colada no aparelho), porta de entrada opcional, EFC_API, Ajustes com índice, telão/som padrão, demonstração, observações do treinamento |
 | v1.0.0 | publicada em 05/11/2026 (commit e4a0c99, junto com v0.6.0, v0.7.0 e v0.8.0 num commit só, porque o código-fonte intermediário não foi guardado) | Banco de perguntas, criar com IA (texto pronto + leitura do JSON), pergunta de teste no começo da sessão, voz gravada no telão, ouvir a pergunta no celular, carimbo de tempo do servidor do Firebase, regras do Firebase mais firmes |
-| v1.0.1 | pronta, aguardando aprovação | Ícone novo do app (desenho do Elias com contornos reforçados e fundo petróleo em relevo): icon-192, icon-512, icon-maskable-512 e apple-touch-icon. Só o ícone mudou |
+| v1.0.1 | publicada em 05/11/2026 (commit ced5447) | Ícone novo do app (desenho do Elias com contornos reforçados e fundo petróleo em relevo): icon-192, icon-512, icon-maskable-512 e apple-touch-icon. Só o ícone mudou |
+| v1.1.0 | pronta, aguardando aprovação | Telão com tela cheia, modo projetor e modo apresentação; folha de reforço em PDF; painel do treinamento (gaveta no editor); logotipo de dentro do app trocado pelo desenho novo; fundo do ícone no verde do app |
 
 ## Paridade com o EFCquiz (79 funções)
-v0.1.0: 10 prontas e 11 parciais. v0.2.0 completa as opções de Aplicar, o controle ao vivo e o telão. v0.3.0 entrega o editor e as versões. v0.4.0 entrega o celular do participante. v0.5.0 entrega relatórios, PDFs e conferência. v0.6.0 entrega reforço, reavaliação, pré e pós-teste e rever no celular v0.7.0 entrega pessoas, mensagens, comentário no celular e desafio entre setores (detalhe em features.csv: 64 prontas, 13 parciais, 2 faltando de 79 (v0.8.0 entrega perfis, porta de entrada, conta do EFClaudian, Ajustes completo e observações; v1.0.0 entrega banco de perguntas, criar com IA, pergunta de teste, voz, ouvir, carimbo e regras do Firebase mais firmes)).
+v0.1.0: 10 prontas e 11 parciais. v0.2.0 completa as opções de Aplicar, o controle ao vivo e o telão. v0.3.0 entrega o editor e as versões. v0.4.0 entrega o celular do participante. v0.5.0 entrega relatórios, PDFs e conferência. v0.6.0 entrega reforço, reavaliação, pré e pós-teste e rever no celular v0.7.0 entrega pessoas, mensagens, comentário no celular e desafio entre setores (detalhe em features.csv: 66 prontas, 12 parciais, 1 faltando de 79 (v0.8.0 entrega perfis, porta de entrada, conta do EFClaudian, Ajustes completo e observações; v1.0.0 entrega banco de perguntas, criar com IA, pergunta de teste, voz, ouvir, carimbo e regras do Firebase mais firmes)).
 
 ## Medidas (régua de espaço vazio)
 Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 treinamentos de exemplo e sem sessões. Editor v0.3.0: 34% (múltipla) e 31% (ordenar com resultado) a 1280 px; a tela antiga é uma lista única rolável, então não é comparável item a item.
@@ -99,7 +100,7 @@ Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 tre
 - `window.EFC_API`: versao(), perfil(), conta(), abrir(rota).
 - Ajustes: `AJ_IND` (índice de 10 seções); `S.cfg.telaoPadrao` e `somPadrao` alimentam `AJ_PADRAO`; `S.cfg.obs`. Observações do treinamento em `t.obs` [{id, txt, por, em}], fora do versionamento.
 - Os testes (teste-integra.js) usam um SDK de mentira injetado por rota; só a conta real prova o login.
-- `dist/sw.js` continua manual: cache `sabia-1.0.1` (subir a cada versão).
+- `dist/sw.js` continua manual: cache `sabia-1.1.0` (subir a cada versão).
 
 ## v1.0.0 · acabamento (src/v10.js e src/v10.css; prefixos `bn-`, `ia-`, `vz-`, `selo`, `ouv`, `tvoz`)
 - **Banco de perguntas**: `S.banco` [{bid, de, quando, ...pergunta sem áudio}], máximo 500, sem repetir (formato + enunciado). Diálogo `dlgBanco` com busca (sem acento), filtro por formato, Inserir, Excluir com Desfazer dentro do diálogo (o aviso flutuante fica escondido atrás do diálogo modal, por isso não serve). Vai no "Exportar tudo".
@@ -125,4 +126,13 @@ Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 tre
 ## v1.0.1 · ícone
 - Origem: desenho em tinta enviado pelo Elias (fundo verde). Script `tools/fazer-icone.py` (usa o desenho original, que fica com o Elias, e não vai para o repositório) refaz tudo: separa o desenho do fundo, reforça os contornos, recria o fundo na cor #0E4A48 com relevo (ruído em várias escalas, trama fina, medalhão, luz de cima à esquerda) e sombra do desenho sobre o fundo.
 - Saídas: `icon-512.png` e `icon-192.png` (cantos arredondados), `icon-maskable-512.png` e `apple-touch-icon.png` (sem borda; o rosto cabe no recorte circular de 80%).
+- Na v1.1.0 o fundo do ícone foi igualado ao verde do app (#0E4A48, média do fundo) e o mesmo desenho virou o logotipo de dentro do app (símbolo `#logo` com imagem JPEG embutida, em src/index.html).
 - O ícone muda no celular só depois de remover e reinstalar o app (e Ctrl+F5 no computador).
+
+
+## v1.1.0 · telão, folha de reforço e painel (src/v11.js e src/v11.css; prefixos `tv`, `pn-`, `folha`)
+- **Telão** (`#/telao/:id`): barra de opções que aparece ao mexer o mouse e some sozinha. F = tela cheia, P = modo projetor (fundo branco, texto preto, linhas fortes), A = modo apresentação (tela cheia, cursor some, espaço, Enter, seta direita ou PageDown mandam "avançar" ao controle pelo BroadcastChannel; no pódio não encerra a sala). O modo fica em localStorage `sabia-telao-modo` (por aparelho). Só funciona com telão e controle no mesmo navegador (limite do BroadcastChannel). O navegador pode negar a tela cheia: aparece aviso para usar F11.
+- **Folha de reforço** (Relatório > botão "Folha de reforço (N)"): PDF com uma página por pessoa abaixo da meta: o que marcou, a resposta certa, o porquê, a explicação para rever (uma vez por página) e linha de ciente. Não aparece em pré-teste nem quando todos atingiram a meta. Não altera nota nem fila de reforço. Nome: `folha-reforco-<titulo>-<data>.pdf`.
+- **Painel do treinamento** (editor > botão Painel): gaveta pela direita com Visão geral, Acerto por versão (média ponderada pelas pessoas, marca da meta, diferença em pontos percentuais) e Comentários (só deste treinamento). Só sessões oficiais entram nas médias. Sem aba de material (fica para depois).
+- **Fica para a v1.2.0:** meta em pontos (mexe em todos os cálculos de meta; os pontos incluem bônus de rapidez, então a regra precisa ser decidida) e material com capítulos.
+- Testes novos: `teste-v11.js` (58 conferências). Suítes antigas seguem verdes na v1.1.0.
