@@ -33,7 +33,8 @@ mesmas funções, cara nova. Versões recomeçam do zero (v0.1.0 até v1.0.0).
 | v0.6.0 | pronta, aguardando aprovação | Pendências (Reforço, Reavaliar, Validade), tentativas oficiais 2ª e 3ª, aplicar reforço só com as erradas, validade e 30/60/90 no editor, pré e pós-teste com ganho de aprendizado, rever o que errei e treinar de novo no celular, progresso no celular |
 | v0.7.0 | pronta, aguardando aprovação (inclui a v0.6.0, que ainda não foi publicada) | Cadastro de Pessoas (setor, apelidos, importar lista, sugeridas), perfil com histórico e 6 selos, lista de entrada pelo cadastro, Mensagens com resposta, comentário rápido no celular, "outra pessoa vai usar este celular", Desafio entre setores, barra de baixo com Mais |
 | v0.8.0 | pronta, aguardando aprovação (junto com v0.6.0 e v0.7.0, não publicadas) | Perfis, conta do EFClaudian (SDK, config colada no aparelho), porta de entrada opcional, EFC_API, Ajustes com índice, telão/som padrão, demonstração, observações do treinamento |
-| v1.0.0 | pronta, aguardando aprovação (junto com v0.6.0, v0.7.0 e v0.8.0, não publicadas) | Banco de perguntas, criar com IA (texto pronto + leitura do JSON), pergunta de teste no começo da sessão, voz gravada no telão, ouvir a pergunta no celular, carimbo de tempo do servidor do Firebase, regras do Firebase mais firmes |
+| v1.0.0 | publicada em 05/11/2026 (commit e4a0c99, junto com v0.6.0, v0.7.0 e v0.8.0 num commit só, porque o código-fonte intermediário não foi guardado) | Banco de perguntas, criar com IA (texto pronto + leitura do JSON), pergunta de teste no começo da sessão, voz gravada no telão, ouvir a pergunta no celular, carimbo de tempo do servidor do Firebase, regras do Firebase mais firmes |
+| v1.0.1 | pronta, aguardando aprovação | Ícone novo do app (desenho do Elias com contornos reforçados e fundo petróleo em relevo): icon-192, icon-512, icon-maskable-512 e apple-touch-icon. Só o ícone mudou |
 
 ## Paridade com o EFCquiz (79 funções)
 v0.1.0: 10 prontas e 11 parciais. v0.2.0 completa as opções de Aplicar, o controle ao vivo e o telão. v0.3.0 entrega o editor e as versões. v0.4.0 entrega o celular do participante. v0.5.0 entrega relatórios, PDFs e conferência. v0.6.0 entrega reforço, reavaliação, pré e pós-teste e rever no celular v0.7.0 entrega pessoas, mensagens, comentário no celular e desafio entre setores (detalhe em features.csv: 64 prontas, 13 parciais, 2 faltando de 79 (v0.8.0 entrega perfis, porta de entrada, conta do EFClaudian, Ajustes completo e observações; v1.0.0 entrega banco de perguntas, criar com IA, pergunta de teste, voz, ouvir, carimbo e regras do Firebase mais firmes)).
@@ -98,7 +99,7 @@ Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 tre
 - `window.EFC_API`: versao(), perfil(), conta(), abrir(rota).
 - Ajustes: `AJ_IND` (índice de 10 seções); `S.cfg.telaoPadrao` e `somPadrao` alimentam `AJ_PADRAO`; `S.cfg.obs`. Observações do treinamento em `t.obs` [{id, txt, por, em}], fora do versionamento.
 - Os testes (teste-integra.js) usam um SDK de mentira injetado por rota; só a conta real prova o login.
-- `dist/sw.js` continua manual: cache `sabia-1.0.0` (subir a cada versão).
+- `dist/sw.js` continua manual: cache `sabia-1.0.1` (subir a cada versão).
 
 ## v1.0.0 · acabamento (src/v10.js e src/v10.css; prefixos `bn-`, `ia-`, `vz-`, `selo`, `ouv`, `tvoz`)
 - **Banco de perguntas**: `S.banco` [{bid, de, quando, ...pergunta sem áudio}], máximo 500, sem repetir (formato + enunciado). Diálogo `dlgBanco` com busca (sem acento), filtro por formato, Inserir, Excluir com Desfazer dentro do diálogo (o aviso flutuante fica escondido atrás do diálogo modal, por isso não serve). Vai no "Exportar tudo".
@@ -119,3 +120,9 @@ Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 tre
 - Firebase real: projeto criado pelo Elias e testado pelo Grok com a v0.4.0 (conexão, regras, sala completa, encerrar apaga). Nenhum endereço nem chave fica nas pastas do projeto.
 - Firebase: configurar o Realtime Database para usar os celulares (veja PASSO-A-PASSO-FIREBASE-v0.4.0.md). A integração com o EFClaudian vem depois.
 - Personagens: decidir depois (galeria de bonecos prontos ou ilustrações simples).
+
+
+## v1.0.1 · ícone
+- Origem: desenho em tinta enviado pelo Elias (fundo verde). Script `tools/fazer-icone.py` (usa o desenho original, que fica com o Elias, e não vai para o repositório) refaz tudo: separa o desenho do fundo, reforça os contornos, recria o fundo na cor #0E4A48 com relevo (ruído em várias escalas, trama fina, medalhão, luz de cima à esquerda) e sombra do desenho sobre o fundo.
+- Saídas: `icon-512.png` e `icon-192.png` (cantos arredondados), `icon-maskable-512.png` e `apple-touch-icon.png` (sem borda; o rosto cabe no recorte circular de 80%).
+- O ícone muda no celular só depois de remover e reinstalar o app (e Ctrl+F5 no computador).
