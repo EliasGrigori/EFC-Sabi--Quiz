@@ -31,8 +31,9 @@ function novaChave() {
 function abrirSalaDe(sessao) {
   const t = treino(sessao.treinoId); if (!t) { aviso("O treinamento dessa sessão foi removido"); return; }
   if (!sessao.itens) { fixarVersao(t); sessao.itens = clone(t.itens); }
+  if (metaPts(t) && sessao.metaEq == null) { sessao.metaTipo = "pts"; sessao.metaPts = t.meta; sessao.metaEq = metaEq(t, sessao.itens); }   // v1.2.0: antes do recorte, para a meta não mudar com menos perguntas
   aplicaRecorte(sessao); aquecer(sessao);
-  Object.assign(sessao, {titulo: t.titulo, meta: t.meta, versao: t.versao, estado: "sala", chave: sessao.chave || novaChave(), entrada: true,
+  Object.assign(sessao, {titulo: t.titulo, meta: sessao.metaEq != null ? sessao.metaEq : t.meta, versao: t.versao, estado: "sala", chave: sessao.chave || novaChave(), entrada: true,
     part: sessao.part || [], resp: sessao.resp || {}, fase: sessao.fase || {etapa: "espera", idx: -1, t0: 0, dur: 0}, sim: sessao.sim || {on: !Rede.ok(), alvo: 12}});
   Rede.garantir(sessao);
   AO.id = sessao.id; salvar(); ir("#/sala/" + sessao.id);
@@ -138,7 +139,7 @@ function snap(s) {
       if (revela) dist = it.tipo === "ordenar" ? {acertos: rs.filter(r => r.ok).length, total: rs.length} : it.alternativas.map((_, k) => rs.filter(r => r.r === k).length);
     }
   }
-  return {id: s.id, chave: s.chave, titulo: s.titulo, instrutor: s.instrutor, meta: s.meta, mom: s.mom || "", tela: s.aj.telao, som: s.aj.som, ranking: s.aj.ranking, entrada: s.entrada,
+  return {id: s.id, chave: s.chave, titulo: s.titulo, instrutor: s.instrutor, meta: s.meta, metaTxt: metaTxtS(s), mom: s.mom || "", tela: s.aj.telao, som: s.aj.som, ranking: s.aj.ranking, entrada: s.entrada,
     fase: f, min: Math.max(1, Math.round(s.itens.reduce((a, x) => a + (ehPergunta(x) ? (x.tempo || 20) + 8 : 120), 0) / 60)), nPart: s.part.length, part: s.part.slice(-60).map(p => ({n: p.nome, c: p.cor})), item, numPerg, totalPerg, nPerg, resp, dist, url: linkEntrar(s),
     resumo: f.etapa === "podio" ? {porPerg: s.itens.map((x, i) => [x, i]).filter(([x]) => vale(x)).map(([, i], k) => ({n: k + 1, pct: s.part.length ? Math.round(100 * s.part.filter(p => ((s.resp[p.id] || {})[i] || {}).ok).length / s.part.length) : 0})), pct: c.pct, efic: c.efic, reforco: c.reforco, metaOk: c.metaOk, nq: c.nq, top: c.ranking.slice(0, 10).map(p => ({n: p.nome, c: p.cor, ac: p.ac, pts: p.pts}))} : null};
 }
@@ -174,7 +175,7 @@ function telaoHTML(sn) {
         <div class="how"><div><b>1</b>Aponte a câmera para o QR</div><div><b>2</b>Toque no seu nome</div><div><b>3</b>Escolha sua cor e aguarde</div></div></div>
         <div class="room"><div class="rh"><b>${sn.nPart}</b><span>${sn.nPart === 1 ? "pessoa na sala" : "pessoas na sala"}${sn.entrada ? "" : " · entrada fechada"}</span></div>
         <div class="crowd ${sn.nPart <= 14 ? "g" : ""}">${sn.part.map(p => `<span class="cw">${av(p.n, p.c)}${esc(p.n.split(" ")[0])}</span>`).join("") || `<span style="font-size:22px;color:var(--tel-ink2)">Ninguém entrou ainda.</span>`}</div>
-        <div class="facts"><div><b>${sn.nPerg}</b><span>perguntas valendo</span></div><div><b>${sn.min} min</b><span>de duração</span></div><div><b>${sn.meta}%</b><span>de meta</span></div></div></div></div>
+        <div class="facts"><div><b>${sn.nPerg}</b><span>perguntas valendo</span></div><div><b>${sn.min} min</b><span>de duração</span></div><div><b>${sn.metaTxt || sn.meta + "%"}</b><span>de meta</span></div></div></div></div>
       <div class="tfoot"><span>Começa quando o instrutor tocar em <b>Iniciar</b> · ${sn.nPerg} perguntas</span></div>`;
   } else if (f.etapa === "explicacao") {
     corpo = `${topo(`<b>${esc(sn.titulo)}</b>`)}<div class="expl"><h2>${esc(it.enunciado)}${btnTelVoz(it)}</h2>${it.texto ? `<p>${esc(it.texto)}</p>` : ""}</div><div class="tfoot"><span>Atenção na explicação do instrutor</span></div>`;
@@ -196,7 +197,7 @@ function telaoHTML(sn) {
     const r = sn.resumo, t = r.top, bl = (p, pos, h) => p ? `<div class="pl ${pos === 1 ? "p1" : ""}">${av(p.n, p.c)}<div class="blk" style="height:${h}px"><b>${pos}º</b><strong>${esc(p.n)}</strong>${p.ac} de ${r.nq} · ${p.pts} pts</div></div>` : "";
     const conf = sn.som === "ligado" ? `<div class="conf">${Array.from({length: 26}, (_, k) => `<i style="left:${(k * 37) % 100}%;background:${COR_ALT[k % 4]};animation-delay:${(k % 9) * .35}s"></i>`).join("")}</div>` : "";
     corpo = `${topo(`<b>Resultado da turma</b><span>${esc(sn.titulo)}</span>`, `<span class="pillk">${sn.nPart} PESSOAS</span>`)}
-      <div class="podm"><div class="podl"><div>${sn.mom === "pre" ? `<h2>Pré-teste concluído</h2><div class="res"><span>${r.pct}% de acerto médio</span><span>ponto de partida da turma</span></div>` : `<h2>${r.metaOk ? "A turma bateu a meta" : "A turma ficou abaixo da meta"}</h2><div class="res"><span class="${r.metaOk ? "g" : "r"}">${r.pct}% de acerto · meta ${sn.meta}%</span><span>${r.efic} de ${sn.nPart} eficazes</span>${r.reforco ? `<span>${r.reforco} vão para o reforço</span>` : ""}</div>`}</div>
+      <div class="podm"><div class="podl"><div>${sn.mom === "pre" ? `<h2>Pré-teste concluído</h2><div class="res"><span>${r.pct}% de acerto médio</span><span>ponto de partida da turma</span></div>` : `<h2>${r.metaOk ? "A turma bateu a meta" : "A turma ficou abaixo da meta"}</h2><div class="res"><span class="${r.metaOk ? "g" : "r"}">${r.pct}% de acerto · meta ${sn.metaTxt || sn.meta + "%"}</span><span>${r.efic} de ${sn.nPart} eficazes</span>${r.reforco ? `<span>${r.reforco} vão para o reforço</span>` : ""}</div>`}</div>
         <div class="pq">${r.porPerg.map(q => `<div><span class="bar"><i style="height:${Math.max(4, q.pct)}%;background:${q.pct >= sn.meta ? "var(--ok)" : "var(--sabia)"}"></i></span><b>${q.pct}%</b><span>P${q.n}</span></div>`).join("")}</div>
         ${sn.ranking ? `<div class="stage">${bl(t[1], 2, 150)}${bl(t[0], 1, 205)}${bl(t[2], 3, 112)}</div>` : ""}</div>
         <div class="podr"><h3>${sn.ranking ? "Do 4º ao 10º" : "Resultado"}</h3>${sn.ranking ? t.slice(3).map((p, k) => `<div class="pr2"><b>${k + 4}º</b>${av(p.n, p.c)}<span>${esc(p.n.split(" ").length > 1 ? p.n.split(" ")[0] + " " + p.n.split(" ").slice(-1)[0] : p.n)}</span><span class="num">${p.pts}</span></div>`).join("") || `<span style="color:var(--tel-ink2);font-size:17px">Sem mais participantes.</span>` : `<span style="color:var(--tel-ink2);font-size:17px">O ranking está desligado nesta sessão.</span>`}</div></div>${conf}`;

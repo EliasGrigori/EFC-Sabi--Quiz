@@ -38,7 +38,7 @@ function baseDePre(sid) {
 }
 function ajResumo(a, t) {
   const x = a.aj;
-  return [a.mom ? MOM_TXT[a.mom].toLowerCase() : "aplicação normal", x.teste ? "sessão de teste" : "sessão real", `meta ${t.meta}%`, x.tempo === "fecha" ? "tempo fecha a pergunta" : "sem bloqueio de tempo", a.mom === "pre" ? "sem ranking, resposta certa escondida" : (x.ranking ? "ranking ligado" : "sem ranking")].join(" · ");
+  return [a.mom ? MOM_TXT[a.mom].toLowerCase() : "aplicação normal", x.teste ? "sessão de teste" : "sessão real", `meta ${metaTxt(t)}`, x.tempo === "fecha" ? "tempo fecha a pergunta" : "sem bloqueio de tempo", a.mom === "pre" ? "sem ranking, resposta certa escondida" : (x.ranking ? "ranking ligado" : "sem ranking")].join(" · ");
 }
 /* seletor de momento dentro do Aplicar */
 function momAplicar(a, t) {

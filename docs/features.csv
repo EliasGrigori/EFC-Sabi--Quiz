@@ -12,7 +12,7 @@ Vista em lista ou cartões,Treinamentos,should,yes,yes,
 Novo treinamento: modelo pronto (X06),Criação,must,yes,yes,revisar com o POP antes de aplicar
 Novo treinamento: começar do zero,Criação,must,yes,yes,
 Novo treinamento: criar com uma IA (prompt pronto para colar),Criação,should,yes,yes,"O Sabiá monta o texto para colar em qualquer IA e lê a resposta em JSON (sem chamar IA nenhuma); treinamento criado fica marcado ""criado com IA"" até o responsável revisar (v1.0.0)"
-Editor: título / meta em pontos ou % / descrição,Criação,must,yes,partial,"meta em %, título e descrição; falta meta em pontos"
+Editor: título / meta em pontos ou % / descrição,Criação,must,yes,yes,"Meta em % ou em pontos (1.000 por acerto, sem o bônus de rapidez), com conversão ao trocar, versões e relatórios (v1.2.0)"
 Editor: periodicidade (refazer a cada N dias) e vencidos (M09),Criação,must,yes,yes,v0.6.0: validade 6 meses/1/2 anos no editor; aviso em Pendências 30 dias antes e vencidos
 Editor: reavaliação de eficácia em 30/60/90 dias (M07),Criação,must,yes,yes,v0.6.0: 30/60/90 dias no editor; aviso 14 dias antes e atrasados em Pendências
 Item explicação (momento de explicar no telão),Criação,must,yes,yes,

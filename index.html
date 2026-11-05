@@ -827,6 +827,11 @@ body.perfil-col [data-act=novo],body.perfil-col [data-act=excluir],body.perfil-c
 .pn-r{color:var(--ink2);font-size:13px!important}
 @media (max-width:520px){#dlg:has(.dl.pn){border-radius:0}.pn-f{grid-template-columns:repeat(2,1fr)}}
 
+/* ===== v1.2.0 ===== */
+.mt-ln{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:8px}
+.mt-ln>*{min-width:0}
+#et-mta.warn{color:var(--bad,#B3302A)}
+
 </style>
 </head>
 <body>
@@ -889,7 +894,7 @@ body.perfil-col [data-act=novo],body.perfil-col [data-act=excluir],body.perfil-c
 </script>
 <script>
 "use strict";
-const VERSAO = "1.1.0";
+const VERSAO = "1.2.0";
 const MODELOS = [{"id":"m-epi","titulo":"Equipamentos de proteção no trabalho","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Para que serve o equipamento de proteção e quando usar","texto":""},{"tipo":"multipla","enunciado":"Quando o equipamento de proteção deve ser usado?","alternativas":["Só quando o responsável está olhando","Durante toda a atividade que exige o equipamento","Só nos dias de muito calor","Só no começo do turno"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"A proteção vale durante toda a atividade. Tirar no meio do serviço deixa a pessoa exposta."},{"tipo":"vf","enunciado":"Pode emprestar o seu equipamento de proteção de uso individual a um colega.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"O equipamento é de uso pessoal. O colega deve pedir o dele ao responsável."},{"tipo":"multipla","enunciado":"O equipamento rasgou ou quebrou durante o trabalho. O que fazer?","alternativas":["Continuar e trocar no fim do mês","Avisar o responsável e trocar antes de continuar","Remendar com fita","Trabalhar sem ele"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Equipamento danificado não protege. Avise e troque antes de voltar à atividade."},{"tipo":"vf","enunciado":"O equipamento de proteção precisa ser do tamanho certo para quem usa.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Equipamento folgado ou apertado atrapalha e protege mal."},{"tipo":"ordenar","enunciado":"Coloque na ordem o cuidado com o equipamento depois do uso.","alternativas":["Limpar conforme a orientação","Conferir se há rasgo ou defeito","Guardar em local limpo e seco"],"tempo":45,"uso":"avaliacao","porque":"Limpar, conferir e guardar: assim ele está pronto e seguro para o próximo uso."},{"tipo":"multipla","enunciado":"Onde guardar o equipamento de proteção?","alternativas":["Em local limpo, seco e conhecido por todos","No chão, perto do trabalho","Dentro do carro","Onde der"],"correta":0,"tempo":20,"uso":"gincana","porque":"Guardado no lugar certo, o equipamento dura mais e é fácil de achar."}]},{"id":"m-hig","titulo":"Higiene das mãos e pessoal","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Higiene pessoal protege quem trabalha e quem é atendido","texto":""},{"tipo":"multipla","enunciado":"Você acordou com febre ou diarreia. O que fazer antes de começar o dia?","alternativas":["Trabalhar normalmente","Avisar o responsável antes de entrar na área","Tomar um remédio e entrar","Só usar máscara"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Doença passa de pessoa para pessoa e para os alimentos. O responsável decide a sua atividade antes de você entrar."},{"tipo":"vf","enunciado":"Corte na mão deve ficar coberto com curativo e luva.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Curativo e luva impedem contato do ferimento com o que a pessoa toca."},{"tipo":"multipla","enunciado":"Onde se pode comer e beber durante o turno?","alternativas":["No meio da atividade","Só na área definida para isso","Dentro da área de trabalho","Em qualquer lugar"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Comida e bebida só na área definida, longe do trabalho e do material."},{"tipo":"vf","enunciado":"Unha comprida ou com esmalte é permitida na área de manuseio.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Unha comprida acumula sujeira e o esmalte pode soltar."},{"tipo":"ordenar","enunciado":"Coloque na ordem a entrada na área de manuseio.","alternativas":["Prender o cabelo e colocar a touca","Lavar as mãos","Calçar as luvas, se a atividade pedir"],"tempo":45,"uso":"avaliacao","porque":"Touca primeiro, depois mãos lavadas e por último as luvas: assim as mãos limpas não tocam o cabelo."},{"tipo":"vf","enunciado":"Brinco, anel e pulseira devem ser retirados antes de entrar.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":15,"uso":"gincana","porque":"Adornos acumulam sujeira e podem cair."}]},{"id":"m-inc","titulo":"Como comunicar um problema ou acidente","meta":75,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Avisar logo evita que o problema cresça","texto":""},{"tipo":"multipla","enunciado":"Quando avisar o responsável sobre um problema ou acidente?","alternativas":["Só no fim da semana","O quanto antes","Só se alguém perguntar","Nunca, se for pequeno"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Quanto antes o responsável souber, mais cedo ele resolve e evita que se repita."},{"tipo":"multipla","enunciado":"O que não pode faltar no aviso?","alternativas":["Só o nome de quem viu","O que aconteceu, onde e quando","Nada, o responsável descobre","Só o horário"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Sem saber o que, onde e quando, fica difícil achar a causa e resolver."},{"tipo":"vf","enunciado":"Quase acidente, que não machucou ninguém, também deve ser avisado.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"O quase acidente mostra o risco antes que alguém se machuque."},{"tipo":"vf","enunciado":"Pode mexer no local do acidente antes de o responsável chegar, para arrumar tudo.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Mexer apaga as pistas do que aconteceu. Só mexa se for preciso para socorrer alguém ou evitar outro risco."},{"tipo":"ordenar","enunciado":"Coloque as etapas na ordem certa.","alternativas":["Garantir a segurança de todos","Avisar o responsável","Registrar o que aconteceu","Acompanhar a solução"],"tempo":60,"uso":"avaliacao","porque":"Primeiro a segurança, depois o aviso, o registro e o acompanhamento: cada etapa depende da anterior."},{"tipo":"multipla","enunciado":"Quem deve avisar um problema?","alternativas":["Só o chefe","Qualquer pessoa que perceber","Só quem se machucou","Só quem está de plantão"],"correta":1,"tempo":20,"uso":"gincana","porque":"Quem percebe primeiro tem o dever de avisar. Todos ajudam a evitar o problema."}]}];
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -1015,9 +1020,9 @@ function validaTreino(o) {
     uso: ["avaliacao", "gincana", "ensaio"].includes(i.uso) ? i.uso : "avaliacao", porque: String(i.porque || "").slice(0, 600),
     audio: audioOk(i.audio) ? i.audio : undefined
   }));
-  const meta = Number(o.meta); const ag = new Date().toISOString();
+  const meta = Number(o.meta), pts = o.metaTipo === "pts" && meta >= 1 && meta <= PTS_MAX; const ag = new Date().toISOString();
   const reav = Array.isArray(o.reav) ? [...new Set(o.reav.map(Number).filter(d => REAV_DIAS.includes(d)))].sort((a, b) => a - b) : [], per = VALIDADES.some(v => v[0] === Number(o.per)) ? Number(o.per) : 0;
-  return {id: uid(), titulo: o.titulo.slice(0, 120), meta: meta > 0 && meta <= 100 ? Math.round(meta) : 80, descricao: String(o.descricao || "").slice(0, 400), reav, per, itens, versao: 0, versoes: [{n: 0, nota: "Importado de arquivo", quando: ag}], atualizado: ag};
+  return {id: uid(), titulo: o.titulo.slice(0, 120), meta: pts ? Math.round(meta) : meta > 0 && meta <= 100 ? Math.round(meta) : 80, ...(pts ? {metaTipo: "pts"} : {}), descricao: String(o.descricao || "").slice(0, 400), reav, per, itens, versao: 0, versoes: [{n: 0, nota: "Importado de arquivo", quando: ag}], atualizado: ag};
 }
 function importarArquivo(f) {
   const r = new FileReader();
@@ -1044,14 +1049,14 @@ function filtrar(aba) {
   if (q) l = l.filter(t => t.titulo.toLowerCase().includes(q));
   if (UI.ord === "nome") l.sort((a, b) => a.titulo.localeCompare(b.titulo, "pt-BR"));
   else if (UI.ord === "perguntas") l.sort((a, b) => b.itens.filter(isQ).length - a.itens.filter(isQ).length);
-  else if (UI.ord === "meta") l.sort((a, b) => b.meta - a.meta);
+  else if (UI.ord === "meta") l.sort((a, b) => metaEq(b) - metaEq(a));
   else l.sort((a, b) => String(b.atualizado).localeCompare(String(a.atualizado)));
   return aba === "ativos" ? l : [];
 }
 function linhaTreino(t) {
   const nq = t.itens.filter(isQ).length, pode = nq > 0;
   return `<div class="tr"><div class="t"><b>${esc(t.titulo)}</b><span>${nq} pergunta${nq === 1 ? "" : "s"} · atualizado ${dm(t.atualizado)}</span></div>
-    <span class="num hide-m" title="${t.sujo ? "Há alterações sem versão salva" : "Versão salva"}">v${String(t.versao).padStart(2, "0")}${t.sujo ? "*" : ""}</span><span class="hide-m"><span class="num">${t.meta}%</span><div class="meta-bar" aria-hidden="true"><i style="width:${t.meta}%"></i></div></span>
+    <span class="num hide-m" title="${t.sujo ? "Há alterações sem versão salva" : "Versão salva"}">v${String(t.versao).padStart(2, "0")}${t.sujo ? "*" : ""}</span><span class="hide-m"><span class="num">${metaTxt(t)}</span><div class="meta-bar" aria-hidden="true"><i style="width:${metaEq(t)}%"></i></div></span>
     <span class="hide-m">${pode ? (problemasTreino(t).length ? `<span class="chip warn">Revisar perguntas</span>` : `<span class="chip ok">Pronto para aplicar</span>`) : `<span class="chip warn">Rascunho</span>`}</span>
     <div class="acts"><a class="b sm p" href="#/aplicar/${t.id}" ${pode ? "" : 'aria-disabled="true" tabindex="-1" style="opacity:.5;pointer-events:none"'}>${ic("play", 'style="width:16px;height:16px"')}Aplicar</a>
     <a class="b sm ic" href="#/editar/${t.id}" aria-label="Editar ${esc(t.titulo)}" title="Editar perguntas">${ic("edit", 'style="width:18px;height:18px"')}</a>
@@ -1061,7 +1066,7 @@ function linhaTreino(t) {
 }
 function cartaoTreino(t) {
   const nq = t.itens.filter(isQ).length;
-  return `<div class="card"><b>${esc(t.titulo)}</b><span class="sm mut">${nq} pergunta${nq === 1 ? "" : "s"} · meta <span class="num">${t.meta}%</span> · v${String(t.versao).padStart(2, "0")}</span>
+  return `<div class="card"><b>${esc(t.titulo)}</b><span class="sm mut">${nq} pergunta${nq === 1 ? "" : "s"} · meta <span class="num">${metaTxt(t)}</span> · v${String(t.versao).padStart(2, "0")}</span>
     <div style="display:flex;gap:6px"><a class="b sm p" style="flex:1" href="#/aplicar/${t.id}" ${nq ? "" : 'aria-disabled="true" style="opacity:.5;pointer-events:none"'}>Aplicar</a>
     <a class="b sm ic" href="#/editar/${t.id}" aria-label="Editar ${esc(t.titulo)}">${ic("edit", 'style="width:18px;height:18px"')}</a>
     <button class="b sm ic" data-act="exportar" data-id="${t.id}" aria-label="Exportar ${esc(t.titulo)}">${ic("download", 'style="width:18px;height:18px"')}</button>
@@ -1109,7 +1114,7 @@ function vInicio() {
   else if (prontos.length && S.sessoes.length) coach = {t: "Pronto para a próxima turma", p: "Escolha como vai ser, quem participa e abra a sala com chave e telão.", a: `<a class="b p" href="#/aplicar/${prontos[0].id}">${ic("play")}Aplicar agora</a>`};
   else { const vz = S.treinamentos.find(x => !x.itens.some(isQ)) || S.treinamentos[0]; coach = {t: "Treinamentos sem perguntas", p: "Abra o editor e escreva as perguntas, ou comece por um modelo pronto.", a: `<a class="b p" href="#/editar/${vz.id}">${ic("edit")}Escrever perguntas</a>`}; }
   const enc = S.sessoes.filter(x => x.estado === "encerrada" && x.mom !== "pre");
-  const kp = [[nT, "Treinamentos"], [nP, "Perguntas no total"], [enc.length, "Sessões realizadas"], enc.length ? [Math.round(enc.reduce((a, x) => a + x.resultado.pct, 0) / enc.length) + "%", "Acerto médio"] : [nT ? Math.round(S.treinamentos.reduce((a, t) => a + t.meta, 0) / nT) + "%" : "–", "Meta média"]];
+  const kp = [[nT, "Treinamentos"], [nP, "Perguntas no total"], [enc.length, "Sessões realizadas"], enc.length ? [Math.round(enc.reduce((a, x) => a + x.resultado.pct, 0) / enc.length) + "%", "Acerto médio"] : [nT ? Math.round(S.treinamentos.reduce((a, t) => a + metaEq(t), 0) / nT) + "%" : "–", "Meta média"]];
   const usados = new Set(S.treinamentos.map(t => t.modelo));
   const modelos = podeGerir() ? MODELOS.filter(m => !usados.has(m.id)) : [];
   const planejadas = S.sessoes.filter(x => x.estado !== "encerrada").slice().reverse().slice(0, 3);
@@ -1257,7 +1262,7 @@ document.addEventListener("click", e => {
   else if (a === "filtro") { UI.filtro = !UI.filtro; render(); }
   else if (a === "excluir") excluir(id);
   else if (a === "duplicar") duplicar(id);
-  else if (a === "exportar") { const t = treino(id); if (t) baixar(slug(t.titulo) + ".json", {sabia: "treinamento", versao: VERSAO, titulo: t.titulo, meta: t.meta, descricao: t.descricao, reav: t.reav || [], per: t.per || 0, itens: t.itens}); }
+  else if (a === "exportar") { const t = treino(id); if (t) baixar(slug(t.titulo) + ".json", {sabia: "treinamento", versao: VERSAO, titulo: t.titulo, meta: t.meta, ...(metaPts(t) ? {metaTipo: "pts"} : {}), descricao: t.descricao, reav: t.reav || [], per: t.per || 0, itens: t.itens}); }
   else if (a === "preset") { const p = PRESETS[v]; UI.apl.preset = v; Object.assign(UI.apl.aj, AJ_PADRAO, p.aj); render(); }
   else if (a === "setor") { const l = UI.apl.setores, i = l.indexOf(v); if (i < 0) l.push(v); else l.splice(i, 1); render(); }
   else if (a === "preparar") preparar();
@@ -1333,13 +1338,13 @@ const numeroItem = (t, i) => { const it = t.itens[i]; if (it.tipo === "explicaca
 /* ---------- versões ---------- */
 function garantirSnap(t) {
   const v = (t.versoes || []).find(x => x.n === t.versao);
-  if (v && !v.itens && !t.sujo) { v.itens = clone(t.itens); v.titulo = t.titulo; v.meta = t.meta; }
+  if (v && !v.itens && !t.sujo) { v.itens = clone(t.itens); v.titulo = t.titulo; v.meta = t.meta; v.metaTipo = t.metaTipo; }
 }
 function editou(t) { garantirSnap(t); t.sujo = true; t.atualizado = agora(); salvar(); }
 function salvarVersao(t, nota) {
   garantirSnap(t);
   const n = (t.versoes || []).reduce((m, x) => Math.max(m, x.n), -1) + 1;
-  t.versoes.push({n, nota: nota || "Ajustes nas perguntas", quando: agora(), titulo: t.titulo, meta: t.meta, itens: clone(t.itens)});
+  t.versoes.push({n, nota: nota || "Ajustes nas perguntas", quando: agora(), titulo: t.titulo, meta: t.meta, metaTipo: t.metaTipo, itens: clone(t.itens)});
   t.versao = n; t.sujo = false; salvar(); return n;
 }
 function fixarVersao(t) { if (t.sujo) salvarVersao(t, "Fixada ao aplicar"); }
@@ -1352,13 +1357,13 @@ function difVersao(v, t) {
   b.forEach((i, k) => { const o = a[k]; if (o && novas.includes(i) && removidas.includes(o) && o.tipo === i.tipo) { novas = novas.filter(x => x !== i); removidas = removidas.filter(x => x !== o); alteradas.push(i); } });
   const mesmas = !novas.length && !removidas.length;
   const reordenou = mesmas && a.length === b.length && a.some((i, k) => chaveItem(i) !== chaveItem(b[k]));
-  return {novas, removidas, alteradas, reordenou, titulo: v.titulo !== undefined && v.titulo !== t.titulo, meta: v.meta !== undefined && v.meta !== t.meta, igual: mesmas && !alteradas.length && !reordenou && !(v.titulo !== undefined && v.titulo !== t.titulo) && !(v.meta !== undefined && v.meta !== t.meta)};
+  return {novas, removidas, alteradas, reordenou, titulo: v.titulo !== undefined && v.titulo !== t.titulo, meta: v.meta !== undefined && (v.meta !== t.meta || (v.metaTipo || "pct") !== (t.metaTipo || "pct")), igual: mesmas && !alteradas.length && !reordenou && !(v.titulo !== undefined && v.titulo !== t.titulo) && !(v.meta !== undefined && (v.meta !== t.meta || (v.metaTipo || "pct") !== (t.metaTipo || "pct")))};
 }
 const curto = (s, n = 70) => { s = String(s || "(sem enunciado)"); return s.length > n ? s.slice(0, n - 1) + "…" : s; };
 function difHTML(d, v, t) {
   if (d.igual) return `<div class="df"><span>Igual ao rascunho atual.</span></div>`;
   const li = (c, s, l) => l.map(i => `<div class="${c}"><i>${s}</i><span>${esc(curto(i.enunciado))}</span></div>`).join("");
-  return `<div class="df">${li("ad", "+", d.novas)}${li("rm", "−", d.removidas)}${li("ch", "~", d.alteradas)}${d.reordenou ? `<div class="ch"><i>~</i><span>Ordem das perguntas mudou</span></div>` : ""}${d.titulo ? `<div class="ch"><i>~</i><span>Título era "${esc(curto(v.titulo, 50))}"</span></div>` : ""}${d.meta ? `<div class="ch"><i>~</i><span>Meta era ${v.meta}%</span></div>` : ""}<span class="mut">Comparado com o rascunho atual. + nova, − removida, ~ alterada.</span></div>`;
+  return `<div class="df">${li("ad", "+", d.novas)}${li("rm", "−", d.removidas)}${li("ch", "~", d.alteradas)}${d.reordenou ? `<div class="ch"><i>~</i><span>Ordem das perguntas mudou</span></div>` : ""}${d.titulo ? `<div class="ch"><i>~</i><span>Título era "${esc(curto(v.titulo, 50))}"</span></div>` : ""}${d.meta ? `<div class="ch"><i>~</i><span>Meta era ${metaTxt({meta: v.meta, metaTipo: v.metaTipo})}</span></div>` : ""}<span class="mut">Comparado com o rascunho atual. + nova, − removida, ~ alterada.</span></div>`;
 }
 function dlgVersoes() {
   const t = treino(UI.ed && UI.ed.id); if (!t) return;
@@ -1393,7 +1398,7 @@ function vEditar(id) {
       <section class="k ed-meta">
         <div class="fd full"><label for="et-titulo">Título</label><input class="in" id="et-titulo" data-et="titulo" maxlength="120" value="${esc(t.titulo)}"></div>
         <div class="fd"><label for="et-desc">Descrição</label><input class="in" id="et-desc" data-et="descricao" maxlength="400" value="${esc(t.descricao || "")}" placeholder="Opcional"></div>
-        <div class="fd"><label for="et-meta">Meta %</label><input class="in" id="et-meta" data-et="meta" type="number" min="1" max="100" inputmode="numeric" value="${t.meta}"></div>
+        ${metaCampoHtml(t)}
         <div class="fd full"><label for="et-per">Validade do treinamento</label><select class="in" id="et-per">${VALIDADES.map(([d, n]) => `<option value="${d}" ${(t.per || 0) === d ? "selected" : ""}>${n}</option>`).join("")}</select><span class="sm mut">Depois desse prazo a pessoa aparece em Pendências para renovar.</span></div>
         <div class="fd full"><span class="lbl" id="et-rv-l">Reavaliar depois de</span><div class="chips" role="group" aria-labelledby="et-rv-l">${REAV_DIAS.map(d => `<button type="button" class="sc" data-act="edreav" data-d="${d}" aria-pressed="${(t.reav || []).includes(d)}">${d} dias</button>`).join("")}</div><span class="sm mut">Quem passou aparece em Pendências 14 dias antes de cada prazo, para medir o que ficou.</span></div>
       </section>
@@ -1469,13 +1474,13 @@ function snapPrev(t, i, modo) {
   const alts = (it.alternativas || []).map(a => String(a).trim() || "…"), n = alts.length, ok = Number.isInteger(it.correta) ? it.correta : -1;
   let dist = null;
   if (rev) dist = it.tipo === "ordenar" ? {acertos: 7, total: 10} : alts.map((_, k) => ok < 0 ? Math.round(10 / n) : (k === ok ? 6 : Math.floor(4 / (n - 1)) + (k === (ok === 0 ? 1 : 0) ? 4 % (n - 1) : 0)));
-  return {id: "prev", chave: "482915", titulo: t.titulo || "Treinamento", instrutor: S.cfg.instrutor || "", meta: t.meta, tela: S.cfg.telao || "escuro", som: "desligado", ranking: true, entrada: true,
+  return {id: "prev", chave: "482915", titulo: t.titulo || "Treinamento", instrutor: S.cfg.instrutor || "", meta: t.meta, tela: S.cfg.telao || "escuro", metaTxt: metaTxt(t), som: "desligado", ranking: true, entrada: true,
     fase: {etapa: !q ? "explicacao" : (rev ? "resultado" : "pergunta"), idx: i, t0: 0, dur: 0}, min: 5, nPart: 12, part: [], nPerg: qs.length, totalPerg: qs.length, numPerg: q ? qs.indexOf(it) + 1 : 0, resp: rev ? 10 : 0, dist, url: "",
     item: {tipo: it.tipo, enunciado: it.enunciado || (q ? "Escreva o enunciado da pergunta" : "Título da explicação"), texto: it.texto || "", alts, ordem: it.tipo === "ordenar" ? embaralhado(n, i) : null, correta: rev && ok >= 0 ? ok : null, porque: rev ? (it.porque || "") : "", ensaio: it.uso === "ensaio", voz: audioOk(it.audio) ? it.audio : ""}};
 }
 function resumoTreino(t) {
   const r = roteiro(t), vale = t.itens.filter(i => i.tipo !== "explicacao" && i.uso !== "ensaio").length, teste = t.itens.filter(i => i.uso === "ensaio").length, ex = t.itens.filter(i => i.tipo === "explicacao").length, pr = problemasTreino(t).length;
-  return `<section class="k rsm"><div><b>${vale}</b><span>valem nota</span></div><div><b>${r.min} min</b><span>de duração</span></div><div><b>${t.meta}%</b><span>de meta</span></div><div><b>${ex}</b><span>explicaç${ex === 1 ? "ão" : "ões"}</span></div><div><b>${teste}</b><span>de teste</span></div><div class="${pr ? "w" : ""}"><b>${pr}</b><span>a revisar</span></div></section>`;
+  return `<section class="k rsm"><div><b>${vale}</b><span>valem nota</span></div><div><b>${r.min} min</b><span>de duração</span></div><div><b>${metaTxt(t)}</b><span>de meta</span></div><div><b>${ex}</b><span>explicaç${ex === 1 ? "ão" : "ões"}</span></div><div><b>${teste}</b><span>de teste</span></div><div class="${pr ? "w" : ""}"><b>${pr}</b><span>a revisar</span></div></section>`;
 }
 function pintaPrev() {
   const t = treino(UI.ed.id), el = $("#edDir"); if (!t || !el) return;
@@ -1528,8 +1533,8 @@ document.addEventListener("click", e => {
   else if (a === "verscmp") { const n = Number(el.dataset.n); UI.cmp = UI.cmp === n ? null : n; dlgVersoes(); }
   else if (a === "versrest") {
     const n = Number(el.dataset.n), ver = t.versoes.find(x => x.n === n); if (!ver || !ver.itens) return;
-    const antes = JSON.stringify({itens: t.itens, titulo: t.titulo, meta: t.meta, sujo: t.sujo});
-    t.itens = clone(ver.itens); if (ver.titulo !== undefined) t.titulo = ver.titulo; if (ver.meta !== undefined) t.meta = ver.meta;
+    const antes = JSON.stringify({itens: t.itens, titulo: t.titulo, meta: t.meta, metaTipo: t.metaTipo || "pct", sujo: t.sujo});
+    t.itens = clone(ver.itens); if (ver.titulo !== undefined) t.titulo = ver.titulo; if (ver.meta !== undefined) { t.meta = ver.meta; if (ver.metaTipo === "pts") t.metaTipo = "pts"; else delete t.metaTipo; }
     t.sujo = n !== t.versao; t.atualizado = agora(); UI.ed.sel = 0; UI.cmp = null; salvar();
     $("#dlg").close(); render();
     aviso(`v${String(n).padStart(2, "0")} trazida para o rascunho`, "Desfazer", () => { const o = JSON.parse(antes); Object.assign(t, o); salvar(); if (rota().v === "editar") render(); });
@@ -1540,9 +1545,10 @@ document.addEventListener("input", e => {
   const t = treino(UI.ed.id); if (!t) return;
   if (x.dataset.et) {
     const f = x.dataset.et; editou(t);
-    if (f === "meta") { const m = Math.round(Number(x.value)); if (m >= 1 && m <= 100) t.meta = m; }
+    if (f === "meta") { const m = Math.round(Number(x.value)); if (metaValida(t, m)) t.meta = m; }
+    else if (f === "metaTipo") trocarMetaTipo(t, x.value);
     else t[f] = x.value;
-    if (f === "titulo") pintaTopo(); else if (f === "meta") pintaPrev();
+    if (f === "titulo") pintaTopo(); else if (f === "meta" || f === "metaTipo") { metaRepinta(t, f === "metaTipo"); pintaPrev(); }
   } else if (x.dataset.ealt !== undefined) {
     const it = t.itens[UI.ed.sel]; if (!it) return; editou(t); it.alternativas[Number(x.dataset.ealt)] = x.value; pintaLista(); pintaAvisos(); pintaPrev();
   } else if (x.dataset.e && x.tagName !== "SELECT" && x.type !== "radio") {
@@ -2181,8 +2187,9 @@ function novaChave() {
 function abrirSalaDe(sessao) {
   const t = treino(sessao.treinoId); if (!t) { aviso("O treinamento dessa sessão foi removido"); return; }
   if (!sessao.itens) { fixarVersao(t); sessao.itens = clone(t.itens); }
+  if (metaPts(t) && sessao.metaEq == null) { sessao.metaTipo = "pts"; sessao.metaPts = t.meta; sessao.metaEq = metaEq(t, sessao.itens); }   // v1.2.0: antes do recorte, para a meta não mudar com menos perguntas
   aplicaRecorte(sessao); aquecer(sessao);
-  Object.assign(sessao, {titulo: t.titulo, meta: t.meta, versao: t.versao, estado: "sala", chave: sessao.chave || novaChave(), entrada: true,
+  Object.assign(sessao, {titulo: t.titulo, meta: sessao.metaEq != null ? sessao.metaEq : t.meta, versao: t.versao, estado: "sala", chave: sessao.chave || novaChave(), entrada: true,
     part: sessao.part || [], resp: sessao.resp || {}, fase: sessao.fase || {etapa: "espera", idx: -1, t0: 0, dur: 0}, sim: sessao.sim || {on: !Rede.ok(), alvo: 12}});
   Rede.garantir(sessao);
   AO.id = sessao.id; salvar(); ir("#/sala/" + sessao.id);
@@ -2288,7 +2295,7 @@ function snap(s) {
       if (revela) dist = it.tipo === "ordenar" ? {acertos: rs.filter(r => r.ok).length, total: rs.length} : it.alternativas.map((_, k) => rs.filter(r => r.r === k).length);
     }
   }
-  return {id: s.id, chave: s.chave, titulo: s.titulo, instrutor: s.instrutor, meta: s.meta, mom: s.mom || "", tela: s.aj.telao, som: s.aj.som, ranking: s.aj.ranking, entrada: s.entrada,
+  return {id: s.id, chave: s.chave, titulo: s.titulo, instrutor: s.instrutor, meta: s.meta, metaTxt: metaTxtS(s), mom: s.mom || "", tela: s.aj.telao, som: s.aj.som, ranking: s.aj.ranking, entrada: s.entrada,
     fase: f, min: Math.max(1, Math.round(s.itens.reduce((a, x) => a + (ehPergunta(x) ? (x.tempo || 20) + 8 : 120), 0) / 60)), nPart: s.part.length, part: s.part.slice(-60).map(p => ({n: p.nome, c: p.cor})), item, numPerg, totalPerg, nPerg, resp, dist, url: linkEntrar(s),
     resumo: f.etapa === "podio" ? {porPerg: s.itens.map((x, i) => [x, i]).filter(([x]) => vale(x)).map(([, i], k) => ({n: k + 1, pct: s.part.length ? Math.round(100 * s.part.filter(p => ((s.resp[p.id] || {})[i] || {}).ok).length / s.part.length) : 0})), pct: c.pct, efic: c.efic, reforco: c.reforco, metaOk: c.metaOk, nq: c.nq, top: c.ranking.slice(0, 10).map(p => ({n: p.nome, c: p.cor, ac: p.ac, pts: p.pts}))} : null};
 }
@@ -2324,7 +2331,7 @@ function telaoHTML(sn) {
         <div class="how"><div><b>1</b>Aponte a câmera para o QR</div><div><b>2</b>Toque no seu nome</div><div><b>3</b>Escolha sua cor e aguarde</div></div></div>
         <div class="room"><div class="rh"><b>${sn.nPart}</b><span>${sn.nPart === 1 ? "pessoa na sala" : "pessoas na sala"}${sn.entrada ? "" : " · entrada fechada"}</span></div>
         <div class="crowd ${sn.nPart <= 14 ? "g" : ""}">${sn.part.map(p => `<span class="cw">${av(p.n, p.c)}${esc(p.n.split(" ")[0])}</span>`).join("") || `<span style="font-size:22px;color:var(--tel-ink2)">Ninguém entrou ainda.</span>`}</div>
-        <div class="facts"><div><b>${sn.nPerg}</b><span>perguntas valendo</span></div><div><b>${sn.min} min</b><span>de duração</span></div><div><b>${sn.meta}%</b><span>de meta</span></div></div></div></div>
+        <div class="facts"><div><b>${sn.nPerg}</b><span>perguntas valendo</span></div><div><b>${sn.min} min</b><span>de duração</span></div><div><b>${sn.metaTxt || sn.meta + "%"}</b><span>de meta</span></div></div></div></div>
       <div class="tfoot"><span>Começa quando o instrutor tocar em <b>Iniciar</b> · ${sn.nPerg} perguntas</span></div>`;
   } else if (f.etapa === "explicacao") {
     corpo = `${topo(`<b>${esc(sn.titulo)}</b>`)}<div class="expl"><h2>${esc(it.enunciado)}${btnTelVoz(it)}</h2>${it.texto ? `<p>${esc(it.texto)}</p>` : ""}</div><div class="tfoot"><span>Atenção na explicação do instrutor</span></div>`;
@@ -2346,7 +2353,7 @@ function telaoHTML(sn) {
     const r = sn.resumo, t = r.top, bl = (p, pos, h) => p ? `<div class="pl ${pos === 1 ? "p1" : ""}">${av(p.n, p.c)}<div class="blk" style="height:${h}px"><b>${pos}º</b><strong>${esc(p.n)}</strong>${p.ac} de ${r.nq} · ${p.pts} pts</div></div>` : "";
     const conf = sn.som === "ligado" ? `<div class="conf">${Array.from({length: 26}, (_, k) => `<i style="left:${(k * 37) % 100}%;background:${COR_ALT[k % 4]};animation-delay:${(k % 9) * .35}s"></i>`).join("")}</div>` : "";
     corpo = `${topo(`<b>Resultado da turma</b><span>${esc(sn.titulo)}</span>`, `<span class="pillk">${sn.nPart} PESSOAS</span>`)}
-      <div class="podm"><div class="podl"><div>${sn.mom === "pre" ? `<h2>Pré-teste concluído</h2><div class="res"><span>${r.pct}% de acerto médio</span><span>ponto de partida da turma</span></div>` : `<h2>${r.metaOk ? "A turma bateu a meta" : "A turma ficou abaixo da meta"}</h2><div class="res"><span class="${r.metaOk ? "g" : "r"}">${r.pct}% de acerto · meta ${sn.meta}%</span><span>${r.efic} de ${sn.nPart} eficazes</span>${r.reforco ? `<span>${r.reforco} vão para o reforço</span>` : ""}</div>`}</div>
+      <div class="podm"><div class="podl"><div>${sn.mom === "pre" ? `<h2>Pré-teste concluído</h2><div class="res"><span>${r.pct}% de acerto médio</span><span>ponto de partida da turma</span></div>` : `<h2>${r.metaOk ? "A turma bateu a meta" : "A turma ficou abaixo da meta"}</h2><div class="res"><span class="${r.metaOk ? "g" : "r"}">${r.pct}% de acerto · meta ${sn.metaTxt || sn.meta + "%"}</span><span>${r.efic} de ${sn.nPart} eficazes</span>${r.reforco ? `<span>${r.reforco} vão para o reforço</span>` : ""}</div>`}</div>
         <div class="pq">${r.porPerg.map(q => `<div><span class="bar"><i style="height:${Math.max(4, q.pct)}%;background:${q.pct >= sn.meta ? "var(--ok)" : "var(--sabia)"}"></i></span><b>${q.pct}%</b><span>P${q.n}</span></div>`).join("")}</div>
         ${sn.ranking ? `<div class="stage">${bl(t[1], 2, 150)}${bl(t[0], 1, 205)}${bl(t[2], 3, 112)}</div>` : ""}</div>
         <div class="podr"><h3>${sn.ranking ? "Do 4º ao 10º" : "Resultado"}</h3>${sn.ranking ? t.slice(3).map((p, k) => `<div class="pr2"><b>${k + 4}º</b>${av(p.n, p.c)}<span>${esc(p.n.split(" ").length > 1 ? p.n.split(" ")[0] + " " + p.n.split(" ").slice(-1)[0] : p.n)}</span><span class="num">${p.pts}</span></div>`).join("") || `<span style="color:var(--tel-ink2);font-size:17px">Sem mais participantes.</span>` : `<span style="color:var(--tel-ink2);font-size:17px">O ranking está desligado nesta sessão.</span>`}</div></div>${conf}`;
@@ -2719,7 +2726,7 @@ function csvSessao(s) {
   const cmp = comparativo(s), cm = cmp ? new Map(cmp.lin.map(x => [nk(x.nome), x])) : null;
   const cab = ["Nome", "Setor", "Acertos", "Perguntas", "Percentual", "Pontos", "Situação", "Assinou", ...e.perg.map(q => "P" + q.n), ...(cm ? [cmp.rot + " (%)", "Variação (pp)"] : [])];
   const linhas = e.pessoas.map(p => { const rs = s.resp[p.id] || {}; return [p.nome, p.setor || "", p.ac, e.c.nq, p.pct, p.pts, p.sit, p.ass ? "Sim" : "Não", ...e.perg.map(q => rs[q.i] ? (rs[q.i].ok ? "Certo" : "Errado") : "-"), ...(cm ? (() => { const x = cm.get(nk(p.nome)); return x ? [x.antes, x.dif] : ["", ""]; })() : [])]; });
-  const topo = [["Treinamento", s.titulo], ["Versão", verTxt(s)], ["Data", dtc(s.fim)], ["Instrutor", s.instrutor || ""], ["Local", s.local || ""], ["Carga horária", horasTxt(s.horas)], ["Meta", s.meta + "%"], ["Tipo", TIPO_TXT[tipoSessao(s)]], ...(s.mom ? [["Momento", MOM_TXT[s.mom] + (s.dias ? " de " + s.dias + " dias" : "")]] : []), ["Código de conferência", garantirCodigo(s)], []];
+  const topo = [["Treinamento", s.titulo], ["Versão", verTxt(s)], ["Data", dtc(s.fim)], ["Instrutor", s.instrutor || ""], ["Local", s.local || ""], ["Carga horária", horasTxt(s.horas)], ["Meta", metaTxtS(s)], ["Tipo", TIPO_TXT[tipoSessao(s)]], ...(s.mom ? [["Momento", MOM_TXT[s.mom] + (s.dias ? " de " + s.dias + " dias" : "")]] : []), ["Código de conferência", garantirCodigo(s)], []];
   return "﻿" + topo.concat([cab], linhas).map(l => l.map(celCsv).join(";")).join("\r\n") + "\r\n";
 }
 function abrirPdf(bytes) { const u = URL.createObjectURL(new Blob([bytes], {type: "application/pdf"})); const w = window.open(u, "_blank"); if (!w) aviso("O navegador bloqueou a janela. Use o botão de baixar."); setTimeout(() => URL.revokeObjectURL(u), 60000); }
@@ -2771,7 +2778,7 @@ const corSit = t => t === "Atingiu a meta" ? "#1B7A4B" : t === "Abaixo da meta" 
 function pdfRegistro(s) {
   const e = estat(s), d = pdfBase(s, "Registro de treinamento"), {W, M} = d;
   pdfTopo(d, s, "Registro de treinamento");
-  pdfCampos(d, [["Treinamento", `${s.titulo} (${verTxt(s)})`], ["Data e hora do encerramento", dtc(s.fim)], ["Instrutor", s.instrutor], ["Local", s.local], ["Carga horária", horasTxt(s.horas)], ["Meta de acerto", s.meta + "%"], ...(s.mom ? [["Momento", MOM_TXT[s.mom] + (s.dias ? " de " + s.dias + " dias" : "")]] : []), ...seloCampo(s), ["Setores", (s.setores || []).length ? s.setores.join(", ") : "Todos"], ["Perguntas que valem nota", String(e.c.nq)]]);
+  pdfCampos(d, [["Treinamento", `${s.titulo} (${verTxt(s)})`], ["Data e hora do encerramento", dtc(s.fim)], ["Instrutor", s.instrutor], ["Local", s.local], ["Carga horária", horasTxt(s.horas)], ["Meta de acerto", metaTxtS(s)], ...(s.metaTipo === "pts" ? [["Como a meta conta", "1.000 pontos por acerto, sem o bônus de rapidez"]] : []), ...(s.mom ? [["Momento", MOM_TXT[s.mom] + (s.dias ? " de " + s.dias + " dias" : "")]] : []), ...seloCampo(s), ["Setores", (s.setores || []).length ? s.setores.join(", ") : "Todos"], ["Perguntas que valem nota", String(e.c.nq)]]);
   pdfIndicadores(d, [[e.nota + "%", "Nota média"], s.mom === "pre" ? [String(e.c.pessoas.length), "Pessoas"] : [`${e.c.efic} de ${e.c.pessoas.length}`, "Atingiram a meta"], [e.c.pct + "%", "Acerto geral"], [tempoTxt(e.tempo), "Tempo médio por resposta"]]);
   pdfSecao(d, "Presença e resultado");
   const ord = e.pessoas.slice().sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
@@ -2881,8 +2888,8 @@ function relResumo(s, e, t) {
   ac.push(s.mom === "pre"
     ? `<li><span class="ai">${ic("clock")}</span><span><b>Pré-teste: ponto de partida de ${e.nota}%</b><br><span class="sm mut">Nenhuma resposta certa foi mostrada. Depois do conteúdo, aplique o pós-teste para medir o ganho de aprendizado.</span></span><button class="b sm p" data-act="aplicarpos" data-id="${s.id}" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Aplicar pós-teste</button></li>`
     : e.abaixo.length
-    ? `<li><span class="ai warn">${ic("warn")}</span><span><b>${e.abaixo.length} pessoa${e.abaixo.length === 1 ? "" : "s"} abaixo da meta de ${s.meta}%</b><br><span class="sm mut">${esc(e.abaixo.slice(0, 4).map(p => p.nome).join(", "))}${e.abaixo.length > 4 ? " e mais " + (e.abaixo.length - 4) : ""}</span></span><button class="b sm p" data-act="reaplicar" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Reaplicar para elas</button></li>`
-    : `<li><span class="ai ok">${ic("check")}</span><span><b>Todos atingiram a meta de ${s.meta}%</b></span><span></span></li>`);
+    ? `<li><span class="ai warn">${ic("warn")}</span><span><b>${e.abaixo.length} pessoa${e.abaixo.length === 1 ? "" : "s"} abaixo da meta de ${metaTxtS(s)}</b><br><span class="sm mut">${esc(e.abaixo.slice(0, 4).map(p => p.nome).join(", "))}${e.abaixo.length > 4 ? " e mais " + (e.abaixo.length - 4) : ""}</span></span><button class="b sm p" data-act="reaplicar" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Reaplicar para elas</button></li>`
+    : `<li><span class="ai ok">${ic("check")}</span><span><b>Todos atingiram a meta de ${metaTxtS(s)}</b></span><span></span></li>`);
   if (e.fracas.length) ac.push(`<li><span class="ai warn">${ic("edit")}</span><span><b>${e.fracas.length} pergunta${e.fracas.length === 1 ? "" : "s"} com menos de 60% de acerto</b><br><span class="sm mut">${e.fracas.map(q => "P" + q.n).join(", ")}: vale rever o texto ou reforçar o conteúdo.</span></span>${t ? `<a class="b sm" href="#/editar/${t.id}">${ic("edit", 'style="width:16px;height:16px"')}Revisar no editor</a>` : "<span></span>"}</li>`);
   if (semAss) ac.push(`<li><span class="ai warn">${ic("warn")}</span><span><b>${semAss} pessoa${semAss === 1 ? "" : "s"} sem assinatura de presença</b><br><span class="sm mut">A lista de presença em PDF deixa o espaço em branco para assinar no papel.</span></span><span></span></li>`);
   ac.push(s.foto
@@ -2907,18 +2914,18 @@ function relMapa(s, e) {
 function relTempo(s) {
   const l = encerradas().filter(x => x.treinoId === s.treinoId && (x.id === s.id || tipoSessao(x) === "real") && x.mom !== "pre").sort((a, b) => String(a.fim).localeCompare(String(b.fim))).slice(-8);
   if (l.length < 2) return `<section class="k"><h3 class="rh">Ao longo do tempo</h3><p class="sm mut" style="margin:0">Só há uma sessão registrada deste treinamento. Quando houver mais, o acerto de cada uma aparece aqui, comparado com a meta.</p></section>`;
-  return `<section class="k"><h3 class="rh">Ao longo do tempo</h3><p class="sm mut" style="margin:0 0 8px">Acerto geral de cada sessão deste treinamento (só registros oficiais e a sessão aberta). A linha vertical é a meta de ${s.meta}%.</p>
+  return `<section class="k"><h3 class="rh">Ao longo do tempo</h3><p class="sm mut" style="margin:0 0 8px">Acerto geral de cada sessão deste treinamento (só registros oficiais e a sessão aberta). A linha vertical é a meta de ${metaTxtS(s)}.</p>
     <div class="tmp">${l.map(x => { const pc = x.resultado ? x.resultado.pct : 0; return `<div class="tl-s ${x.id === s.id ? "at" : ""}"><span class="sm">${dtd(x.fim)}${x.id === s.id ? ' <span class="chip br">esta</span>' : ""}</span><div class="bar" role="img" aria-label="${pc}% de acerto"><i style="width:${pc}%" class="${pc < x.meta ? "fr" : ""}"></i><u style="left:${x.meta}%"></u></div><b class="num">${pc}%</b></div>`; }).join("")}</div></section>`;
 }
 function relPerguntas(s, e) {
   if (!e.perg.length) return `<section class="k vazio"><b>Esta sessão não tem perguntas que valem nota</b></section>`;
   const l = REL.asOrd === "dificil" ? e.perg.slice().sort((a, b) => a.pct - b.pct || a.n - b.n) : e.perg;
   return relTempo(s) + `<section class="k"><div class="rh2"><h3 class="rh">Assertividade por pergunta</h3><div class="seg" role="group" aria-label="Ordem"><button data-act="relas" data-v="aula" aria-pressed="${REL.asOrd === "aula"}">Ordem da aula</button><button data-act="relas" data-v="dificil" aria-pressed="${REL.asOrd === "dificil"}">Mais difíceis primeiro</button></div></div>
-    <div class="aslist">${l.map(q => `<div class="as"><span class="qn">P${q.n}</span><div class="aq"><b>${esc(q.it.enunciado)}</b><div class="bar" role="img" aria-label="${q.pct}% de acerto, meta ${s.meta}%"><i style="width:${q.pct}%" class="${q.resp && q.pct < 60 ? "fr" : ""}"></i><u style="left:${s.meta}%"></u></div><span class="sm mut">${q.resp} resposta${q.resp === 1 ? "" : "s"}, ${q.ac} certa${q.ac === 1 ? "" : "s"}${q.errada ? ` · errada mais escolhida: “${esc((q.it.alternativas || [])[q.errada.alt] ?? "alternativa " + (q.errada.alt + 1))}” (${q.errada.n})` : ""}</span></div><span class="ap num">${q.resp ? q.pct + "%" : "–"}${q.resp && q.pct < 60 ? '<span class="chip warn">revisar</span>' : ""}</span></div>`).join("")}</div>
-    <p class="sm mut" style="margin:10px 0 0">A linha vertical marca a meta da sessão (${s.meta}%).</p></section>`;
+    <div class="aslist">${l.map(q => `<div class="as"><span class="qn">P${q.n}</span><div class="aq"><b>${esc(q.it.enunciado)}</b><div class="bar" role="img" aria-label="${q.pct}% de acerto, meta ${metaTxtS(s)}"><i style="width:${q.pct}%" class="${q.resp && q.pct < 60 ? "fr" : ""}"></i><u style="left:${metaTxtS(s)}"></u></div><span class="sm mut">${q.resp} resposta${q.resp === 1 ? "" : "s"}, ${q.ac} certa${q.ac === 1 ? "" : "s"}${q.errada ? ` · errada mais escolhida: “${esc((q.it.alternativas || [])[q.errada.alt] ?? "alternativa " + (q.errada.alt + 1))}” (${q.errada.n})` : ""}</span></div><span class="ap num">${q.resp ? q.pct + "%" : "–"}${q.resp && q.pct < 60 ? '<span class="chip warn">revisar</span>' : ""}</span></div>`).join("")}</div>
+    <p class="sm mut" style="margin:10px 0 0">A linha vertical marca a meta da sessão (${metaTxtS(s)}).</p></section>`;
 }
 function relSetores(s, e) {
-  return `<section class="k"><h3 class="rh">Resultado por setor</h3><div class="rtw"><table class="rtb"><thead><tr><th>Setor</th><th class="n">Pessoas</th><th>Acerto médio</th><th class="n">Atingiram a meta</th></tr></thead><tbody>${e.setores.map(x => `<tr><td><b>${esc(x.nome)}</b></td><td class="n num">${x.n}</td><td><div class="bar sb" role="img" aria-label="${x.pct}%"><i style="width:${x.pct}%" class="${x.pct < s.meta ? "fr" : ""}"></i><u style="left:${s.meta}%"></u></div><span class="num sm">${x.pct}%</span></td><td class="n num">${x.efic} de ${x.n}</td></tr>`).join("")}</tbody></table></div>
+  return `<section class="k"><h3 class="rh">Resultado por setor</h3><div class="rtw"><table class="rtb"><thead><tr><th>Setor</th><th class="n">Pessoas</th><th>Acerto médio</th><th class="n">Atingiram a meta</th></tr></thead><tbody>${e.setores.map(x => `<tr><td><b>${esc(x.nome)}</b></td><td class="n num">${x.n}</td><td><div class="bar sb" role="img" aria-label="${x.pct}%"><i style="width:${x.pct}%" class="${x.pct < s.meta ? "fr" : ""}"></i><u style="left:${metaTxtS(s)}"></u></div><span class="num sm">${x.pct}%</span></td><td class="n num">${x.efic} de ${x.n}</td></tr>`).join("")}</tbody></table></div>
     ${e.setores.length === 1 && e.setores[0].nome === "Sem setor" ? '<p class="sm mut" style="margin:10px 0 0">Ninguém escolheu setor nesta sessão. Cadastre os setores em Ajustes para ver a comparação.</p>' : ""}</section>`;
 }
 
@@ -3043,7 +3050,7 @@ function baseDePre(sid) {
 }
 function ajResumo(a, t) {
   const x = a.aj;
-  return [a.mom ? MOM_TXT[a.mom].toLowerCase() : "aplicação normal", x.teste ? "sessão de teste" : "sessão real", `meta ${t.meta}%`, x.tempo === "fecha" ? "tempo fecha a pergunta" : "sem bloqueio de tempo", a.mom === "pre" ? "sem ranking, resposta certa escondida" : (x.ranking ? "ranking ligado" : "sem ranking")].join(" · ");
+  return [a.mom ? MOM_TXT[a.mom].toLowerCase() : "aplicação normal", x.teste ? "sessão de teste" : "sessão real", `meta ${metaTxt(t)}`, x.tempo === "fecha" ? "tempo fecha a pergunta" : "sem bloqueio de tempo", a.mom === "pre" ? "sem ranking, resposta certa escondida" : (x.ranking ? "ranking ligado" : "sem ranking")].join(" · ");
 }
 /* seletor de momento dentro do Aplicar */
 function momAplicar(a, t) {
@@ -4369,6 +4376,44 @@ document.addEventListener("click", e => {
   if (a === "painel") { PN.aba = "geral"; dlgPainel(); }
   else if (a === "pntab") { const t = treino(UI.ed && UI.ed.id); if (!t) return; PN.aba = el.dataset.v; document.querySelectorAll(".pn-t .sc").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === PN.aba))); $("#pn-corpo").innerHTML = pnCorpo(t); }
 });
+
+/* ===== v1.2.0 · meta em pontos (ou em %) ===== */
+/* A meta em pontos conta só os pontos de acerto: 1.000 por pergunta certa, sem o bônus de rapidez.
+   A sessão guarda a meta já convertida em % (s.meta), então todos os cálculos de "atingiu a meta" continuam iguais. */
+const PTS_ACERTO = 1000, PTS_MAX = 100000;
+const metaPts = t => !!t && t.metaTipo === "pts";
+const fmtPts = n => Number(n).toLocaleString("pt-BR");
+const metaTxt = t => metaPts(t) ? fmtPts(t.meta) + " pontos" : t.meta + "%";
+const metaTxtS = s => s.metaTipo === "pts" && s.metaPts ? fmtPts(s.metaPts) + " pontos" : s.meta + "%";
+const metaMax = (t, itens) => PTS_ACERTO * (itens || t.itens).filter(vale).length;
+/* % equivalente de uma meta em pontos: quem acerta ac perguntas tem pct = round(100*ac/nq), e isso passa da meta se e só se ac*1000 >= pontos */
+function metaEq(t, itens) {
+  if (!metaPts(t)) return t.meta;
+  const nq = (itens || t.itens).filter(vale).length;
+  return nq ? Math.min(100, Math.max(1, Math.round(100 * t.meta / (PTS_ACERTO * nq)))) : 100;
+}
+function trocarMetaTipo(t, tipo) {
+  const max = metaMax(t);
+  if (tipo === "pts" && !metaPts(t)) { t.metaTipo = "pts"; t.meta = Math.max(PTS_ACERTO, Math.round(max * t.meta / 100 / PTS_ACERTO) * PTS_ACERTO); }
+  else if (tipo !== "pts" && metaPts(t)) { delete t.metaTipo; t.meta = max ? Math.min(100, Math.max(1, Math.round(100 * t.meta / max))) : 80; }
+}
+function metaAjuda(t) {
+  if (!metaPts(t)) return "Percentual de acertos que cada pessoa precisa ter.";
+  const max = metaMax(t), nq = max / PTS_ACERTO;
+  if (!nq) return "Cada acerto vale 1.000 pontos. O bônus de rapidez não conta para a meta. Adicione perguntas para ver o máximo.";
+  return `Cada acerto vale 1.000 pontos e o bônus de rapidez não conta. Máximo deste treinamento: ${fmtPts(max)} pontos (${nq} pergunta${nq === 1 ? "" : "s"}), então a meta pede ${Math.ceil(t.meta / PTS_ACERTO)} acerto${Math.ceil(t.meta / PTS_ACERTO) === 1 ? "" : "s"}.` + (t.meta > max ? " A meta passa do máximo: ninguém vai atingir." : "");
+}
+function metaCampoHtml(t) {
+  const p = metaPts(t);
+  return `<div class="fd full"><label for="et-meta">Meta</label><div class="mt-ln"><input class="in" id="et-meta" data-et="meta" type="number" min="${p ? PTS_ACERTO : 1}" max="${p ? PTS_MAX : 100}" step="${p ? PTS_ACERTO : 1}" inputmode="numeric" value="${t.meta}"><select class="in" id="et-mt" data-et="metaTipo" aria-label="Tipo de meta"><option value="pct" ${p ? "" : "selected"}>% de acertos</option><option value="pts" ${p ? "selected" : ""}>pontos</option></select></div><span class="sm mut" id="et-mta" aria-live="polite">${metaAjuda(t)}</span></div>`;
+}
+function metaRepinta(t, trocou) {
+  const a = $("#et-mta"); if (a) { a.textContent = metaAjuda(t); a.classList.toggle("warn", metaPts(t) && t.meta > metaMax(t) && metaMax(t) > 0); }
+  if (!trocou) return;
+  const i = $("#et-meta"), p = metaPts(t); if (!i) return;
+  i.min = p ? PTS_ACERTO : 1; i.max = p ? PTS_MAX : 100; i.step = p ? PTS_ACERTO : 1; i.value = t.meta;
+}
+function metaValida(t, m) { return metaPts(t) ? (m >= 1 && m <= PTS_MAX) : (m >= 1 && m <= 100); }
 
 function render() {
   if (!S) return;

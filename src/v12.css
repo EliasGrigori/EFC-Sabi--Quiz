@@ -1,0 +1,4 @@
+/* ===== v1.2.0 ===== */
+.mt-ln{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:8px}
+.mt-ln>*{min-width:0}
+#et-mta.warn{color:var(--bad,#B3302A)}

@@ -228,6 +228,7 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 /*__INT_CSS__*/
 /*__V10_CSS__*/
 /*__V11_CSS__*/
+/*__V12_CSS__*/
 </style>
 </head>
 <body>
@@ -289,7 +290,7 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 <script>/*__QR__*/</script>
 <script>
 "use strict";
-const VERSAO = "1.1.0";
+const VERSAO = "1.2.0";
 const MODELOS = __MODELOS__;
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -415,9 +416,9 @@ function validaTreino(o) {
     uso: ["avaliacao", "gincana", "ensaio"].includes(i.uso) ? i.uso : "avaliacao", porque: String(i.porque || "").slice(0, 600),
     audio: audioOk(i.audio) ? i.audio : undefined
   }));
-  const meta = Number(o.meta); const ag = new Date().toISOString();
+  const meta = Number(o.meta), pts = o.metaTipo === "pts" && meta >= 1 && meta <= PTS_MAX; const ag = new Date().toISOString();
   const reav = Array.isArray(o.reav) ? [...new Set(o.reav.map(Number).filter(d => REAV_DIAS.includes(d)))].sort((a, b) => a - b) : [], per = VALIDADES.some(v => v[0] === Number(o.per)) ? Number(o.per) : 0;
-  return {id: uid(), titulo: o.titulo.slice(0, 120), meta: meta > 0 && meta <= 100 ? Math.round(meta) : 80, descricao: String(o.descricao || "").slice(0, 400), reav, per, itens, versao: 0, versoes: [{n: 0, nota: "Importado de arquivo", quando: ag}], atualizado: ag};
+  return {id: uid(), titulo: o.titulo.slice(0, 120), meta: pts ? Math.round(meta) : meta > 0 && meta <= 100 ? Math.round(meta) : 80, ...(pts ? {metaTipo: "pts"} : {}), descricao: String(o.descricao || "").slice(0, 400), reav, per, itens, versao: 0, versoes: [{n: 0, nota: "Importado de arquivo", quando: ag}], atualizado: ag};
 }
 function importarArquivo(f) {
   const r = new FileReader();
@@ -444,14 +445,14 @@ function filtrar(aba) {
   if (q) l = l.filter(t => t.titulo.toLowerCase().includes(q));
   if (UI.ord === "nome") l.sort((a, b) => a.titulo.localeCompare(b.titulo, "pt-BR"));
   else if (UI.ord === "perguntas") l.sort((a, b) => b.itens.filter(isQ).length - a.itens.filter(isQ).length);
-  else if (UI.ord === "meta") l.sort((a, b) => b.meta - a.meta);
+  else if (UI.ord === "meta") l.sort((a, b) => metaEq(b) - metaEq(a));
   else l.sort((a, b) => String(b.atualizado).localeCompare(String(a.atualizado)));
   return aba === "ativos" ? l : [];
 }
 function linhaTreino(t) {
   const nq = t.itens.filter(isQ).length, pode = nq > 0;
   return `<div class="tr"><div class="t"><b>${esc(t.titulo)}</b><span>${nq} pergunta${nq === 1 ? "" : "s"} · atualizado ${dm(t.atualizado)}</span></div>
-    <span class="num hide-m" title="${t.sujo ? "Há alterações sem versão salva" : "Versão salva"}">v${String(t.versao).padStart(2, "0")}${t.sujo ? "*" : ""}</span><span class="hide-m"><span class="num">${t.meta}%</span><div class="meta-bar" aria-hidden="true"><i style="width:${t.meta}%"></i></div></span>
+    <span class="num hide-m" title="${t.sujo ? "Há alterações sem versão salva" : "Versão salva"}">v${String(t.versao).padStart(2, "0")}${t.sujo ? "*" : ""}</span><span class="hide-m"><span class="num">${metaTxt(t)}</span><div class="meta-bar" aria-hidden="true"><i style="width:${metaEq(t)}%"></i></div></span>
     <span class="hide-m">${pode ? (problemasTreino(t).length ? `<span class="chip warn">Revisar perguntas</span>` : `<span class="chip ok">Pronto para aplicar</span>`) : `<span class="chip warn">Rascunho</span>`}</span>
     <div class="acts"><a class="b sm p" href="#/aplicar/${t.id}" ${pode ? "" : 'aria-disabled="true" tabindex="-1" style="opacity:.5;pointer-events:none"'}>${ic("play", 'style="width:16px;height:16px"')}Aplicar</a>
     <a class="b sm ic" href="#/editar/${t.id}" aria-label="Editar ${esc(t.titulo)}" title="Editar perguntas">${ic("edit", 'style="width:18px;height:18px"')}</a>
@@ -461,7 +462,7 @@ function linhaTreino(t) {
 }
 function cartaoTreino(t) {
   const nq = t.itens.filter(isQ).length;
-  return `<div class="card"><b>${esc(t.titulo)}</b><span class="sm mut">${nq} pergunta${nq === 1 ? "" : "s"} · meta <span class="num">${t.meta}%</span> · v${String(t.versao).padStart(2, "0")}</span>
+  return `<div class="card"><b>${esc(t.titulo)}</b><span class="sm mut">${nq} pergunta${nq === 1 ? "" : "s"} · meta <span class="num">${metaTxt(t)}</span> · v${String(t.versao).padStart(2, "0")}</span>
     <div style="display:flex;gap:6px"><a class="b sm p" style="flex:1" href="#/aplicar/${t.id}" ${nq ? "" : 'aria-disabled="true" style="opacity:.5;pointer-events:none"'}>Aplicar</a>
     <a class="b sm ic" href="#/editar/${t.id}" aria-label="Editar ${esc(t.titulo)}">${ic("edit", 'style="width:18px;height:18px"')}</a>
     <button class="b sm ic" data-act="exportar" data-id="${t.id}" aria-label="Exportar ${esc(t.titulo)}">${ic("download", 'style="width:18px;height:18px"')}</button>
@@ -509,7 +510,7 @@ function vInicio() {
   else if (prontos.length && S.sessoes.length) coach = {t: "Pronto para a próxima turma", p: "Escolha como vai ser, quem participa e abra a sala com chave e telão.", a: `<a class="b p" href="#/aplicar/${prontos[0].id}">${ic("play")}Aplicar agora</a>`};
   else { const vz = S.treinamentos.find(x => !x.itens.some(isQ)) || S.treinamentos[0]; coach = {t: "Treinamentos sem perguntas", p: "Abra o editor e escreva as perguntas, ou comece por um modelo pronto.", a: `<a class="b p" href="#/editar/${vz.id}">${ic("edit")}Escrever perguntas</a>`}; }
   const enc = S.sessoes.filter(x => x.estado === "encerrada" && x.mom !== "pre");
-  const kp = [[nT, "Treinamentos"], [nP, "Perguntas no total"], [enc.length, "Sessões realizadas"], enc.length ? [Math.round(enc.reduce((a, x) => a + x.resultado.pct, 0) / enc.length) + "%", "Acerto médio"] : [nT ? Math.round(S.treinamentos.reduce((a, t) => a + t.meta, 0) / nT) + "%" : "–", "Meta média"]];
+  const kp = [[nT, "Treinamentos"], [nP, "Perguntas no total"], [enc.length, "Sessões realizadas"], enc.length ? [Math.round(enc.reduce((a, x) => a + x.resultado.pct, 0) / enc.length) + "%", "Acerto médio"] : [nT ? Math.round(S.treinamentos.reduce((a, t) => a + metaEq(t), 0) / nT) + "%" : "–", "Meta média"]];
   const usados = new Set(S.treinamentos.map(t => t.modelo));
   const modelos = podeGerir() ? MODELOS.filter(m => !usados.has(m.id)) : [];
   const planejadas = S.sessoes.filter(x => x.estado !== "encerrada").slice().reverse().slice(0, 3);
@@ -657,7 +658,7 @@ document.addEventListener("click", e => {
   else if (a === "filtro") { UI.filtro = !UI.filtro; render(); }
   else if (a === "excluir") excluir(id);
   else if (a === "duplicar") duplicar(id);
-  else if (a === "exportar") { const t = treino(id); if (t) baixar(slug(t.titulo) + ".json", {sabia: "treinamento", versao: VERSAO, titulo: t.titulo, meta: t.meta, descricao: t.descricao, reav: t.reav || [], per: t.per || 0, itens: t.itens}); }
+  else if (a === "exportar") { const t = treino(id); if (t) baixar(slug(t.titulo) + ".json", {sabia: "treinamento", versao: VERSAO, titulo: t.titulo, meta: t.meta, ...(metaPts(t) ? {metaTipo: "pts"} : {}), descricao: t.descricao, reav: t.reav || [], per: t.per || 0, itens: t.itens}); }
   else if (a === "preset") { const p = PRESETS[v]; UI.apl.preset = v; Object.assign(UI.apl.aj, AJ_PADRAO, p.aj); render(); }
   else if (a === "setor") { const l = UI.apl.setores, i = l.indexOf(v); if (i < 0) l.push(v); else l.splice(i, 1); render(); }
   else if (a === "preparar") preparar();
@@ -706,6 +707,7 @@ document.addEventListener("submit", e => {
 /*__INT_JS__*/
 /*__V10_JS__*/
 /*__V11_JS__*/
+/*__V12_JS__*/
 function render() {
   if (!S) return;
   const r = rota(); if (intAntesRender(r.v)) return; menu(r.v);

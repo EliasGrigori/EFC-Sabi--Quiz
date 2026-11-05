@@ -35,10 +35,11 @@ mesmas funções, cara nova. Versões recomeçam do zero (v0.1.0 até v1.0.0).
 | v0.8.0 | pronta, aguardando aprovação (junto com v0.6.0 e v0.7.0, não publicadas) | Perfis, conta do EFClaudian (SDK, config colada no aparelho), porta de entrada opcional, EFC_API, Ajustes com índice, telão/som padrão, demonstração, observações do treinamento |
 | v1.0.0 | publicada em 05/11/2026 (commit e4a0c99, junto com v0.6.0, v0.7.0 e v0.8.0 num commit só, porque o código-fonte intermediário não foi guardado) | Banco de perguntas, criar com IA (texto pronto + leitura do JSON), pergunta de teste no começo da sessão, voz gravada no telão, ouvir a pergunta no celular, carimbo de tempo do servidor do Firebase, regras do Firebase mais firmes |
 | v1.0.1 | publicada em 05/11/2026 (commit ced5447) | Ícone novo do app (desenho do Elias com contornos reforçados e fundo petróleo em relevo): icon-192, icon-512, icon-maskable-512 e apple-touch-icon. Só o ícone mudou |
-| v1.1.0 | pronta, aguardando aprovação | Telão com tela cheia, modo projetor e modo apresentação; folha de reforço em PDF; painel do treinamento (gaveta no editor); logotipo de dentro do app trocado pelo desenho novo; fundo do ícone no verde do app |
+| v1.1.0 | publicada em 05/11/2026 (commit ca59807) | Telão com tela cheia, modo projetor e modo apresentação; folha de reforço em PDF; painel do treinamento (gaveta no editor); logotipo de dentro do app trocado pelo desenho novo; fundo do ícone no verde do app |
+| v1.2.0 | pronta, aguardando aprovação | Meta em pontos (ou em %) no editor: 1.000 pontos por acerto, sem o bônus de rapidez; conversão ao trocar o tipo; versões, relatório, PDF, telão, lista, exportar e importar entendem a meta em pontos |
 
 ## Paridade com o EFCquiz (79 funções)
-v0.1.0: 10 prontas e 11 parciais. v0.2.0 completa as opções de Aplicar, o controle ao vivo e o telão. v0.3.0 entrega o editor e as versões. v0.4.0 entrega o celular do participante. v0.5.0 entrega relatórios, PDFs e conferência. v0.6.0 entrega reforço, reavaliação, pré e pós-teste e rever no celular v0.7.0 entrega pessoas, mensagens, comentário no celular e desafio entre setores (detalhe em features.csv: 66 prontas, 12 parciais, 1 faltando de 79 (v0.8.0 entrega perfis, porta de entrada, conta do EFClaudian, Ajustes completo e observações; v1.0.0 entrega banco de perguntas, criar com IA, pergunta de teste, voz, ouvir, carimbo e regras do Firebase mais firmes)).
+v0.1.0: 10 prontas e 11 parciais. v0.2.0 completa as opções de Aplicar, o controle ao vivo e o telão. v0.3.0 entrega o editor e as versões. v0.4.0 entrega o celular do participante. v0.5.0 entrega relatórios, PDFs e conferência. v0.6.0 entrega reforço, reavaliação, pré e pós-teste e rever no celular v0.7.0 entrega pessoas, mensagens, comentário no celular e desafio entre setores (detalhe em features.csv: 67 prontas, 11 parciais, 1 faltando de 79 (v0.8.0 entrega perfis, porta de entrada, conta do EFClaudian, Ajustes completo e observações; v1.0.0 entrega banco de perguntas, criar com IA, pergunta de teste, voz, ouvir, carimbo e regras do Firebase mais firmes)).
 
 ## Medidas (régua de espaço vazio)
 Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 treinamentos de exemplo e sem sessões. Editor v0.3.0: 34% (múltipla) e 31% (ordenar com resultado) a 1280 px; a tela antiga é uma lista única rolável, então não é comparável item a item.
@@ -100,7 +101,7 @@ Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 tre
 - `window.EFC_API`: versao(), perfil(), conta(), abrir(rota).
 - Ajustes: `AJ_IND` (índice de 10 seções); `S.cfg.telaoPadrao` e `somPadrao` alimentam `AJ_PADRAO`; `S.cfg.obs`. Observações do treinamento em `t.obs` [{id, txt, por, em}], fora do versionamento.
 - Os testes (teste-integra.js) usam um SDK de mentira injetado por rota; só a conta real prova o login.
-- `dist/sw.js` continua manual: cache `sabia-1.1.0` (subir a cada versão).
+- `dist/sw.js` continua manual: cache `sabia-1.2.0` (subir a cada versão).
 
 ## v1.0.0 · acabamento (src/v10.js e src/v10.css; prefixos `bn-`, `ia-`, `vz-`, `selo`, `ouv`, `tvoz`)
 - **Banco de perguntas**: `S.banco` [{bid, de, quando, ...pergunta sem áudio}], máximo 500, sem repetir (formato + enunciado). Diálogo `dlgBanco` com busca (sem acento), filtro por formato, Inserir, Excluir com Desfazer dentro do diálogo (o aviso flutuante fica escondido atrás do diálogo modal, por isso não serve). Vai no "Exportar tudo".
@@ -134,5 +135,15 @@ Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 tre
 - **Telão** (`#/telao/:id`): barra de opções que aparece ao mexer o mouse e some sozinha. F = tela cheia, P = modo projetor (fundo branco, texto preto, linhas fortes), A = modo apresentação (tela cheia, cursor some, espaço, Enter, seta direita ou PageDown mandam "avançar" ao controle pelo BroadcastChannel; no pódio não encerra a sala). O modo fica em localStorage `sabia-telao-modo` (por aparelho). Só funciona com telão e controle no mesmo navegador (limite do BroadcastChannel). O navegador pode negar a tela cheia: aparece aviso para usar F11.
 - **Folha de reforço** (Relatório > botão "Folha de reforço (N)"): PDF com uma página por pessoa abaixo da meta: o que marcou, a resposta certa, o porquê, a explicação para rever (uma vez por página) e linha de ciente. Não aparece em pré-teste nem quando todos atingiram a meta. Não altera nota nem fila de reforço. Nome: `folha-reforco-<titulo>-<data>.pdf`.
 - **Painel do treinamento** (editor > botão Painel): gaveta pela direita com Visão geral, Acerto por versão (média ponderada pelas pessoas, marca da meta, diferença em pontos percentuais) e Comentários (só deste treinamento). Só sessões oficiais entram nas médias. Sem aba de material (fica para depois).
-- **Fica para a v1.2.0:** meta em pontos (mexe em todos os cálculos de meta; os pontos incluem bônus de rapidez, então a regra precisa ser decidida) e material com capítulos.
+- **Ficou para depois da v1.1.0:** meta em pontos (entrou na v1.2.0) e material com capítulos.
 - Testes novos: `teste-v11.js` (58 conferências). Suítes antigas seguem verdes na v1.1.0.
+
+
+## v1.2.0 · meta em pontos (src/v12.js e src/v12.css; prefixos `meta`, `mt-`)
+- Regra aprovada pelo Elias em 05/11/2026: a pessoa atinge a meta se fizer X pontos ou mais, **sem contar o bônus de rapidez**. Cada acerto vale 1.000 pontos (`PTS_ACERTO`), então a meta pede ceil(X/1000) acertos. O bônus de rapidez continua no ranking e na coluna Pontos, mas não entra na meta.
+- Treinamento: `meta` (número) e `metaTipo` ("pts" ou ausente para %). Em pontos vai de 1.000 a 100.000. O editor tem o campo Meta com seletor "% de acertos / pontos"; trocar converte (80% de 4 perguntas = 3.000 pontos; 3.000 volta como 75%), a ajuda mostra o máximo e quantos acertos a meta pede, e avisa quando passa do máximo (ninguém atinge).
+- Sessão: ao abrir a sala, `s.meta` guarda a meta já convertida em % (`metaEq`, calculada uma vez sobre todas as perguntas, antes do recorte do reforço), e `s.metaTipo`/`s.metaPts` guardam os pontos originais. Por isso toda a conta de "atingiu a meta" (relatório, reforço, pendências, pessoas, celular, Firebase) continua em % e não mudou. A conversão usa round, e foi provada de 1 a 40 perguntas: quem faz os acertos pedidos passa, quem faz um a menos não.
+- Mostram "N pontos": lista de treinamentos, editor e resumo, telão (fatos e pódio), relatório (texto e situação), PDF de registro (campo "Meta de acerto" e "Como a meta conta"), comparação de versões, exportar e importar. Reforço e Pessoas continuam mostrando o % equivalente.
+- Versões guardam `metaTipo`; restaurar traz o tipo de volta e Desfazer devolve o anterior.
+- Testes novos: `teste-v12.js` (33 conferências). Suítes antigas seguem verdes.
+- Ficou para a v1.3.0: material com capítulos (último "não" da lista) e a aba de material do painel.

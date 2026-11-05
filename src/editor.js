@@ -36,13 +36,13 @@ const numeroItem = (t, i) => { const it = t.itens[i]; if (it.tipo === "explicaca
 /* ---------- versões ---------- */
 function garantirSnap(t) {
   const v = (t.versoes || []).find(x => x.n === t.versao);
-  if (v && !v.itens && !t.sujo) { v.itens = clone(t.itens); v.titulo = t.titulo; v.meta = t.meta; }
+  if (v && !v.itens && !t.sujo) { v.itens = clone(t.itens); v.titulo = t.titulo; v.meta = t.meta; v.metaTipo = t.metaTipo; }
 }
 function editou(t) { garantirSnap(t); t.sujo = true; t.atualizado = agora(); salvar(); }
 function salvarVersao(t, nota) {
   garantirSnap(t);
   const n = (t.versoes || []).reduce((m, x) => Math.max(m, x.n), -1) + 1;
-  t.versoes.push({n, nota: nota || "Ajustes nas perguntas", quando: agora(), titulo: t.titulo, meta: t.meta, itens: clone(t.itens)});
+  t.versoes.push({n, nota: nota || "Ajustes nas perguntas", quando: agora(), titulo: t.titulo, meta: t.meta, metaTipo: t.metaTipo, itens: clone(t.itens)});
   t.versao = n; t.sujo = false; salvar(); return n;
 }
 function fixarVersao(t) { if (t.sujo) salvarVersao(t, "Fixada ao aplicar"); }
@@ -55,13 +55,13 @@ function difVersao(v, t) {
   b.forEach((i, k) => { const o = a[k]; if (o && novas.includes(i) && removidas.includes(o) && o.tipo === i.tipo) { novas = novas.filter(x => x !== i); removidas = removidas.filter(x => x !== o); alteradas.push(i); } });
   const mesmas = !novas.length && !removidas.length;
   const reordenou = mesmas && a.length === b.length && a.some((i, k) => chaveItem(i) !== chaveItem(b[k]));
-  return {novas, removidas, alteradas, reordenou, titulo: v.titulo !== undefined && v.titulo !== t.titulo, meta: v.meta !== undefined && v.meta !== t.meta, igual: mesmas && !alteradas.length && !reordenou && !(v.titulo !== undefined && v.titulo !== t.titulo) && !(v.meta !== undefined && v.meta !== t.meta)};
+  return {novas, removidas, alteradas, reordenou, titulo: v.titulo !== undefined && v.titulo !== t.titulo, meta: v.meta !== undefined && (v.meta !== t.meta || (v.metaTipo || "pct") !== (t.metaTipo || "pct")), igual: mesmas && !alteradas.length && !reordenou && !(v.titulo !== undefined && v.titulo !== t.titulo) && !(v.meta !== undefined && (v.meta !== t.meta || (v.metaTipo || "pct") !== (t.metaTipo || "pct")))};
 }
 const curto = (s, n = 70) => { s = String(s || "(sem enunciado)"); return s.length > n ? s.slice(0, n - 1) + "…" : s; };
 function difHTML(d, v, t) {
   if (d.igual) return `<div class="df"><span>Igual ao rascunho atual.</span></div>`;
   const li = (c, s, l) => l.map(i => `<div class="${c}"><i>${s}</i><span>${esc(curto(i.enunciado))}</span></div>`).join("");
-  return `<div class="df">${li("ad", "+", d.novas)}${li("rm", "−", d.removidas)}${li("ch", "~", d.alteradas)}${d.reordenou ? `<div class="ch"><i>~</i><span>Ordem das perguntas mudou</span></div>` : ""}${d.titulo ? `<div class="ch"><i>~</i><span>Título era "${esc(curto(v.titulo, 50))}"</span></div>` : ""}${d.meta ? `<div class="ch"><i>~</i><span>Meta era ${v.meta}%</span></div>` : ""}<span class="mut">Comparado com o rascunho atual. + nova, − removida, ~ alterada.</span></div>`;
+  return `<div class="df">${li("ad", "+", d.novas)}${li("rm", "−", d.removidas)}${li("ch", "~", d.alteradas)}${d.reordenou ? `<div class="ch"><i>~</i><span>Ordem das perguntas mudou</span></div>` : ""}${d.titulo ? `<div class="ch"><i>~</i><span>Título era "${esc(curto(v.titulo, 50))}"</span></div>` : ""}${d.meta ? `<div class="ch"><i>~</i><span>Meta era ${metaTxt({meta: v.meta, metaTipo: v.metaTipo})}</span></div>` : ""}<span class="mut">Comparado com o rascunho atual. + nova, − removida, ~ alterada.</span></div>`;
 }
 function dlgVersoes() {
   const t = treino(UI.ed && UI.ed.id); if (!t) return;
@@ -96,7 +96,7 @@ function vEditar(id) {
       <section class="k ed-meta">
         <div class="fd full"><label for="et-titulo">Título</label><input class="in" id="et-titulo" data-et="titulo" maxlength="120" value="${esc(t.titulo)}"></div>
         <div class="fd"><label for="et-desc">Descrição</label><input class="in" id="et-desc" data-et="descricao" maxlength="400" value="${esc(t.descricao || "")}" placeholder="Opcional"></div>
-        <div class="fd"><label for="et-meta">Meta %</label><input class="in" id="et-meta" data-et="meta" type="number" min="1" max="100" inputmode="numeric" value="${t.meta}"></div>
+        ${metaCampoHtml(t)}
         <div class="fd full"><label for="et-per">Validade do treinamento</label><select class="in" id="et-per">${VALIDADES.map(([d, n]) => `<option value="${d}" ${(t.per || 0) === d ? "selected" : ""}>${n}</option>`).join("")}</select><span class="sm mut">Depois desse prazo a pessoa aparece em Pendências para renovar.</span></div>
         <div class="fd full"><span class="lbl" id="et-rv-l">Reavaliar depois de</span><div class="chips" role="group" aria-labelledby="et-rv-l">${REAV_DIAS.map(d => `<button type="button" class="sc" data-act="edreav" data-d="${d}" aria-pressed="${(t.reav || []).includes(d)}">${d} dias</button>`).join("")}</div><span class="sm mut">Quem passou aparece em Pendências 14 dias antes de cada prazo, para medir o que ficou.</span></div>
       </section>
@@ -172,13 +172,13 @@ function snapPrev(t, i, modo) {
   const alts = (it.alternativas || []).map(a => String(a).trim() || "…"), n = alts.length, ok = Number.isInteger(it.correta) ? it.correta : -1;
   let dist = null;
   if (rev) dist = it.tipo === "ordenar" ? {acertos: 7, total: 10} : alts.map((_, k) => ok < 0 ? Math.round(10 / n) : (k === ok ? 6 : Math.floor(4 / (n - 1)) + (k === (ok === 0 ? 1 : 0) ? 4 % (n - 1) : 0)));
-  return {id: "prev", chave: "482915", titulo: t.titulo || "Treinamento", instrutor: S.cfg.instrutor || "", meta: t.meta, tela: S.cfg.telao || "escuro", som: "desligado", ranking: true, entrada: true,
+  return {id: "prev", chave: "482915", titulo: t.titulo || "Treinamento", instrutor: S.cfg.instrutor || "", meta: t.meta, tela: S.cfg.telao || "escuro", metaTxt: metaTxt(t), som: "desligado", ranking: true, entrada: true,
     fase: {etapa: !q ? "explicacao" : (rev ? "resultado" : "pergunta"), idx: i, t0: 0, dur: 0}, min: 5, nPart: 12, part: [], nPerg: qs.length, totalPerg: qs.length, numPerg: q ? qs.indexOf(it) + 1 : 0, resp: rev ? 10 : 0, dist, url: "",
     item: {tipo: it.tipo, enunciado: it.enunciado || (q ? "Escreva o enunciado da pergunta" : "Título da explicação"), texto: it.texto || "", alts, ordem: it.tipo === "ordenar" ? embaralhado(n, i) : null, correta: rev && ok >= 0 ? ok : null, porque: rev ? (it.porque || "") : "", ensaio: it.uso === "ensaio", voz: audioOk(it.audio) ? it.audio : ""}};
 }
 function resumoTreino(t) {
   const r = roteiro(t), vale = t.itens.filter(i => i.tipo !== "explicacao" && i.uso !== "ensaio").length, teste = t.itens.filter(i => i.uso === "ensaio").length, ex = t.itens.filter(i => i.tipo === "explicacao").length, pr = problemasTreino(t).length;
-  return `<section class="k rsm"><div><b>${vale}</b><span>valem nota</span></div><div><b>${r.min} min</b><span>de duração</span></div><div><b>${t.meta}%</b><span>de meta</span></div><div><b>${ex}</b><span>explicaç${ex === 1 ? "ão" : "ões"}</span></div><div><b>${teste}</b><span>de teste</span></div><div class="${pr ? "w" : ""}"><b>${pr}</b><span>a revisar</span></div></section>`;
+  return `<section class="k rsm"><div><b>${vale}</b><span>valem nota</span></div><div><b>${r.min} min</b><span>de duração</span></div><div><b>${metaTxt(t)}</b><span>de meta</span></div><div><b>${ex}</b><span>explicaç${ex === 1 ? "ão" : "ões"}</span></div><div><b>${teste}</b><span>de teste</span></div><div class="${pr ? "w" : ""}"><b>${pr}</b><span>a revisar</span></div></section>`;
 }
 function pintaPrev() {
   const t = treino(UI.ed.id), el = $("#edDir"); if (!t || !el) return;
@@ -231,8 +231,8 @@ document.addEventListener("click", e => {
   else if (a === "verscmp") { const n = Number(el.dataset.n); UI.cmp = UI.cmp === n ? null : n; dlgVersoes(); }
   else if (a === "versrest") {
     const n = Number(el.dataset.n), ver = t.versoes.find(x => x.n === n); if (!ver || !ver.itens) return;
-    const antes = JSON.stringify({itens: t.itens, titulo: t.titulo, meta: t.meta, sujo: t.sujo});
-    t.itens = clone(ver.itens); if (ver.titulo !== undefined) t.titulo = ver.titulo; if (ver.meta !== undefined) t.meta = ver.meta;
+    const antes = JSON.stringify({itens: t.itens, titulo: t.titulo, meta: t.meta, metaTipo: t.metaTipo || "pct", sujo: t.sujo});
+    t.itens = clone(ver.itens); if (ver.titulo !== undefined) t.titulo = ver.titulo; if (ver.meta !== undefined) { t.meta = ver.meta; if (ver.metaTipo === "pts") t.metaTipo = "pts"; else delete t.metaTipo; }
     t.sujo = n !== t.versao; t.atualizado = agora(); UI.ed.sel = 0; UI.cmp = null; salvar();
     $("#dlg").close(); render();
     aviso(`v${String(n).padStart(2, "0")} trazida para o rascunho`, "Desfazer", () => { const o = JSON.parse(antes); Object.assign(t, o); salvar(); if (rota().v === "editar") render(); });
@@ -243,9 +243,10 @@ document.addEventListener("input", e => {
   const t = treino(UI.ed.id); if (!t) return;
   if (x.dataset.et) {
     const f = x.dataset.et; editou(t);
-    if (f === "meta") { const m = Math.round(Number(x.value)); if (m >= 1 && m <= 100) t.meta = m; }
+    if (f === "meta") { const m = Math.round(Number(x.value)); if (metaValida(t, m)) t.meta = m; }
+    else if (f === "metaTipo") trocarMetaTipo(t, x.value);
     else t[f] = x.value;
-    if (f === "titulo") pintaTopo(); else if (f === "meta") pintaPrev();
+    if (f === "titulo") pintaTopo(); else if (f === "meta" || f === "metaTipo") { metaRepinta(t, f === "metaTipo"); pintaPrev(); }
   } else if (x.dataset.ealt !== undefined) {
     const it = t.itens[UI.ed.sel]; if (!it) return; editou(t); it.alternativas[Number(x.dataset.ealt)] = x.value; pintaLista(); pintaAvisos(); pintaPrev();
   } else if (x.dataset.e && x.tagName !== "SELECT" && x.type !== "radio") {
