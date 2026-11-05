@@ -81,7 +81,8 @@ const log=[];const ok=(n,c,x='')=>{log.push((c?'OK   ':'FALHA ')+n+(x?' · '+x:'
  ok('Setor adicionado',(await p.locator('.sc:has-text("Estufa")').count())===1);
  await p.click('[data-act=tema][data-v=claro]');
  // futuras
- for(const r of['pessoas','mensagens','relatorios','conferir']){await p.goto(U+'#/'+r);ok('Página '+r+' abre',(await p.locator('.road').count())===1);}
+ for(const r of['pessoas','mensagens']){await p.goto(U+'#/'+r);ok('Página '+r+' abre',(await p.locator('.road').count())===1);}
+ for(const [r,sel] of [['relatorios','.rel .vazio'],['conferir','#cf-c']]){await p.goto(U+'#/'+r);ok('Página '+r+' abre',(await p.locator(sel).count())===1);}
  // rota inválida
  await p.goto(U+'#/xyz');await p.waitForTimeout(150);ok('Rota inválida volta ao Início',p.url().endsWith('#/inicio'));
  // celular

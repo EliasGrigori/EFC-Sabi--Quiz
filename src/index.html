@@ -221,6 +221,8 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 /*__LIVE_CSS__*/
 /*__EDIT_CSS__*/
+/*__CEL_CSS__*/
+/*__REL_CSS__*/
 </style>
 </head>
 <body>
@@ -254,6 +256,10 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
     <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></symbol>
     <symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
     <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
+    <symbol id="i-sheet" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+    <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 9V4h10v5M7 17H4v-7h16v7h-3"/><rect x="7" y="14" width="10" height="6"/></symbol>
     <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4l9 16H3L12 4zM12 10v4M12 17v.5"/></symbol>
     <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5c3-1 5-1 8 1 3-2 5-2 8-1v13c-3-1-5-1-8 1-3-2-5-2-8-1z"/><path d="M12 6v13"/></symbol>
   </defs>
@@ -274,7 +280,7 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 <script>/*__QR__*/</script>
 <script>
 "use strict";
-const VERSAO = "0.3.0";
+const VERSAO = "0.5.0";
 const MODELOS = __MODELOS__;
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -292,7 +298,7 @@ const DB = {
   gravar(k, v) { return new Promise(ok => { if (!DB.db) return ok(false); try { const t = DB.db.transaction("kv", "readwrite"); t.objectStore("kv").put(v, k); t.oncomplete = () => ok(true); t.onerror = () => ok(false); } catch(e) { ok(false); } }); }
 };
 let S = null;
-const novoEstado = () => ({v: 1, treinamentos: [], sessoes: [], pessoas: [], mensagens: [], cfg: {instrutor: "", empresa: "", local: "", setores: SETORES_PADRAO.slice(), tema: "auto"}});
+const novoEstado = () => ({v: 1, treinamentos: [], sessoes: [], pessoas: [], mensagens: [], cfg: {instrutor: "", empresa: "", local: "", setores: SETORES_PADRAO.slice(), tema: "auto", fbUrl: ""}});
 let tSalvar = 0;
 async function gravarAgora() {
   tSalvar = 0;
@@ -338,7 +344,7 @@ const NAV = [
   ["mensagens", "Mensagens", "chat"], ["relatorios", "Relatórios", "chart"]
 ];
 const NAV2 = [["conferir", "Conferir", "shield"], ["ajustes", "Ajustes", "gear"]];
-function rota() { const h = (location.hash || "#/inicio").replace(/^#\//, "").split("/"); return {v: h[0] || "inicio", id: h[1] || null}; }
+function rota() { const h = (location.hash || "#/inicio").replace(/^#\//, "").split("/"); return {v: h[0] || "inicio", id: h[1] || null, x: h[2] || null}; }
 function ir(h) { if (location.hash === h) render(); else location.hash = h; }
 function menu(v) {
   const at = v === "aplicar" || v === "sala" || v === "editar" ? "treinos" : v;
@@ -457,7 +463,7 @@ function tabela(limite) {
   const abas = [["ativos", "Ativos", todos], ["reforco", "Em reforço", 0], ["encerradas", "Encerradas", encl.length]];
   let corpo;
   if (!todos) corpo = vazioLista();
-  else if (UI.aba === "encerradas" && encl.length) corpo = `<div class="tr h" style="grid-template-columns:minmax(0,2.4fr) 120px 150px 170px"><span>Sessão</span><span class="hide-m">Pessoas</span><span class="hide-m">Acerto</span><span class="hide-m">Meta</span></div>${encl.map(x => `<div class="tr" style="grid-template-columns:minmax(0,2.4fr) 120px 150px 170px"><div class="t"><b>${esc(x.titulo)}</b><span>${dm(x.fim)} · ${esc(x.instrutor || "sem instrutor")}${x.local ? " · " + esc(x.local) : ""}</span></div><span class="num hide-m">${x.resultado.pessoas}</span><span class="num hide-m">${x.resultado.pct}%</span><span class="hide-m"><span class="chip ${x.resultado.metaOk ? "ok" : "warn"}">${x.resultado.metaOk ? "meta atingida" : "abaixo da meta"}</span></span></div>`).join("")}`;
+  else if (UI.aba === "encerradas" && encl.length) corpo = `<div class="tr h" style="grid-template-columns:minmax(0,2.4fr) 80px 90px 150px 124px"><span>Sessão</span><span class="hide-m">Pessoas</span><span class="hide-m">Acerto</span><span class="hide-m">Meta</span><span></span></div>${encl.map(x => `<div class="tr" style="grid-template-columns:minmax(0,2.4fr) 80px 90px 150px 124px"><div class="t"><b>${esc(x.titulo)}</b><span>${dm(x.fim)} · ${esc(x.instrutor || "sem instrutor")}${x.local ? " · " + esc(x.local) : ""}${x.aj && x.aj.teste ? " · teste" : x.part.some(p => p.sim) ? " · ensaio" : ""}</span></div><span class="num hide-m">${x.resultado.pessoas}</span><span class="num hide-m">${x.resultado.pct}%</span><span class="hide-m"><span class="chip ${x.resultado.metaOk ? "ok" : "warn"}">${x.resultado.metaOk ? "meta atingida" : "abaixo da meta"}</span></span><div class="acts"><a class="b sm" href="#/relatorios/${x.id}">${ic("chart", 'style="width:16px;height:16px"')}Relatório</a></div></div>`).join("")}`;
   else if (UI.aba !== "ativos") corpo = `<div class="vazio"><b>${UI.aba === "reforco" ? "Ninguém em reforço" : "Nenhuma sessão encerrada"}</b><span class="sm">${UI.aba === "reforco" ? "O reforço aparece quando uma sessão registra pessoas abaixo da meta (v0.6)." : "Quando você encerrar uma sala, a sessão aparece aqui."}</span></div>`;
   else if (!vis.length) corpo = `<div class="vazio"><b>Nada encontrado</b><span class="sm">Nenhum treinamento com "${esc(UI.q)}".</span></div>`;
   else if (UI.vista === "cartoes") corpo = `<div class="cards">${vis.map(cartaoTreino).join("")}</div>`;
@@ -528,6 +534,7 @@ function vAplicar(id) {
   $("#app").innerHTML = `<div class="lc">
     <section class="k sec"><h3><span class="st">1</span>Como vai ser?</h3><div class="pres" role="group" aria-label="Formato">${Object.entries(PRESETS).map(([k, p]) => `<button type="button" class="pr" data-act="preset" data-v="${k}" aria-pressed="${a.preset === k}"><span class="pic">${ic(p.icone)}</span><b>${p.nome}</b><span>${p.desc}</span></button>`).join("")}</div></section>
     <section class="k sec"><h3><span class="st">2</span>Quem participa?<span class="mut sm" style="font-weight:400;margin-left:auto">${a.setores.length ? a.setores.length + " setor" + (a.setores.length > 1 ? "es" : "") : "todos os setores"}</span></h3>
+      ${a.roster ? `<div class="reap"><span class="chip br">Reaplicação</span><span class="sm">${a.roster.length} nome${a.roster.length === 1 ? "" : "s"} na lista de entrada: ${esc(a.roster.slice(0, 3).join(", "))}${a.roster.length > 3 ? "..." : ""}</span><button class="b sm g" data-act="rmroster">Tirar a lista</button></div>` : ""}
       <div class="chips" role="group" aria-label="Setores">${S.cfg.setores.map(s => `<button type="button" class="sc" data-act="setor" data-v="${esc(s)}" aria-pressed="${a.setores.includes(s)}">${esc(s)}</button>`).join("") || '<span class="sm mut">Cadastre setores em Ajustes.</span>'}</div></section>
     <section class="k sec"><h3><span class="st">3</span>Para o registro</h3><div class="fields">
       <div class="fd"><label for="f-ins">Instrutor (sai no PDF)</label><input class="in" id="f-ins" data-f="instrutor" value="${esc(a.instrutor)}" autocomplete="name"></div>
@@ -561,7 +568,7 @@ function vAplicar(id) {
 function preparar() {
   const a = UI.apl, t = treino(a.id); if (!t) return;
   fixarVersao(t);
-  S.sessoes.push({id: uid(), treinoId: t.id, versao: t.versao, itens: clone(t.itens), preset: a.preset, setores: a.setores.slice(), instrutor: a.instrutor.trim(), local: a.local.trim(), horas: a.horas, aj: Object.assign({}, a.aj), estado: "preparada", criada: new Date().toISOString()});
+  S.sessoes.push({id: uid(), treinoId: t.id, versao: t.versao, itens: clone(t.itens), preset: a.preset, setores: a.setores.slice(), instrutor: a.instrutor.trim(), local: a.local.trim(), horas: a.horas, aj: Object.assign({}, a.aj), roster: a.roster ? a.roster.slice() : undefined, reaplicaDe: a.reaplicaDe, estado: "preparada", criada: new Date().toISOString()});
   if (a.instrutor.trim() && !S.cfg.instrutor) S.cfg.instrutor = a.instrutor.trim();
   salvar(); UI.apl = null; aviso("Sessão preparada. Ela aparece no Início."); ir("#/inicio");
 }
@@ -574,11 +581,21 @@ function vAjustes() {
     <section class="k"><h3 style="margin-bottom:10px">Identificação</h3><div style="display:grid;gap:10px">
       <div class="fd"><label for="c-ins">Seu nome (instrutor)</label><input class="in" id="c-ins" data-c="instrutor" value="${esc(c.instrutor)}" autocomplete="name"></div>
       <div class="fd"><label for="c-emp">Empresa ou unidade</label><input class="in" id="c-emp" data-c="empresa" value="${esc(c.empresa)}"></div>
-      <div class="fd"><label for="c-loc">Local padrão</label><input class="in" id="c-loc" data-c="local" value="${esc(c.local)}"></div></div></section>
+      <div class="fd"><label for="c-loc">Local padrão</label><input class="in" id="c-loc" data-c="local" value="${esc(c.local)}"></div>
+      <div class="fd"><label for="c-logo">Logotipo nos PDFs</label><div class="logo-ln">${c.logo ? `<img class="logo-pv" src="${c.logo}" alt="Logotipo atual">` : '<span class="sm mut">Sem logotipo</span>'}<label class="b sm" for="c-logo">${ic("upload", 'style="width:16px;height:16px"')}${c.logo ? "Trocar" : "Escolher imagem"}</label><input type="file" id="c-logo" accept="image/*" class="sr">${c.logo ? `<button class="b sm bad" data-act="rmlogo">Remover</button>` : ""}</div></div></div></section>
     <section class="k"><h3 style="margin-bottom:10px">Aparência</h3><div class="seg" role="group" aria-label="Tema" style="display:flex">${[["auto", "Automático"], ["claro", "Claro"], ["escuro", "Escuro"]].map(([k, n]) => `<button style="flex:1" data-act="tema" data-v="${k}" aria-pressed="${c.tema === k}">${n}</button>`).join("")}</div>
       <p class="sm mut" style="margin:10px 0 0">Automático segue o claro ou escuro do aparelho.</p></section>
     <section class="k"><h3 style="margin-bottom:10px">Setores</h3><div class="chips">${c.setores.map(s => `<span class="sc" style="cursor:default">${esc(s)}<button class="b sm ic g bad" style="min-height:28px;width:28px;border:0" data-act="rmsetor" data-v="${esc(s)}" aria-label="Remover ${esc(s)}">${ic("x", 'style="width:14px;height:14px"')}</button></span>`).join("")}</div>
       <form data-form="setor" style="display:flex;gap:8px;margin-top:12px"><label class="sr" for="c-set">Novo setor</label><input class="in" id="c-set" placeholder="Novo setor" maxlength="40" required><button class="b s" type="submit">${ic("plus")}Adicionar</button></form></section>
+    <section class="k" style="grid-column:1/-1"><h3 style="margin-bottom:6px">Celulares na sala (Firebase)</h3>
+      <p class="sm mut" style="margin:0 0 10px">Para os participantes entrarem pelo celular, o Sabiá usa um Realtime Database do Firebase seu. Ao encerrar a sala, tudo dela é apagado de lá. Sem isso, a sala funciona só com participantes simulados.</p>
+      <div class="fd"><label for="c-fb">Endereço do Realtime Database</label><input class="in" id="c-fb" data-c="fbUrl" value="${esc(c.fbUrl || "")}" placeholder="https://seu-projeto-default-rtdb.firebaseio.com" autocomplete="off" inputmode="url"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px"><button class="b s" data-act="fbtestar">${ic("check")}Testar conexão</button><span class="chip" id="fbSt" role="status">${c.fbUrl ? "Ainda não testado" : "Não configurado"}</span></div>
+      <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center">Como configurar (5 passos)</summary>
+        <ol class="sm" style="margin:6px 0 0;padding-left:20px;display:grid;gap:6px"><li>Entre em console.firebase.google.com e crie um projeto (pode desligar o Google Analytics).</li><li>Em Build, escolha Realtime Database e clique em Criar banco de dados. Escolha a região e o modo bloqueado.</li><li>Copie o endereço que aparece no topo da aba Dados (começa com https:// e termina em firebaseio.com ou firebasedatabase.app) e cole acima.</li><li>Na aba Regras, apague o que está lá, cole as regras abaixo e clique em Publicar.</li><li>Volte aqui e toque em Testar conexão.</li></ol>
+        <div style="display:flex;gap:8px;margin:10px 0 6px"><button class="b sm" data-act="fbregras">${ic("copy", 'style="width:16px;height:16px"')}Copiar as regras</button></div>
+        <pre class="sm" style="margin:0;overflow:auto;max-height:240px;background:var(--sunk);border-radius:10px;padding:10px;font-family:var(--f-mono);font-size:12px">${esc(REGRAS_FIREBASE)}</pre>
+        <p class="sm mut" style="margin:10px 0 0">Cuidado: nesta versão a sala é protegida pela chave de 6 números, sem login. Use para treinamentos internos e não guarde nada sigiloso.</p></details></section>
     <section class="k"><h3 style="margin-bottom:10px">Armazenamento</h3><p class="sm mut" style="margin:0 0 10px">Tudo fica neste aparelho. Exporte para guardar uma cópia ou levar para outro aparelho.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="b" data-act="exptudo">${ic("download")}Exportar tudo</button><button class="b" data-act="impor">${ic("upload")}Importar arquivo</button><button class="b bad" data-act="apagartudo">${ic("trash")}Apagar tudo</button></div></section></div>`;
 }
@@ -586,10 +603,7 @@ function vAjustes() {
 /* ---------- páginas que chegam depois ---------- */
 const FUTURO = {
   pessoas: ["Pessoas", "people", "v0.7.0", "Cadastro por setor, histórico de cada pessoa, selos de constância e quem precisa refazer ou reavaliar em 30, 60 ou 90 dias.", "Aqui você vai ver quem precisa de reforço com um toque."],
-  mensagens: ["Mensagens", "chat", "v0.7.0", "Elogios, sugestões, reclamações e perguntas que a turma envia durante a sessão, com resposta e filtro.", "Os comentários da turma chegam aqui."],
-  relatorios: ["Relatórios", "chart", "v0.5.0", "Resumo, mapa da turma, assertividade por pergunta, setores, PDF de registro e lista de presença com carga horária.", "Os resultados de cada sessão ficam aqui."],
-  entrar: ["Entrar na sala", "people", "v0.4.0", "O celular do participante: achar o nome com 3 letras, escolher o boneco, responder e assinar a presença.", "A entrada pelo celular chega na v0.4.0."],
-  conferir: ["Conferir registro", "shield", "v0.5.0", "Digite o código do rodapé do PDF e o Sabiá recalcula para provar que o registro não foi alterado.", "Para auditorias do Global G.A.P., Ecocert e Fair for Life."]
+  mensagens: ["Mensagens", "chat", "v0.7.0", "Elogios, sugestões, reclamações e perguntas que a turma envia durante a sessão, com resposta e filtro.", "Os comentários da turma chegam aqui."]
 };
 function vFuturo(v) {
   const [nome, i, ver, desc, dica] = FUTURO[v];
@@ -599,8 +613,8 @@ function vFuturo(v) {
       <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.1.0</b> · Casca, Início, Treinos e Aplicar</span></li>
       <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.2.0</b> · Sala ao vivo, chave, QR e telão</span></li>
       <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.3.0</b> · Editor de perguntas e versões</span></li>
-      <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.4.0</b> · Celular do participante</span></li>
-      <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.5.0</b> · Relatórios, PDF e conferência</span></li>
+      <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.4.0</b> · Celular do participante</span></li>
+      <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.5.0</b> · Relatórios, PDF e conferência</span></li>
       <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.6.0 a v1.0.0</b> · Reforço, pessoas, mensagens e acabamento</span></li></ul></section>`;
 }
 
@@ -675,18 +689,27 @@ document.addEventListener("submit", e => {
 });
 
 /*__EDIT_JS__*/
+/*__REDE_JS__*/
+/*__CEL_JS__*/
 /*__LIVE_JS__*/
+/*__PDF_JS__*/
+/*__REL_JS__*/
 function render() {
   if (!S) return;
   const r = rota(); menu(r.v);
   document.body.classList.toggle("modo-telao", r.v === "telao");
+  document.body.classList.toggle("modo-cel", r.v === "entrar");
+  if (r.v !== "entrar" && CE.chave) pararCel();
   if (r.v === "inicio") vInicio();
   else if (r.v === "treinos") vTreinos();
   else if (r.v === "aplicar") vAplicar(r.id);
   else if (r.v === "editar") vEditar(r.id);
+  else if (r.v === "entrar") vCelular(r.id, r.x);
   else if (r.v === "sala") vSala(r.id);
   else if (r.v === "telao") vTelao(r.id);
   else if (r.v === "ajustes") vAjustes();
+  else if (r.v === "relatorios") vRelatorios(r.id);
+  else if (r.v === "conferir") vConferir();
   else if (FUTURO[r.v]) vFuturo(r.v);
   else { location.replace("#/inicio"); return; }
   document.title = "Sabiá" + (r.v === "inicio" ? "" : " · " + (($("#tb h1") || {}).textContent || ""));

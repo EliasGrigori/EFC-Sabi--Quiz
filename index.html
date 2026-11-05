@@ -343,6 +343,9 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 @media (max-width:760px){.tb .b[data-act=telao]{width:44px;padding:0}.tb .sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60vw}}
 @media (prefers-reduced-motion:reduce){.conf{display:none}}
 
+.pp .px{display:grid;place-items:center;width:24px;height:24px;border:0;background:transparent;color:var(--ink2);cursor:pointer;border-radius:50%;padding:0;margin-left:2px}
+.pp .px:hover{color:var(--bad)}
+
 /* ===== v0.3.0 · editor de perguntas e versões ===== */
 .edit{display:grid;grid-template-columns:268px minmax(0,1fr) minmax(0,420px);gap:14px;align-items:start}
 .edl{display:grid;gap:10px;position:sticky;top:0;min-width:0}
@@ -419,6 +422,159 @@ select.in{padding-right:8px}
 .rsm span{font-size:12px;color:var(--ink2)}
 .rsm .w b{color:var(--warn)}
 
+/* ===== v0.4.0 · celular do participante ===== */
+.modo-cel .rail,.modo-cel .bnav,.modo-cel .tb{display:none!important}
+.modo-cel .app{grid-template-columns:1fr;grid-template-rows:1fr}
+.body.cel{padding:0;display:block;background:var(--bg)}
+.cc{max-width:520px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column}
+.ch{display:flex;align-items:center;gap:10px;background:var(--brand);color:var(--on-brand);padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top))}
+.ch svg{width:32px;height:32px;flex:none}
+.ch div{display:grid;min-width:0}
+.ch b{font-family:var(--f-disp);font-size:17px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ch span{font-size:12px;color:var(--on-brand-2)}
+.cb{display:grid;gap:14px;align-content:start;padding:16px;padding-bottom:max(24px,env(safe-area-inset-bottom));flex:1}
+.cb.ct{justify-items:center;text-align:center;align-content:center}
+.cb h1{font-size:26px;line-height:1.15}
+.cb h1.q{font-size:22px}
+.cb .big{min-height:56px;font-size:22px;text-align:center;letter-spacing:.08em}
+#ce-n.big{letter-spacing:0;font-size:19px;text-align:left}
+.g2{min-height:56px;font-size:17px;width:100%}
+.fx{display:flex;align-items:center;gap:10px;justify-content:space-between;font-weight:700;font-size:14px;color:var(--ink2)}
+.eu{display:flex;align-items:center;gap:6px;color:var(--ink)}
+.eu .av{width:26px;height:26px;font-size:11px}
+.eu2{display:flex;align-items:center;gap:10px;font-size:20px;font-family:var(--f-disp)}
+.eu2 .av{width:40px;height:40px;font-size:15px}
+.ok-i{width:64px;height:64px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center}
+.ok-i.er{background:var(--bad-soft);color:var(--bad)}
+.rodar{width:36px;height:36px;border-radius:50%;border:4px solid var(--line);border-top-color:var(--sabia);animation:gira 1s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+.tiles{display:grid;gap:10px}
+.ct2{display:flex;align-items:center;gap:12px;width:100%;min-height:72px;border:3px solid transparent;border-radius:16px;color:#fff;font-size:18px;font-weight:700;text-align:left;padding:10px 14px;cursor:pointer;font-family:var(--f-body)}
+.ct2.sel{border-color:var(--ink);box-shadow:0 0 0 3px var(--surface) inset}
+.ct2[disabled]{opacity:.7}
+.sh2{width:34px;height:34px;flex:none;display:grid;place-items:center;background:rgba(255,255,255,.2);border-radius:10px}
+.sh2 svg{width:22px;height:22px}
+.ords{display:grid;gap:8px}
+.ot{display:flex;align-items:center;gap:12px;min-height:60px;width:100%;border:2px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);font-size:17px;font-weight:600;text-align:left;padding:8px 12px;cursor:pointer}
+.ot b{width:32px;height:32px;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;flex:none;font-family:var(--f-mono)}
+.ot.on{background:var(--sabia-soft);border-color:var(--sabia)}
+.ot.on b{background:var(--sabia);border:0;color:var(--on-sabia)}
+.bar2{display:flex;gap:10px}.bar2 .b{flex:1;min-height:52px}
+.rs{display:grid;gap:6px;justify-items:center;text-align:center;border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:18px 14px}
+.rs.ac{border-color:var(--ok)}.rs.er{border-color:var(--bad)}
+.rs h1{font-size:24px}
+.pts{margin:0;font-family:var(--f-disp);font-size:30px;font-weight:800;color:var(--ok)}
+.rk2{margin:4px 0 0}
+.cert{margin:2px 0 0;font-size:19px;text-align:center}
+ol.cert{text-align:left;padding-left:26px}
+.por{margin:0;background:var(--sunk);border-radius:12px;padding:10px 12px}
+.sug{display:grid;gap:6px}
+.sug:empty{display:none}
+.sg{min-height:48px;text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:0 14px;font-size:16px;font-weight:600;color:var(--ink);cursor:pointer}
+.sg:hover{border-color:var(--sabia)}
+.cores{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
+.co{aspect-ratio:1;min-height:40px;border-radius:50%;border:3px solid transparent;color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
+.co[aria-checked="true"]{border-color:var(--ink)}
+.erro{margin:0;color:var(--bad);font-weight:600;min-height:0}
+.erro:empty{display:none}
+.as{display:grid;gap:8px}
+#cassin{width:100%;height:150px;border:2px dashed var(--ink3);border-radius:14px;background:#fff;touch-action:none}
+.pbar{height:8px;border-radius:99px;background:var(--sunk);overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--sabia);width:0}
+.pts.w{color:var(--warn)}
+
+/* ===== v0.5.0 · relatórios e conferência ===== */
+.rel{max-width:1100px}
+.rel.page{max-width:980px}
+.rl-top{display:grid;grid-template-columns:minmax(240px,380px) minmax(0,1fr);gap:12px 18px;align-items:end}
+.rl-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;min-height:44px}
+.rl-docs{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.rl-cod{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.rel .mais{position:relative}
+.rel .mais>summary{list-style:none;cursor:pointer}
+.rel .mais>summary::-webkit-details-marker{display:none}
+.rel .mais[open]>summary{background:var(--sunk)}
+.rel .mp2{position:absolute;z-index:5;top:calc(100% + 6px);left:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--e2,0 8px 24px rgb(0 0 0/.18));padding:6px;display:grid;gap:2px;min-width:210px}
+.rel .mp2 .b{justify-content:flex-start;box-shadow:none;border:0}
+.rel .mp2 .b:hover{background:var(--sunk)}
+.rl-cod b{font-size:14px;letter-spacing:.02em}
+.mono{font-family:var(--f-mono)}
+.rl-abas{display:flex;max-width:560px}
+.rl-abas button{flex:1;white-space:nowrap}
+.rsm.q4{grid-template-columns:repeat(4,1fr)}
+.rel .rh{font-size:17px;margin:0 0 10px}
+.rel .rh2{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px}
+.rel .rh2 .rh{margin:0}
+.rel .acoes{list-style:none;margin:0;padding:0;display:grid}
+.rel .acoes li{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line);min-height:52px}
+.rel .acoes li:first-child{border-top:0;padding-top:2px}
+.rel .acs{display:flex;gap:6px}
+.rel .ai{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--sunk);color:var(--ink2);flex:none}
+.rel .ai svg{width:18px;height:18px}
+.rel .ai.ok{background:var(--ok-soft);color:var(--ok)}
+.rel .ai.warn{background:var(--warn-soft);color:var(--warn)}
+.rtw{overflow-x:auto;margin:0 -4px;padding:0 4px}
+.rtb{width:100%;border-collapse:collapse;font-size:14px}
+.rtb th,.rtb td{text-align:left;padding:8px 10px;border-top:1px solid var(--line);vertical-align:middle}
+.rtb thead th{border-top:0;font-size:12px;font-weight:700;color:var(--ink2);background:var(--surface2);white-space:nowrap}
+.rtb thead th button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:4px;min-height:32px;font:inherit;font-weight:700}
+.rtb thead th button:focus-visible{outline:2px solid var(--sabia);outline-offset:2px}
+.rtb .n{text-align:right}
+.rel .asm{all:unset;cursor:pointer;display:inline-grid;place-items:center;min-width:44px;min-height:36px;border-radius:8px;background:#fff;border:1px solid var(--line)}
+.rel .asm:focus-visible{outline:2px solid var(--sabia);outline-offset:2px}
+.rel .asm img{display:block;max-width:64px;height:auto}
+.rel .assg{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;display:grid;place-items:center}
+.rel .assg img{max-width:100%;height:auto}
+.rel .mapa{overflow:auto;max-height:60vh}
+.rel .mp th.nm,.mp td.nm{position:sticky;left:0;background:var(--surface);font-weight:600;min-width:130px;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:1}
+.rel .mp thead th.nm{background:var(--surface2)}
+.mc{text-align:center !important;width:40px;min-width:40px;padding:6px 4px !important}
+td.mc svg{width:18px;height:18px;vertical-align:middle}
+td.mc.ok,i.mc.ok{background:var(--ok-soft);color:var(--ok)}
+td.mc.no,i.mc.no{background:var(--bad-soft);color:var(--bad)}
+td.mc.nr,i.mc.nr{background:var(--sunk);color:var(--ink2)}
+td.mc.fr{color:var(--bad);font-weight:700}
+.rel .mp tfoot td,.mp tfoot th{font-size:12px;background:var(--surface2)}
+.rel .leg{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;color:var(--ink2)}
+.rel .leg span{display:inline-flex;align-items:center;gap:6px}
+i.mc{display:inline-grid;place-items:center;width:26px;height:26px;min-width:26px;border-radius:7px;font-style:normal;padding:0 !important}
+i.mc svg{width:16px;height:16px}
+.rel .aslist{display:grid}
+.rel .as{display:grid;grid-template-columns:40px minmax(0,1fr) 84px;gap:12px;align-items:start;padding:12px 0;border-top:1px solid var(--line)}
+.rel .as:first-child{border-top:0;padding-top:2px}
+.rel .as .qn{width:32px;height:32px;border-radius:50%;background:var(--sunk);display:grid;place-items:center;font-family:var(--f-mono);font-size:12px;font-weight:700;color:var(--ink2)}
+.rel .aq{display:grid;gap:6px;min-width:0}
+.rel .aq b{font-weight:600}
+.rel .ap{display:grid;justify-items:end;gap:4px;font-size:18px;font-weight:700}
+.rel .bar{position:relative;height:10px;border-radius:999px;background:var(--sunk);overflow:visible}
+.rel .bar i{position:absolute;inset:0 auto 0 0;border-radius:999px;background:var(--ok)}
+.rel .bar i.fr{background:var(--warn)}
+.rel .bar u{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);text-decoration:none;opacity:.55}
+.rel .bar.sb{min-width:120px;margin-bottom:4px}
+.rel .cf-f{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
+.rel .cf-ou{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.rel .cf-r{display:grid;grid-template-columns:32px minmax(0,1fr);gap:12px;align-items:start;border-width:1.5px}
+.rel .cf-r.ok{border-color:var(--ok)}
+.rel .cf-r.no{border-color:var(--warn)}
+.logo-ln{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.logo-pv{max-height:44px;max-width:160px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:2px}
+.reap{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:-4px 0 10px}
+@media (max-width:860px){
+  .rl-top{grid-template-columns:1fr}
+  .rl-abas{max-width:none}
+  .rl-abas button{padding:0 4px;font-size:13px}
+  .rsm.q4{grid-template-columns:1fr 1fr}
+  .rel .acoes li{grid-template-columns:32px minmax(0,1fr)}
+  .rel .acoes li>:last-child:not(:nth-child(2)){grid-column:2}
+  .rel .as{grid-template-columns:34px minmax(0,1fr) 64px;gap:8px}
+}
+
+.rel .tmp{display:grid;gap:8px}
+.rel .tl-s{display:grid;grid-template-columns:150px minmax(0,1fr) 52px;gap:12px;align-items:center}
+.rel .tl-s.at .sm{font-weight:700}
+.rel .tl-s b{text-align:right}
+@media (max-width:860px){.rel .tl-s{grid-template-columns:120px minmax(0,1fr) 44px;gap:8px}}
+
 </style>
 </head>
 <body>
@@ -452,6 +608,10 @@ select.in{padding-right:8px}
     <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></symbol>
     <symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
     <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
+    <symbol id="i-sheet" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+    <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 9V4h10v5M7 17H4v-7h16v7h-3"/><rect x="7" y="14" width="10" height="6"/></symbol>
     <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4l9 16H3L12 4zM12 10v4M12 17v.5"/></symbol>
     <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5c3-1 5-1 8 1 3-2 5-2 8-1v13c-3-1-5-1-8 1-3-2-5-2-8-1z"/><path d="M12 6v13"/></symbol>
   </defs>
@@ -473,7 +633,7 @@ select.in{padding-right:8px}
 </script>
 <script>
 "use strict";
-const VERSAO = "0.3.0";
+const VERSAO = "0.5.0";
 const MODELOS = [{"id":"m-epi","titulo":"Equipamentos de proteção no trabalho","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Para que serve o equipamento de proteção e quando usar","texto":""},{"tipo":"multipla","enunciado":"Quando o equipamento de proteção deve ser usado?","alternativas":["Só quando o responsável está olhando","Durante toda a atividade que exige o equipamento","Só nos dias de muito calor","Só no começo do turno"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"A proteção vale durante toda a atividade. Tirar no meio do serviço deixa a pessoa exposta."},{"tipo":"vf","enunciado":"Pode emprestar o seu equipamento de proteção de uso individual a um colega.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"O equipamento é de uso pessoal. O colega deve pedir o dele ao responsável."},{"tipo":"multipla","enunciado":"O equipamento rasgou ou quebrou durante o trabalho. O que fazer?","alternativas":["Continuar e trocar no fim do mês","Avisar o responsável e trocar antes de continuar","Remendar com fita","Trabalhar sem ele"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Equipamento danificado não protege. Avise e troque antes de voltar à atividade."},{"tipo":"vf","enunciado":"O equipamento de proteção precisa ser do tamanho certo para quem usa.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Equipamento folgado ou apertado atrapalha e protege mal."},{"tipo":"ordenar","enunciado":"Coloque na ordem o cuidado com o equipamento depois do uso.","alternativas":["Limpar conforme a orientação","Conferir se há rasgo ou defeito","Guardar em local limpo e seco"],"tempo":45,"uso":"avaliacao","porque":"Limpar, conferir e guardar: assim ele está pronto e seguro para o próximo uso."},{"tipo":"multipla","enunciado":"Onde guardar o equipamento de proteção?","alternativas":["Em local limpo, seco e conhecido por todos","No chão, perto do trabalho","Dentro do carro","Onde der"],"correta":0,"tempo":20,"uso":"gincana","porque":"Guardado no lugar certo, o equipamento dura mais e é fácil de achar."}]},{"id":"m-hig","titulo":"Higiene das mãos e pessoal","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Higiene pessoal protege quem trabalha e quem é atendido","texto":""},{"tipo":"multipla","enunciado":"Você acordou com febre ou diarreia. O que fazer antes de começar o dia?","alternativas":["Trabalhar normalmente","Avisar o responsável antes de entrar na área","Tomar um remédio e entrar","Só usar máscara"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Doença passa de pessoa para pessoa e para os alimentos. O responsável decide a sua atividade antes de você entrar."},{"tipo":"vf","enunciado":"Corte na mão deve ficar coberto com curativo e luva.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Curativo e luva impedem contato do ferimento com o que a pessoa toca."},{"tipo":"multipla","enunciado":"Onde se pode comer e beber durante o turno?","alternativas":["No meio da atividade","Só na área definida para isso","Dentro da área de trabalho","Em qualquer lugar"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Comida e bebida só na área definida, longe do trabalho e do material."},{"tipo":"vf","enunciado":"Unha comprida ou com esmalte é permitida na área de manuseio.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Unha comprida acumula sujeira e o esmalte pode soltar."},{"tipo":"ordenar","enunciado":"Coloque na ordem a entrada na área de manuseio.","alternativas":["Prender o cabelo e colocar a touca","Lavar as mãos","Calçar as luvas, se a atividade pedir"],"tempo":45,"uso":"avaliacao","porque":"Touca primeiro, depois mãos lavadas e por último as luvas: assim as mãos limpas não tocam o cabelo."},{"tipo":"vf","enunciado":"Brinco, anel e pulseira devem ser retirados antes de entrar.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":15,"uso":"gincana","porque":"Adornos acumulam sujeira e podem cair."}]},{"id":"m-inc","titulo":"Como comunicar um problema ou acidente","meta":75,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Avisar logo evita que o problema cresça","texto":""},{"tipo":"multipla","enunciado":"Quando avisar o responsável sobre um problema ou acidente?","alternativas":["Só no fim da semana","O quanto antes","Só se alguém perguntar","Nunca, se for pequeno"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Quanto antes o responsável souber, mais cedo ele resolve e evita que se repita."},{"tipo":"multipla","enunciado":"O que não pode faltar no aviso?","alternativas":["Só o nome de quem viu","O que aconteceu, onde e quando","Nada, o responsável descobre","Só o horário"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Sem saber o que, onde e quando, fica difícil achar a causa e resolver."},{"tipo":"vf","enunciado":"Quase acidente, que não machucou ninguém, também deve ser avisado.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"O quase acidente mostra o risco antes que alguém se machuque."},{"tipo":"vf","enunciado":"Pode mexer no local do acidente antes de o responsável chegar, para arrumar tudo.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Mexer apaga as pistas do que aconteceu. Só mexa se for preciso para socorrer alguém ou evitar outro risco."},{"tipo":"ordenar","enunciado":"Coloque as etapas na ordem certa.","alternativas":["Garantir a segurança de todos","Avisar o responsável","Registrar o que aconteceu","Acompanhar a solução"],"tempo":60,"uso":"avaliacao","porque":"Primeiro a segurança, depois o aviso, o registro e o acompanhamento: cada etapa depende da anterior."},{"tipo":"multipla","enunciado":"Quem deve avisar um problema?","alternativas":["Só o chefe","Qualquer pessoa que perceber","Só quem se machucou","Só quem está de plantão"],"correta":1,"tempo":20,"uso":"gincana","porque":"Quem percebe primeiro tem o dever de avisar. Todos ajudam a evitar o problema."}]}];
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -491,7 +651,7 @@ const DB = {
   gravar(k, v) { return new Promise(ok => { if (!DB.db) return ok(false); try { const t = DB.db.transaction("kv", "readwrite"); t.objectStore("kv").put(v, k); t.oncomplete = () => ok(true); t.onerror = () => ok(false); } catch(e) { ok(false); } }); }
 };
 let S = null;
-const novoEstado = () => ({v: 1, treinamentos: [], sessoes: [], pessoas: [], mensagens: [], cfg: {instrutor: "", empresa: "", local: "", setores: SETORES_PADRAO.slice(), tema: "auto"}});
+const novoEstado = () => ({v: 1, treinamentos: [], sessoes: [], pessoas: [], mensagens: [], cfg: {instrutor: "", empresa: "", local: "", setores: SETORES_PADRAO.slice(), tema: "auto", fbUrl: ""}});
 let tSalvar = 0;
 async function gravarAgora() {
   tSalvar = 0;
@@ -537,7 +697,7 @@ const NAV = [
   ["mensagens", "Mensagens", "chat"], ["relatorios", "Relatórios", "chart"]
 ];
 const NAV2 = [["conferir", "Conferir", "shield"], ["ajustes", "Ajustes", "gear"]];
-function rota() { const h = (location.hash || "#/inicio").replace(/^#\//, "").split("/"); return {v: h[0] || "inicio", id: h[1] || null}; }
+function rota() { const h = (location.hash || "#/inicio").replace(/^#\//, "").split("/"); return {v: h[0] || "inicio", id: h[1] || null, x: h[2] || null}; }
 function ir(h) { if (location.hash === h) render(); else location.hash = h; }
 function menu(v) {
   const at = v === "aplicar" || v === "sala" || v === "editar" ? "treinos" : v;
@@ -656,7 +816,7 @@ function tabela(limite) {
   const abas = [["ativos", "Ativos", todos], ["reforco", "Em reforço", 0], ["encerradas", "Encerradas", encl.length]];
   let corpo;
   if (!todos) corpo = vazioLista();
-  else if (UI.aba === "encerradas" && encl.length) corpo = `<div class="tr h" style="grid-template-columns:minmax(0,2.4fr) 120px 150px 170px"><span>Sessão</span><span class="hide-m">Pessoas</span><span class="hide-m">Acerto</span><span class="hide-m">Meta</span></div>${encl.map(x => `<div class="tr" style="grid-template-columns:minmax(0,2.4fr) 120px 150px 170px"><div class="t"><b>${esc(x.titulo)}</b><span>${dm(x.fim)} · ${esc(x.instrutor || "sem instrutor")}${x.local ? " · " + esc(x.local) : ""}</span></div><span class="num hide-m">${x.resultado.pessoas}</span><span class="num hide-m">${x.resultado.pct}%</span><span class="hide-m"><span class="chip ${x.resultado.metaOk ? "ok" : "warn"}">${x.resultado.metaOk ? "meta atingida" : "abaixo da meta"}</span></span></div>`).join("")}`;
+  else if (UI.aba === "encerradas" && encl.length) corpo = `<div class="tr h" style="grid-template-columns:minmax(0,2.4fr) 80px 90px 150px 124px"><span>Sessão</span><span class="hide-m">Pessoas</span><span class="hide-m">Acerto</span><span class="hide-m">Meta</span><span></span></div>${encl.map(x => `<div class="tr" style="grid-template-columns:minmax(0,2.4fr) 80px 90px 150px 124px"><div class="t"><b>${esc(x.titulo)}</b><span>${dm(x.fim)} · ${esc(x.instrutor || "sem instrutor")}${x.local ? " · " + esc(x.local) : ""}${x.aj && x.aj.teste ? " · teste" : x.part.some(p => p.sim) ? " · ensaio" : ""}</span></div><span class="num hide-m">${x.resultado.pessoas}</span><span class="num hide-m">${x.resultado.pct}%</span><span class="hide-m"><span class="chip ${x.resultado.metaOk ? "ok" : "warn"}">${x.resultado.metaOk ? "meta atingida" : "abaixo da meta"}</span></span><div class="acts"><a class="b sm" href="#/relatorios/${x.id}">${ic("chart", 'style="width:16px;height:16px"')}Relatório</a></div></div>`).join("")}`;
   else if (UI.aba !== "ativos") corpo = `<div class="vazio"><b>${UI.aba === "reforco" ? "Ninguém em reforço" : "Nenhuma sessão encerrada"}</b><span class="sm">${UI.aba === "reforco" ? "O reforço aparece quando uma sessão registra pessoas abaixo da meta (v0.6)." : "Quando você encerrar uma sala, a sessão aparece aqui."}</span></div>`;
   else if (!vis.length) corpo = `<div class="vazio"><b>Nada encontrado</b><span class="sm">Nenhum treinamento com "${esc(UI.q)}".</span></div>`;
   else if (UI.vista === "cartoes") corpo = `<div class="cards">${vis.map(cartaoTreino).join("")}</div>`;
@@ -727,6 +887,7 @@ function vAplicar(id) {
   $("#app").innerHTML = `<div class="lc">
     <section class="k sec"><h3><span class="st">1</span>Como vai ser?</h3><div class="pres" role="group" aria-label="Formato">${Object.entries(PRESETS).map(([k, p]) => `<button type="button" class="pr" data-act="preset" data-v="${k}" aria-pressed="${a.preset === k}"><span class="pic">${ic(p.icone)}</span><b>${p.nome}</b><span>${p.desc}</span></button>`).join("")}</div></section>
     <section class="k sec"><h3><span class="st">2</span>Quem participa?<span class="mut sm" style="font-weight:400;margin-left:auto">${a.setores.length ? a.setores.length + " setor" + (a.setores.length > 1 ? "es" : "") : "todos os setores"}</span></h3>
+      ${a.roster ? `<div class="reap"><span class="chip br">Reaplicação</span><span class="sm">${a.roster.length} nome${a.roster.length === 1 ? "" : "s"} na lista de entrada: ${esc(a.roster.slice(0, 3).join(", "))}${a.roster.length > 3 ? "..." : ""}</span><button class="b sm g" data-act="rmroster">Tirar a lista</button></div>` : ""}
       <div class="chips" role="group" aria-label="Setores">${S.cfg.setores.map(s => `<button type="button" class="sc" data-act="setor" data-v="${esc(s)}" aria-pressed="${a.setores.includes(s)}">${esc(s)}</button>`).join("") || '<span class="sm mut">Cadastre setores em Ajustes.</span>'}</div></section>
     <section class="k sec"><h3><span class="st">3</span>Para o registro</h3><div class="fields">
       <div class="fd"><label for="f-ins">Instrutor (sai no PDF)</label><input class="in" id="f-ins" data-f="instrutor" value="${esc(a.instrutor)}" autocomplete="name"></div>
@@ -760,7 +921,7 @@ function vAplicar(id) {
 function preparar() {
   const a = UI.apl, t = treino(a.id); if (!t) return;
   fixarVersao(t);
-  S.sessoes.push({id: uid(), treinoId: t.id, versao: t.versao, itens: clone(t.itens), preset: a.preset, setores: a.setores.slice(), instrutor: a.instrutor.trim(), local: a.local.trim(), horas: a.horas, aj: Object.assign({}, a.aj), estado: "preparada", criada: new Date().toISOString()});
+  S.sessoes.push({id: uid(), treinoId: t.id, versao: t.versao, itens: clone(t.itens), preset: a.preset, setores: a.setores.slice(), instrutor: a.instrutor.trim(), local: a.local.trim(), horas: a.horas, aj: Object.assign({}, a.aj), roster: a.roster ? a.roster.slice() : undefined, reaplicaDe: a.reaplicaDe, estado: "preparada", criada: new Date().toISOString()});
   if (a.instrutor.trim() && !S.cfg.instrutor) S.cfg.instrutor = a.instrutor.trim();
   salvar(); UI.apl = null; aviso("Sessão preparada. Ela aparece no Início."); ir("#/inicio");
 }
@@ -773,11 +934,21 @@ function vAjustes() {
     <section class="k"><h3 style="margin-bottom:10px">Identificação</h3><div style="display:grid;gap:10px">
       <div class="fd"><label for="c-ins">Seu nome (instrutor)</label><input class="in" id="c-ins" data-c="instrutor" value="${esc(c.instrutor)}" autocomplete="name"></div>
       <div class="fd"><label for="c-emp">Empresa ou unidade</label><input class="in" id="c-emp" data-c="empresa" value="${esc(c.empresa)}"></div>
-      <div class="fd"><label for="c-loc">Local padrão</label><input class="in" id="c-loc" data-c="local" value="${esc(c.local)}"></div></div></section>
+      <div class="fd"><label for="c-loc">Local padrão</label><input class="in" id="c-loc" data-c="local" value="${esc(c.local)}"></div>
+      <div class="fd"><label for="c-logo">Logotipo nos PDFs</label><div class="logo-ln">${c.logo ? `<img class="logo-pv" src="${c.logo}" alt="Logotipo atual">` : '<span class="sm mut">Sem logotipo</span>'}<label class="b sm" for="c-logo">${ic("upload", 'style="width:16px;height:16px"')}${c.logo ? "Trocar" : "Escolher imagem"}</label><input type="file" id="c-logo" accept="image/*" class="sr">${c.logo ? `<button class="b sm bad" data-act="rmlogo">Remover</button>` : ""}</div></div></div></section>
     <section class="k"><h3 style="margin-bottom:10px">Aparência</h3><div class="seg" role="group" aria-label="Tema" style="display:flex">${[["auto", "Automático"], ["claro", "Claro"], ["escuro", "Escuro"]].map(([k, n]) => `<button style="flex:1" data-act="tema" data-v="${k}" aria-pressed="${c.tema === k}">${n}</button>`).join("")}</div>
       <p class="sm mut" style="margin:10px 0 0">Automático segue o claro ou escuro do aparelho.</p></section>
     <section class="k"><h3 style="margin-bottom:10px">Setores</h3><div class="chips">${c.setores.map(s => `<span class="sc" style="cursor:default">${esc(s)}<button class="b sm ic g bad" style="min-height:28px;width:28px;border:0" data-act="rmsetor" data-v="${esc(s)}" aria-label="Remover ${esc(s)}">${ic("x", 'style="width:14px;height:14px"')}</button></span>`).join("")}</div>
       <form data-form="setor" style="display:flex;gap:8px;margin-top:12px"><label class="sr" for="c-set">Novo setor</label><input class="in" id="c-set" placeholder="Novo setor" maxlength="40" required><button class="b s" type="submit">${ic("plus")}Adicionar</button></form></section>
+    <section class="k" style="grid-column:1/-1"><h3 style="margin-bottom:6px">Celulares na sala (Firebase)</h3>
+      <p class="sm mut" style="margin:0 0 10px">Para os participantes entrarem pelo celular, o Sabiá usa um Realtime Database do Firebase seu. Ao encerrar a sala, tudo dela é apagado de lá. Sem isso, a sala funciona só com participantes simulados.</p>
+      <div class="fd"><label for="c-fb">Endereço do Realtime Database</label><input class="in" id="c-fb" data-c="fbUrl" value="${esc(c.fbUrl || "")}" placeholder="https://seu-projeto-default-rtdb.firebaseio.com" autocomplete="off" inputmode="url"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px"><button class="b s" data-act="fbtestar">${ic("check")}Testar conexão</button><span class="chip" id="fbSt" role="status">${c.fbUrl ? "Ainda não testado" : "Não configurado"}</span></div>
+      <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center">Como configurar (5 passos)</summary>
+        <ol class="sm" style="margin:6px 0 0;padding-left:20px;display:grid;gap:6px"><li>Entre em console.firebase.google.com e crie um projeto (pode desligar o Google Analytics).</li><li>Em Build, escolha Realtime Database e clique em Criar banco de dados. Escolha a região e o modo bloqueado.</li><li>Copie o endereço que aparece no topo da aba Dados (começa com https:// e termina em firebaseio.com ou firebasedatabase.app) e cole acima.</li><li>Na aba Regras, apague o que está lá, cole as regras abaixo e clique em Publicar.</li><li>Volte aqui e toque em Testar conexão.</li></ol>
+        <div style="display:flex;gap:8px;margin:10px 0 6px"><button class="b sm" data-act="fbregras">${ic("copy", 'style="width:16px;height:16px"')}Copiar as regras</button></div>
+        <pre class="sm" style="margin:0;overflow:auto;max-height:240px;background:var(--sunk);border-radius:10px;padding:10px;font-family:var(--f-mono);font-size:12px">${esc(REGRAS_FIREBASE)}</pre>
+        <p class="sm mut" style="margin:10px 0 0">Cuidado: nesta versão a sala é protegida pela chave de 6 números, sem login. Use para treinamentos internos e não guarde nada sigiloso.</p></details></section>
     <section class="k"><h3 style="margin-bottom:10px">Armazenamento</h3><p class="sm mut" style="margin:0 0 10px">Tudo fica neste aparelho. Exporte para guardar uma cópia ou levar para outro aparelho.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="b" data-act="exptudo">${ic("download")}Exportar tudo</button><button class="b" data-act="impor">${ic("upload")}Importar arquivo</button><button class="b bad" data-act="apagartudo">${ic("trash")}Apagar tudo</button></div></section></div>`;
 }
@@ -785,10 +956,7 @@ function vAjustes() {
 /* ---------- páginas que chegam depois ---------- */
 const FUTURO = {
   pessoas: ["Pessoas", "people", "v0.7.0", "Cadastro por setor, histórico de cada pessoa, selos de constância e quem precisa refazer ou reavaliar em 30, 60 ou 90 dias.", "Aqui você vai ver quem precisa de reforço com um toque."],
-  mensagens: ["Mensagens", "chat", "v0.7.0", "Elogios, sugestões, reclamações e perguntas que a turma envia durante a sessão, com resposta e filtro.", "Os comentários da turma chegam aqui."],
-  relatorios: ["Relatórios", "chart", "v0.5.0", "Resumo, mapa da turma, assertividade por pergunta, setores, PDF de registro e lista de presença com carga horária.", "Os resultados de cada sessão ficam aqui."],
-  entrar: ["Entrar na sala", "people", "v0.4.0", "O celular do participante: achar o nome com 3 letras, escolher o boneco, responder e assinar a presença.", "A entrada pelo celular chega na v0.4.0."],
-  conferir: ["Conferir registro", "shield", "v0.5.0", "Digite o código do rodapé do PDF e o Sabiá recalcula para provar que o registro não foi alterado.", "Para auditorias do Global G.A.P., Ecocert e Fair for Life."]
+  mensagens: ["Mensagens", "chat", "v0.7.0", "Elogios, sugestões, reclamações e perguntas que a turma envia durante a sessão, com resposta e filtro.", "Os comentários da turma chegam aqui."]
 };
 function vFuturo(v) {
   const [nome, i, ver, desc, dica] = FUTURO[v];
@@ -798,8 +966,8 @@ function vFuturo(v) {
       <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.1.0</b> · Casca, Início, Treinos e Aplicar</span></li>
       <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.2.0</b> · Sala ao vivo, chave, QR e telão</span></li>
       <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.3.0</b> · Editor de perguntas e versões</span></li>
-      <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.4.0</b> · Celular do participante</span></li>
-      <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.5.0</b> · Relatórios, PDF e conferência</span></li>
+      <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.4.0</b> · Celular do participante</span></li>
+      <li>${ic("check", 'style="color:var(--ok)"')}<span><b>v0.5.0</b> · Relatórios, PDF e conferência</span></li>
       <li>${ic("clock", 'style="color:var(--ink3)"')}<span><b>v0.6.0 a v1.0.0</b> · Reforço, pessoas, mensagens e acabamento</span></li></ul></section>`;
 }
 
@@ -1136,6 +1304,412 @@ document.addEventListener("submit", e => {
   const n = salvarVersao(t, $("#v-nota").value.trim()); UI.cmp = null; $("#dlg").close(); pintaTopo(); aviso(`Versão v${String(n).padStart(2, "0")} salva`);
 });
 
+/* ===== v0.4.0 · celulares na sala (Firebase Realtime Database por REST) ===== */
+/* Estrutura em /salas/{chave}:
+   pub  {meta, fase, item}   instrutor escreve, celulares leem (nunca traz a resposta certa antes do resultado)
+   res  {pid: {...}}         instrutor escreve o resultado de cada pessoa
+   part {pid: {n, c, s, t}}  celular escreve ao entrar
+   resp {pid: {idx: {r}}}    celular escreve a resposta (uma vez)
+   ass  {pid: "data:image"}  celular escreve a assinatura                                  */
+const REGRAS_FIREBASE = `{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "_teste": { ".read": true, ".write": true, ".validate": "newData.isString() && newData.val().length < 40" },
+    "salas": {
+      "$chave": {
+        ".read": true,
+        "pub": { ".write": true },
+        "res": { ".write": true },
+        "part": { "$pid": {
+          ".write": true,
+          ".validate": "newData.hasChildren(['n']) && newData.child('n').isString() && newData.child('n').val().length <= 60"
+        } },
+        "resp": { "$pid": { "$idx": {
+          ".write": "!data.exists() || !newData.exists()",
+          ".validate": "newData.hasChild('r')"
+        } } },
+        "ass": { "$pid": {
+          ".write": "!data.exists() || !newData.exists()",
+          ".validate": "newData.isString() && newData.val().length < 40000"
+        } }
+      }
+    }
+  }
+}`;
+const Rede = {
+  tm: 0, ouv: null, chave: null, M: null, carregado: false, st: "off", ult: "",
+  url() { return String((S && S.cfg && S.cfg.fbUrl) || "").trim().replace(/\/+$/, ""); },
+  valida(u) { return /^https:\/\/[a-z0-9.-]+\.(firebaseio\.com|firebasedatabase\.app)$/i.test(u) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(u); },
+  ok() { return Rede.valida(Rede.url()); },
+  async req(base, metodo, caminho, corpo) {
+    const r = await fetch(base + (caminho || "/") + ".json", {method: metodo, headers: corpo !== undefined ? {"content-type": "application/json"} : {}, body: corpo !== undefined ? JSON.stringify(corpo) : undefined});
+    if (!r.ok) { const e = new Error("http " + r.status); e.status = r.status; throw e; }
+    return r.status === 204 ? null : r.json();
+  },
+  seg(base) { // pedaço do endereço que vai no link de entrada
+    const m = base.match(/^https:\/\/([a-z0-9-]+)-default-rtdb\.firebaseio\.com$/i);
+    return m ? "p-" + m[1] : "b-" + btoa(base).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  },
+  desseg(sg) {
+    if (!sg) return null;
+    if (sg.startsWith("p-")) return "https://" + sg.slice(2) + "-default-rtdb.firebaseio.com";
+    if (sg.startsWith("b-")) { try { return atob(sg.slice(2).replace(/-/g, "+").replace(/_/g, "/")); } catch(e) { return null; } }
+    return null;
+  },
+  async testar() {
+    const u = Rede.url();
+    if (!u) return {ok: false, msg: "Cole o endereço do Realtime Database."};
+    if (!Rede.valida(u)) return {ok: false, msg: "O endereço deve ser parecido com https://seu-projeto-default-rtdb.firebaseio.com"};
+    const marca = "ok-" + Date.now().toString(36);
+    try {
+      await Rede.req(u, "PUT", "/_teste", marca);
+      const v = await Rede.req(u, "GET", "/_teste");
+      try { await Rede.req(u, "DELETE", "/_teste"); } catch(e) {}
+      return v === marca ? {ok: true, msg: "Conectado. Os celulares já podem entrar nas salas."} : {ok: false, msg: "O banco respondeu, mas não gravou como esperado. Confira as regras."};
+    } catch(e) {
+      if (e.status === 401 || e.status === 403) return {ok: false, msg: "O Firebase recusou a gravação. Cole as regras do passo 4 e publique."};
+      if (e.status === 404) return {ok: false, msg: "Endereço não encontrado. Confira se copiou o endereço do Realtime Database."};
+      return {ok: false, msg: "Não alcancei o Firebase. Confira o endereço e a internet."};
+    }
+  },
+  /* ouve um caminho: mantém uma cópia local e chama cb a cada mudança */
+  ouvir(base, caminho, cb, st) {
+    let M = null, es = null, fechado = false;
+    const aplica = (path, data, junta) => {
+      const seg = String(path || "/").split("/").filter(Boolean);
+      if (!seg.length) { if (junta && data && typeof data === "object") { M = Object.assign(M && typeof M === "object" ? M : {}, data); Object.keys(M).forEach(k => { if (M[k] === null) delete M[k]; }); } else M = data; return; }
+      if (!M || typeof M !== "object") M = {};
+      let cur = M;
+      for (let i = 0; i < seg.length - 1; i++) { if (!cur[seg[i]] || typeof cur[seg[i]] !== "object") cur[seg[i]] = {}; cur = cur[seg[i]]; }
+      const k = seg[seg.length - 1];
+      if (junta && data && typeof data === "object") { const alvo = cur[k] && typeof cur[k] === "object" ? cur[k] : (cur[k] = {}); Object.keys(data).forEach(x => { if (data[x] === null) delete alvo[x]; else alvo[x] = data[x]; }); }
+      else if (data === null) delete cur[k]; else cur[k] = data;
+    };
+    const abrir = () => {
+      if (fechado) return;
+      es = new EventSource(base + caminho + ".json");
+      es.addEventListener("open", () => st && st("on"));
+      es.addEventListener("put", e => { try { const d = JSON.parse(e.data); aplica(d.path, d.data, false); st && st("on"); cb(M); } catch(x) {} });
+      es.addEventListener("patch", e => { try { const d = JSON.parse(e.data); aplica(d.path, d.data, true); cb(M); } catch(x) {} });
+      es.addEventListener("cancel", () => st && st("erro"));
+      es.addEventListener("auth_revoked", () => st && st("erro"));
+      es.onerror = () => { st && st(es.readyState === 2 ? "erro" : "off"); };
+    };
+    abrir();
+    return {fechar() { fechado = true; if (es) es.close(); }, valor: () => M};
+  },
+
+  /* ---------- lado do instrutor ---------- */
+  garantir(s) {
+    if (!Rede.ok() || !s || s.estado !== "sala") return;
+    if (Rede.chave === s.chave && Rede.ouv) return;
+    Rede.parar(); Rede.chave = s.chave; Rede.carregado = false; Rede.st = "off";
+    Rede.ouv = Rede.ouvir(Rede.url(), "/salas/" + s.chave, M => { Rede.M = M; Rede.carregado = true; const x = sala(s.id); if (x && x.estado === "sala") ingerir(x, M || {}); }, st => { if (Rede.st !== st) { Rede.st = st; if (rota().v === "sala") pintaRedeSt(); } });
+    Rede.enviar(s);
+  },
+  parar() { if (Rede.ouv) Rede.ouv.fechar(); Rede.ouv = null; Rede.chave = null; Rede.M = null; clearTimeout(Rede.tm); },
+  sync(s) { if (!Rede.ok() || !s || s.estado !== "sala") return; Rede.garantir(s); clearTimeout(Rede.tm); Rede.tm = setTimeout(() => Rede.enviar(s), 120); },
+  async enviar(s) {
+    const x = sala(s.id) || s; if (!Rede.ok() || x.estado !== "sala") return;
+    try { await Rede.req(Rede.url(), "PATCH", "/salas/" + x.chave, {pub: pubDe(x), res: resDe(x)}); Rede.ult = ""; }
+    catch(e) { Rede.ult = e.status === 401 || e.status === 403 ? "regras" : "rede"; if (rota().v === "sala") pintaRedeSt(); }
+  },
+  async fechar(s) {
+    if (!Rede.ok() || !s.chave) return;
+    const M = Rede.chave === s.chave ? (Rede.M || {}) : {}, up = {}, b = "salas/" + s.chave + "/";
+    up[b + "pub"] = null; up[b + "res"] = null;
+    Object.keys(M.part || {}).forEach(p => { up[b + "part/" + p] = null; });
+    Object.keys(M.ass || {}).forEach(p => { up[b + "ass/" + p] = null; });
+    Object.entries(M.resp || {}).forEach(([p, rs]) => Object.keys(rs || {}).forEach(i => { up[b + "resp/" + p + "/" + i] = null; }));
+    Rede.parar();
+    try { await Rede.req(Rede.url(), "PATCH", "", up); } catch(e) {}
+  }
+};
+const lista = v => Array.isArray(v) ? v : (v && typeof v === "object" ? Object.keys(v).sort((a, b) => a - b).map(k => v[k]) : []);
+function pubDe(s) {
+  const sn = snap(s), f = s.fase;
+  return {
+    meta: {sid: s.id, titulo: s.titulo, instrutor: s.instrutor || "", meta: s.meta, entrada: !!s.entrada, ranking: !!s.aj.ranking, confirmar: !!s.aj.confirmar, setores: s.setores || [], roster: s.roster || [], nPart: s.part.length, nPerg: sn.nPerg},
+    fase: {etapa: f.etapa, idx: f.idx, k: f.idx + ":" + f.t0, dur: f.dur || 0, numPerg: sn.numPerg, totalPerg: sn.totalPerg},
+    item: sn.item || null
+  };
+}
+function resDe(s) {
+  const f = s.fase; if (f.etapa !== "resultado" && f.etapa !== "podio") return null;
+  const c = calc(s), pos = new Map(c.ranking.map((p, k) => [p.id, k + 1])), out = {};
+  c.pessoas.forEach(p => {
+    const pt = s.part.find(x => x.id === p.id); if (!pt || !pt.real) return;
+    const base = {tot: p.pts, np: s.part.length}; if (s.aj.ranking) base.pos = pos.get(p.id);
+    if (f.etapa === "resultado") { const r = (s.resp[p.id] || {})[f.idx]; out[p.id] = Object.assign(base, {i: f.idx, ok: r ? (r.ok ? 1 : 0) : -1, pts: r ? r.pts : 0}); }
+    else out[p.id] = Object.assign(base, {i: -1, ac: p.ac, nq: c.nq, pct: p.pct, ok: p.pct >= s.meta ? 1 : 0});
+  });
+  return Object.keys(out).length ? out : null;
+}
+const limpaNome = n => String(n || "").replace(/[\u0000-\u001f<>]/g, "").replace(/\s+/g, " ").trim().slice(0, 60);
+function respValida(r, it) {
+  if (!it || !ehPergunta(it)) return null;
+  const n = (it.alternativas || []).length;
+  if (it.tipo === "ordenar") { const a = lista(r).map(Number); return a.length === n && a.every(v => Number.isInteger(v) && v >= 0 && v < n) && new Set(a).size === n ? a : null; }
+  const v = Number(r); return r !== undefined && r !== null && Number.isInteger(v) && v >= 0 && v < n ? v : null;
+}
+function ingerir(s, M) {
+  let mud = false;
+  const partes = M.part && typeof M.part === "object" ? M.part : {};
+  Object.entries(partes).forEach(([pid, v]) => {
+    if (!v || typeof v.n !== "string" || s.part.some(p => p.id === pid)) return;
+    const nome = limpaNome(v.n); if (!nome) return;
+    const setor = (s.setores || []).includes(v.s) ? v.s : "";
+    s.part.push({id: pid, nome, setor, cor: Number.isInteger(v.c) && v.c >= 0 && v.c < CORES_AV.length ? v.c : undefined, real: true}); mud = true;
+  });
+  if (Rede.carregado && s.fase.etapa === "espera") { const antes = s.part.length; s.part = s.part.filter(p => !p.real || partes[p.id]); if (s.part.length !== antes) mud = true; }
+  Object.entries(M.resp && typeof M.resp === "object" ? M.resp : {}).forEach(([pid, rs]) => {
+    const p = s.part.find(x => x.id === pid); if (!p || !rs) return;
+    Object.entries(rs).forEach(([idx, o]) => {
+      const i = Number(idx); if (!Number.isInteger(i) || (s.resp[pid] || {})[i] || !o) return;
+      if (s.fase.etapa !== "pergunta" || s.fase.idx !== i) return;
+      const r = respValida(o.r, s.itens[i]); if (r === null) return;
+      registrar(s, p, i, r); mud = true;
+    });
+  });
+  Object.entries(M.ass && typeof M.ass === "object" ? M.ass : {}).forEach(([pid, d]) => {
+    const p = s.part.find(x => x.id === pid);
+    if (p && !p.ass && typeof d === "string" && /^data:image\/(png|jpeg);base64,[A-Za-z0-9+/=]+$/.test(d) && d.length < 40000) { p.ass = d; mud = true; }
+  });
+  if (mud) mudou(s);
+}
+function pintaRedeSt() {
+  const el = $("#redeSt"); if (!el) return;
+  const t = Rede.ult === "regras" ? ["warn", "O Firebase recusou a gravação. Confira as regras em Ajustes."] : Rede.ult === "rede" ? ["warn", "Sem conexão com o Firebase."] : Rede.st === "on" ? ["ok", "Celulares conectados"] : Rede.st === "erro" ? ["bad", "Sem conexão com o Firebase"] : ["warn", "Conectando..."];
+  el.className = "chip " + t[0]; el.textContent = t[1];
+}
+
+/* ---------- lista de nomes da sala ---------- */
+function dlgRoster(s) {
+  const d = $("#dlg");
+  d.innerHTML = `<form class="dl" data-form="roster" data-id="${s.id}"><header><h2>Lista de nomes</h2><button type="button" class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header>
+    <p class="sm mut" style="margin:0">Um nome por linha. Com a lista preenchida, quem entra pelo celular escolhe o próprio nome (basta digitar 3 letras). Sem lista, cada pessoa digita o nome.</p>
+    <div class="fd"><label for="ro-t">Nomes</label><textarea class="in ta" id="ro-t" rows="8" maxlength="12000" placeholder="Maria Aparecida Silva&#10;José Wellington">${esc((s.roster || []).join("\n"))}</textarea></div>
+    <button class="b p" type="submit">${ic("check")}Salvar lista</button></form>`;
+  d.showModal(); const f = $("#ro-t"); if (f) f.focus();
+}
+document.addEventListener("submit", e => {
+  const f = e.target.closest("[data-form='roster']"); if (!f) return; e.preventDefault();
+  const s = sala(f.dataset.id); if (!s) return;
+  const nomes = [...new Set($("#ro-t").value.split("\n").map(limpaNome).filter(Boolean))].slice(0, 300);
+  s.roster = nomes; salvar(); $("#dlg").close(); mudou(s); aviso(nomes.length ? nomes.length + " nomes na lista" : "Lista removida");
+});
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act;
+  if (a === "roster") { const s = sala(rota().id); if (s) dlgRoster(s); }
+  else if (a === "fbtestar") {
+    const st = $("#fbSt"); if (st) { st.className = "chip"; st.textContent = "Testando..."; }
+    Rede.testar().then(r => { const x = $("#fbSt"); if (x) { x.className = "chip " + (r.ok ? "ok" : "bad"); x.textContent = r.msg; } });
+  }
+  else if (a === "fbregras") { try { navigator.clipboard.writeText(REGRAS_FIREBASE).then(() => aviso("Regras copiadas"), () => aviso("Não deu para copiar. Selecione o texto e copie.")); } catch(x) { aviso("Não deu para copiar. Selecione o texto e copie."); } }
+  else if (a === "rmpart") { const s = sala(rota().id); if (s && s.fase.etapa === "espera") { s.part = s.part.filter(p => p.id !== el.dataset.id); mudou(s); } }
+});
+
+/* ===== v0.4.0 · celular do participante (#/entrar/CHAVE/BANCO) ===== */
+const CE = {chave: null, sg: null, base: null, pid: null, nome: "", cor: 0, pub: null, res: null, ouvPub: null, ouvRes: null, st: "off", visto: false, entrou: false, jaEntrou: false,
+  resp: {}, t0: 0, kf: "", sel: null, ord: [], enviando: false, assinou: false, tracos: 0, html: "", erro: "", tela: ""};
+const chaveLS = k => k + CE.chave;
+const semAcento = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+function pararCel() {
+  if (CE.ouvPub) CE.ouvPub.fechar(); if (CE.ouvRes) CE.ouvRes.fechar();
+  Object.assign(CE, {chave: null, sg: null, base: null, pid: null, pub: null, res: null, ouvPub: null, ouvRes: null, st: "off", visto: false, entrou: false, jaEntrou: false, resp: {}, kf: "", sel: null, ord: [], enviando: false, assinou: false, tracos: 0, html: "", erro: "", tela: ""});
+}
+function vCelular(chave, sg) {
+  document.body.classList.add("modo-cel"); $("#app").className = "body cel";
+  if (chave && CE.chave !== chave) { pararCel(); iniciarCel(chave, sg); }
+  else if (!chave && CE.chave) pararCel();
+  CE.html = ""; pintaCel();
+}
+function iniciarCel(chave, sg) {
+  CE.chave = chave; CE.sg = sg || null;
+  let base = Rede.desseg(sg);
+  try { if (!base) base = localStorage.getItem("sabia-db"); } catch(e) {}
+  if (!base && Rede.ok()) base = Rede.url();
+  if (!base || !Rede.valida(base)) { CE.erro = "semdb"; return; }
+  CE.base = base; try { localStorage.setItem("sabia-db", base); } catch(e) {}
+  let salvo = null; try { salvo = JSON.parse(localStorage.getItem(chaveLS("sabia-p-")) || "null"); } catch(e) {}
+  if (salvo && salvo.pid) { CE.pid = salvo.pid; CE.nome = salvo.nome; CE.cor = salvo.cor || 0; CE.entrou = true; CE.jaEntrou = true; }
+  try { CE.assinou = localStorage.getItem(chaveLS("sabia-a-")) === "1"; } catch(e) {}
+  CE.ouvPub = Rede.ouvir(base, "/salas/" + chave + "/pub", M => { CE.pub = M && M.meta ? M : null; CE.visto = true; aoPub(); }, st => { CE.st = st; pintaCel(); });
+  if (CE.entrou) {
+    Rede.req(base, "GET", "/salas/" + chave + "/part/" + CE.pid).then(v => { if (!v) { CE.entrou = false; CE.jaEntrou = false; try { localStorage.removeItem(chaveLS("sabia-p-")); } catch(e) {} pintaCel(); } }).catch(() => {});
+    ligarRes();
+  }
+}
+function ligarRes() {
+  if (CE.ouvRes || !CE.pid) return;
+  CE.ouvRes = Rede.ouvir(CE.base, "/salas/" + CE.chave + "/res/" + CE.pid, M => { CE.res = M; pintaCel(); });
+}
+function aoPub() {
+  const f = CE.pub && CE.pub.fase; if (!f) { pintaCel(); return; }
+  const k = f.k + "|" + f.etapa;
+  if (k !== CE.kf) {
+    CE.kf = k; CE.t0 = Date.now(); CE.sel = null; CE.ord = []; CE.enviando = false; CE.tracos = 0;
+    if (f.etapa === "pergunta" && CE.entrou && CE.resp[f.idx] === undefined) {
+      const idx = f.idx;
+      Rede.req(CE.base, "GET", "/salas/" + CE.chave + "/resp/" + CE.pid + "/" + idx).then(v => { if (v && v.r !== undefined) { CE.resp[idx] = v.r; pintaCel(); } }).catch(() => {});
+    }
+    if (f.etapa === "podio" && CE.entrou && !CE.assinou) {
+      Rede.req(CE.base, "GET", "/salas/" + CE.chave + "/ass/" + CE.pid).then(v => { if (v) { CE.assinou = true; pintaCel(); } }).catch(() => {});
+    }
+  }
+  pintaCel();
+}
+
+/* ---------- telas ---------- */
+const cabCel = (extra = "") => `<header class="ch"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#logo"/></svg><div><b>${esc((CE.pub && CE.pub.meta && CE.pub.meta.titulo) || "Sabiá")}</b><span>${CE.pub && CE.pub.meta && CE.pub.meta.instrutor ? "instrutor " + esc(CE.pub.meta.instrutor) : "Sala " + (CE.chave ? esc(fmtChave(CE.chave)) : "")}</span></div>${extra}</header>`;
+const eu = () => `<span class="eu">${av(CE.nome, CE.cor)}<b>${esc(CE.nome.split(" ")[0])}</b></span>`;
+const itemCel = () => { const it = CE.pub && CE.pub.item; return it ? Object.assign({}, it, {alts: lista(it.alts), ordem: it.ordem ? lista(it.ordem).map(Number) : null}) : null; };
+function pintaCel() {
+  if (rota().v !== "entrar" || !$("#app").classList.contains("cel")) return;
+  const a = document.activeElement;
+  if (CE.tela === "nome" && a && a.closest && a.closest(".cel") && (a.tagName === "INPUT" || a.tagName === "SELECT")) return;
+  if (CE.tela === "podio" && CE.tracos > 0) return;
+  const {tela, html} = montaCel();
+  if (html === CE.html && tela === CE.tela) return;
+  CE.tela = tela; CE.html = html; $("#app").innerHTML = html; pintaTelaCel();
+}
+function pintaTelaCel() { tickTempo(); const c = $("#cassin"); if (c) prepararAssinatura(c); }
+function montaCel() {
+  const m = CE.pub && CE.pub.meta, f = CE.pub && CE.pub.fase;
+  if (!CE.chave) return {tela: "chave", html: `<div class="cc">${cabCel()}<form class="cb" data-form="celchave"><h1>Entrar na sala</h1><p class="mut" style="margin:0">Digite a chave de 6 números que está no telão.</p>
+    <div class="fd"><label for="ce-k">Chave da sala</label><input class="in big" id="ce-k" inputmode="numeric" pattern="[0-9 ]*" maxlength="7" autocomplete="off" placeholder="000 000"></div><button class="b p g2" type="submit">Entrar</button></form></div>`};
+  if (CE.erro === "semdb") return {tela: "erro", html: `<div class="cc">${cabCel()}<div class="cb"><h1>Use o QR ou o link</h1><p class="mut" style="margin:0">Este aparelho ainda não sabe onde fica a sala. Aponte a câmera para o QR do telão ou abra o link que o instrutor enviou. Nas próximas vezes basta digitar a chave.</p><a class="b" href="#/entrar">Digitar outra chave</a></div></div>`};
+  if (!CE.visto) return {tela: "conectando", html: `<div class="cc">${cabCel()}<div class="cb ct"><div class="rodar"></div><h1>${CE.st === "erro" ? "Não consegui conectar" : "Conectando à sala..."}</h1><p class="mut" style="margin:0">${CE.st === "erro" ? "Confira a internet e tente de novo." : "Aguarde um instante."}</p>${CE.st === "erro" ? `<button class="b" data-act="cretry">Tentar de novo</button>` : ""}</div></div>`};
+  if (!CE.pub) return CE.jaEntrou
+    ? {tela: "fim", html: `<div class="cc">${cabCel()}<div class="cb ct"><h1>A sala foi encerrada</h1><p class="mut" style="margin:0">Obrigado por participar.</p><a class="b" href="#/entrar">Entrar em outra sala</a></div></div>`}
+    : {tela: "naoachou", html: `<div class="cc">${cabCel()}<div class="cb ct"><h1>Sala não encontrada</h1><p class="mut" style="margin:0">Confira a chave ${esc(fmtChave(CE.chave))} com o instrutor. A sala pode já ter sido encerrada.</p><a class="b p" href="#/entrar">Digitar outra chave</a></div></div>`};
+  if (!CE.entrou) {
+    if (!m.entrada) return {tela: "fechada", html: `<div class="cc">${cabCel()}<div class="cb ct"><h1>Entrada fechada</h1><p class="mut" style="margin:0">O instrutor fechou a entrada desta sala. Fale com ele para entrar.</p></div></div>`};
+    const ro = lista(m.roster), se = lista(m.setores);
+    return {tela: "nome", html: `<div class="cc">${cabCel()}<form class="cb" data-form="celentrar"><h1>Quem é você?</h1>
+      <div class="fd"><label for="ce-n">${ro.length ? "Digite 3 letras do seu nome" : "Seu nome completo"}</label><input class="in big" id="ce-n" autocomplete="off" autocapitalize="words" maxlength="60" value="${esc(CE.nome)}"></div>
+      <div id="ce-sug" class="sug" aria-live="polite"></div>
+      ${se.length > 1 ? `<div class="fd"><label for="ce-s">Seu setor</label><select class="in" id="ce-s"><option value="">Escolha</option>${se.map(x => `<option>${esc(x)}</option>`).join("")}</select></div>` : ""}
+      <div class="fd"><span class="lbl">Sua cor</span><div class="cores" role="radiogroup" aria-label="Sua cor">${CORES_AV.map((c, k) => `<button type="button" class="co" role="radio" data-act="ccor" data-k="${k}" aria-checked="${CE.cor === k}" aria-label="Cor ${k + 1}" style="background:${c}">${CE.cor === k ? ic("check", 'style="width:20px;height:20px"') : ""}</button>`).join("")}</div></div>
+      <p class="erro" id="ce-erro" role="alert">${esc(CE.erro || "")}</p><button class="b p g2" type="submit">Entrar na sala</button></form></div>`};
+  }
+  const it = itemCel(), t = f.etapa, np = m.nPart || 0;
+  const faixa = (txt, tm) => `<div class="fx"><span>${txt}</span>${eu()}</div>${tm || ""}`;
+  if (t === "espera") return {tela: "espera", html: `<div class="cc">${cabCel()}<div class="cb ct"><div class="ok-i">${ic("check", 'style="width:34px;height:34px"')}</div><h1>Você está na sala</h1><div class="eu2">${av(CE.nome, CE.cor)}<b>${esc(CE.nome)}</b></div><p class="mut" style="margin:0">${np} ${np === 1 ? "pessoa na sala" : "pessoas na sala"}. Aguarde o instrutor iniciar.</p><button class="b g" data-act="cnaosou">Não sou eu</button></div></div>`};
+  if (t === "explicacao") return {tela: "expl", html: `<div class="cc">${cabCel()}<div class="cb">${faixa("Explicação")}<h1>${esc(it ? it.enunciado : "")}</h1>${it && it.texto ? `<p style="margin:0;white-space:pre-line">${esc(it.texto)}</p>` : ""}<p class="mut" style="margin:0">Atenção na explicação do instrutor.</p></div></div>`};
+  if (t === "pergunta" && it) {
+    const idx = f.idx, resp = CE.resp[idx], tempo = f.dur ? `<div class="pbar"><i data-k="b" data-fim="${CE.t0 + f.dur}" data-dur="${f.dur}"></i></div>` : "";
+    const rot = it.ensaio ? "Pergunta de teste" : `Pergunta ${f.numPerg} de ${f.totalPerg}`;
+    const exp = f.dur && Date.now() > CE.t0 + f.dur;
+    if (resp !== undefined) return {tela: "enviada", html: `<div class="cc">${cabCel()}<div class="cb ct">${faixa(rot)}<div class="ok-i">${ic("check", 'style="width:34px;height:34px"')}</div><h1>Resposta enviada</h1><p class="mut" style="margin:0">Aguarde o resultado no telão.</p></div></div>`};
+    if (exp) return {tela: "tempo", html: `<div class="cc">${cabCel()}<div class="cb ct">${faixa(rot)}<h1>Tempo esgotado</h1><p class="mut" style="margin:0">Aguarde o resultado no telão.</p></div></div>`};
+    let corpo;
+    if (it.tipo === "ordenar") {
+      const ord = it.ordem || it.alts.map((_, k) => k), pos = k => CE.ord.indexOf(k);
+      corpo = `<div class="ords">${ord.map(k => `<button class="ot ${pos(k) >= 0 ? "on" : ""}" data-act="cord" data-k="${k}" ${pos(k) >= 0 ? "disabled" : ""}><b>${pos(k) >= 0 ? pos(k) + 1 : ""}</b><span>${esc(it.alts[k])}</span></button>`).join("")}</div>
+        <div class="bar2"><button class="b" data-act="cordz" ${CE.ord.length ? "" : "disabled"}>Desfazer</button><button class="b p" data-act="cordok" ${CE.ord.length === ord.length && !CE.enviando ? "" : "disabled"}>${CE.enviando ? "Enviando..." : "Enviar ordem"}</button></div><p class="mut sm" style="margin:0">Toque nos passos na ordem certa.</p>`;
+    } else {
+      corpo = `<div class="tiles">${it.alts.map((a, k) => `<button class="ct2 ${CE.sel === k ? "sel" : ""}" style="background:${COR_ALT[k % 4]}" data-act="cresp" data-k="${k}" ${CE.enviando ? "disabled" : ""}><span class="sh2"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span><span>${esc(a)}</span></button>`).join("")}</div>
+        ${m.confirmar ? `<button class="b p g2" data-act="cconf" ${CE.sel === null || CE.enviando ? "disabled" : ""}>${CE.enviando ? "Enviando..." : "Confirmar resposta"}</button>` : ""}`;
+    }
+    return {tela: "pergunta", html: `<div class="cc">${cabCel()}<div class="cb">${faixa(rot, tempo)}<h1 class="q">${esc(it.enunciado)}</h1>${corpo}</div></div>`};
+  }
+  if (t === "resultado" && it) {
+    const r = CE.res && CE.res.i === f.idx ? CE.res : null, rank = m.ranking && r && r.pos ? `<p class="rk2">Você está em <b>${r.pos}º</b> de ${r.np}${it.ensaio ? "" : " · " + r.tot + " pontos"}</p>` : "";
+    const certa = it.tipo === "ordenar" ? `<ol class="cert">${it.alts.map(a => `<li>${esc(a)}</li>`).join("")}</ol>` : (Number.isInteger(it.correta) ? `<p class="cert"><b>${esc(it.alts[it.correta] || "")}</b></p>` : "");
+    const porque = it.porque ? `<p class="por">${esc(it.porque)}</p>` : "";
+    let topo2;
+    if (!r) topo2 = `<div class="rs"><h1>Resultado</h1><p class="mut" style="margin:0">Calculando...</p></div>`;
+    else if (r.ok === 1) topo2 = `<div class="rs ac"><div class="ok-i">${ic("check", 'style="width:34px;height:34px"')}</div><h1>Você acertou</h1>${it.ensaio ? `<p class="mut" style="margin:0">Pergunta de teste, não vale nota.</p>` : `<p class="pts">+${r.pts} pontos</p>`}${rank}</div>`;
+    else if (r.ok === 0) topo2 = `<div class="rs er"><div class="ok-i er">${ic("x", 'style="width:34px;height:34px"')}</div><h1>Não foi dessa vez</h1><p class="lbl" style="margin:6px 0 0">A resposta certa</p>${certa}${rank}</div>`;
+    else topo2 = `<div class="rs er"><h1>Você não respondeu</h1><p class="lbl" style="margin:6px 0 0">A resposta certa</p>${certa}${rank}</div>`;
+    return {tela: "resultado", html: `<div class="cc">${cabCel()}<div class="cb">${faixa(it.ensaio ? "Pergunta de teste" : `Pergunta ${f.numPerg} de ${f.totalPerg}`)}${topo2}${porque}<p class="mut sm" style="margin:0">Aguarde a próxima pergunta.</p></div></div>`};
+  }
+  if (t === "podio") {
+    const r = CE.res && CE.res.i === -1 ? CE.res : null;
+    const fim = r ? `<div class="rs ${r.ok ? "ac" : "er"}"><h1>${r.ac} de ${r.nq} certas</h1><p class="pts ${r.ok ? "" : "w"}">${r.pct}% de acerto</p><span class="chip ${r.ok ? "ok" : "warn"}">${r.ok ? "Meta atingida" : "Abaixo da meta, vai para o reforço"}</span>${m.ranking && r.pos ? `<p class="rk2">Você ficou em <b>${r.pos}º</b> de ${r.np} · ${r.tot} pontos</p>` : ""}</div>` : `<div class="rs"><h1>Fim da sessão</h1><p class="mut" style="margin:0">Calculando seu resultado...</p></div>`;
+    const ass = CE.assinou ? `<div class="rs ac"><div class="ok-i">${ic("check", 'style="width:34px;height:34px"')}</div><h1>Presença registrada</h1><p class="mut" style="margin:0">Obrigado por participar.</p></div>`
+      : `<div class="as"><label class="lbl" for="cassin">Assine aqui para registrar a presença</label><canvas id="cassin" width="600" height="240" aria-label="Campo de assinatura"></canvas><div class="bar2"><button class="b" data-act="climpar">Limpar</button><button class="b p" data-act="cassinar">Assinar presença</button></div></div>`;
+    return {tela: "podio", html: `<div class="cc">${cabCel()}<div class="cb">${faixa("Fim da sessão")}${fim}${ass}</div></div>`};
+  }
+  return {tela: "espera2", html: `<div class="cc">${cabCel()}<div class="cb ct"><h1>Aguarde</h1></div></div>`};
+}
+
+/* ---------- assinatura ---------- */
+function prepararAssinatura(c) {
+  const ctx = c.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height); ctx.lineWidth = 5; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.strokeStyle = "#0A2C2B";
+  let desenhando = false, ult = null;
+  const pt = e => { const r = c.getBoundingClientRect(); return {x: (e.clientX - r.left) * c.width / r.width, y: (e.clientY - r.top) * c.height / r.height}; };
+  c.addEventListener("pointerdown", e => { desenhando = true; ult = pt(e); try { c.setPointerCapture(e.pointerId); } catch(x) {} ctx.beginPath(); ctx.arc(ult.x, ult.y, 2.5, 0, 7); ctx.fillStyle = "#0A2C2B"; ctx.fill(); CE.tracos++; e.preventDefault(); });
+  c.addEventListener("pointermove", e => { if (!desenhando) return; const p = pt(e); ctx.beginPath(); ctx.moveTo(ult.x, ult.y); ctx.lineTo(p.x, p.y); ctx.stroke(); ult = p; CE.tracos++; e.preventDefault(); });
+  const fim = () => { desenhando = false; };
+  c.addEventListener("pointerup", fim); c.addEventListener("pointercancel", fim);
+}
+async function assinarCel() {
+  const c = $("#cassin"); if (!c) return;
+  if (CE.tracos < 8) { aviso("Faça a assinatura com o dedo antes de enviar."); return; }
+  const o = document.createElement("canvas"); o.width = 300; o.height = 120; const x = o.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, 300, 120); x.drawImage(c, 0, 0, 300, 120);
+  const d = o.toDataURL("image/jpeg", 0.6);
+  try { await Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/ass/" + CE.pid, d); }
+  catch(e) { if (e.status !== 401 && e.status !== 403) { aviso("Não enviou. Confira a internet e toque de novo."); return; } }
+  CE.assinou = true; try { localStorage.setItem(chaveLS("sabia-a-"), "1"); } catch(e) {} CE.tracos = 0; CE.html = ""; pintaCel();
+}
+
+/* ---------- ações ---------- */
+async function enviarResp(r) {
+  const f = CE.pub && CE.pub.fase; if (!f || CE.enviando) return; const idx = f.idx;
+  CE.enviando = true; CE.html = ""; pintaCel();
+  try { await Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/resp/" + CE.pid + "/" + idx, {r}); CE.resp[idx] = r; try { navigator.vibrate && navigator.vibrate(30); } catch(e) {} }
+  catch(e) { if (e.status === 401 || e.status === 403) CE.resp[idx] = r; else aviso("Não enviou. Confira a internet e toque de novo."); }
+  CE.enviando = false; CE.html = ""; pintaCel();
+}
+async function entrarCel(nome, setor) {
+  const m = CE.pub.meta, ro = lista(m.roster);
+  nome = limpaNome(nome);
+  if (nome.length < 3) { CE.erro = "Digite seu nome."; return; }
+  if (ro.length) { const ach = ro.find(x => semAcento(x) === semAcento(nome)); if (!ach) { CE.erro = "Escolha seu nome na lista. Não achou? Fale com o instrutor."; return; } nome = ach; }
+  const se = lista(m.setores); if (se.length > 1 && !setor) { CE.erro = "Escolha o seu setor."; return; }
+  CE.erro = "";
+  let pid = uid();
+  try { const todos = await Rede.req(CE.base, "GET", "/salas/" + CE.chave + "/part"); const ex = Object.entries(todos || {}).find(([, v]) => v && semAcento(v.n) === semAcento(nome)); if (ex) pid = ex[0]; } catch(e) {}
+  try { await Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/part/" + pid, {n: nome, c: CE.cor, s: setor || "", t: Date.now()}); }
+  catch(e) { CE.erro = "Não consegui entrar. Confira a internet e tente de novo."; return; }
+  Object.assign(CE, {pid, nome, entrou: true, jaEntrou: true, erro: ""});
+  try { localStorage.setItem(chaveLS("sabia-p-"), JSON.stringify({pid, nome, cor: CE.cor})); } catch(e) {}
+  ligarRes(); CE.html = ""; pintaCel();
+}
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act;
+  if (!["ccor", "cresp", "cconf", "cord", "cordz", "cordok", "cnaosou", "cretry", "cassinar", "climpar", "csug"].includes(a)) return;
+  const k = Number(el.dataset.k);
+  if (a === "ccor") { CE.cor = k; const n = $("#ce-n"); if (n) CE.nome = n.value; CE.html = ""; pintaCel(); atualizaSug(); }
+  else if (a === "csug") { const i = $("#ce-n"); if (i) { i.value = el.dataset.v; CE.nome = el.dataset.v; atualizaSug(); } }
+  else if (a === "cresp") { if (CE.pub.meta.confirmar) { CE.sel = k; CE.html = ""; pintaCel(); } else enviarResp(k); }
+  else if (a === "cconf") { if (CE.sel !== null) enviarResp(CE.sel); }
+  else if (a === "cord") { if (!CE.ord.includes(k)) { CE.ord.push(k); CE.html = ""; pintaCel(); } }
+  else if (a === "cordz") { CE.ord.pop(); CE.html = ""; pintaCel(); }
+  else if (a === "cordok") { const n = (itemCel() || {alts: []}).alts.length; if (CE.ord.length === n) enviarResp(CE.ord.slice()); }
+  else if (a === "cnaosou") { Rede.req(CE.base, "DELETE", "/salas/" + CE.chave + "/part/" + CE.pid).catch(() => {}); if (CE.ouvRes) CE.ouvRes.fechar(); CE.ouvRes = null; try { localStorage.removeItem(chaveLS("sabia-p-")); } catch(x) {} Object.assign(CE, {entrou: false, jaEntrou: false, pid: null, nome: "", res: null, resp: {}, html: ""}); pintaCel(); }
+  else if (a === "cretry") { const c = CE.chave, s = CE.sg; pararCel(); iniciarCel(c, s); CE.html = ""; pintaCel(); }
+  else if (a === "cassinar") assinarCel();
+  else if (a === "climpar") { const c = $("#cassin"); if (c) { const x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height); CE.tracos = 0; } }
+});
+function atualizaSug() {
+  const el = $("#ce-sug"), i = $("#ce-n"); if (!el || !i || !CE.pub) return;
+  const ro = lista(CE.pub.meta.roster), q = semAcento(i.value);
+  if (!ro.length || q.length < 3) { el.innerHTML = ""; return; }
+  const ach = ro.filter(n => semAcento(n).split(" ").some(p => p.startsWith(q)) || semAcento(n).includes(q)).slice(0, 5);
+  el.innerHTML = ach.length ? ach.map(n => `<button type="button" class="sg" data-act="csug" data-v="${esc(n)}">${esc(n)}</button>`).join("") : `<span class="mut sm">Nenhum nome encontrado. Fale com o instrutor.</span>`;
+}
+document.addEventListener("input", e => { if (e.target.id === "ce-n") { CE.nome = e.target.value; atualizaSug(); } });
+document.addEventListener("submit", e => {
+  const f = e.target.closest("[data-form]"); if (!f) return;
+  if (f.dataset.form === "celchave") { e.preventDefault(); const k = $("#ce-k").value.replace(/\D/g, ""); if (k.length === 6) location.hash = "#/entrar/" + k; else aviso("A chave tem 6 números."); }
+  else if (f.dataset.form === "celentrar") { e.preventDefault(); const s = $("#ce-s"); entrarCel($("#ce-n").value, s ? s.value : "").then(() => { CE.html = ""; if (CE.erro) { const el = $("#ce-erro"); if (el) el.textContent = CE.erro; } }); }
+});
+setInterval(() => { if (CE.chave && CE.tela === "pergunta" && CE.pub && CE.pub.fase.dur && Date.now() > CE.t0 + CE.pub.fase.dur && CE.resp[CE.pub.fase.idx] === undefined) { CE.html = ""; pintaCel(); } }, 500);
+
 /* ===== v0.2.0 · sala ao vivo, chave, QR e telão ===== */
 const NOMES = ["Maria Aparecida","Antônio Carlos","Raimunda Souza","Francisca Lima","José Wellington","Luzia Rodrigues","Pedro Henrique","Ana Cláudia","Marcos Vinícius","Cícera Alves","Joaquim Neto","Terezinha Gomes","Paulo Roberto","Vanessa Costa","Edivan Silva","Socorro Pereira","Mateus Oliveira","Rejane Martins","Geraldo Freitas","Lúcia Helena","Carlos Eduardo","Rita de Cássia","Damião Araújo","Fátima Nogueira"];
 const COR_ALT = ["#C9432B", "#2A63C2", "#C98F00", "#2A8752"];
@@ -1148,7 +1722,7 @@ try { AO.ch = new BroadcastChannel("sabia-telao"); } catch(e) {}
 const sala = id => S.sessoes.find(x => x.id === id);
 const hash = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
 const iniciais = n => n.split(/\s+/).filter(Boolean).slice(0, 2).map(x => x[0]).join("").toUpperCase();
-const av = n => `<span class="av" style="background:${CORES_AV[hash(n) % CORES_AV.length]}" aria-hidden="true">${esc(iniciais(n))}</span>`;
+const av = (n, c) => `<span class="av" style="background:${CORES_AV[Number.isInteger(c) && c >= 0 && c < CORES_AV.length ? c : hash(n) % CORES_AV.length]}" aria-hidden="true">${esc(iniciais(n))}</span>`;
 const embaralhado = (n, seed) => { // ordem fixa por pergunta, nunca igual à certa
   const a = [...Array(n).keys()]; let x = seed + 7;
   for (let i = n - 1; i > 0; i--) { x = (x * 1103515245 + 12345) & 0x7fffffff; const j = x % (i + 1); [a[i], a[j]] = [a[j], a[i]]; }
@@ -1156,7 +1730,7 @@ const embaralhado = (n, seed) => { // ordem fixa por pergunta, nunca igual à ce
   return a;
 };
 const linkBase = () => location.href.split("#")[0].split("?")[0];
-const linkEntrar = s => linkBase() + "#/entrar/" + s.chave;
+const linkEntrar = s => linkBase() + "#/entrar/" + s.chave + (Rede.ok() ? "/" + Rede.seg(Rede.url()) : "");
 const linkTelao = s => linkBase() + "#/telao/" + s.id;
 const fmtChave = c => c.slice(0, 3) + " " + c.slice(3);
 
@@ -1170,12 +1744,13 @@ function abrirSalaDe(sessao) {
   const t = treino(sessao.treinoId); if (!t) { aviso("O treinamento dessa sessão foi removido"); return; }
   if (!sessao.itens) { fixarVersao(t); sessao.itens = clone(t.itens); }
   Object.assign(sessao, {titulo: t.titulo, meta: t.meta, versao: t.versao, estado: "sala", chave: sessao.chave || novaChave(), entrada: true,
-    part: sessao.part || [], resp: sessao.resp || {}, fase: sessao.fase || {etapa: "espera", idx: -1, t0: 0, dur: 0}, sim: sessao.sim || {on: true, alvo: 12}});
+    part: sessao.part || [], resp: sessao.resp || {}, fase: sessao.fase || {etapa: "espera", idx: -1, t0: 0, dur: 0}, sim: sessao.sim || {on: !Rede.ok(), alvo: 12}});
+  Rede.garantir(sessao);
   AO.id = sessao.id; salvar(); ir("#/sala/" + sessao.id);
 }
 function abrirSalaNova() {
   const a = UI.apl, t = treino(a.id); if (!t) return;
-  const s = {id: uid(), treinoId: t.id, preset: a.preset, setores: a.setores.slice(), instrutor: a.instrutor.trim(), local: a.local.trim(), horas: a.horas, aj: Object.assign({}, a.aj), estado: "preparada", criada: new Date().toISOString()};
+  const s = {id: uid(), treinoId: t.id, preset: a.preset, setores: a.setores.slice(), instrutor: a.instrutor.trim(), local: a.local.trim(), horas: a.horas, aj: Object.assign({}, a.aj), roster: a.roster ? a.roster.slice() : undefined, reaplicaDe: a.reaplicaDe, estado: "preparada", criada: new Date().toISOString()};
   S.sessoes.push(s); if (a.instrutor.trim() && !S.cfg.instrutor) S.cfg.instrutor = a.instrutor.trim();
   UI.apl = null; abrirSalaDe(s);
 }
@@ -1207,7 +1782,7 @@ function calc(s) {
   const pessoas = s.part.map(p => {
     let ac = 0, pts = 0; const rs = s.resp[p.id] || {};
     qs.forEach(([, i]) => { const r = rs[i]; if (r) { if (r.ok) ac++; pts += r.pts; } });
-    return {id: p.id, nome: p.nome, setor: p.setor, ac, pts, pct: nq ? Math.round(100 * ac / nq) : 0};
+    return {id: p.id, nome: p.nome, setor: p.setor, cor: p.cor, ac, pts, pct: nq ? Math.round(100 * ac / nq) : 0};
   });
   const tot = pessoas.reduce((a, p) => a + p.ac, 0);
   const pct = nq && pessoas.length ? Math.round(100 * tot / (nq * pessoas.length)) : 0;
@@ -1216,11 +1791,12 @@ function calc(s) {
   return {nq, pessoas, pct, efic, reforco: pessoas.length - efic, ranking, metaOk: pct >= s.meta};
 }
 function encerrar(s) {
-  limparSim();
+  limparSim(); Rede.fechar(s);
   if (!s.part.length && s.fase.etapa === "espera") { S.sessoes = S.sessoes.filter(x => x.id !== s.id); AO.id = null; salvar(); publicar(null); ir("#/inicio"); aviso("Sala fechada sem ninguém"); return; }
   const c = calc(s);
   s.estado = "encerrada"; s.fim = new Date().toISOString();
   s.resultado = {nq: c.nq, pct: c.pct, pessoas: c.pessoas.length, efic: c.efic, reforco: c.reforco, metaOk: c.metaOk, tabela: c.ranking.map(p => ({nome: p.nome, setor: p.setor, ac: p.ac, pts: p.pts, pct: p.pct}))};
+  s.cod = codigoDe(s);
   if (AO.id === s.id) AO.id = null;
   salvar(); publicar(null, s.id); UI.aba = "encerradas"; ir("#/treinos"); aviso("Sessão encerrada e guardada em Encerradas");
 }
@@ -1270,8 +1846,8 @@ function snap(s) {
     }
   }
   return {id: s.id, chave: s.chave, titulo: s.titulo, instrutor: s.instrutor, meta: s.meta, tela: s.aj.telao, som: s.aj.som, ranking: s.aj.ranking, entrada: s.entrada,
-    fase: f, min: Math.max(1, Math.round(s.itens.reduce((a, x) => a + (ehPergunta(x) ? (x.tempo || 20) + 8 : 120), 0) / 60)), nPart: s.part.length, part: s.part.slice(-60).map(p => ({n: p.nome})), item, numPerg, totalPerg, nPerg, resp, dist, url: linkEntrar(s),
-    resumo: f.etapa === "podio" ? {porPerg: s.itens.map((x, i) => [x, i]).filter(([x]) => vale(x)).map(([, i], k) => ({n: k + 1, pct: s.part.length ? Math.round(100 * s.part.filter(p => ((s.resp[p.id] || {})[i] || {}).ok).length / s.part.length) : 0})), pct: c.pct, efic: c.efic, reforco: c.reforco, metaOk: c.metaOk, nq: c.nq, top: c.ranking.slice(0, 10).map(p => ({n: p.nome, ac: p.ac, pts: p.pts}))} : null};
+    fase: f, min: Math.max(1, Math.round(s.itens.reduce((a, x) => a + (ehPergunta(x) ? (x.tempo || 20) + 8 : 120), 0) / 60)), nPart: s.part.length, part: s.part.slice(-60).map(p => ({n: p.nome, c: p.cor})), item, numPerg, totalPerg, nPerg, resp, dist, url: linkEntrar(s),
+    resumo: f.etapa === "podio" ? {porPerg: s.itens.map((x, i) => [x, i]).filter(([x]) => vale(x)).map(([, i], k) => ({n: k + 1, pct: s.part.length ? Math.round(100 * s.part.filter(p => ((s.resp[p.id] || {})[i] || {}).ok).length / s.part.length) : 0})), pct: c.pct, efic: c.efic, reforco: c.reforco, metaOk: c.metaOk, nq: c.nq, top: c.ranking.slice(0, 10).map(p => ({n: p.nome, c: p.cor, ac: p.ac, pts: p.pts}))} : null};
 }
 function publicar(s, vazioId) {
   const sn = snap(s); AO.snap = sn;
@@ -1282,7 +1858,7 @@ if (AO.ch) AO.ch.onmessage = e => {
   if (m.t === "oi") { const s = AO.id && sala(AO.id); if (s && s.estado === "sala") publicar(s); }
   else if (m.t === "estado" && rota().v === "telao") { const r = rota(); if (!r.id || m.id === r.id || m.id === null) { AO.snap = m.snap; if (m.snap || m.id === r.id) pintarTelao(); } }
 };
-function mudou(s) { salvar(); publicar(s); if (rota().v === "sala" || rota().v === "telao") render(); }
+function mudou(s) { salvar(); publicar(s); Rede.sync(s); if (rota().v === "sala" || rota().v === "telao") render(); }
 
 /* ---------- som ---------- */
 let ac = null;
@@ -1302,9 +1878,9 @@ function telaoHTML(sn) {
   if (f.etapa === "espera") {
     corpo = `${topo(`<b>${esc(sn.titulo)}</b><span>${sn.instrutor ? "instrutor " + esc(sn.instrutor) : ""}</span>`)}
       <div class="lobm"><div class="join"><div class="qr" data-qr="${esc(sn.url)}"></div><div><div class="kl">ou abra o Sabiá e digite</div><div class="kk">${fmtChave(sn.chave)}</div></div>
-        <div class="how"><div><b>1</b>Aponte a câmera para o QR</div><div><b>2</b>Toque no seu nome</div><div><b>3</b>Escolha seu boneco e aguarde</div></div></div>
+        <div class="how"><div><b>1</b>Aponte a câmera para o QR</div><div><b>2</b>Toque no seu nome</div><div><b>3</b>Escolha sua cor e aguarde</div></div></div>
         <div class="room"><div class="rh"><b>${sn.nPart}</b><span>${sn.nPart === 1 ? "pessoa na sala" : "pessoas na sala"}${sn.entrada ? "" : " · entrada fechada"}</span></div>
-        <div class="crowd ${sn.nPart <= 14 ? "g" : ""}">${sn.part.map(p => `<span class="cw">${av(p.n)}${esc(p.n.split(" ")[0])}</span>`).join("") || `<span style="font-size:22px;color:var(--tel-ink2)">Ninguém entrou ainda.</span>`}</div>
+        <div class="crowd ${sn.nPart <= 14 ? "g" : ""}">${sn.part.map(p => `<span class="cw">${av(p.n, p.c)}${esc(p.n.split(" ")[0])}</span>`).join("") || `<span style="font-size:22px;color:var(--tel-ink2)">Ninguém entrou ainda.</span>`}</div>
         <div class="facts"><div><b>${sn.nPerg}</b><span>perguntas valendo</span></div><div><b>${sn.min} min</b><span>de duração</span></div><div><b>${sn.meta}%</b><span>de meta</span></div></div></div></div>
       <div class="tfoot"><span>Começa quando o instrutor tocar em <b>Iniciar</b> · ${sn.nPerg} perguntas</span></div>`;
   } else if (f.etapa === "explicacao") {
@@ -1324,13 +1900,13 @@ function telaoHTML(sn) {
       : `<span class="bigc">${sn.resp} de ${sn.nPart}</span><span style="color:var(--tel-ink2)">já responderam</span>`;
     corpo = `${topo(`<b>${it.ensaio ? "Pergunta de teste" : "Pergunta " + sn.numPerg + " de " + sn.totalPerg}</b>${prog(sn.numPerg)}`)}<div class="tq"><h2>${esc(it.enunciado)}</h2>${rev ? "" : rel}</div>${tiles}<div class="answ">${rodape}</div>`;
   } else if (f.etapa === "podio") {
-    const r = sn.resumo, t = r.top, bl = (p, pos, h) => p ? `<div class="pl ${pos === 1 ? "p1" : ""}">${av(p.n)}<div class="blk" style="height:${h}px"><b>${pos}º</b><strong>${esc(p.n)}</strong>${p.ac} de ${r.nq} · ${p.pts} pts</div></div>` : "";
+    const r = sn.resumo, t = r.top, bl = (p, pos, h) => p ? `<div class="pl ${pos === 1 ? "p1" : ""}">${av(p.n, p.c)}<div class="blk" style="height:${h}px"><b>${pos}º</b><strong>${esc(p.n)}</strong>${p.ac} de ${r.nq} · ${p.pts} pts</div></div>` : "";
     const conf = sn.som === "ligado" ? `<div class="conf">${Array.from({length: 26}, (_, k) => `<i style="left:${(k * 37) % 100}%;background:${COR_ALT[k % 4]};animation-delay:${(k % 9) * .35}s"></i>`).join("")}</div>` : "";
     corpo = `${topo(`<b>Resultado da turma</b><span>${esc(sn.titulo)}</span>`, `<span class="pillk">${sn.nPart} PESSOAS</span>`)}
       <div class="podm"><div class="podl"><div><h2>${r.metaOk ? "A turma bateu a meta" : "A turma ficou abaixo da meta"}</h2><div class="res"><span class="${r.metaOk ? "g" : "r"}">${r.pct}% de acerto · meta ${sn.meta}%</span><span>${r.efic} de ${sn.nPart} eficazes</span>${r.reforco ? `<span>${r.reforco} vão para o reforço</span>` : ""}</div></div>
         <div class="pq">${r.porPerg.map(q => `<div><span class="bar"><i style="height:${Math.max(4, q.pct)}%;background:${q.pct >= sn.meta ? "var(--ok)" : "var(--sabia)"}"></i></span><b>${q.pct}%</b><span>P${q.n}</span></div>`).join("")}</div>
         ${sn.ranking ? `<div class="stage">${bl(t[1], 2, 150)}${bl(t[0], 1, 205)}${bl(t[2], 3, 112)}</div>` : ""}</div>
-        <div class="podr"><h3>${sn.ranking ? "Do 4º ao 10º" : "Resultado"}</h3>${sn.ranking ? t.slice(3).map((p, k) => `<div class="pr2"><b>${k + 4}º</b>${av(p.n)}<span>${esc(p.n.split(" ").length > 1 ? p.n.split(" ")[0] + " " + p.n.split(" ").slice(-1)[0] : p.n)}</span><span class="num">${p.pts}</span></div>`).join("") || `<span style="color:var(--tel-ink2);font-size:17px">Sem mais participantes.</span>` : `<span style="color:var(--tel-ink2);font-size:17px">O ranking está desligado nesta sessão.</span>`}</div></div>${conf}`;
+        <div class="podr"><h3>${sn.ranking ? "Do 4º ao 10º" : "Resultado"}</h3>${sn.ranking ? t.slice(3).map((p, k) => `<div class="pr2"><b>${k + 4}º</b>${av(p.n, p.c)}<span>${esc(p.n.split(" ").length > 1 ? p.n.split(" ")[0] + " " + p.n.split(" ").slice(-1)[0] : p.n)}</span><span class="num">${p.pts}</span></div>`).join("") || `<span style="color:var(--tel-ink2);font-size:17px">Sem mais participantes.</span>` : `<span style="color:var(--tel-ink2);font-size:17px">O ranking está desligado nesta sessão.</span>`}</div></div>${conf}`;
   }
   return `<div class="tel${claro}">${corpo}</div>`;
 }
@@ -1408,16 +1984,18 @@ function vSala(id) {
       <div class="tl2" role="list" aria-label="Etapas">${passos}</div></section>
     <section class="k"><div class="chave"><div><div class="lbl">Chave da sala</div><div class="cod" id="cod">${fmtChave(s.chave)}</div></div><span class="chip ${s.entrada ? "ok" : "warn"}">${s.entrada ? "entrada aberta" : "entrada fechada"}</span></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="b sm" data-act="entrada">${s.entrada ? "Fechar entrada" : "Abrir entrada"}</button><button class="b sm" data-act="copiar" data-v="${esc(linkEntrar(s))}">${ic("copy", 'style="width:16px;height:16px"')}Copiar link</button><a class="b sm" target="_blank" rel="noopener" href="https://wa.me/?text=${msgWa}">Convidar no WhatsApp</a></div>
-      <p class="sm mut" style="margin:10px 0 0">A entrada pelo celular chega na v0.4.0. Até lá, ensaie com participantes simulados.</p></section>
+      ${Rede.ok()
+        ? `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px"><span class="chip" id="redeSt">Conectando...</span><button class="b sm" data-act="roster">${ic("list", 'style="width:16px;height:16px"')}Lista de nomes${(s.roster || []).length ? " (" + s.roster.length + ")" : ""}</button></div><p class="sm mut" style="margin:8px 0 0">Os participantes entram pelo QR do telão ou por este link, no celular.</p>`
+        : `<p class="sm mut" style="margin:10px 0 0">Para os celulares entrarem, ligue o Firebase em <a href="#/ajustes">Ajustes</a>. Sem isso, ensaie com participantes simulados.</p>`}</section>
     <section class="k"><div class="kh" style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${ic("people", 'style="color:var(--brand-ink)"')}<h3 style="font-size:16px">Participantes</h3><span class="chip">${s.part.length}</span>${respondeu.length || f.etapa === "pergunta" ? `<span class="chip ${respondeu.length === s.part.length && s.part.length ? "ok" : ""}">${respondeu.length} responderam</span>` : ""}</div>
-      <div class="pgrid">${s.part.map(p => `<span class="pp ${respondeu.includes(p) ? "ok" : ""}">${av(p.nome)}${esc(p.nome.split(" ")[0])}</span>`).join("") || '<span class="sm mut">Ninguém entrou ainda.</span>'}</div>
+      <div class="pgrid">${s.part.map(p => `<span class="pp ${respondeu.includes(p) ? "ok" : ""}">${av(p.nome, p.cor)}${esc(p.nome.split(" ")[0])}${p.real && f.etapa === "espera" ? `<button class="px" data-act="rmpart" data-id="${esc(p.id)}" aria-label="Remover ${esc(p.nome)}">${ic("x", 'style="width:12px;height:12px"')}</button>` : ""}${p.real && f.etapa === "podio" ? `<span class="sm mut" title="${p.ass ? "assinou" : "ainda não assinou"}">${p.ass ? "assinou" : "..."}</span>` : ""}</span>`).join("") || '<span class="sm mut">Ninguém entrou ainda.</span>'}</div>
       <div class="sim" style="margin-top:10px"><label class="opt" style="min-height:40px"><input type="checkbox" data-sim="on" ${s.sim.on ? "checked" : ""}><span>Simular participantes</span></label><label class="sr" for="simn">Quantidade</label><input class="in" id="simn" type="number" min="1" max="24" value="${s.sim.alvo}" data-sim="alvo" style="width:84px"><button class="b sm" data-act="simmais">${ic("plus", 'style="width:16px;height:16px"')}Mais um</button></div></section>
     ${dist ? `<section class="k"><h3 style="font-size:16px;margin-bottom:8px">Respostas desta pergunta</h3>${dist}</section>` : ""}
-    ${s.part.length && s.aj.ranking && f.etapa !== "espera" ? `<section class="k"><h3 style="font-size:16px;margin-bottom:6px">Ranking ao vivo</h3><div class="rk">${c.ranking.slice(0, 5).map((p, k) => `<div class="rr"><b class="num">${k + 1}º</b>${av(p.nome)}<span>${esc(p.nome)}</span><span class="num">${p.pts}</span></div>`).join("")}</div></section>` : ""}
+    ${s.part.length && s.aj.ranking && f.etapa !== "espera" ? `<section class="k"><h3 style="font-size:16px;margin-bottom:6px">Ranking ao vivo</h3><div class="rk">${c.ranking.slice(0, 5).map((p, k) => `<div class="rr"><b class="num">${k + 1}º</b>${av(p.nome, p.cor)}<span>${esc(p.nome)}</span><span class="num">${p.pts}</span></div>`).join("")}</div></section>` : ""}
     <button class="b g bad" data-act="fechar-sala" style="justify-self:start">${ic("x")}Encerrar sala</button></div>
     <aside class="k prev" aria-label="O que a turma vê"><div style="display:flex;align-items:center;gap:8px"><b style="font-family:var(--f-disp)">O que a turma vê</b><span class="grow" style="flex:1"></span><button class="b sm" data-act="telao">${ic("screen", 'style="width:16px;height:16px"')}Abrir em outra tela</button></div>
       <div class="telwrap">${telaoHTML(sn)}</div><span class="sm mut">Esta prévia mostra o mesmo que o telão. Em outra janela ou projetor, use "Abrir em outra tela".</span></aside>`;
-  hidratarQR($("#app")); escalar(); tickTempo();
+  hidratarQR($("#app")); escalar(); tickTempo(); pintaRedeSt(); Rede.garantir(s);
 }
 
 /* ---------- eventos da sala ---------- */
@@ -1438,7 +2016,7 @@ document.addEventListener("click", e => {
     if (!w) { try { navigator.clipboard.writeText(linkTelao(s)); } catch(e3) {} aviso("O navegador bloqueou a janela. Libere pop-ups ou cole o link do telão (copiado) em outra aba."); }
   }
   else if (a === "fechar-sala" && s) {
-    const d = $("#dlg"); d.innerHTML = `<div class="dl"><header><h2>Encerrar a sala?</h2><button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header><p style="margin:0">${s.part.length ? "O que foi respondido até aqui fica guardado em Encerradas." : "Ninguém entrou, então a sala será apenas fechada."}</p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="b" data-act="fechar">Continuar a sessão</button><button class="b p" data-act="encerrar-ok" data-id="${s.id}">Encerrar sala</button></div></div>`; d.showModal();
+    const d = $("#dlg"); d.innerHTML = `<div class="dl"><header><h2>Encerrar a sala?</h2><button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header><p style="margin:0">${s.part.length ? "O que foi respondido até aqui fica guardado em Encerradas." : "Ninguém entrou, então a sala será apenas fechada."}${s.part.some(p => p.real && !p.ass) && s.fase.etapa === "podio" ? " Quem ainda não assinou a presença não vai conseguir assinar depois." : ""}</p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="b" data-act="fechar">Continuar a sessão</button><button class="b p" data-act="encerrar-ok" data-id="${s.id}">Encerrar sala</button></div></div>`; d.showModal();
   }
   else if (a === "encerrar-ok") { const x = sala(el.dataset.id); $("#dlg").open && $("#dlg").close(); if (x) encerrar(x); }
 });
@@ -1448,17 +2026,533 @@ document.addEventListener("change", e => {
   salvar(); render();
 });
 
+/* ===== v0.5.0 · gerador de PDF próprio, SHA-256 e imagens (sem biblioteca, funciona sem internet) ===== */
+const HELV = {"r": [278, 278, 355, 556, 556, 889, 667, 191, 333, 333, 389, 584, 278, 333, 278, 278, 556, 556, 556, 556, 556, 556, 556, 556, 556, 556, 278, 278, 584, 584, 584, 556, 1015, 667, 667, 722, 722, 667, 611, 778, 722, 278, 500, 667, 556, 833, 722, 778, 667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 278, 278, 278, 469, 556, 333, 556, 556, 500, 556, 556, 278, 556, 556, 222, 222, 500, 222, 833, 556, 556, 556, 556, 333, 500, 278, 556, 500, 722, 500, 500, 500, 334, 260, 334, 584, 761, 556, 761, 222, 556, 333, 1000, 556, 556, 333, 1000, 667, 333, 1000, 761, 611, 761, 761, 222, 222, 333, 333, 350, 556, 1000, 333, 1000, 500, 333, 944, 761, 500, 667, 278, 333, 556, 556, 556, 556, 260, 556, 333, 737, 370, 556, 584, 333, 737, 333, 400, 584, 333, 333, 333, 556, 537, 278, 333, 333, 365, 556, 834, 834, 834, 611, 667, 667, 667, 667, 667, 667, 1000, 722, 667, 667, 667, 667, 278, 278, 278, 278, 722, 722, 778, 778, 778, 778, 778, 584, 778, 722, 722, 722, 722, 667, 667, 611, 556, 556, 556, 556, 556, 556, 889, 500, 556, 556, 556, 556, 278, 278, 278, 278, 556, 556, 556, 556, 556, 556, 556, 584, 611, 556, 556, 556, 556, 500, 556, 500], "b": [278, 333, 474, 556, 556, 889, 722, 238, 333, 333, 389, 584, 278, 333, 278, 278, 556, 556, 556, 556, 556, 556, 556, 556, 556, 556, 333, 333, 584, 584, 584, 611, 975, 722, 722, 722, 722, 667, 611, 778, 722, 278, 556, 722, 611, 833, 722, 778, 667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 333, 278, 333, 584, 556, 333, 556, 611, 556, 611, 556, 333, 611, 611, 278, 278, 556, 278, 889, 611, 611, 611, 611, 389, 556, 333, 611, 556, 778, 556, 556, 500, 389, 280, 389, 584, 761, 556, 761, 278, 556, 500, 1000, 556, 556, 333, 1000, 667, 333, 1000, 761, 611, 761, 761, 278, 278, 500, 500, 350, 556, 1000, 333, 1000, 556, 333, 944, 761, 500, 667, 278, 333, 556, 556, 556, 556, 280, 556, 333, 737, 370, 556, 584, 333, 737, 333, 400, 584, 333, 333, 333, 611, 556, 278, 333, 333, 365, 556, 834, 834, 834, 611, 722, 722, 722, 722, 722, 722, 1000, 722, 667, 667, 667, 667, 278, 278, 278, 278, 722, 722, 778, 778, 778, 778, 778, 584, 778, 722, 722, 722, 722, 667, 667, 611, 556, 556, 556, 556, 556, 556, 889, 556, 556, 556, 556, 556, 278, 278, 278, 278, 611, 611, 611, 611, 611, 611, 611, 584, 611, 611, 611, 611, 611, 556, 611, 556]};
+const CP1252 = "€\x81‚ƒ„…†‡ˆ‰Š‹Œ\x8dŽ\x8f\x90‘’“”•–—˜™š›œ\x9džŸ";
+const baitePdf = ch => { const c = ch.charCodeAt(0); if (c >= 32 && c < 127) return c; if (c >= 160 && c <= 255) return c; const i = CP1252.indexOf(ch); return i >= 0 ? 128 + i : 63; };
+const corPdf = h => { const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(h || "#000000") || [0, "00", "00", "00"]; return [1, 2, 3].map(i => (parseInt(m[i], 16) / 255).toFixed(3)).join(" "); };
+const num2 = n => (Math.round(n * 100) / 100).toString();
+
+/* SHA-256 síncrono (texto UTF-8 ou bytes). Devolve hexadecimal. */
+const SHA_K = [0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+function sha256(entrada) {
+  const dados = typeof entrada === "string" ? new TextEncoder().encode(entrada) : entrada;
+  const n = dados.length, tot = (((n + 9 + 63) >> 6) << 6), b = new Uint8Array(tot);
+  b.set(dados); b[n] = 0x80;
+  const dv = new DataView(b.buffer); dv.setUint32(tot - 8, Math.floor(n / 0x20000000)); dv.setUint32(tot - 4, (n << 3) >>> 0);
+  const h = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19], w = new Uint32Array(64);
+  const rr = (x, k) => (x >>> k) | (x << (32 - k));
+  for (let o = 0; o < tot; o += 64) {
+    for (let i = 0; i < 16; i++) w[i] = dv.getUint32(o + i * 4);
+    for (let i = 16; i < 64; i++) { const s0 = rr(w[i-15], 7) ^ rr(w[i-15], 18) ^ (w[i-15] >>> 3), s1 = rr(w[i-2], 17) ^ rr(w[i-2], 19) ^ (w[i-2] >>> 10); w[i] = (w[i-16] + s0 + w[i-7] + s1) >>> 0; }
+    let [a, b2, c, d, e, f, g, hh] = h;
+    for (let i = 0; i < 64; i++) {
+      const S1 = rr(e, 6) ^ rr(e, 11) ^ rr(e, 25), ch = (e & f) ^ (~e & g), t1 = (hh + S1 + ch + SHA_K[i] + w[i]) >>> 0;
+      const S0 = rr(a, 2) ^ rr(a, 13) ^ rr(a, 22), mj = (a & b2) ^ (a & c) ^ (b2 & c), t2 = (S0 + mj) >>> 0;
+      hh = g; g = f; f = e; e = (d + t1) >>> 0; d = c; c = b2; b2 = a; a = (t1 + t2) >>> 0;
+    }
+    h[0] = (h[0] + a) >>> 0; h[1] = (h[1] + b2) >>> 0; h[2] = (h[2] + c) >>> 0; h[3] = (h[3] + d) >>> 0; h[4] = (h[4] + e) >>> 0; h[5] = (h[5] + f) >>> 0; h[6] = (h[6] + g) >>> 0; h[7] = (h[7] + hh) >>> 0;
+  }
+  return h.map(x => x.toString(16).padStart(8, "0")).join("");
+}
+
+/* JPEG em data URL: lê tamanho e componentes para embutir no PDF */
+function lerJpeg(url) {
+  const m = /^data:image\/jpe?g;base64,(.+)$/i.exec(url || ""); if (!m) return null;
+  let bin; try { bin = atob(m[1]); } catch (e) { return null; }
+  const by = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) by[i] = bin.charCodeAt(i);
+  let i = 2;
+  while (i + 9 < by.length) {
+    if (by[i] !== 0xFF) { i++; continue; }
+    const mk = by[i + 1];
+    if (mk >= 0xC0 && mk <= 0xCF && mk !== 0xC4 && mk !== 0xC8 && mk !== 0xCC) return {bytes: by, h: (by[i + 5] << 8) | by[i + 6], w: (by[i + 7] << 8) | by[i + 8], comp: by[i + 9]};
+    i += 2 + ((by[i + 2] << 8) | by[i + 3]);
+  }
+  return null;
+}
+
+/* Reduz qualquer imagem do aparelho para JPEG pequeno (fundo branco). Devolve data URL. */
+function imagemJpeg(arquivo, maxLado, qualidade) {
+  return new Promise((ok, falha) => {
+    const u = URL.createObjectURL(arquivo), im = new Image();
+    im.onload = () => {
+      try {
+        const k = Math.min(1, maxLado / Math.max(im.naturalWidth, im.naturalHeight)), w = Math.max(1, Math.round(im.naturalWidth * k)), h = Math.max(1, Math.round(im.naturalHeight * k));
+        const c = document.createElement("canvas"); c.width = w; c.height = h; const x = c.getContext("2d");
+        x.fillStyle = "#fff"; x.fillRect(0, 0, w, h); x.drawImage(im, 0, 0, w, h);
+        URL.revokeObjectURL(u); ok(c.toDataURL("image/jpeg", qualidade));
+      } catch (e) { URL.revokeObjectURL(u); falha(e); }
+    };
+    im.onerror = () => { URL.revokeObjectURL(u); falha(new Error("imagem")); };
+    im.src = u;
+  });
+}
+
+/* ---------- o documento ---------- */
+function novoPdf(titulo) {
+  const W = 595.28, H = 841.89, M = 40;
+  const d = {W, H, M, titulo, pgs: [], ops: null, y: M, imgs: [], imgMap: new Map(), rodape: null, cab: null};
+  d.larg = (s, tam, neg) => { let t = 0; const tb = HELV[neg ? "b" : "r"]; for (const ch of String(s)) { const b = baitePdf(ch); t += b >= 32 ? tb[b - 32] : 0; } return t * tam / 1000; };
+  d.quebra = (s, lg, tam, neg) => {
+    const out = []; String(s ?? "").split(/\r?\n/).forEach(par => {
+      let lin = "";
+      par.split(/\s+/).filter(Boolean).forEach(pal => {
+        let p = pal;
+        while (d.larg(p, tam, neg) > lg) { // palavra maior que a linha: corta
+          let k = p.length; while (k > 1 && d.larg(p.slice(0, k), tam, neg) > lg) k--;
+          if (lin) { out.push(lin); lin = ""; }
+          out.push(p.slice(0, k)); p = p.slice(k);
+        }
+        const t = lin ? lin + " " + p : p;
+        if (d.larg(t, tam, neg) <= lg) lin = t; else { if (lin) out.push(lin); lin = p; }
+      });
+      out.push(lin);
+    });
+    return out;
+  };
+  d.corta = (s, lg, tam, neg) => { s = String(s ?? ""); if (d.larg(s, tam, neg) <= lg) return s; while (s.length > 1 && d.larg(s + "…", tam, neg) > lg) s = s.slice(0, -1); return s + "…"; };
+  d.nova = () => { d.ops = []; d.pgs.push(d.ops); d.y = M; if (d.cab && d.pgs.length > 1) d.cab(d); };
+  d.garante = h => { if (d.y + h > H - 54) d.nova(); };
+  d.texto = (x, y, s, o = {}) => {
+    const tam = o.tam || 10, neg = !!o.neg; let t = String(s ?? ""); if (!t) return;
+    const w = d.larg(t, tam, neg); if (o.al === "dir") x = x - w; else if (o.al === "cen") x = x - w / 2;
+    const bytes = Array.from(t).map(ch => { const b = baitePdf(ch); return (b < 32 ? 63 : b); });
+    const lit = bytes.map(b => (b === 40 || b === 41 || b === 92) ? "\\" + String.fromCharCode(b) : b > 126 ? "\\" + b.toString(8).padStart(3, "0") : String.fromCharCode(b)).join("");
+    d.ops.push(`BT /${neg ? "F2" : "F1"} ${num2(tam)} Tf ${corPdf(o.cor)} rg ${num2(x)} ${num2(H - y)} Td (${lit}) Tj ET`);
+  };
+  d.par = (x, y, s, lg, o = {}) => { const tam = o.tam || 10, ent = o.ent || tam * 1.35; const ls = d.quebra(s, lg, tam, o.neg); ls.forEach((l, i) => d.texto(x, y + tam + i * ent, l, o)); return ls.length * ent; };
+  d.linha = (x1, y1, x2, y2, o = {}) => d.ops.push(`${num2(o.esp || .6)} w ${corPdf(o.cor || "#9aa8a7")} RG ${num2(x1)} ${num2(H - y1)} m ${num2(x2)} ${num2(H - y2)} l S`);
+  d.ret = (x, y, w, h, o = {}) => {
+    const p = [];
+    if (o.fundo) p.push(`${corPdf(o.fundo)} rg ${num2(x)} ${num2(H - y - h)} ${num2(w)} ${num2(h)} re f`);
+    if (o.borda) p.push(`${num2(o.esp || .6)} w ${corPdf(o.borda)} RG ${num2(x)} ${num2(H - y - h)} ${num2(w)} ${num2(h)} re S`);
+    d.ops.push(p.join(" "));
+  };
+  d.img = (url, x, y, w, h) => {
+    const j = lerJpeg(url); if (!j) return false;
+    let n = d.imgMap.get(url); if (n === undefined) { n = d.imgs.length; d.imgs.push(j); d.imgMap.set(url, n); }
+    d.ops.push(`q ${num2(w)} 0 0 ${num2(h)} ${num2(x)} ${num2(H - y - h)} cm /Im${n} Do Q`); return true;
+  };
+  /* caixa de imagem dentro de w×h mantendo a proporção; devolve o tamanho usado */
+  d.imgCabe = (url, x, y, w, h, al) => {
+    const j = lerJpeg(url); if (!j) return null;
+    const k = Math.min(w / j.w, h / j.h), ww = j.w * k, hh = j.h * k, xx = al === "cen" ? x + (w - ww) / 2 : x;
+    d.img(url, xx, y + (h - hh) / 2, ww, hh); return {w: ww, h: hh};
+  };
+  /* tabela: cols = [{t, w, al}], linhas = [[cel,...]]; cel pode ser texto ou {img, h} ou {txt, neg, cor} */
+  d.tabela = (cols, linhas, o = {}) => {
+    const tam = o.tam || 9, pad = 4, x0 = M, total = cols.reduce((a, c) => a + c.w, 0), esc = (W - 2 * M) / total;
+    const larguras = cols.map(c => c.w * esc);
+    const cabeca = () => {
+      d.garante(24); d.ret(x0, d.y, W - 2 * M, 18, {fundo: "#E2E9E8"});
+      let x = x0; cols.forEach((c, i) => { d.texto(c.al === "dir" ? x + larguras[i] - pad : c.al === "cen" ? x + larguras[i] / 2 : x + pad, d.y + 12.5, c.t, {tam: 8, neg: true, cor: "#334", al: c.al}); x += larguras[i]; });
+      d.y += 18;
+    };
+    cabeca();
+    linhas.forEach(l => {
+      const cel = l.map((c, i) => (c && typeof c === "object") ? c : {txt: String(c ?? "")});
+      let alt = 0; const quebras = cel.map((c, i) => {
+        if ("img" in c) { alt = Math.max(alt, (c.h || 24) + 2 * pad); return null; }
+        const ls = d.quebra(c.txt, larguras[i] - 2 * pad, tam, c.neg).slice(0, o.maxLin || 4); alt = Math.max(alt, ls.length * tam * 1.3 + 2 * pad); return ls;
+      });
+      alt = Math.max(alt, 18);
+      if (d.y + alt > H - 54) { d.nova(); cabeca(); }
+      let x = x0;
+      cel.forEach((c, i) => {
+        const al = cols[i].al;
+        if ("img" in c) { const bx = x + pad, bw = larguras[i] - 2 * pad; if (!d.imgCabe(c.img, bx, d.y + pad, bw, c.h || 24, "cen")) d.texto(x + larguras[i] / 2, d.y + alt / 2 + 3, c.vazio || "sem assinatura", {tam: 8, cor: "#8a9998", al: "cen"}); }
+        else quebras[i].forEach((t, k) => d.texto(al === "dir" ? x + larguras[i] - pad : al === "cen" ? x + larguras[i] / 2 : x + pad, d.y + pad + tam + k * tam * 1.3 - 1, t, {tam, neg: c.neg, cor: c.cor, al}));
+        x += larguras[i];
+      });
+      d.y += alt; d.linha(x0, d.y, W - M, d.y, {cor: "#d5dedd", esp: .5});
+    });
+    d.y += 6;
+  };
+  d.saida = () => {
+    if (!d.pgs.length) d.nova();
+    const N = d.pgs.length;
+    if (d.rodape) d.pgs.forEach((ops, i) => { d.ops = ops; d.rodape(d, i + 1, N); });
+    const partes = [], offs = []; let pos = 0;
+    const enc = s => { const u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i) & 255; return u; };
+    const add = p => { partes.push(p); pos += p.length; };
+    const obj = (n, corpo) => { offs[n] = pos; add(enc(`${n} 0 obj\n${corpo}\nendobj\n`)); };
+    const nImg = d.imgs.length, primeiraPg = 5 + nImg;
+    add(enc("%PDF-1.4\n%\xE2\xE3\xCF\xD3\n"));
+    obj(1, "<< /Type /Catalog /Pages 2 0 R >>");
+    obj(2, `<< /Type /Pages /Count ${N} /Kids [${d.pgs.map((_, i) => `${primeiraPg + i * 2} 0 R`).join(" ")}] >>`);
+    obj(3, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");
+    obj(4, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+    d.imgs.forEach((j, i) => {
+      const n = 5 + i; offs[n] = pos;
+      add(enc(`${n} 0 obj\n<< /Type /XObject /Subtype /Image /Width ${j.w} /Height ${j.h} /ColorSpace /${j.comp === 1 ? "DeviceGray" : j.comp === 4 ? "DeviceCMYK" : "DeviceRGB"} /BitsPerComponent 8 /Filter /DCTDecode /Length ${j.bytes.length} >>\nstream\n`)); add(j.bytes); add(enc("\nendstream\nendobj\n"));
+    });
+    const xobj = d.imgs.map((_, i) => `/Im${i} ${5 + i} 0 R`).join(" ");
+    d.pgs.forEach((ops, i) => {
+      const np = primeiraPg + i * 2, nc = np + 1, fluxo = ops.join("\n");
+      obj(np, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${num2(W)} ${num2(H)}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >>${nImg ? ` /XObject << ${xobj} >>` : ""} >> /Contents ${nc} 0 R >>`);
+      obj(nc, `<< /Length ${fluxo.length} >>\nstream\n${fluxo}\nendstream`);
+    });
+    const nInfo = primeiraPg + N * 2, total = nInfo, dt = new Date(), pd = n => String(n).padStart(2, "0");
+    const dataPdf = `D:${dt.getUTCFullYear()}${pd(dt.getUTCMonth() + 1)}${pd(dt.getUTCDate())}${pd(dt.getUTCHours())}${pd(dt.getUTCMinutes())}${pd(dt.getUTCSeconds())}Z`;
+    const lit = s => "(" + Array.from(String(s)).map(ch => { const b = baitePdf(ch); return (b === 40 || b === 41 || b === 92) ? "\\" + ch : b > 126 ? "\\" + b.toString(8).padStart(3, "0") : String.fromCharCode(b < 32 ? 63 : b); }).join("") + ")";
+    obj(nInfo, `<< /Title ${lit(titulo)} /Producer ${lit("Sabiá " + VERSAO)} /Creator ${lit("Sabiá")} /CreationDate (${dataPdf}) >>`);
+    const xref = pos; let x = `xref\n0 ${total + 1}\n0000000000 65535 f \n`;
+    for (let n = 1; n <= total; n++) x += String(offs[n]).padStart(10, "0") + " 00000 n \n";
+    add(enc(x + `trailer\n<< /Size ${total + 1} /Root 1 0 R /Info ${nInfo} 0 R >>\nstartxref\n${xref}\n%%EOF\n`));
+    const out = new Uint8Array(pos); let o = 0; partes.forEach(p => { out.set(p, o); o += p.length; });
+    return out;
+  };
+  d.nova();
+  return d;
+}
+
+/* ===== v0.5.0 · relatórios, PDFs, planilha, foto da turma, logotipo e conferência ===== */
+const REL = {sid: null, aba: "resumo", ord: {c: "pts", d: -1}, asOrd: "aula"};
+const CF = {res: null, cod: ""};
+
+const encerradas = () => S.sessoes.filter(x => x.estado === "encerrada").slice().reverse();
+const tipoSessao = s => (s.aj && s.aj.teste) ? "teste" : (s.part || []).some(p => p.sim) ? "ensaio" : "real";
+const TIPO_TXT = {teste: "Sessão de teste", ensaio: "Ensaio com simulados", real: "Registro oficial"};
+const dtc = iso => { try { return new Date(iso).toLocaleString("pt-BR", {day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"}); } catch (e) { return ""; } };
+const dtd = iso => { try { return new Date(iso).toLocaleDateString("pt-BR"); } catch (e) { return ""; } };
+const horasTxt = h => String(h || "").replace(".", ",") + " h";
+const verTxt = s => "v" + String(s.versao ?? 0).padStart(2, "0");
+const situ = (s, p) => !(s.resp[p.id] && Object.keys(s.resp[p.id]).length) ? "Não respondeu" : p.pct >= s.meta ? "Atingiu a meta" : "Abaixo da meta";
+
+/* ---------- números da sessão ---------- */
+function estat(s) {
+  const c = calc(s), qs = s.itens.map((it, i) => [it, i]).filter(([it]) => vale(it));
+  let somaMs = 0, nMs = 0;
+  const perg = qs.map(([it, i], k) => {
+    let n = 0, ac = 0; const er = {};
+    s.part.forEach(p => {
+      const r = (s.resp[p.id] || {})[i]; if (!r) return;
+      n++; if (r.ok) ac++; if (r.ms > 0) { somaMs += r.ms; nMs++; }
+      if (!r.ok && it.tipo !== "ordenar") er[r.r] = (er[r.r] || 0) + 1;
+    });
+    const ks = Object.keys(er).sort((a, b) => er[b] - er[a]);
+    return {n: k + 1, i, it, resp: n, ac, pct: n ? Math.round(100 * ac / n) : 0, errada: ks.length ? {alt: Number(ks[0]), n: er[ks[0]]} : null};
+  });
+  const nota = c.pessoas.length ? Math.round(c.pessoas.reduce((a, p) => a + p.pct, 0) / c.pessoas.length) : 0;
+  const por = {}; c.pessoas.forEach(p => { const k = p.setor || "Sem setor"; (por[k] = por[k] || []).push(p); });
+  const setores = Object.entries(por).map(([nome, l]) => ({nome, n: l.length, pct: Math.round(l.reduce((a, p) => a + p.pct, 0) / l.length), efic: l.filter(p => p.pct >= s.meta).length}))
+    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+  const pessoas = c.pessoas.map(p => { const o = s.part.find(x => x.id === p.id) || {}; return Object.assign({}, p, {sim: !!o.sim, ass: o.ass || "", sit: situ(s, p)}); });
+  return {c, perg, nota, tempo: nMs ? somaMs / nMs / 1000 : 0, setores, pessoas, abaixo: pessoas.filter(p => p.pct < s.meta), fracas: perg.filter(q => q.resp && q.pct < 60)};
+}
+const tempoTxt = t => t ? (Math.round(t * 10) / 10).toString().replace(".", ",") + " s" : "–";
+
+/* ---------- código de conferência ---------- */
+function canonSessao(s) {
+  const c = calc(s), qs = s.itens.map((it, i) => [it, i]).filter(([it]) => vale(it));
+  const pessoas = c.pessoas.map(p => {
+    const o = s.part.find(x => x.id === p.id) || {}, rs = s.resp[p.id] || {};
+    return [p.nome, p.setor || "", p.ac, p.pts, p.pct, qs.map(([, i]) => rs[i] ? (rs[i].ok ? "1" : "0") : "-").join(""), o.ass ? sha256(o.ass).slice(0, 16) : ""];
+  }).sort((a, b) => a[0].localeCompare(b[0], "pt-BR") || a[1].localeCompare(b[1], "pt-BR") || a[6].localeCompare(b[6]));
+  const perguntas = sha256(JSON.stringify(qs.map(([it]) => [it.tipo, it.enunciado, it.alternativas || null, it.correta ?? null]))).slice(0, 16);
+  return JSON.stringify({v: 1, t: s.titulo, ver: s.versao ?? 0, fim: s.fim, ins: s.instrutor || "", loc: s.local || "", h: String(s.horas || ""), meta: s.meta, np: qs.length, q: perguntas, teste: !!(s.aj && s.aj.teste), sim: s.part.some(p => p.sim), p: pessoas});
+}
+function codigoDe(s) { return "SAB-" + sha256(canonSessao(s)).slice(0, 20).toUpperCase().match(/.{4}/g).join("-"); }
+function garantirCodigo(s) { if (!s.cod) { s.cod = codigoDe(s); s.codTardio = true; s.codEm = new Date().toISOString(); salvar(); } return s.cod; }
+function normCodigo(t) {
+  let x = String(t || "").toUpperCase().replace(/[^0-9A-Z]/g, "");
+  if (x.length === 23 && x.startsWith("SAB")) x = x.slice(3);
+  return /^[0-9A-F]{20}$/.test(x) ? "SAB-" + x.match(/.{4}/g).join("-") : "";
+}
+const integra = s => codigoDe(s) === garantirCodigo(s);
+
+/* ---------- arquivos ---------- */
+function baixarBlob(nome, blob) {
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = nome; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 800);
+}
+const nomeArq = (pre, s, ext) => `${pre}-${slug(s.titulo)}-${(s.fim || "").slice(0, 10)}.${ext}`;
+const celCsv = v => { let t = String(v ?? ""); if (/^[=+\-@\t\r]/.test(t)) t = "'" + t; return /[";\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
+function csvSessao(s) {
+  const e = estat(s);
+  const cab = ["Nome", "Setor", "Acertos", "Perguntas", "Percentual", "Pontos", "Situação", "Assinou", ...e.perg.map(q => "P" + q.n)];
+  const linhas = e.pessoas.map(p => { const rs = s.resp[p.id] || {}; return [p.nome, p.setor || "", p.ac, e.c.nq, p.pct, p.pts, p.sit, p.ass ? "Sim" : "Não", ...e.perg.map(q => rs[q.i] ? (rs[q.i].ok ? "Certo" : "Errado") : "-")]; });
+  const topo = [["Treinamento", s.titulo], ["Versão", verTxt(s)], ["Data", dtc(s.fim)], ["Instrutor", s.instrutor || ""], ["Local", s.local || ""], ["Carga horária", horasTxt(s.horas)], ["Meta", s.meta + "%"], ["Tipo", TIPO_TXT[tipoSessao(s)]], ["Código de conferência", garantirCodigo(s)], []];
+  return "﻿" + topo.concat([cab], linhas).map(l => l.map(celCsv).join(";")).join("\r\n") + "\r\n";
+}
+function abrirPdf(bytes) { const u = URL.createObjectURL(new Blob([bytes], {type: "application/pdf"})); const w = window.open(u, "_blank"); if (!w) aviso("O navegador bloqueou a janela. Use o botão de baixar."); setTimeout(() => URL.revokeObjectURL(u), 60000); }
+
+/* ---------- PDFs ---------- */
+function pdfBase(s, nomeDoc) {
+  const cod = garantirCodigo(s), d = novoPdf(nomeDoc + " · " + s.titulo), {W, H, M} = d;
+  d.rodape = (d, n, N) => {
+    d.linha(M, H - 42, W - M, H - 42, {cor: "#c4cfce"});
+    d.texto(M, H - 30, d.corta("Sabiá " + VERSAO + " · " + s.titulo, 135, 8), {tam: 8, cor: "#5a6b6a"});
+    d.texto(W / 2 + 30, H - 30, "Código de conferência " + cod, {tam: 8, neg: true, cor: "#0E4A48", al: "cen"});
+    d.texto(W - M, H - 30, `Página ${n} de ${N}`, {tam: 8, cor: "#5a6b6a", al: "dir"});
+  };
+  d.cab = d => { d.texto(M, d.y + 8, d.corta(nomeDoc + " · " + s.titulo + " (continuação)", W - 2 * M, 9), {tam: 9, cor: "#5a6b6a"}); d.y += 22; };
+  return d;
+}
+function pdfTopo(d, s, titulo) {
+  const {W, M} = d, y = M; let hl = 0;
+  if (S.cfg.logo) { const r = d.imgCabe(S.cfg.logo, M, y, 130, 46); hl = r ? 46 : 0; }
+  d.texto(W - M, y + 14, titulo, {tam: 16, neg: true, cor: "#0E4A48", al: "dir"});
+  if (S.cfg.empresa) d.texto(W - M, y + 30, d.corta(S.cfg.empresa, 330, 10), {tam: 10, cor: "#4a5c5b", al: "dir"});
+  d.y = y + Math.max(hl, 38) + 8; d.linha(M, d.y, W - M, d.y, {cor: "#0E4A48", esp: 1.2}); d.y += 12;
+  const tp = tipoSessao(s);
+  if (tp !== "real") {
+    d.ret(M, d.y, W - 2 * M, 24, {fundo: "#F7EACD", borda: "#9A6200"});
+    d.texto(M + 8, d.y + 15.5, tp === "teste" ? "SESSÃO DE TESTE: não vale como registro oficial." : "ENSAIO com participantes simulados: não vale como registro oficial.", {tam: 9.5, neg: true, cor: "#6b4400"});
+    d.y += 34;
+  }
+}
+function pdfSecao(d, t, mais) { d.garante(48 + (mais || 0)); d.texto(d.M, d.y + 10, t, {tam: 11, neg: true, cor: "#0E4A48"}); d.y += 16; d.linha(d.M, d.y, d.W - d.M, d.y, {cor: "#c4cfce"}); d.y += 6; }
+function pdfCampos(d, pares) {
+  const {W, M} = d, lg = (W - 2 * M) / 2 - 8;
+  for (let i = 0; i < pares.length; i += 2) {
+    const linha = pares.slice(i, i + 2).map(([r, v]) => ({r, ls: d.quebra(v || "–", lg, 10, false).slice(0, 3)}));
+    const alt = 12 + Math.max(...linha.map(c => c.ls.length)) * 13 + 4;
+    d.garante(alt);
+    linha.forEach((c, k) => { const x = M + k * (lg + 16); d.texto(x, d.y + 8, c.r.toUpperCase(), {tam: 7.5, neg: true, cor: "#6b7c7b"}); c.ls.forEach((t, j) => d.texto(x, d.y + 20 + j * 13, t, {tam: 10})); });
+    d.y += alt;
+  }
+  d.y += 2;
+}
+function pdfIndicadores(d, itens) {
+  const {W, M} = d, g = 8, w = (W - 2 * M - g * (itens.length - 1)) / itens.length; d.garante(54);
+  itens.forEach(([v, r], k) => { const x = M + k * (w + g); d.ret(x, d.y, w, 44, {fundo: "#F2F6F6", borda: "#d5dedd"}); d.texto(x + 8, d.y + 22, v, {tam: 16, neg: true, cor: "#0E4A48"}); d.texto(x + 8, d.y + 36, r, {tam: 8, cor: "#4a5c5b"}); });
+  d.y += 54;
+}
+const corSit = t => t === "Atingiu a meta" ? "#1B7A4B" : t === "Abaixo da meta" ? "#9A6200" : "#6b7c7b";
+
+function pdfRegistro(s) {
+  const e = estat(s), d = pdfBase(s, "Registro de treinamento"), {W, M} = d;
+  pdfTopo(d, s, "Registro de treinamento");
+  pdfCampos(d, [["Treinamento", `${s.titulo} (${verTxt(s)})`], ["Data e hora do encerramento", dtc(s.fim)], ["Instrutor", s.instrutor], ["Local", s.local], ["Carga horária", horasTxt(s.horas)], ["Meta de acerto", s.meta + "%"], ["Setores", (s.setores || []).length ? s.setores.join(", ") : "Todos"], ["Perguntas que valem nota", String(e.c.nq)]]);
+  pdfIndicadores(d, [[e.nota + "%", "Nota média"], [`${e.c.efic} de ${e.c.pessoas.length}`, "Atingiram a meta"], [e.c.pct + "%", "Acerto geral"], [tempoTxt(e.tempo), "Tempo médio por resposta"]]);
+  pdfSecao(d, "Presença e resultado");
+  const ord = e.pessoas.slice().sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+  d.tabela([{t: "#", w: 22}, {t: "Nome", w: 150}, {t: "Setor", w: 80}, {t: "Acertos", w: 46, al: "cen"}, {t: "%", w: 34, al: "dir"}, {t: "Pontos", w: 46, al: "dir"}, {t: "Situação", w: 82}, {t: "Assinatura", w: 96, al: "cen"}],
+    ord.map((p, i) => [String(i + 1), p.nome, p.setor || "–", `${p.ac}/${e.c.nq}`, p.pct + "%", String(p.pts), {txt: p.sit, neg: true, cor: corSit(p.sit)}, {img: p.ass, h: 22, vazio: "sem assinatura"}]));
+  if (e.perg.length) {
+    pdfSecao(d, "Assertividade por pergunta");
+    d.tabela([{t: "#", w: 22}, {t: "Pergunta", w: 230}, {t: "Respostas", w: 50, al: "cen"}, {t: "Acertos", w: 46, al: "cen"}, {t: "%", w: 36, al: "dir"}, {t: "Errada mais escolhida", w: 150}],
+      e.perg.map(q => [String(q.n), q.it.enunciado, String(q.resp), String(q.ac), {txt: q.pct + "%", neg: true, cor: q.resp && q.pct < 60 ? "#B3302A" : "#1B7A4B"}, q.errada ? `${(q.it.alternativas || [])[q.errada.alt] ?? "alternativa " + (q.errada.alt + 1)} (${q.errada.n})` : "–"]));
+  }
+  if (e.setores.length > 1) {
+    pdfSecao(d, "Resultado por setor", 20 + e.setores.length * 18);
+    d.tabela([{t: "Setor", w: 200}, {t: "Pessoas", w: 60, al: "cen"}, {t: "Acerto médio", w: 80, al: "dir"}, {t: "Atingiram a meta", w: 110, al: "cen"}], e.setores.map(x => [x.nome, String(x.n), x.pct + "%", `${x.efic} de ${x.n}`]));
+  }
+  if (s.foto) {
+    d.garante(220); pdfSecao(d, "Evidência: foto da turma");
+    const r = d.imgCabe(s.foto, M, d.y, 300, 200); if (r) { d.y += 206; d.texto(M, d.y + 6, "Foto registrada em " + dtc(s.fotoEm || s.fim), {tam: 8, cor: "#5a6b6a"}); d.y += 16; }
+  }
+  d.garante(60); d.y += 6;
+  d.par(M, d.y, "Para conferir este registro, digite o código do rodapé em Conferir, no menu do Sabiá. O código muda se qualquer nome, resultado, pergunta, data, instrutor ou assinatura for alterado. A foto da turma não entra no cálculo.", W - 2 * M, {tam: 8, cor: "#5a6b6a"});
+  return d.saida();
+}
+
+function pdfPresenca(s) {
+  const e = estat(s), d = pdfBase(s, "Lista de presença"), {W, M} = d;
+  pdfTopo(d, s, "Lista de presença");
+  pdfCampos(d, [["Treinamento", `${s.titulo} (${verTxt(s)})`], ["Data", dtd(s.fim)], ["Instrutor", s.instrutor], ["Local", s.local], ["Carga horária", horasTxt(s.horas)], ["Setores", (s.setores || []).length ? s.setores.join(", ") : "Todos"]]);
+  pdfSecao(d, `Participantes (${e.pessoas.length})`);
+  const ord = e.pessoas.slice().sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+  d.tabela([{t: "#", w: 24}, {t: "Nome", w: 190}, {t: "Setor", w: 100}, {t: "Carga horária", w: 62, al: "cen"}, {t: "Assinatura", w: 160, al: "cen"}],
+    ord.map((p, i) => [String(i + 1), p.nome, p.setor || "–", horasTxt(s.horas), {img: p.ass, h: 30, vazio: "sem assinatura"}]));
+  d.garante(90); d.y += 22;
+  d.linha(M, d.y + 28, M + 230, d.y + 28, {cor: "#334", esp: .7});
+  d.texto(M, d.y + 40, "Assinatura do instrutor" + (s.instrutor ? ": " + s.instrutor : ""), {tam: 9, cor: "#334"});
+  d.texto(W - M, d.y + 40, "Data: " + dtd(s.fim), {tam: 9, cor: "#334", al: "dir"});
+  return d.saida();
+}
+
+/* ---------- ações ---------- */
+function reaplicar(s) {
+  const t = treino(s.treinoId); if (!t) { aviso("O treinamento desta sessão foi removido"); return; }
+  const e = estat(s); if (!e.abaixo.length) { aviso("Todos atingiram a meta"); return; }
+  UI.apl = {id: t.id, preset: "aovivo", setores: (s.setores || []).slice(), instrutor: s.instrutor || S.cfg.instrutor, local: s.local || S.cfg.local, horas: s.horas || "1", aj: Object.assign({}, AJ_PADRAO, PRESETS.aovivo.aj), roster: e.abaixo.map(p => p.nome), reaplicaDe: s.id};
+  ir("#/aplicar/" + t.id);
+}
+async function salvarFoto(s, arq) {
+  try {
+    let u = await imagemJpeg(arq, 1400, 0.72); if (u.length > 450000) u = await imagemJpeg(arq, 1000, 0.6);
+    s.foto = u; s.fotoEm = new Date().toISOString(); salvar(); render(); aviso("Foto da turma guardada");
+  } catch (err) { aviso("Não consegui abrir essa imagem"); }
+}
+async function salvarLogo(arq) {
+  try { S.cfg.logo = await imagemJpeg(arq, 480, 0.85); salvar(); render(); aviso("Logotipo guardado"); } catch (err) { aviso("Não consegui abrir essa imagem"); }
+}
+
+/* ---------- tela: relatórios ---------- */
+function sessaoRel(id) {
+  const l = encerradas();
+  return (id && l.find(x => x.id === id)) || (REL.sid && l.find(x => x.id === REL.sid)) || l.find(x => tipoSessao(x) === "real") || l[0] || null;
+}
+function vRelatorios(id) {
+  const l = encerradas();
+  topo("Relatórios", l.length ? `${l.length} sessão${l.length === 1 ? "" : "ões"} encerrada${l.length === 1 ? "" : "s"}` : "");
+  $("#app").className = "body rel";
+  if (!l.length) { $("#app").innerHTML = `<section class="k vazio">${ic("chart", 'style="width:32px;height:32px;color:var(--brand-ink)"')}<b>Nenhuma sessão encerrada ainda</b><span class="sm">Quando você encerrar uma sala, o resultado, a lista de presença e o PDF de registro aparecem aqui.</span><a class="b p" href="#/treinos">${ic("list")}Ir para Treinos</a></section>`; return; }
+  const s = sessaoRel(id); REL.sid = s.id; garantirCodigo(s);
+  const e = estat(s), tp = tipoSessao(s), t = treino(s.treinoId);
+  const opt = l.map(x => `<option value="${x.id}" ${x.id === s.id ? "selected" : ""}>${esc(x.titulo)} · ${dtd(x.fim)}${tipoSessao(x) === "teste" ? " (teste)" : tipoSessao(x) === "ensaio" ? " (ensaio)" : ""}</option>`).join("");
+  const abas = [["resumo", "Resumo"], ["mapa", "Mapa da turma"], ["pergunta", "Assertividade"], ["setor", "Setores"]];
+  let corpo = "";
+  if (REL.aba === "resumo") corpo = relResumo(s, e, t);
+  else if (REL.aba === "mapa") corpo = relMapa(s, e);
+  else if (REL.aba === "pergunta") corpo = relPerguntas(s, e);
+  else corpo = relSetores(s, e);
+  $("#app").innerHTML = `<section class="k rl-top">
+      <div class="fd"><label for="rl-s">Sessão</label><select class="in" id="rl-s">${opt}</select></div>
+      <div class="rl-meta" aria-label="Dados da sessão"><span class="chip ${tp === "real" ? "ok" : "warn"}">${TIPO_TXT[tp]}</span><span class="chip">${dtc(s.fim)}</span><span class="chip">${esc(s.instrutor || "sem instrutor")}</span>${s.local ? `<span class="chip">${esc(s.local)}</span>` : ""}<span class="chip">${horasTxt(s.horas)}</span><span class="chip">${verTxt(s)}</span>${s.reaplicaDe ? '<span class="chip br">Reaplicação</span>' : ""}</div>
+      <div class="rl-docs"><button class="b p" data-act="relpdf">${ic("file")}PDF de registro</button><button class="b" data-act="relpres">${ic("file")}Lista de presença</button><details class="mais"><summary class="b">Mais${ic("down", 'style="width:16px;height:16px"')}</summary><div class="mp2"><button class="b g" data-act="relcsv">${ic("sheet")}Planilha (CSV)</button><button class="b g" data-act="reljson">${ic("download")}Sessão (.json)</button><button class="b g" data-act="relabrir" title="Abre o PDF de registro em outra aba para imprimir">${ic("print")}Imprimir</button></div></details></div>
+      <div class="rl-cod sm"><span class="mut">Código de conferência</span> <b class="mono" id="relcod">${esc(s.cod)}</b> <button class="b sm g" data-act="copiacod" aria-label="Copiar o código" title="Copiar">${ic("copy", 'style="width:16px;height:16px"')}</button>${s.codTardio ? '<span class="chip warn" title="Sessão encerrada antes da v0.5.0: o código foi gerado quando você abriu o relatório pela primeira vez">gerado depois</span>' : ""}</div>
+    </section>
+    <div class="seg rl-abas" role="group" aria-label="Relatório">${abas.map(([k, n]) => `<button data-act="relaba" data-v="${k}" aria-pressed="${REL.aba === k}">${n}</button>`).join("")}</div>
+    ${corpo}`;
+}
+function relResumo(s, e, t) {
+  const ordp = e.pessoas.slice().sort((a, b) => {
+    const c = REL.ord.c, va = c === "nome" || c === "setor" || c === "sit" ? String(a[c] || "").localeCompare(String(b[c] || ""), "pt-BR") : (a[c] - b[c]);
+    return va * REL.ord.d || a.nome.localeCompare(b.nome, "pt-BR");
+  });
+  const th = (c, n, cl = "") => `<th class="${cl}"><button data-act="relord" data-v="${c}" aria-label="Ordenar por ${n}">${n}${REL.ord.c === c ? ic(REL.ord.d > 0 ? "up" : "down", 'style="width:14px;height:14px"') : ""}</button></th>`;
+  const semAss = e.pessoas.filter(p => !p.ass && !p.sim).length;
+  const ac = [];
+  ac.push(e.abaixo.length
+    ? `<li><span class="ai warn">${ic("warn")}</span><span><b>${e.abaixo.length} pessoa${e.abaixo.length === 1 ? "" : "s"} abaixo da meta de ${s.meta}%</b><br><span class="sm mut">${esc(e.abaixo.slice(0, 4).map(p => p.nome).join(", "))}${e.abaixo.length > 4 ? " e mais " + (e.abaixo.length - 4) : ""}</span></span><button class="b sm p" data-act="reaplicar" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Reaplicar para elas</button></li>`
+    : `<li><span class="ai ok">${ic("check")}</span><span><b>Todos atingiram a meta de ${s.meta}%</b></span><span></span></li>`);
+  if (e.fracas.length) ac.push(`<li><span class="ai warn">${ic("edit")}</span><span><b>${e.fracas.length} pergunta${e.fracas.length === 1 ? "" : "s"} com menos de 60% de acerto</b><br><span class="sm mut">${e.fracas.map(q => "P" + q.n).join(", ")}: vale rever o texto ou reforçar o conteúdo.</span></span>${t ? `<a class="b sm" href="#/editar/${t.id}">${ic("edit", 'style="width:16px;height:16px"')}Revisar no editor</a>` : "<span></span>"}</li>`);
+  if (semAss) ac.push(`<li><span class="ai warn">${ic("warn")}</span><span><b>${semAss} pessoa${semAss === 1 ? "" : "s"} sem assinatura de presença</b><br><span class="sm mut">A lista de presença em PDF deixa o espaço em branco para assinar no papel.</span></span><span></span></li>`);
+  ac.push(s.foto
+    ? `<li><span class="ai ok">${ic("check")}</span><span><b>Foto da turma guardada</b><br><span class="sm mut">Sai no PDF de registro. ${dtc(s.fotoEm || s.fim)}</span></span><span class="acs"><label class="b sm" for="rl-foto">Trocar</label><button class="b sm bad" data-act="rmfoto">Remover</button></span></li>`
+    : `<li><span class="ai">${ic("camera")}</span><span><b>Sem foto da turma</b><br><span class="sm mut">É a evidência impressa no PDF de registro.</span></span><label class="b sm" for="rl-foto">${ic("camera", 'style="width:16px;height:16px"')}Adicionar foto</label></li>`);
+  return `<div class="k rsm q4"><div><b>${e.nota}%</b><span>Nota média</span></div><div class="${e.c.efic < e.c.pessoas.length ? "w" : ""}"><b>${e.c.efic} de ${e.c.pessoas.length}</b><span>Atingiram a meta</span></div><div><b>${e.c.pct}%</b><span>Acerto geral</span></div><div><b>${tempoTxt(e.tempo)}</b><span>Tempo médio por resposta</span></div></div>
+    <section class="k"><h3 class="rh">O que fazer agora</h3><ul class="acoes">${ac.join("")}</ul><input type="file" id="rl-foto" accept="image/*" class="sr"></section>
+    <section class="k"><h3 class="rh">Presença e resultado</h3><div class="rtw"><table class="rtb"><thead><tr>${th("nome", "Nome")}${th("setor", "Setor", "hide-m")}${th("ac", "Acertos", "n")}${th("pct", "%", "n")}${th("pts", "Pontos", "n hide-m")}${th("sit", "Situação")}<th class="n">Assinatura</th></tr></thead><tbody>${ordp.map(p => `<tr><td><b>${esc(p.nome)}</b>${p.sim ? ' <span class="chip">simulado</span>' : ""}</td><td class="hide-m">${esc(p.setor || "–")}</td><td class="n num">${p.ac}/${e.c.nq}</td><td class="n num">${p.pct}%</td><td class="n num hide-m">${p.pts}</td><td><span class="chip ${p.sit === "Atingiu a meta" ? "ok" : p.sit === "Abaixo da meta" ? "warn" : ""}">${p.sit}</span></td><td class="n">${p.ass ? `<button class="asm" data-act="verass" data-id="${p.id}" aria-label="Ver assinatura de ${esc(p.nome)}"><img src="${p.ass}" alt="" width="64" height="26"></button>` : '<span class="mut sm">–</span>'}</td></tr>`).join("")}</tbody></table></div></section>`;
+}
+function relMapa(s, e) {
+  if (!e.perg.length) return `<section class="k vazio"><b>Esta sessão não tem perguntas que valem nota</b></section>`;
+  const col = e.perg.map(q => `<th class="mc" title="${esc(q.it.enunciado)}">P${q.n}</th>`).join("");
+  const lin = e.pessoas.slice().sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR")).map(p => {
+    const rs = s.resp[p.id] || {};
+    return `<tr><th scope="row" class="nm">${esc(p.nome)}</th>${e.perg.map(q => { const r = rs[q.i]; return r ? `<td class="mc ${r.ok ? "ok" : "no"}" title="${esc(q.it.enunciado)}: ${r.ok ? "acertou" : "errou"}">${ic(r.ok ? "check" : "x")}<span class="sr">${r.ok ? "acertou" : "errou"}</span></td>` : `<td class="mc nr" title="${esc(q.it.enunciado)}: sem resposta"><span aria-hidden="true">–</span><span class="sr">sem resposta</span></td>`; }).join("")}<td class="n num">${p.pct}%</td></tr>`;
+  }).join("");
+  return `<section class="k"><h3 class="rh">Mapa da turma</h3><p class="sm mut" style="margin:0 0 10px">Cada linha é uma pessoa e cada coluna uma pergunta que vale nota. Passe o dedo ou o mouse sobre a coluna para ver a pergunta.</p>
+    <div class="mapa"><table class="rtb mp"><thead><tr><th class="nm">Nome</th>${col}<th class="n">%</th></tr></thead><tbody>${lin}</tbody><tfoot><tr><th class="nm">Acerto da pergunta</th>${e.perg.map(q => `<td class="mc num ${q.resp && q.pct < 60 ? "fr" : ""}">${q.resp ? q.pct + "%" : "–"}</td>`).join("")}<td class="n num">${e.c.pct}%</td></tr></tfoot></table></div>
+    <div class="leg sm"><span><i class="mc ok">${ic("check")}</i>Acertou</span><span><i class="mc no">${ic("x")}</i>Errou</span><span><i class="mc nr">–</i>Sem resposta</span></div></section>`;
+}
+function relTempo(s) {
+  const l = encerradas().filter(x => x.treinoId === s.treinoId && (x.id === s.id || tipoSessao(x) === "real")).sort((a, b) => String(a.fim).localeCompare(String(b.fim))).slice(-8);
+  if (l.length < 2) return `<section class="k"><h3 class="rh">Ao longo do tempo</h3><p class="sm mut" style="margin:0">Só há uma sessão registrada deste treinamento. Quando houver mais, o acerto de cada uma aparece aqui, comparado com a meta.</p></section>`;
+  return `<section class="k"><h3 class="rh">Ao longo do tempo</h3><p class="sm mut" style="margin:0 0 8px">Acerto geral de cada sessão deste treinamento (só registros oficiais e a sessão aberta). A linha vertical é a meta de ${s.meta}%.</p>
+    <div class="tmp">${l.map(x => { const pc = x.resultado ? x.resultado.pct : 0; return `<div class="tl-s ${x.id === s.id ? "at" : ""}"><span class="sm">${dtd(x.fim)}${x.id === s.id ? ' <span class="chip br">esta</span>' : ""}</span><div class="bar" role="img" aria-label="${pc}% de acerto"><i style="width:${pc}%" class="${pc < x.meta ? "fr" : ""}"></i><u style="left:${x.meta}%"></u></div><b class="num">${pc}%</b></div>`; }).join("")}</div></section>`;
+}
+function relPerguntas(s, e) {
+  if (!e.perg.length) return `<section class="k vazio"><b>Esta sessão não tem perguntas que valem nota</b></section>`;
+  const l = REL.asOrd === "dificil" ? e.perg.slice().sort((a, b) => a.pct - b.pct || a.n - b.n) : e.perg;
+  return relTempo(s) + `<section class="k"><div class="rh2"><h3 class="rh">Assertividade por pergunta</h3><div class="seg" role="group" aria-label="Ordem"><button data-act="relas" data-v="aula" aria-pressed="${REL.asOrd === "aula"}">Ordem da aula</button><button data-act="relas" data-v="dificil" aria-pressed="${REL.asOrd === "dificil"}">Mais difíceis primeiro</button></div></div>
+    <div class="aslist">${l.map(q => `<div class="as"><span class="qn">P${q.n}</span><div class="aq"><b>${esc(q.it.enunciado)}</b><div class="bar" role="img" aria-label="${q.pct}% de acerto, meta ${s.meta}%"><i style="width:${q.pct}%" class="${q.resp && q.pct < 60 ? "fr" : ""}"></i><u style="left:${s.meta}%"></u></div><span class="sm mut">${q.resp} resposta${q.resp === 1 ? "" : "s"}, ${q.ac} certa${q.ac === 1 ? "" : "s"}${q.errada ? ` · errada mais escolhida: “${esc((q.it.alternativas || [])[q.errada.alt] ?? "alternativa " + (q.errada.alt + 1))}” (${q.errada.n})` : ""}</span></div><span class="ap num">${q.resp ? q.pct + "%" : "–"}${q.resp && q.pct < 60 ? '<span class="chip warn">revisar</span>' : ""}</span></div>`).join("")}</div>
+    <p class="sm mut" style="margin:10px 0 0">A linha vertical marca a meta da sessão (${s.meta}%).</p></section>`;
+}
+function relSetores(s, e) {
+  return `<section class="k"><h3 class="rh">Resultado por setor</h3><div class="rtw"><table class="rtb"><thead><tr><th>Setor</th><th class="n">Pessoas</th><th>Acerto médio</th><th class="n">Atingiram a meta</th></tr></thead><tbody>${e.setores.map(x => `<tr><td><b>${esc(x.nome)}</b></td><td class="n num">${x.n}</td><td><div class="bar sb" role="img" aria-label="${x.pct}%"><i style="width:${x.pct}%" class="${x.pct < s.meta ? "fr" : ""}"></i><u style="left:${s.meta}%"></u></div><span class="num sm">${x.pct}%</span></td><td class="n num">${x.efic} de ${x.n}</td></tr>`).join("")}</tbody></table></div>
+    ${e.setores.length === 1 && e.setores[0].nome === "Sem setor" ? '<p class="sm mut" style="margin:10px 0 0">Ninguém escolheu setor nesta sessão. Cadastre os setores em Ajustes para ver a comparação.</p>' : ""}</section>`;
+}
+
+/* ---------- tela: conferir ---------- */
+function vConferir() {
+  topo("Conferir registro", "Prove que um PDF confere com os dados guardados");
+  $("#app").className = "body page rel";
+  const l = encerradas();
+  const r = CF.res;
+  const msg = !r ? "" : `<section class="k cf-r ${r.t}" role="status"><span class="ai ${r.t === "ok" ? "ok" : "warn"}">${ic(r.t === "ok" ? "shield" : "warn")}</span><div><b>${esc(r.titulo)}</b><p class="sm" style="margin:4px 0 0">${r.texto}</p></div></section>`;
+  $("#app").innerHTML = `<section class="k"><h3 class="rh">Digite o código do rodapé do PDF</h3>
+      <form data-form="conferir" class="cf-f"><div class="fd" style="flex:1;min-width:240px"><label for="cf-c">Código de conferência</label><input class="in mono" id="cf-c" value="${esc(CF.cod)}" placeholder="SAB-XXXX-XXXX-XXXX-XXXX-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false"></div><button class="b p" type="submit">${ic("shield")}Conferir</button></form>
+      <div class="cf-ou sm mut">ou confira um arquivo de sessão exportado: <label class="b sm" for="cf-arq">${ic("upload", 'style="width:16px;height:16px"')}Escolher .json</label><input type="file" id="cf-arq" accept=".json,application/json" class="sr"></div></section>
+    ${msg}
+    <section class="k"><h3 class="rh">Sessões guardadas neste aparelho</h3>${l.length ? `<div class="rtw"><table class="rtb"><thead><tr><th>Sessão</th><th class="hide-m">Data</th><th>Código</th><th>Integridade</th></tr></thead><tbody>${l.map(x => { const ok = integra(x); return `<tr><td><b>${esc(x.titulo)}</b><br><span class="sm mut">${esc(TIPO_TXT[tipoSessao(x)])}</span></td><td class="hide-m sm">${dtc(x.fim)}</td><td class="mono sm">${esc(x.cod)}${x.codTardio ? ' <span class="chip">gerado depois</span>' : ""}</td><td><span class="chip ${ok ? "ok" : "bad"}">${ok ? "Íntegro" : "Alterado depois de encerrar"}</span></td></tr>`; }).join("")}</tbody></table></div>` : '<p class="sm mut" style="margin:0">Nenhuma sessão encerrada ainda.</p>'}</section>
+    <section class="k"><h3 class="rh">Como funciona</h3><ul class="chg sm" style="margin:0">
+      <li>O código sai de um cálculo (SHA-256) sobre o título, a versão e as perguntas, a data, o instrutor, o local, a carga horária, a meta e, para cada pessoa, nome, setor, acertos, pontos e assinatura. Mudou qualquer um, o código muda.</li>
+      <li>Para uma auditoria, guarde o PDF e confira o código no aparelho em que a sessão foi aplicada, ou num aparelho onde você importou os dados em Ajustes.</li>
+      <li>Limite: não há senha nem carimbo de tempo externo. Quem tem o aparelho consegue gerar outro registro com outro código; o que o código prova é que o PDF impresso é igual ao que está guardado.</li></ul></section>`;
+}
+function conferirCodigo(txt) {
+  CF.cod = txt;
+  const c = normCodigo(txt);
+  if (!c) { CF.res = {t: "no", titulo: "Código inválido", texto: "O código tem o formato SAB-XXXX-XXXX-XXXX-XXXX-XXXX, com letras de A a F e números."}; return; }
+  const s = encerradas().find(x => garantirCodigo(x) === c);
+  if (!s) { CF.res = {t: "no", titulo: "Nenhuma sessão deste aparelho tem esse código", texto: "Pode ser de outro aparelho (importe os dados em Ajustes) ou o PDF foi alterado. Se foi aplicada em outro aparelho, confira também pelo arquivo de sessão (.json)."}; return; }
+  const e = estat(s);
+  if (!integra(s)) { CF.res = {t: "no", titulo: "Atenção: a sessão foi alterada depois de encerrada", texto: `O código ${esc(c)} é de “${esc(s.titulo)}” (${dtc(s.fim)}), mas os dados guardados hoje geram outro código. Não use este registro sem explicar a diferença.`}; return; }
+  CF.res = {t: "ok", titulo: "Registro confere", texto: `${esc(s.titulo)} (${verTxt(s)}), ${dtc(s.fim)}, instrutor ${esc(s.instrutor || "não informado")}. ${e.c.pessoas.length} pessoa${e.c.pessoas.length === 1 ? "" : "s"}, acerto geral de ${e.c.pct}%. Os dados guardados batem com o código do PDF. <a href="#/relatorios/${s.id}">Abrir o relatório</a>.${tipoSessao(s) !== "real" ? " <b>Esta sessão é " + (tipoSessao(s) === "teste" ? "de teste" : "um ensaio com simulados") + ", não é registro oficial.</b>" : ""}${s.codTardio ? " O código foi gerado depois do encerramento (sessão anterior à v0.5.0)." : ""}`};
+}
+function conferirArquivo(arq) {
+  const fr = new FileReader();
+  fr.onload = () => {
+    try {
+      const o = JSON.parse(fr.result), s = o && o.sessao;
+      if (!o || o.sabia !== "sessao" || !s || !Array.isArray(s.itens) || !Array.isArray(s.part) || !s.resp || typeof s.resp !== "object") throw new Error("formato");
+      const dado = normCodigo(o.codigo), novo = codigoDe(s), local = encerradas().find(x => x.cod === novo);
+      if (!dado) CF.res = {t: "no", titulo: "O arquivo não traz um código válido", texto: "Exporte a sessão de novo pelo relatório."};
+      else if (dado !== novo) CF.res = {t: "no", titulo: "O arquivo foi alterado", texto: `O arquivo diz que o código é ${esc(dado)}, mas os dados dentro dele geram ${esc(novo)}.`};
+      else CF.res = {t: "ok", titulo: "O arquivo confere", texto: `“${esc(s.titulo)}”, ${dtc(s.fim)}: os dados do arquivo geram o código ${esc(novo)}, igual ao registrado nele. ${local ? "Há uma sessão com o mesmo código neste aparelho." : "Esta sessão não está neste aparelho."}`};
+      CF.cod = dado || "";
+    } catch (err) { CF.res = {t: "no", titulo: "Não consegui ler esse arquivo", texto: "Escolha um arquivo de sessão (.json) exportado pelo relatório do Sabiá."}; }
+    render();
+  };
+  fr.readAsText(arq);
+}
+
+/* ---------- eventos ---------- */
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el) return;
+  const a = el.dataset.act, v = el.dataset.v;
+  const s = ["relpdf", "relpres", "relcsv", "reljson", "relabrir", "reaplicar", "rmfoto", "verass", "copiacod"].includes(a) ? sessaoRel(REL.sid) : null;
+  if (a === "relaba") { REL.aba = v; render(); }
+  else if (a === "relas") { REL.asOrd = v; render(); }
+  else if (a === "relord") { REL.ord = REL.ord.c === v ? {c: v, d: -REL.ord.d} : {c: v, d: v === "nome" || v === "setor" || v === "sit" ? 1 : -1}; render(); }
+  else if (!s && a !== "rmlogo" && a !== "rmroster") return;
+  else if (a === "relpdf") baixarBlob(nomeArq("registro", s, "pdf"), new Blob([pdfRegistro(s)], {type: "application/pdf"}));
+  else if (a === "relpres") baixarBlob(nomeArq("presenca", s, "pdf"), new Blob([pdfPresenca(s)], {type: "application/pdf"}));
+  else if (a === "relcsv") baixarBlob(nomeArq("resultado", s, "csv"), new Blob([csvSessao(s)], {type: "text/csv;charset=utf-8"}));
+  else if (a === "reljson") baixarBlob(nomeArq("sessao", s, "json"), new Blob([JSON.stringify({sabia: "sessao", versao: VERSAO, codigo: garantirCodigo(s), sessao: s}, null, 2)], {type: "application/json"}));
+  else if (a === "relabrir") abrirPdf(pdfRegistro(s));
+  else if (a === "reaplicar") reaplicar(s);
+  else if (a === "rmfoto") { delete s.foto; delete s.fotoEm; salvar(); render(); aviso("Foto removida"); }
+  else if (a === "verass") {
+    const p = s.part.find(x => x.id === el.dataset.id); if (!p || !p.ass) return;
+    const d = $("#dlg"); d.innerHTML = `<div class="dl"><header><h2>Assinatura de ${esc(p.nome)}</h2><button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header><div class="assg"><img src="${p.ass}" alt="Assinatura de ${esc(p.nome)}"></div><p class="sm mut" style="margin:0">${esc(s.titulo)}, ${dtc(s.fim)}</p></div>`; d.showModal();
+  }
+  else if (a === "copiacod") { try { navigator.clipboard.writeText(s.cod).then(() => aviso("Código copiado"), () => aviso("Não consegui copiar")); } catch (err) { aviso("Não consegui copiar"); } }
+  else if (a === "rmlogo") { delete S.cfg.logo; salvar(); render(); aviso("Logotipo removido"); }
+  else if (a === "rmroster") { if (UI.apl) { delete UI.apl.roster; delete UI.apl.reaplicaDe; render(); } }
+});
+document.addEventListener("change", e => {
+  const t = e.target;
+  if (t.id === "rl-s") { REL.sid = t.value; ir("#/relatorios/" + t.value); }
+  else if (t.id === "rl-foto" && t.files[0]) { const s = sessaoRel(REL.sid); if (s) salvarFoto(s, t.files[0]); t.value = ""; }
+  else if (t.id === "c-logo" && t.files[0]) { salvarLogo(t.files[0]); t.value = ""; }
+  else if (t.id === "cf-arq" && t.files[0]) { conferirArquivo(t.files[0]); t.value = ""; }
+});
+document.addEventListener("submit", e => {
+  const f = e.target.closest("[data-form='conferir']"); if (!f) return; e.preventDefault();
+  conferirCodigo($("#cf-c").value); render();
+});
+
 function render() {
   if (!S) return;
   const r = rota(); menu(r.v);
   document.body.classList.toggle("modo-telao", r.v === "telao");
+  document.body.classList.toggle("modo-cel", r.v === "entrar");
+  if (r.v !== "entrar" && CE.chave) pararCel();
   if (r.v === "inicio") vInicio();
   else if (r.v === "treinos") vTreinos();
   else if (r.v === "aplicar") vAplicar(r.id);
   else if (r.v === "editar") vEditar(r.id);
+  else if (r.v === "entrar") vCelular(r.id, r.x);
   else if (r.v === "sala") vSala(r.id);
   else if (r.v === "telao") vTelao(r.id);
   else if (r.v === "ajustes") vAjustes();
+  else if (r.v === "relatorios") vRelatorios(r.id);
+  else if (r.v === "conferir") vConferir();
   else if (FUTURO[r.v]) vFuturo(r.v);
   else { location.replace("#/inicio"); return; }
   document.title = "Sabiá" + (r.v === "inicio" ? "" : " · " + (($("#tb h1") || {}).textContent || ""));

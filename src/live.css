@@ -121,3 +121,6 @@
 @media (max-width:1100px){.sala{grid-template-columns:1fr}.prev{position:static}}
 @media (max-width:760px){.tb .b[data-act=telao]{width:44px;padding:0}.tb .sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60vw}}
 @media (prefers-reduced-motion:reduce){.conf{display:none}}
+
+.pp .px{display:grid;place-items:center;width:24px;height:24px;border:0;background:transparent;color:var(--ink2);cursor:pointer;border-radius:50%;padding:0;margin-left:2px}
+.pp .px:hover{color:var(--bad)}

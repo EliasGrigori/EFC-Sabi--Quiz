@@ -10,7 +10,7 @@ try { AO.ch = new BroadcastChannel("sabia-telao"); } catch(e) {}
 const sala = id => S.sessoes.find(x => x.id === id);
 const hash = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
 const iniciais = n => n.split(/\s+/).filter(Boolean).slice(0, 2).map(x => x[0]).join("").toUpperCase();
-const av = n => `<span class="av" style="background:${CORES_AV[hash(n) % CORES_AV.length]}" aria-hidden="true">${esc(iniciais(n))}</span>`;
+const av = (n, c) => `<span class="av" style="background:${CORES_AV[Number.isInteger(c) && c >= 0 && c < CORES_AV.length ? c : hash(n) % CORES_AV.length]}" aria-hidden="true">${esc(iniciais(n))}</span>`;
 const embaralhado = (n, seed) => { // ordem fixa por pergunta, nunca igual à certa
   const a = [...Array(n).keys()]; let x = seed + 7;
   for (let i = n - 1; i > 0; i--) { x = (x * 1103515245 + 12345) & 0x7fffffff; const j = x % (i + 1); [a[i], a[j]] = [a[j], a[i]]; }
@@ -18,7 +18,7 @@ const embaralhado = (n, seed) => { // ordem fixa por pergunta, nunca igual à ce
   return a;
 };
 const linkBase = () => location.href.split("#")[0].split("?")[0];
-const linkEntrar = s => linkBase() + "#/entrar/" + s.chave;
+const linkEntrar = s => linkBase() + "#/entrar/" + s.chave + (Rede.ok() ? "/" + Rede.seg(Rede.url()) : "");
 const linkTelao = s => linkBase() + "#/telao/" + s.id;
 const fmtChave = c => c.slice(0, 3) + " " + c.slice(3);
 
@@ -32,12 +32,13 @@ function abrirSalaDe(sessao) {
   const t = treino(sessao.treinoId); if (!t) { aviso("O treinamento dessa sessão foi removido"); return; }
   if (!sessao.itens) { fixarVersao(t); sessao.itens = clone(t.itens); }
   Object.assign(sessao, {titulo: t.titulo, meta: t.meta, versao: t.versao, estado: "sala", chave: sessao.chave || novaChave(), entrada: true,
-    part: sessao.part || [], resp: sessao.resp || {}, fase: sessao.fase || {etapa: "espera", idx: -1, t0: 0, dur: 0}, sim: sessao.sim || {on: true, alvo: 12}});
+    part: sessao.part || [], resp: sessao.resp || {}, fase: sessao.fase || {etapa: "espera", idx: -1, t0: 0, dur: 0}, sim: sessao.sim || {on: !Rede.ok(), alvo: 12}});
+  Rede.garantir(sessao);
   AO.id = sessao.id; salvar(); ir("#/sala/" + sessao.id);
 }
 function abrirSalaNova() {
   const a = UI.apl, t = treino(a.id); if (!t) return;
-  const s = {id: uid(), treinoId: t.id, preset: a.preset, setores: a.setores.slice(), instrutor: a.instrutor.trim(), local: a.local.trim(), horas: a.horas, aj: Object.assign({}, a.aj), estado: "preparada", criada: new Date().toISOString()};
+  const s = {id: uid(), treinoId: t.id, preset: a.preset, setores: a.setores.slice(), instrutor: a.instrutor.trim(), local: a.local.trim(), horas: a.horas, aj: Object.assign({}, a.aj), roster: a.roster ? a.roster.slice() : undefined, reaplicaDe: a.reaplicaDe, estado: "preparada", criada: new Date().toISOString()};
   S.sessoes.push(s); if (a.instrutor.trim() && !S.cfg.instrutor) S.cfg.instrutor = a.instrutor.trim();
   UI.apl = null; abrirSalaDe(s);
 }
@@ -69,7 +70,7 @@ function calc(s) {
   const pessoas = s.part.map(p => {
     let ac = 0, pts = 0; const rs = s.resp[p.id] || {};
     qs.forEach(([, i]) => { const r = rs[i]; if (r) { if (r.ok) ac++; pts += r.pts; } });
-    return {id: p.id, nome: p.nome, setor: p.setor, ac, pts, pct: nq ? Math.round(100 * ac / nq) : 0};
+    return {id: p.id, nome: p.nome, setor: p.setor, cor: p.cor, ac, pts, pct: nq ? Math.round(100 * ac / nq) : 0};
   });
   const tot = pessoas.reduce((a, p) => a + p.ac, 0);
   const pct = nq && pessoas.length ? Math.round(100 * tot / (nq * pessoas.length)) : 0;
@@ -78,11 +79,12 @@ function calc(s) {
   return {nq, pessoas, pct, efic, reforco: pessoas.length - efic, ranking, metaOk: pct >= s.meta};
 }
 function encerrar(s) {
-  limparSim();
+  limparSim(); Rede.fechar(s);
   if (!s.part.length && s.fase.etapa === "espera") { S.sessoes = S.sessoes.filter(x => x.id !== s.id); AO.id = null; salvar(); publicar(null); ir("#/inicio"); aviso("Sala fechada sem ninguém"); return; }
   const c = calc(s);
   s.estado = "encerrada"; s.fim = new Date().toISOString();
   s.resultado = {nq: c.nq, pct: c.pct, pessoas: c.pessoas.length, efic: c.efic, reforco: c.reforco, metaOk: c.metaOk, tabela: c.ranking.map(p => ({nome: p.nome, setor: p.setor, ac: p.ac, pts: p.pts, pct: p.pct}))};
+  s.cod = codigoDe(s);
   if (AO.id === s.id) AO.id = null;
   salvar(); publicar(null, s.id); UI.aba = "encerradas"; ir("#/treinos"); aviso("Sessão encerrada e guardada em Encerradas");
 }
@@ -132,8 +134,8 @@ function snap(s) {
     }
   }
   return {id: s.id, chave: s.chave, titulo: s.titulo, instrutor: s.instrutor, meta: s.meta, tela: s.aj.telao, som: s.aj.som, ranking: s.aj.ranking, entrada: s.entrada,
-    fase: f, min: Math.max(1, Math.round(s.itens.reduce((a, x) => a + (ehPergunta(x) ? (x.tempo || 20) + 8 : 120), 0) / 60)), nPart: s.part.length, part: s.part.slice(-60).map(p => ({n: p.nome})), item, numPerg, totalPerg, nPerg, resp, dist, url: linkEntrar(s),
-    resumo: f.etapa === "podio" ? {porPerg: s.itens.map((x, i) => [x, i]).filter(([x]) => vale(x)).map(([, i], k) => ({n: k + 1, pct: s.part.length ? Math.round(100 * s.part.filter(p => ((s.resp[p.id] || {})[i] || {}).ok).length / s.part.length) : 0})), pct: c.pct, efic: c.efic, reforco: c.reforco, metaOk: c.metaOk, nq: c.nq, top: c.ranking.slice(0, 10).map(p => ({n: p.nome, ac: p.ac, pts: p.pts}))} : null};
+    fase: f, min: Math.max(1, Math.round(s.itens.reduce((a, x) => a + (ehPergunta(x) ? (x.tempo || 20) + 8 : 120), 0) / 60)), nPart: s.part.length, part: s.part.slice(-60).map(p => ({n: p.nome, c: p.cor})), item, numPerg, totalPerg, nPerg, resp, dist, url: linkEntrar(s),
+    resumo: f.etapa === "podio" ? {porPerg: s.itens.map((x, i) => [x, i]).filter(([x]) => vale(x)).map(([, i], k) => ({n: k + 1, pct: s.part.length ? Math.round(100 * s.part.filter(p => ((s.resp[p.id] || {})[i] || {}).ok).length / s.part.length) : 0})), pct: c.pct, efic: c.efic, reforco: c.reforco, metaOk: c.metaOk, nq: c.nq, top: c.ranking.slice(0, 10).map(p => ({n: p.nome, c: p.cor, ac: p.ac, pts: p.pts}))} : null};
 }
 function publicar(s, vazioId) {
   const sn = snap(s); AO.snap = sn;
@@ -144,7 +146,7 @@ if (AO.ch) AO.ch.onmessage = e => {
   if (m.t === "oi") { const s = AO.id && sala(AO.id); if (s && s.estado === "sala") publicar(s); }
   else if (m.t === "estado" && rota().v === "telao") { const r = rota(); if (!r.id || m.id === r.id || m.id === null) { AO.snap = m.snap; if (m.snap || m.id === r.id) pintarTelao(); } }
 };
-function mudou(s) { salvar(); publicar(s); if (rota().v === "sala" || rota().v === "telao") render(); }
+function mudou(s) { salvar(); publicar(s); Rede.sync(s); if (rota().v === "sala" || rota().v === "telao") render(); }
 
 /* ---------- som ---------- */
 let ac = null;
@@ -164,9 +166,9 @@ function telaoHTML(sn) {
   if (f.etapa === "espera") {
     corpo = `${topo(`<b>${esc(sn.titulo)}</b><span>${sn.instrutor ? "instrutor " + esc(sn.instrutor) : ""}</span>`)}
       <div class="lobm"><div class="join"><div class="qr" data-qr="${esc(sn.url)}"></div><div><div class="kl">ou abra o Sabiá e digite</div><div class="kk">${fmtChave(sn.chave)}</div></div>
-        <div class="how"><div><b>1</b>Aponte a câmera para o QR</div><div><b>2</b>Toque no seu nome</div><div><b>3</b>Escolha seu boneco e aguarde</div></div></div>
+        <div class="how"><div><b>1</b>Aponte a câmera para o QR</div><div><b>2</b>Toque no seu nome</div><div><b>3</b>Escolha sua cor e aguarde</div></div></div>
         <div class="room"><div class="rh"><b>${sn.nPart}</b><span>${sn.nPart === 1 ? "pessoa na sala" : "pessoas na sala"}${sn.entrada ? "" : " · entrada fechada"}</span></div>
-        <div class="crowd ${sn.nPart <= 14 ? "g" : ""}">${sn.part.map(p => `<span class="cw">${av(p.n)}${esc(p.n.split(" ")[0])}</span>`).join("") || `<span style="font-size:22px;color:var(--tel-ink2)">Ninguém entrou ainda.</span>`}</div>
+        <div class="crowd ${sn.nPart <= 14 ? "g" : ""}">${sn.part.map(p => `<span class="cw">${av(p.n, p.c)}${esc(p.n.split(" ")[0])}</span>`).join("") || `<span style="font-size:22px;color:var(--tel-ink2)">Ninguém entrou ainda.</span>`}</div>
         <div class="facts"><div><b>${sn.nPerg}</b><span>perguntas valendo</span></div><div><b>${sn.min} min</b><span>de duração</span></div><div><b>${sn.meta}%</b><span>de meta</span></div></div></div></div>
       <div class="tfoot"><span>Começa quando o instrutor tocar em <b>Iniciar</b> · ${sn.nPerg} perguntas</span></div>`;
   } else if (f.etapa === "explicacao") {
@@ -186,13 +188,13 @@ function telaoHTML(sn) {
       : `<span class="bigc">${sn.resp} de ${sn.nPart}</span><span style="color:var(--tel-ink2)">já responderam</span>`;
     corpo = `${topo(`<b>${it.ensaio ? "Pergunta de teste" : "Pergunta " + sn.numPerg + " de " + sn.totalPerg}</b>${prog(sn.numPerg)}`)}<div class="tq"><h2>${esc(it.enunciado)}</h2>${rev ? "" : rel}</div>${tiles}<div class="answ">${rodape}</div>`;
   } else if (f.etapa === "podio") {
-    const r = sn.resumo, t = r.top, bl = (p, pos, h) => p ? `<div class="pl ${pos === 1 ? "p1" : ""}">${av(p.n)}<div class="blk" style="height:${h}px"><b>${pos}º</b><strong>${esc(p.n)}</strong>${p.ac} de ${r.nq} · ${p.pts} pts</div></div>` : "";
+    const r = sn.resumo, t = r.top, bl = (p, pos, h) => p ? `<div class="pl ${pos === 1 ? "p1" : ""}">${av(p.n, p.c)}<div class="blk" style="height:${h}px"><b>${pos}º</b><strong>${esc(p.n)}</strong>${p.ac} de ${r.nq} · ${p.pts} pts</div></div>` : "";
     const conf = sn.som === "ligado" ? `<div class="conf">${Array.from({length: 26}, (_, k) => `<i style="left:${(k * 37) % 100}%;background:${COR_ALT[k % 4]};animation-delay:${(k % 9) * .35}s"></i>`).join("")}</div>` : "";
     corpo = `${topo(`<b>Resultado da turma</b><span>${esc(sn.titulo)}</span>`, `<span class="pillk">${sn.nPart} PESSOAS</span>`)}
       <div class="podm"><div class="podl"><div><h2>${r.metaOk ? "A turma bateu a meta" : "A turma ficou abaixo da meta"}</h2><div class="res"><span class="${r.metaOk ? "g" : "r"}">${r.pct}% de acerto · meta ${sn.meta}%</span><span>${r.efic} de ${sn.nPart} eficazes</span>${r.reforco ? `<span>${r.reforco} vão para o reforço</span>` : ""}</div></div>
         <div class="pq">${r.porPerg.map(q => `<div><span class="bar"><i style="height:${Math.max(4, q.pct)}%;background:${q.pct >= sn.meta ? "var(--ok)" : "var(--sabia)"}"></i></span><b>${q.pct}%</b><span>P${q.n}</span></div>`).join("")}</div>
         ${sn.ranking ? `<div class="stage">${bl(t[1], 2, 150)}${bl(t[0], 1, 205)}${bl(t[2], 3, 112)}</div>` : ""}</div>
-        <div class="podr"><h3>${sn.ranking ? "Do 4º ao 10º" : "Resultado"}</h3>${sn.ranking ? t.slice(3).map((p, k) => `<div class="pr2"><b>${k + 4}º</b>${av(p.n)}<span>${esc(p.n.split(" ").length > 1 ? p.n.split(" ")[0] + " " + p.n.split(" ").slice(-1)[0] : p.n)}</span><span class="num">${p.pts}</span></div>`).join("") || `<span style="color:var(--tel-ink2);font-size:17px">Sem mais participantes.</span>` : `<span style="color:var(--tel-ink2);font-size:17px">O ranking está desligado nesta sessão.</span>`}</div></div>${conf}`;
+        <div class="podr"><h3>${sn.ranking ? "Do 4º ao 10º" : "Resultado"}</h3>${sn.ranking ? t.slice(3).map((p, k) => `<div class="pr2"><b>${k + 4}º</b>${av(p.n, p.c)}<span>${esc(p.n.split(" ").length > 1 ? p.n.split(" ")[0] + " " + p.n.split(" ").slice(-1)[0] : p.n)}</span><span class="num">${p.pts}</span></div>`).join("") || `<span style="color:var(--tel-ink2);font-size:17px">Sem mais participantes.</span>` : `<span style="color:var(--tel-ink2);font-size:17px">O ranking está desligado nesta sessão.</span>`}</div></div>${conf}`;
   }
   return `<div class="tel${claro}">${corpo}</div>`;
 }
@@ -270,16 +272,18 @@ function vSala(id) {
       <div class="tl2" role="list" aria-label="Etapas">${passos}</div></section>
     <section class="k"><div class="chave"><div><div class="lbl">Chave da sala</div><div class="cod" id="cod">${fmtChave(s.chave)}</div></div><span class="chip ${s.entrada ? "ok" : "warn"}">${s.entrada ? "entrada aberta" : "entrada fechada"}</span></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="b sm" data-act="entrada">${s.entrada ? "Fechar entrada" : "Abrir entrada"}</button><button class="b sm" data-act="copiar" data-v="${esc(linkEntrar(s))}">${ic("copy", 'style="width:16px;height:16px"')}Copiar link</button><a class="b sm" target="_blank" rel="noopener" href="https://wa.me/?text=${msgWa}">Convidar no WhatsApp</a></div>
-      <p class="sm mut" style="margin:10px 0 0">A entrada pelo celular chega na v0.4.0. Até lá, ensaie com participantes simulados.</p></section>
+      ${Rede.ok()
+        ? `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px"><span class="chip" id="redeSt">Conectando...</span><button class="b sm" data-act="roster">${ic("list", 'style="width:16px;height:16px"')}Lista de nomes${(s.roster || []).length ? " (" + s.roster.length + ")" : ""}</button></div><p class="sm mut" style="margin:8px 0 0">Os participantes entram pelo QR do telão ou por este link, no celular.</p>`
+        : `<p class="sm mut" style="margin:10px 0 0">Para os celulares entrarem, ligue o Firebase em <a href="#/ajustes">Ajustes</a>. Sem isso, ensaie com participantes simulados.</p>`}</section>
     <section class="k"><div class="kh" style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${ic("people", 'style="color:var(--brand-ink)"')}<h3 style="font-size:16px">Participantes</h3><span class="chip">${s.part.length}</span>${respondeu.length || f.etapa === "pergunta" ? `<span class="chip ${respondeu.length === s.part.length && s.part.length ? "ok" : ""}">${respondeu.length} responderam</span>` : ""}</div>
-      <div class="pgrid">${s.part.map(p => `<span class="pp ${respondeu.includes(p) ? "ok" : ""}">${av(p.nome)}${esc(p.nome.split(" ")[0])}</span>`).join("") || '<span class="sm mut">Ninguém entrou ainda.</span>'}</div>
+      <div class="pgrid">${s.part.map(p => `<span class="pp ${respondeu.includes(p) ? "ok" : ""}">${av(p.nome, p.cor)}${esc(p.nome.split(" ")[0])}${p.real && f.etapa === "espera" ? `<button class="px" data-act="rmpart" data-id="${esc(p.id)}" aria-label="Remover ${esc(p.nome)}">${ic("x", 'style="width:12px;height:12px"')}</button>` : ""}${p.real && f.etapa === "podio" ? `<span class="sm mut" title="${p.ass ? "assinou" : "ainda não assinou"}">${p.ass ? "assinou" : "..."}</span>` : ""}</span>`).join("") || '<span class="sm mut">Ninguém entrou ainda.</span>'}</div>
       <div class="sim" style="margin-top:10px"><label class="opt" style="min-height:40px"><input type="checkbox" data-sim="on" ${s.sim.on ? "checked" : ""}><span>Simular participantes</span></label><label class="sr" for="simn">Quantidade</label><input class="in" id="simn" type="number" min="1" max="24" value="${s.sim.alvo}" data-sim="alvo" style="width:84px"><button class="b sm" data-act="simmais">${ic("plus", 'style="width:16px;height:16px"')}Mais um</button></div></section>
     ${dist ? `<section class="k"><h3 style="font-size:16px;margin-bottom:8px">Respostas desta pergunta</h3>${dist}</section>` : ""}
-    ${s.part.length && s.aj.ranking && f.etapa !== "espera" ? `<section class="k"><h3 style="font-size:16px;margin-bottom:6px">Ranking ao vivo</h3><div class="rk">${c.ranking.slice(0, 5).map((p, k) => `<div class="rr"><b class="num">${k + 1}º</b>${av(p.nome)}<span>${esc(p.nome)}</span><span class="num">${p.pts}</span></div>`).join("")}</div></section>` : ""}
+    ${s.part.length && s.aj.ranking && f.etapa !== "espera" ? `<section class="k"><h3 style="font-size:16px;margin-bottom:6px">Ranking ao vivo</h3><div class="rk">${c.ranking.slice(0, 5).map((p, k) => `<div class="rr"><b class="num">${k + 1}º</b>${av(p.nome, p.cor)}<span>${esc(p.nome)}</span><span class="num">${p.pts}</span></div>`).join("")}</div></section>` : ""}
     <button class="b g bad" data-act="fechar-sala" style="justify-self:start">${ic("x")}Encerrar sala</button></div>
     <aside class="k prev" aria-label="O que a turma vê"><div style="display:flex;align-items:center;gap:8px"><b style="font-family:var(--f-disp)">O que a turma vê</b><span class="grow" style="flex:1"></span><button class="b sm" data-act="telao">${ic("screen", 'style="width:16px;height:16px"')}Abrir em outra tela</button></div>
       <div class="telwrap">${telaoHTML(sn)}</div><span class="sm mut">Esta prévia mostra o mesmo que o telão. Em outra janela ou projetor, use "Abrir em outra tela".</span></aside>`;
-  hidratarQR($("#app")); escalar(); tickTempo();
+  hidratarQR($("#app")); escalar(); tickTempo(); pintaRedeSt(); Rede.garantir(s);
 }
 
 /* ---------- eventos da sala ---------- */
@@ -300,7 +304,7 @@ document.addEventListener("click", e => {
     if (!w) { try { navigator.clipboard.writeText(linkTelao(s)); } catch(e3) {} aviso("O navegador bloqueou a janela. Libere pop-ups ou cole o link do telão (copiado) em outra aba."); }
   }
   else if (a === "fechar-sala" && s) {
-    const d = $("#dlg"); d.innerHTML = `<div class="dl"><header><h2>Encerrar a sala?</h2><button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header><p style="margin:0">${s.part.length ? "O que foi respondido até aqui fica guardado em Encerradas." : "Ninguém entrou, então a sala será apenas fechada."}</p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="b" data-act="fechar">Continuar a sessão</button><button class="b p" data-act="encerrar-ok" data-id="${s.id}">Encerrar sala</button></div></div>`; d.showModal();
+    const d = $("#dlg"); d.innerHTML = `<div class="dl"><header><h2>Encerrar a sala?</h2><button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header><p style="margin:0">${s.part.length ? "O que foi respondido até aqui fica guardado em Encerradas." : "Ninguém entrou, então a sala será apenas fechada."}${s.part.some(p => p.real && !p.ass) && s.fase.etapa === "podio" ? " Quem ainda não assinou a presença não vai conseguir assinar depois." : ""}</p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="b" data-act="fechar">Continuar a sessão</button><button class="b p" data-act="encerrar-ok" data-id="${s.id}">Encerrar sala</button></div></div>`; d.showModal();
   }
   else if (a === "encerrar-ok") { const x = sala(el.dataset.id); $("#dlg").open && $("#dlg").close(); if (x) encerrar(x); }
 });
