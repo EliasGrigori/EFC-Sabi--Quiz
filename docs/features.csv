@@ -47,13 +47,13 @@ Simular participantes,Ao vivo,should,yes,yes,demonstração
 Fechar/abrir entrada / iniciar / encerrar tempo / próxima,Ao vivo,must,yes,yes,
 Linha do tempo das etapas (E / teste / 1..n),Ao vivo,must,yes,yes,V06
 Ranking ao vivo e respostas desta pergunta,Ao vivo,must,yes,yes,
-Telão: sala de espera com QR / chave / bonecos de quem entrou,Telão,must,yes,yes,iniciais coloridas na cor escolhida (sem bonecos)
+Telão: sala de espera com QR / chave / bonecos de quem entrou,Telão,must,yes,yes,v1.4.0: bonecos montados de quem entrou (multidão, ranking e pódio)
 Telão: explicação / pergunta com régua de tempo / revelar resultado,Telão,must,yes,yes,
 Telão: pódio proporcional com confete e sons,Telão,should,yes,yes,V11; Web Audio
 Telão: modo projetor / tela cheia / modo apresentação,Telão,should,yes,yes,"Telão com tela cheia (F), modo projetor (P, fundo branco e contraste forte) e modo apresentação (A: tela cheia, cursor some, espaço/seta avança a sala) (v1.1.0)"
 Participante: entrar pela chave / QR / link,Participante,must,yes,yes,"QR, link ou chave; precisa do Firebase do instrutor"
 Participante: achar o nome com 3 letras ou se cadastrar com setor,Participante,must,yes,yes,Lista do cadastro com 3 letras; o setor vem do cadastro (v0.7.0); nome livre quando não há lista
-Participante: escolher o boneco (9 partes: rosto / pele / cabelo / cor / barba / expressão / roupa / cor da roupa / EPI) (A01),Participante,must,yes,partial,escolhe uma de 8 cores; sem boneco por decisão do Elias
+Participante: escolher o boneco (9 partes: rosto / pele / cabelo / cor / barba / expressão / roupa / cor da roupa / EPI) (A01),Participante,must,yes,yes,"v1.4.0: bicho montado (17 animais, 10 cores, 6 roupas, 11 detalhes, 29 cosméticos); começa com gato ou cachorro sorteado"
 Participante: responder / ouvir / ver certo ou errado com o porquê,Participante,must,yes,yes,"Responde, ouve a pergunta e a resposta pela voz do aparelho e vê certo ou errado com o porquê (v1.0.0)"
 Participante: mini linha de progresso e acertos até agora,Participante,must,yes,yes,v0.6.0: barra de progresso e pergunta n de N no celular
 Participante: resultado final + assinatura de presença com o dedo,Participante,must,yes,yes,"v0.6.0: resultado final,  assinatura e rever o que errei"

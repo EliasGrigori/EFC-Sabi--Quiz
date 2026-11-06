@@ -230,6 +230,7 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 /*__V11_CSS__*/
 /*__V12_CSS__*/
 /*__V13_CSS__*/
+/*__V14_CSS__*/
 </style>
 </head>
 <body>
@@ -291,7 +292,7 @@ dialog::backdrop{background:rgb(8 20 19/.55)}
 <script>/*__QR__*/</script>
 <script>
 "use strict";
-const VERSAO = "1.3.1";
+const VERSAO = "1.4.0";
 const MODELOS = __MODELOS__;
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -712,6 +713,7 @@ document.addEventListener("submit", e => {
 /*__V11_JS__*/
 /*__V12_JS__*/
 /*__V13_JS__*/
+/*__V14_JS__*/
 function render() {
   if (!S) return;
   const r = rota(); if (intAntesRender(r.v)) return; menu(r.v);

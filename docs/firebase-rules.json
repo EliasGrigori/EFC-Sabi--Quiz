@@ -24,6 +24,7 @@
           "c": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 64" },
           "s": { ".validate": "newData.isString() && newData.val().length <= 60" },
           "t": { ".validate": "newData.isNumber()" },
+          "b": { ".validate": "newData.isString() && newData.val().length <= 160 && newData.val().matches(/^[a-z0-9.+-]*$/)" },
           "ref": { "$i": {
             ".validate": "newData.hasChildren(['t', 'ok'])",
             "t": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 3" },

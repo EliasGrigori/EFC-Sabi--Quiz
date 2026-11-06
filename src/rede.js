@@ -32,6 +32,7 @@ const REGRAS_FIREBASE = `{
           "c": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 64" },
           "s": { ".validate": "newData.isString() && newData.val().length <= 60" },
           "t": { ".validate": "newData.isNumber()" },
+          "b": { ".validate": "newData.isString() && newData.val().length <= 160 && newData.val().matches(/^[a-z0-9.+-]*$/)" },
           "ref": { "$i": {
             ".validate": "newData.hasChildren(['t', 'ok'])",
             "t": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 3" },
@@ -185,11 +186,13 @@ function ingerir(s, M) {
   let mud = false;
   const partes = M.part && typeof M.part === "object" ? M.part : {};
   Object.entries(partes).forEach(([pid, v]) => {
-    if (!v || typeof v.n !== "string" || s.part.some(p => p.id === pid)) return;
+    const ja = v && s.part.find(p => p.id === pid);
+    if (ja) { const b = bonValido(v.b); if (b && ja.b !== b) { ja.b = b; mud = true; } return; }   // a pessoa trocou o bicho depois de entrar
+    if (!v || typeof v.n !== "string") return;
     const nome = limpaNome(v.n); if (!nome) return;
     let setor = (s.setores || []).includes(v.s) ? v.s : "";
     if (!setor) { const pe = pessoaPorNome(nome); if (pe && pe.setor) setor = pe.setor; }   // setor do cadastro de Pessoas
-    s.part.push({id: pid, nome, setor, cor: Number.isInteger(v.c) && v.c >= 0 && v.c < CORES_AV.length ? v.c : undefined, real: true}); mud = true;
+    s.part.push({id: pid, nome, setor, cor: Number.isInteger(v.c) && v.c >= 0 && v.c < CORES_AV.length ? v.c : undefined, b: bonValido(v.b) || undefined, real: true}); mud = true;
   });
   if (Rede.carregado && s.fase.etapa === "espera") { const antes = s.part.length; s.part = s.part.filter(p => !p.real || partes[p.id]); if (s.part.length !== antes) mud = true; }
   Object.entries(M.resp && typeof M.resp === "object" ? M.resp : {}).forEach(([pid, rs]) => {

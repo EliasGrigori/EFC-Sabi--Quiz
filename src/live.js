@@ -76,7 +76,7 @@ function calc(s) {
   const pessoas = s.part.map(p => {
     let ac = 0, pts = 0; const rs = s.resp[p.id] || {};
     qs.forEach(([, i]) => { const r = rs[i]; if (r) { if (r.ok) ac++; pts += r.pts; } });
-    return {id: p.id, nome: p.nome, setor: p.setor, cor: p.cor, ac, pts, pct: nq ? Math.round(100 * ac / nq) : 0};
+    return {id: p.id, nome: p.nome, setor: p.setor, cor: p.cor, b: p.b, ac, pts, pct: nq ? Math.round(100 * ac / nq) : 0};
   });
   const tot = pessoas.reduce((a, p) => a + p.ac, 0);
   const pct = nq && pessoas.length ? Math.round(100 * tot / (nq * pessoas.length)) : 0;
@@ -106,7 +106,7 @@ function limparSim() { AO.timers.forEach(clearTimeout); AO.timers = []; }
 function simAdd(s) {
   const usados = new Set(s.part.map(p => p.nome)); const livres = NOMES.filter(n => !usados.has(n)); if (!livres.length) return false;
   const nome = livres[Math.floor(Math.random() * livres.length)], setores = s.setores.length ? s.setores : (S.cfg.setores.length ? S.cfg.setores : ["Geral"]);
-  s.part.push({id: uid(), nome, setor: setores[Math.floor(Math.random() * setores.length)], sim: true, hab: 0.45 + Math.random() * 0.5});
+  s.part.push({id: uid(), nome, setor: setores[Math.floor(Math.random() * setores.length)], sim: true, hab: 0.45 + Math.random() * 0.5, b: bonSorteio()});
   return true;
 }
 function agendaSim(s) {
@@ -140,8 +140,8 @@ function snap(s) {
     }
   }
   return {id: s.id, chave: s.chave, titulo: s.titulo, instrutor: s.instrutor, meta: s.meta, metaTxt: metaTxtS(s), mom: s.mom || "", tela: s.aj.telao, som: s.aj.som, ranking: s.aj.ranking, entrada: s.entrada,
-    mat: matSnap(s), fase: f, min: Math.max(1, Math.round(s.itens.reduce((a, x) => a + (ehPergunta(x) ? (x.tempo || 20) + 8 : 120), 0) / 60)), nPart: s.part.length, part: s.part.slice(-60).map(p => ({n: p.nome, c: p.cor})), item, numPerg, totalPerg, nPerg, resp, dist, url: linkEntrar(s),
-    resumo: f.etapa === "podio" ? {porPerg: s.itens.map((x, i) => [x, i]).filter(([x]) => vale(x)).map(([, i], k) => ({n: k + 1, pct: s.part.length ? Math.round(100 * s.part.filter(p => ((s.resp[p.id] || {})[i] || {}).ok).length / s.part.length) : 0})), pct: c.pct, efic: c.efic, reforco: c.reforco, metaOk: c.metaOk, nq: c.nq, top: c.ranking.slice(0, 10).map(p => ({n: p.nome, c: p.cor, ac: p.ac, pts: p.pts}))} : null};
+    mat: matSnap(s), fase: f, min: Math.max(1, Math.round(s.itens.reduce((a, x) => a + (ehPergunta(x) ? (x.tempo || 20) + 8 : 120), 0) / 60)), nPart: s.part.length, part: s.part.slice(-60).map(p => ({n: p.nome, c: p.cor, b: p.b})), item, numPerg, totalPerg, nPerg, resp, dist, url: linkEntrar(s),
+    resumo: f.etapa === "podio" ? {porPerg: s.itens.map((x, i) => [x, i]).filter(([x]) => vale(x)).map(([, i], k) => ({n: k + 1, pct: s.part.length ? Math.round(100 * s.part.filter(p => ((s.resp[p.id] || {})[i] || {}).ok).length / s.part.length) : 0})), pct: c.pct, efic: c.efic, reforco: c.reforco, metaOk: c.metaOk, nq: c.nq, top: c.ranking.slice(0, 10).map(p => ({n: p.nome, c: p.cor, b: p.b, ac: p.ac, pts: p.pts}))} : null};
 }
 function publicar(s, vazioId) {
   const sn = snap(s); AO.snap = sn;
@@ -172,9 +172,9 @@ function telaoHTML(sn) {
   if (f.etapa === "espera") {
     corpo = `${topo(`<b>${esc(sn.titulo)}</b><span>${sn.instrutor ? "instrutor " + esc(sn.instrutor) : ""}</span>`)}
       <div class="lobm"><div class="join"><div class="qr" data-qr="${esc(sn.url)}"></div><div><div class="kl">ou abra o Sabiá e digite</div><div class="kk">${fmtChave(sn.chave)}</div></div>
-        <div class="how"><div><b>1</b>Aponte a câmera para o QR</div><div><b>2</b>Toque no seu nome</div><div><b>3</b>Escolha sua cor e aguarde</div></div></div>
+        <div class="how"><div><b>1</b>Aponte a câmera para o QR</div><div><b>2</b>Toque no seu nome</div><div><b>3</b>Monte seu bicho e aguarde</div></div></div>
         <div class="room"><div class="rh"><b>${sn.nPart}</b><span>${sn.nPart === 1 ? "pessoa na sala" : "pessoas na sala"}${sn.entrada ? "" : " · entrada fechada"}</span></div>
-        <div class="crowd ${sn.nPart <= 14 ? "g" : ""}">${sn.part.map(p => `<span class="cw">${av(p.n, p.c)}${esc(p.n.split(" ")[0])}</span>`).join("") || `<span style="font-size:22px;color:var(--tel-ink2)">Ninguém entrou ainda.</span>`}</div>
+        <div class="crowd ${sn.nPart <= 14 ? "g" : ""}">${sn.part.map(p => `<span class="cw">${avB(p.n, p.c, p.b)}${esc(p.n.split(" ")[0])}</span>`).join("") || `<span style="font-size:22px;color:var(--tel-ink2)">Ninguém entrou ainda.</span>`}</div>
         <div class="facts"><div><b>${sn.nPerg}</b><span>perguntas valendo</span></div><div><b>${sn.min} min</b><span>de duração</span></div><div><b>${sn.metaTxt || sn.meta + "%"}</b><span>de meta</span></div></div></div></div>
       <div class="tfoot"><span>Começa quando o instrutor tocar em <b>Iniciar</b> · ${sn.nPerg} perguntas</span></div>`;
   } else if (f.etapa === "explicacao") {
@@ -194,13 +194,13 @@ function telaoHTML(sn) {
       : `<span class="bigc">${sn.resp} de ${sn.nPart}</span><span style="color:var(--tel-ink2)">já responderam</span>`;
     corpo = `${topo(`<b>${it.ensaio ? "Pergunta de teste" : "Pergunta " + sn.numPerg + " de " + sn.totalPerg}</b>${prog(sn.numPerg)}`)}<div class="tq"><h2>${esc(it.enunciado)}${rev ? "" : btnTelVoz(it)}</h2>${rev ? "" : rel}</div>${tiles}<div class="answ">${rodape}</div>`;
   } else if (f.etapa === "podio") {
-    const r = sn.resumo, t = r.top, bl = (p, pos, h) => p ? `<div class="pl ${pos === 1 ? "p1" : ""}">${av(p.n, p.c)}<div class="blk" style="height:${h}px"><b>${pos}º</b><strong>${esc(p.n)}</strong>${p.ac} de ${r.nq} · ${p.pts} pts</div></div>` : "";
+    const r = sn.resumo, t = r.top, bl = (p, pos, h) => p ? `<div class="pl ${pos === 1 ? "p1" : ""}">${avB(p.n, p.c, p.b)}<div class="blk" style="height:${h}px"><b>${pos}º</b><strong>${esc(p.n)}</strong>${p.ac} de ${r.nq} · ${p.pts} pts</div></div>` : "";
     const conf = sn.som === "ligado" ? `<div class="conf">${Array.from({length: 26}, (_, k) => `<i style="left:${(k * 37) % 100}%;background:${COR_ALT[k % 4]};animation-delay:${(k % 9) * .35}s"></i>`).join("")}</div>` : "";
     corpo = `${topo(`<b>Resultado da turma</b><span>${esc(sn.titulo)}</span>`, `<span class="pillk">${sn.nPart} PESSOAS</span>`)}
       <div class="podm"><div class="podl"><div>${sn.mom === "pre" ? `<h2>Pré-teste concluído</h2><div class="res"><span>${r.pct}% de acerto médio</span><span>ponto de partida da turma</span></div>` : `<h2>${r.metaOk ? "A turma bateu a meta" : "A turma ficou abaixo da meta"}</h2><div class="res"><span class="${r.metaOk ? "g" : "r"}">${r.pct}% de acerto · meta ${sn.metaTxt || sn.meta + "%"}</span><span>${r.efic} de ${sn.nPart} eficazes</span>${r.reforco ? `<span>${r.reforco} vão para o reforço</span>` : ""}</div>`}</div>
         <div class="pq">${r.porPerg.map(q => `<div><span class="bar"><i style="height:${Math.max(4, q.pct)}%;background:${q.pct >= sn.meta ? "var(--ok)" : "var(--sabia)"}"></i></span><b>${q.pct}%</b><span>P${q.n}</span></div>`).join("")}</div>
         ${sn.ranking ? `<div class="stage">${bl(t[1], 2, 150)}${bl(t[0], 1, 205)}${bl(t[2], 3, 112)}</div>` : ""}</div>
-        <div class="podr"><h3>${sn.ranking ? "Do 4º ao 10º" : "Resultado"}</h3>${sn.ranking ? t.slice(3).map((p, k) => `<div class="pr2"><b>${k + 4}º</b>${av(p.n, p.c)}<span>${esc(p.n.split(" ").length > 1 ? p.n.split(" ")[0] + " " + p.n.split(" ").slice(-1)[0] : p.n)}</span><span class="num">${p.pts}</span></div>`).join("") || `<span style="color:var(--tel-ink2);font-size:17px">Sem mais participantes.</span>` : `<span style="color:var(--tel-ink2);font-size:17px">O ranking está desligado nesta sessão.</span>`}</div></div>${conf}`;
+        <div class="podr"><h3>${sn.ranking ? "Do 4º ao 10º" : "Resultado"}</h3>${sn.ranking ? t.slice(3).map((p, k) => `<div class="pr2"><b>${k + 4}º</b>${avB(p.n, p.c, p.b)}<span>${esc(p.n.split(" ").length > 1 ? p.n.split(" ")[0] + " " + p.n.split(" ").slice(-1)[0] : p.n)}</span><span class="num">${p.pts}</span></div>`).join("") || `<span style="color:var(--tel-ink2);font-size:17px">Sem mais participantes.</span>` : `<span style="color:var(--tel-ink2);font-size:17px">O ranking está desligado nesta sessão.</span>`}</div></div>${conf}`;
   }
   return `<div class="tel${claro}">${corpo}</div>`;
 }
@@ -283,11 +283,11 @@ function vSala(id) {
         ? `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px"><span class="chip" id="redeSt">Conectando...</span><button class="b sm" data-act="roster">${ic("list", 'style="width:16px;height:16px"')}Lista de nomes${(s.roster || []).length ? " (" + s.roster.length + ")" : ""}</button></div><p class="sm mut" style="margin:8px 0 0">Os participantes entram pelo QR do telão ou por este link, no celular.</p>`
         : `<p class="sm mut" style="margin:10px 0 0">Para os celulares entrarem, ligue o Firebase em <a href="#/ajustes">Ajustes</a>. Sem isso, ensaie com participantes simulados.</p>`}</section>
     <section class="k"><div class="kh" style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${ic("people", 'style="color:var(--brand-ink)"')}<h3 style="font-size:16px">Participantes</h3><span class="chip">${s.part.length}</span>${respondeu.length || f.etapa === "pergunta" ? `<span class="chip ${respondeu.length === s.part.length && s.part.length ? "ok" : ""}">${respondeu.length} responderam</span>` : ""}</div>
-      <div class="pgrid">${s.part.map(p => `<span class="pp ${respondeu.includes(p) ? "ok" : ""}">${av(p.nome, p.cor)}${esc(p.nome.split(" ")[0])}${p.real && f.etapa === "espera" ? `<button class="px" data-act="rmpart" data-id="${esc(p.id)}" aria-label="Remover ${esc(p.nome)}">${ic("x", 'style="width:12px;height:12px"')}</button>` : ""}${p.real && f.etapa === "podio" ? `<span class="sm mut" title="${p.ass ? "assinou" : "ainda não assinou"}">${p.ass ? "assinou" : "..."}</span>` : ""}</span>`).join("") || '<span class="sm mut">Ninguém entrou ainda.</span>'}</div>
+      <div class="pgrid">${s.part.map(p => `<span class="pp ${respondeu.includes(p) ? "ok" : ""}">${avB(p.nome, p.cor, p.b)}${esc(p.nome.split(" ")[0])}${p.real && f.etapa === "espera" ? `<button class="px" data-act="rmpart" data-id="${esc(p.id)}" aria-label="Remover ${esc(p.nome)}">${ic("x", 'style="width:12px;height:12px"')}</button>` : ""}${p.real && f.etapa === "podio" ? `<span class="sm mut" title="${p.ass ? "assinou" : "ainda não assinou"}">${p.ass ? "assinou" : "..."}</span>` : ""}</span>`).join("") || '<span class="sm mut">Ninguém entrou ainda.</span>'}</div>
       <div class="sim" style="margin-top:10px"><label class="opt" style="min-height:40px"><input type="checkbox" data-sim="on" ${s.sim.on ? "checked" : ""}><span>Simular participantes</span></label><label class="sr" for="simn">Quantidade</label><input class="in" id="simn" type="number" min="1" max="24" value="${s.sim.alvo}" data-sim="alvo" style="width:84px"><button class="b sm" data-act="simmais">${ic("plus", 'style="width:16px;height:16px"')}Mais um</button></div></section>
     ${f.etapa === "podio" ? refCard(s) + cmCard(s) : ""}
     ${dist ? `<section class="k"><h3 style="font-size:16px;margin-bottom:8px">Respostas desta pergunta</h3>${dist}</section>` : ""}
-    ${s.part.length && s.aj.ranking && f.etapa !== "espera" ? `<section class="k"><h3 style="font-size:16px;margin-bottom:6px">Ranking ao vivo</h3><div class="rk">${c.ranking.slice(0, 5).map((p, k) => `<div class="rr"><b class="num">${k + 1}º</b>${av(p.nome, p.cor)}<span>${esc(p.nome)}</span><span class="num">${p.pts}</span></div>`).join("")}</div></section>` : ""}
+    ${s.part.length && s.aj.ranking && f.etapa !== "espera" ? `<section class="k"><h3 style="font-size:16px;margin-bottom:6px">Ranking ao vivo</h3><div class="rk">${c.ranking.slice(0, 5).map((p, k) => `<div class="rr"><b class="num">${k + 1}º</b>${avB(p.nome, p.cor, p.b)}<span>${esc(p.nome)}</span><span class="num">${p.pts}</span></div>`).join("")}</div></section>` : ""}
     <button class="b g bad" data-act="fechar-sala" style="justify-self:start">${ic("x")}Encerrar sala</button></div>
     <aside class="k prev" aria-label="O que a turma vê"><div style="display:flex;align-items:center;gap:8px"><b style="font-family:var(--f-disp)">O que a turma vê</b><span class="grow" style="flex:1"></span><button class="b sm" data-act="telao">${ic("screen", 'style="width:16px;height:16px"')}Abrir em outra tela</button></div>
       <div class="telwrap">${telaoHTML(sn)}</div><span class="sm mut">Esta prévia mostra o mesmo que o telão. Em outra janela ou projetor, use "Abrir em outra tela". No telão: F tela cheia, P modo projetor, A apresentação (espaço avança).</span></aside>`;

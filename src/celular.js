@@ -76,7 +76,7 @@ function progCel(f) {
 
 /* ---------- telas ---------- */
 const cabCel = (extra = "") => `<header class="ch"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#logo"/></svg><div><b>${esc((CE.pub && CE.pub.meta && CE.pub.meta.titulo) || "Sabiá")}</b><span>${CE.pub && CE.pub.meta && CE.pub.meta.instrutor ? "instrutor " + esc(CE.pub.meta.instrutor) : "Sala " + (CE.chave ? esc(fmtChave(CE.chave)) : "")}</span></div>${extra}</header>`;
-const eu = () => `<span class="eu">${av(CE.nome, CE.cor)}<b>${esc(CE.nome.split(" ")[0])}</b></span>`;
+const eu = () => `<span class="eu">${avB(CE.nome, CE.cor, CE.bon)}<b>${esc(CE.nome.split(" ")[0])}</b></span>`;
 const itemCel = () => { const it = CE.pub && CE.pub.item; return it ? Object.assign({}, it, {alts: lista(it.alts), ordem: it.ordem ? lista(it.ordem).map(Number) : null}) : null; };
 function pintaCel() {
   if (rota().v !== "entrar" || !$("#app").classList.contains("cel")) return;
@@ -92,6 +92,7 @@ function pintaCel() {
 function pintaTelaCel() { tickTempo(); const c = $("#cassin"); if (c) prepararAssinatura(c); }
 function montaCel() {
   const m = CE.pub && CE.pub.meta, f = CE.pub && CE.pub.fase;
+  if (CE.bonAberto && CE.chave && CE.visto && CE.pub) return {tela: "bicho", html: bonEditorCel()};
   if (!CE.chave) return {tela: "chave", html: `<div class="cc">${cabCel()}<form class="cb" data-form="celchave"><h1>Entrar na sala</h1><p class="mut" style="margin:0">Digite a chave de 6 números que está no telão.</p>
     <div class="fd"><label for="ce-k">Chave da sala</label><input class="in big" id="ce-k" inputmode="numeric" pattern="[0-9 ]*" maxlength="7" autocomplete="off" placeholder="000 000"></div><button class="b p g2" type="submit">Entrar</button></form></div>`};
   if (CE.erro === "semdb") return {tela: "erro", html: `<div class="cc">${cabCel()}<div class="cb"><h1>Use o QR ou o link</h1><p class="mut" style="margin:0">Este aparelho ainda não sabe onde fica a sala. Aponte a câmera para o QR do telão ou abra o link que o instrutor enviou. Nas próximas vezes basta digitar a chave.</p><a class="b" href="#/entrar">Digitar outra chave</a></div></div>`};
@@ -107,12 +108,12 @@ function montaCel() {
       <div class="fd"><label for="ce-n">${ro.length ? "Digite 3 letras do seu nome" : "Seu nome completo"}</label><input class="in big" id="ce-n" autocomplete="off" autocapitalize="words" maxlength="60" value="${esc(CE.nome)}"></div>
       <div id="ce-sug" class="sug" aria-live="polite"></div>
       ${se.length > 1 ? `<div class="fd"><label for="ce-s">Seu setor</label><select class="in" id="ce-s"><option value="">Escolha</option>${se.map(x => `<option>${esc(x)}</option>`).join("")}</select></div>` : ""}
-      <div class="fd"><span class="lbl">Sua cor</span><div class="cores" role="radiogroup" aria-label="Sua cor">${CORES_AV.map((c, k) => `<button type="button" class="co" role="radio" data-act="ccor" data-k="${k}" aria-checked="${CE.cor === k}" aria-label="Cor ${k + 1}" style="background:${c}">${CE.cor === k ? ic("check", 'style="width:20px;height:20px"') : ""}</button>`).join("")}</div></div>
+      ${bonEscolhaCel()}
       <p class="erro" id="ce-erro" role="alert">${esc(CE.erro || "")}</p><button class="b p g2" type="submit">Entrar na sala</button></form></div>`};
   }
   const it = itemCel(), t = f.etapa, np = m.nPart || 0;
   const faixa = (txt, tm) => `<div class="fx"><span>${txt}</span>${eu()}</div>${progCel(f)}${tm || ""}`;
-  if (t === "espera") return {tela: "espera", html: `<div class="cc">${cabCel()}<div class="cb ct"><div class="ok-i">${ic("check", 'style="width:34px;height:34px"')}</div><h1>Você está na sala</h1><div class="eu2">${av(CE.nome, CE.cor)}<b>${esc(CE.nome)}</b></div><p class="mut" style="margin:0">${np} ${np === 1 ? "pessoa na sala" : "pessoas na sala"}. Aguarde o instrutor iniciar.</p><button class="b g" data-act="cnaosou">Não sou eu</button><button class="b g" data-act="cprox">Outra pessoa vai usar este celular</button></div></div>`};
+  if (t === "espera") return {tela: "espera", html: `<div class="cc">${cabCel()}<div class="cb ct"><div class="ok-i">${ic("check", 'style="width:34px;height:34px"')}</div><h1>Você está na sala</h1><div class="eu2">${avB(CE.nome, CE.cor, bonMeu())}<b>${esc(CE.nome)}</b></div><button type="button" class="b" data-act="cbon">Mudar meu bicho</button><p class="mut" style="margin:0">${np} ${np === 1 ? "pessoa na sala" : "pessoas na sala"}. Aguarde o instrutor iniciar.</p><button class="b g" data-act="cnaosou">Não sou eu</button><button class="b g" data-act="cprox">Outra pessoa vai usar este celular</button></div></div>`};
   if (t === "explicacao") return {tela: "expl", html: `<div class="cc">${cabCel()}<div class="cb">${faixa("Explicação")}<h1>${esc(it ? it.enunciado : "")}</h1>${it && it.texto ? `<p style="margin:0;white-space:pre-line">${esc(it.texto)}</p>` : ""}<p class="mut" style="margin:0">Atenção na explicação do instrutor.</p></div></div>`};
   if (t === "pergunta" && it) {
     const idx = f.idx, resp = CE.resp[idx], tempo = f.dur ? `<div class="pbar"><i data-k="b" data-fim="${CE.t0 + f.dur}" data-dur="${f.dur}"></i></div>` : "";
@@ -240,6 +241,7 @@ async function enviarCom() {
 function proxPessoaCel() {
   if (CE.ouvRes) CE.ouvRes.fechar(); if (CE.ouvRsp) CE.ouvRsp.fechar();
   ["sabia-p-", "sabia-a-", "sabia-rv-", "sabia-rf-", "sabia-cm-"].forEach(k => { try { localStorage.removeItem(chaveLS(k)); } catch (e) {} });
+  try { localStorage.removeItem("sabia-bon"); } catch (e) {} CE.bon = ""; CE.bonAberto = false;   // a próxima pessoa começa com gato ou cachorro sorteado
   Object.assign(CE, {pid: null, nome: "", entrou: false, jaEntrou: false, res: null, rsp: null, ouvRes: null, ouvRsp: null, resp: {}, rev: {}, ref: {}, assinou: false, tracos: 0, vista: "", rf: null, sel: null, ord: [], erro: "", cm: {tipo: "sugestao", texto: "", env: [], erro: ""}, html: ""});
   pintaCel(); scrollTo(0, 0);
 }
@@ -283,8 +285,12 @@ async function entrarCel(nome, setor) {
   CE.erro = "";
   let pid = uid();
   try { const todos = await Rede.req(CE.base, "GET", "/salas/" + CE.chave + "/part"); const ex = Object.entries(todos || {}).find(([, v]) => v && semAcento(v.n) === semAcento(nome)); if (ex) pid = ex[0]; } catch(e) {}
-  try { await Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/part/" + pid, {n: nome, c: CE.cor, s: setor || "", t: Date.now()}); }
-  catch(e) { CE.erro = "Não consegui entrar. Confira a internet e tente de novo."; return; }
+  const dados = {n: nome, c: CE.cor, s: setor || "", t: Date.now()};
+  try { await Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/part/" + pid, Object.assign({b: bonMeu()}, dados)); }
+  catch(e) {   // regras antigas do Firebase (sem o campo do boneco): entra sem o boneco
+    try { await Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/part/" + pid, dados); }
+    catch(e2) { CE.erro = "Não consegui entrar. Confira a internet e tente de novo."; return; }
+  }
   Object.assign(CE, {pid, nome, entrou: true, jaEntrou: true, erro: ""});
   try { localStorage.setItem(chaveLS("sabia-p-"), JSON.stringify({pid, nome, cor: CE.cor})); } catch(e) {}
   ligarRes(); CE.html = ""; pintaCel();

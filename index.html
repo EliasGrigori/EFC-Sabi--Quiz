@@ -876,6 +876,42 @@ label.b.sm{cursor:pointer}
 @media (max-width:520px){.mt-add{grid-template-columns:1fr 80px}.mt-add button{grid-column:1/-1}#dlg:has(.dl.mt){width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border-radius:0}}
 .mt-falta{display:grid;gap:8px;justify-items:start;padding:12px;border-radius:12px;background:var(--warn-soft,#FBE6D8);border:1px solid var(--line)}
 
+/* ===== v1.4.0 · bonecos ===== */
+.avb{display:inline-block;flex:none;width:26px;height:26px;position:relative;line-height:0}
+.avb img{width:100%;height:100%;object-fit:contain;display:block;-webkit-mask-image:radial-gradient(closest-side,#000 78%,transparent 100%);mask-image:radial-gradient(closest-side,#000 78%,transparent 100%)}
+.avb img:not([src]){visibility:hidden}
+.avb.vazio{border-radius:50%;background:var(--sunk)}
+/* tamanhos por lugar: o boneco ocupa mais que o círculo de antes, porque tem corpo */
+.pp .avb{width:34px;height:34px;margin:-6px 0 -6px -4px}
+.rk .rr .avb{width:30px;height:30px;margin:-4px 0}
+.eu .avb{width:30px;height:30px;margin:-4px 0}
+.eu2 .avb{width:92px;height:92px}
+.tel .cw .avb{width:52px;height:52px;margin:-10px -2px -10px -6px}
+.tel .crowd.g .cw .avb{width:66px;height:66px}
+.tel .pl .avb{width:200px;height:200px;margin-bottom:-24px}
+.tel .podr .pr2 .avb{width:42px;height:42px;margin:-6px 0}
+/* celular: escolher e montar */
+.bon-linha{display:grid;grid-template-columns:76px 1fr;gap:4px 12px;align-items:center}
+.bon-linha .b{grid-column:1 / -1;justify-self:start}
+.bon-m{width:76px;height:76px;background:var(--sunk);border-radius:16px}
+.bon-topo{display:grid;grid-template-columns:132px 1fr;gap:12px;align-items:center}
+.bon-g{width:132px;height:132px;background:var(--sunk);border-radius:20px}
+.bon-tt{display:grid;gap:4px;justify-items:start;min-width:0}.bon-tt h1{margin:0;font-size:20px}.bon-tt .sm{overflow-wrap:anywhere}
+.bon-abas{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.bon-aba{min-height:44px;padding:0 8px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
+.bon-aba.on{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+.bon-op{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));grid-auto-rows:max-content;gap:8px;max-height:46dvh;overflow:auto;padding:2px}
+.bon-i{display:grid;align-content:start;gap:4px;justify-items:center;padding:6px 4px 8px;border-radius:14px;border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit;min-height:44px}
+.bon-i.on{border-color:var(--sabia);background:var(--warn-soft,var(--sunk))}
+.bon-n{font-size:12px;line-height:1.2;text-align:center;overflow-wrap:anywhere}
+.bon-mini{display:block;width:72px;height:72px;overflow:hidden;line-height:0;border-radius:10px;background:var(--sunk)}
+.bon-mini img{width:100%;height:100%;object-fit:contain}
+.bon-cab .bon-mini img,.bon-det .bon-mini img{transform:scale(1.9);transform-origin:40% 36%}
+.bon-pes .bon-mini img{transform:scale(1.7);transform-origin:42% 52%}
+.bon-cor{width:52px;height:52px;border-radius:50%;border:2px solid var(--line);margin:8px 0 6px}
+.bon-fim{display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;background:var(--surface);padding-top:8px}
+.bon-ed .b{min-height:44px}
+
 </style>
 </head>
 <body>
@@ -938,7 +974,7 @@ label.b.sm{cursor:pointer}
 </script>
 <script>
 "use strict";
-const VERSAO = "1.3.1";
+const VERSAO = "1.4.0";
 const MODELOS = [{"id":"m-epi","titulo":"Equipamentos de proteção no trabalho","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Para que serve o equipamento de proteção e quando usar","texto":""},{"tipo":"multipla","enunciado":"Quando o equipamento de proteção deve ser usado?","alternativas":["Só quando o responsável está olhando","Durante toda a atividade que exige o equipamento","Só nos dias de muito calor","Só no começo do turno"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"A proteção vale durante toda a atividade. Tirar no meio do serviço deixa a pessoa exposta."},{"tipo":"vf","enunciado":"Pode emprestar o seu equipamento de proteção de uso individual a um colega.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"O equipamento é de uso pessoal. O colega deve pedir o dele ao responsável."},{"tipo":"multipla","enunciado":"O equipamento rasgou ou quebrou durante o trabalho. O que fazer?","alternativas":["Continuar e trocar no fim do mês","Avisar o responsável e trocar antes de continuar","Remendar com fita","Trabalhar sem ele"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Equipamento danificado não protege. Avise e troque antes de voltar à atividade."},{"tipo":"vf","enunciado":"O equipamento de proteção precisa ser do tamanho certo para quem usa.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Equipamento folgado ou apertado atrapalha e protege mal."},{"tipo":"ordenar","enunciado":"Coloque na ordem o cuidado com o equipamento depois do uso.","alternativas":["Limpar conforme a orientação","Conferir se há rasgo ou defeito","Guardar em local limpo e seco"],"tempo":45,"uso":"avaliacao","porque":"Limpar, conferir e guardar: assim ele está pronto e seguro para o próximo uso."},{"tipo":"multipla","enunciado":"Onde guardar o equipamento de proteção?","alternativas":["Em local limpo, seco e conhecido por todos","No chão, perto do trabalho","Dentro do carro","Onde der"],"correta":0,"tempo":20,"uso":"gincana","porque":"Guardado no lugar certo, o equipamento dura mais e é fácil de achar."}]},{"id":"m-hig","titulo":"Higiene das mãos e pessoal","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Higiene pessoal protege quem trabalha e quem é atendido","texto":""},{"tipo":"multipla","enunciado":"Você acordou com febre ou diarreia. O que fazer antes de começar o dia?","alternativas":["Trabalhar normalmente","Avisar o responsável antes de entrar na área","Tomar um remédio e entrar","Só usar máscara"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Doença passa de pessoa para pessoa e para os alimentos. O responsável decide a sua atividade antes de você entrar."},{"tipo":"vf","enunciado":"Corte na mão deve ficar coberto com curativo e luva.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Curativo e luva impedem contato do ferimento com o que a pessoa toca."},{"tipo":"multipla","enunciado":"Onde se pode comer e beber durante o turno?","alternativas":["No meio da atividade","Só na área definida para isso","Dentro da área de trabalho","Em qualquer lugar"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Comida e bebida só na área definida, longe do trabalho e do material."},{"tipo":"vf","enunciado":"Unha comprida ou com esmalte é permitida na área de manuseio.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Unha comprida acumula sujeira e o esmalte pode soltar."},{"tipo":"ordenar","enunciado":"Coloque na ordem a entrada na área de manuseio.","alternativas":["Prender o cabelo e colocar a touca","Lavar as mãos","Calçar as luvas, se a atividade pedir"],"tempo":45,"uso":"avaliacao","porque":"Touca primeiro, depois mãos lavadas e por último as luvas: assim as mãos limpas não tocam o cabelo."},{"tipo":"vf","enunciado":"Brinco, anel e pulseira devem ser retirados antes de entrar.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":15,"uso":"gincana","porque":"Adornos acumulam sujeira e podem cair."}]},{"id":"m-inc","titulo":"Como comunicar um problema ou acidente","meta":75,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Avisar logo evita que o problema cresça","texto":""},{"tipo":"multipla","enunciado":"Quando avisar o responsável sobre um problema ou acidente?","alternativas":["Só no fim da semana","O quanto antes","Só se alguém perguntar","Nunca, se for pequeno"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Quanto antes o responsável souber, mais cedo ele resolve e evita que se repita."},{"tipo":"multipla","enunciado":"O que não pode faltar no aviso?","alternativas":["Só o nome de quem viu","O que aconteceu, onde e quando","Nada, o responsável descobre","Só o horário"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Sem saber o que, onde e quando, fica difícil achar a causa e resolver."},{"tipo":"vf","enunciado":"Quase acidente, que não machucou ninguém, também deve ser avisado.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"O quase acidente mostra o risco antes que alguém se machuque."},{"tipo":"vf","enunciado":"Pode mexer no local do acidente antes de o responsável chegar, para arrumar tudo.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Mexer apaga as pistas do que aconteceu. Só mexa se for preciso para socorrer alguém ou evitar outro risco."},{"tipo":"ordenar","enunciado":"Coloque as etapas na ordem certa.","alternativas":["Garantir a segurança de todos","Avisar o responsável","Registrar o que aconteceu","Acompanhar a solução"],"tempo":60,"uso":"avaliacao","porque":"Primeiro a segurança, depois o aviso, o registro e o acompanhamento: cada etapa depende da anterior."},{"tipo":"multipla","enunciado":"Quem deve avisar um problema?","alternativas":["Só o chefe","Qualquer pessoa que perceber","Só quem se machucou","Só quem está de plantão"],"correta":1,"tempo":20,"uso":"gincana","porque":"Quem percebe primeiro tem o dever de avisar. Todos ajudam a evitar o problema."}]}];
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -1649,6 +1685,7 @@ const REGRAS_FIREBASE = `{
           "c": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 64" },
           "s": { ".validate": "newData.isString() && newData.val().length <= 60" },
           "t": { ".validate": "newData.isNumber()" },
+          "b": { ".validate": "newData.isString() && newData.val().length <= 160 && newData.val().matches(/^[a-z0-9.+-]*$/)" },
           "ref": { "$i": {
             ".validate": "newData.hasChildren(['t', 'ok'])",
             "t": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 3" },
@@ -1802,11 +1839,13 @@ function ingerir(s, M) {
   let mud = false;
   const partes = M.part && typeof M.part === "object" ? M.part : {};
   Object.entries(partes).forEach(([pid, v]) => {
-    if (!v || typeof v.n !== "string" || s.part.some(p => p.id === pid)) return;
+    const ja = v && s.part.find(p => p.id === pid);
+    if (ja) { const b = bonValido(v.b); if (b && ja.b !== b) { ja.b = b; mud = true; } return; }   // a pessoa trocou o bicho depois de entrar
+    if (!v || typeof v.n !== "string") return;
     const nome = limpaNome(v.n); if (!nome) return;
     let setor = (s.setores || []).includes(v.s) ? v.s : "";
     if (!setor) { const pe = pessoaPorNome(nome); if (pe && pe.setor) setor = pe.setor; }   // setor do cadastro de Pessoas
-    s.part.push({id: pid, nome, setor, cor: Number.isInteger(v.c) && v.c >= 0 && v.c < CORES_AV.length ? v.c : undefined, real: true}); mud = true;
+    s.part.push({id: pid, nome, setor, cor: Number.isInteger(v.c) && v.c >= 0 && v.c < CORES_AV.length ? v.c : undefined, b: bonValido(v.b) || undefined, real: true}); mud = true;
   });
   if (Rede.carregado && s.fase.etapa === "espera") { const antes = s.part.length; s.part = s.part.filter(p => !p.real || partes[p.id]); if (s.part.length !== antes) mud = true; }
   Object.entries(M.resp && typeof M.resp === "object" ? M.resp : {}).forEach(([pid, rs]) => {
@@ -1944,7 +1983,7 @@ function progCel(f) {
 
 /* ---------- telas ---------- */
 const cabCel = (extra = "") => `<header class="ch"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#logo"/></svg><div><b>${esc((CE.pub && CE.pub.meta && CE.pub.meta.titulo) || "Sabiá")}</b><span>${CE.pub && CE.pub.meta && CE.pub.meta.instrutor ? "instrutor " + esc(CE.pub.meta.instrutor) : "Sala " + (CE.chave ? esc(fmtChave(CE.chave)) : "")}</span></div>${extra}</header>`;
-const eu = () => `<span class="eu">${av(CE.nome, CE.cor)}<b>${esc(CE.nome.split(" ")[0])}</b></span>`;
+const eu = () => `<span class="eu">${avB(CE.nome, CE.cor, CE.bon)}<b>${esc(CE.nome.split(" ")[0])}</b></span>`;
 const itemCel = () => { const it = CE.pub && CE.pub.item; return it ? Object.assign({}, it, {alts: lista(it.alts), ordem: it.ordem ? lista(it.ordem).map(Number) : null}) : null; };
 function pintaCel() {
   if (rota().v !== "entrar" || !$("#app").classList.contains("cel")) return;
@@ -1960,6 +1999,7 @@ function pintaCel() {
 function pintaTelaCel() { tickTempo(); const c = $("#cassin"); if (c) prepararAssinatura(c); }
 function montaCel() {
   const m = CE.pub && CE.pub.meta, f = CE.pub && CE.pub.fase;
+  if (CE.bonAberto && CE.chave && CE.visto && CE.pub) return {tela: "bicho", html: bonEditorCel()};
   if (!CE.chave) return {tela: "chave", html: `<div class="cc">${cabCel()}<form class="cb" data-form="celchave"><h1>Entrar na sala</h1><p class="mut" style="margin:0">Digite a chave de 6 números que está no telão.</p>
     <div class="fd"><label for="ce-k">Chave da sala</label><input class="in big" id="ce-k" inputmode="numeric" pattern="[0-9 ]*" maxlength="7" autocomplete="off" placeholder="000 000"></div><button class="b p g2" type="submit">Entrar</button></form></div>`};
   if (CE.erro === "semdb") return {tela: "erro", html: `<div class="cc">${cabCel()}<div class="cb"><h1>Use o QR ou o link</h1><p class="mut" style="margin:0">Este aparelho ainda não sabe onde fica a sala. Aponte a câmera para o QR do telão ou abra o link que o instrutor enviou. Nas próximas vezes basta digitar a chave.</p><a class="b" href="#/entrar">Digitar outra chave</a></div></div>`};
@@ -1975,12 +2015,12 @@ function montaCel() {
       <div class="fd"><label for="ce-n">${ro.length ? "Digite 3 letras do seu nome" : "Seu nome completo"}</label><input class="in big" id="ce-n" autocomplete="off" autocapitalize="words" maxlength="60" value="${esc(CE.nome)}"></div>
       <div id="ce-sug" class="sug" aria-live="polite"></div>
       ${se.length > 1 ? `<div class="fd"><label for="ce-s">Seu setor</label><select class="in" id="ce-s"><option value="">Escolha</option>${se.map(x => `<option>${esc(x)}</option>`).join("")}</select></div>` : ""}
-      <div class="fd"><span class="lbl">Sua cor</span><div class="cores" role="radiogroup" aria-label="Sua cor">${CORES_AV.map((c, k) => `<button type="button" class="co" role="radio" data-act="ccor" data-k="${k}" aria-checked="${CE.cor === k}" aria-label="Cor ${k + 1}" style="background:${c}">${CE.cor === k ? ic("check", 'style="width:20px;height:20px"') : ""}</button>`).join("")}</div></div>
+      ${bonEscolhaCel()}
       <p class="erro" id="ce-erro" role="alert">${esc(CE.erro || "")}</p><button class="b p g2" type="submit">Entrar na sala</button></form></div>`};
   }
   const it = itemCel(), t = f.etapa, np = m.nPart || 0;
   const faixa = (txt, tm) => `<div class="fx"><span>${txt}</span>${eu()}</div>${progCel(f)}${tm || ""}`;
-  if (t === "espera") return {tela: "espera", html: `<div class="cc">${cabCel()}<div class="cb ct"><div class="ok-i">${ic("check", 'style="width:34px;height:34px"')}</div><h1>Você está na sala</h1><div class="eu2">${av(CE.nome, CE.cor)}<b>${esc(CE.nome)}</b></div><p class="mut" style="margin:0">${np} ${np === 1 ? "pessoa na sala" : "pessoas na sala"}. Aguarde o instrutor iniciar.</p><button class="b g" data-act="cnaosou">Não sou eu</button><button class="b g" data-act="cprox">Outra pessoa vai usar este celular</button></div></div>`};
+  if (t === "espera") return {tela: "espera", html: `<div class="cc">${cabCel()}<div class="cb ct"><div class="ok-i">${ic("check", 'style="width:34px;height:34px"')}</div><h1>Você está na sala</h1><div class="eu2">${avB(CE.nome, CE.cor, bonMeu())}<b>${esc(CE.nome)}</b></div><button type="button" class="b" data-act="cbon">Mudar meu bicho</button><p class="mut" style="margin:0">${np} ${np === 1 ? "pessoa na sala" : "pessoas na sala"}. Aguarde o instrutor iniciar.</p><button class="b g" data-act="cnaosou">Não sou eu</button><button class="b g" data-act="cprox">Outra pessoa vai usar este celular</button></div></div>`};
   if (t === "explicacao") return {tela: "expl", html: `<div class="cc">${cabCel()}<div class="cb">${faixa("Explicação")}<h1>${esc(it ? it.enunciado : "")}</h1>${it && it.texto ? `<p style="margin:0;white-space:pre-line">${esc(it.texto)}</p>` : ""}<p class="mut" style="margin:0">Atenção na explicação do instrutor.</p></div></div>`};
   if (t === "pergunta" && it) {
     const idx = f.idx, resp = CE.resp[idx], tempo = f.dur ? `<div class="pbar"><i data-k="b" data-fim="${CE.t0 + f.dur}" data-dur="${f.dur}"></i></div>` : "";
@@ -2108,6 +2148,7 @@ async function enviarCom() {
 function proxPessoaCel() {
   if (CE.ouvRes) CE.ouvRes.fechar(); if (CE.ouvRsp) CE.ouvRsp.fechar();
   ["sabia-p-", "sabia-a-", "sabia-rv-", "sabia-rf-", "sabia-cm-"].forEach(k => { try { localStorage.removeItem(chaveLS(k)); } catch (e) {} });
+  try { localStorage.removeItem("sabia-bon"); } catch (e) {} CE.bon = ""; CE.bonAberto = false;   // a próxima pessoa começa com gato ou cachorro sorteado
   Object.assign(CE, {pid: null, nome: "", entrou: false, jaEntrou: false, res: null, rsp: null, ouvRes: null, ouvRsp: null, resp: {}, rev: {}, ref: {}, assinou: false, tracos: 0, vista: "", rf: null, sel: null, ord: [], erro: "", cm: {tipo: "sugestao", texto: "", env: [], erro: ""}, html: ""});
   pintaCel(); scrollTo(0, 0);
 }
@@ -2151,8 +2192,12 @@ async function entrarCel(nome, setor) {
   CE.erro = "";
   let pid = uid();
   try { const todos = await Rede.req(CE.base, "GET", "/salas/" + CE.chave + "/part"); const ex = Object.entries(todos || {}).find(([, v]) => v && semAcento(v.n) === semAcento(nome)); if (ex) pid = ex[0]; } catch(e) {}
-  try { await Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/part/" + pid, {n: nome, c: CE.cor, s: setor || "", t: Date.now()}); }
-  catch(e) { CE.erro = "Não consegui entrar. Confira a internet e tente de novo."; return; }
+  const dados = {n: nome, c: CE.cor, s: setor || "", t: Date.now()};
+  try { await Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/part/" + pid, Object.assign({b: bonMeu()}, dados)); }
+  catch(e) {   // regras antigas do Firebase (sem o campo do boneco): entra sem o boneco
+    try { await Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/part/" + pid, dados); }
+    catch(e2) { CE.erro = "Não consegui entrar. Confira a internet e tente de novo."; return; }
+  }
   Object.assign(CE, {pid, nome, entrou: true, jaEntrou: true, erro: ""});
   try { localStorage.setItem(chaveLS("sabia-p-"), JSON.stringify({pid, nome, cor: CE.cor})); } catch(e) {}
   ligarRes(); CE.html = ""; pintaCel();
@@ -2278,7 +2323,7 @@ function calc(s) {
   const pessoas = s.part.map(p => {
     let ac = 0, pts = 0; const rs = s.resp[p.id] || {};
     qs.forEach(([, i]) => { const r = rs[i]; if (r) { if (r.ok) ac++; pts += r.pts; } });
-    return {id: p.id, nome: p.nome, setor: p.setor, cor: p.cor, ac, pts, pct: nq ? Math.round(100 * ac / nq) : 0};
+    return {id: p.id, nome: p.nome, setor: p.setor, cor: p.cor, b: p.b, ac, pts, pct: nq ? Math.round(100 * ac / nq) : 0};
   });
   const tot = pessoas.reduce((a, p) => a + p.ac, 0);
   const pct = nq && pessoas.length ? Math.round(100 * tot / (nq * pessoas.length)) : 0;
@@ -2308,7 +2353,7 @@ function limparSim() { AO.timers.forEach(clearTimeout); AO.timers = []; }
 function simAdd(s) {
   const usados = new Set(s.part.map(p => p.nome)); const livres = NOMES.filter(n => !usados.has(n)); if (!livres.length) return false;
   const nome = livres[Math.floor(Math.random() * livres.length)], setores = s.setores.length ? s.setores : (S.cfg.setores.length ? S.cfg.setores : ["Geral"]);
-  s.part.push({id: uid(), nome, setor: setores[Math.floor(Math.random() * setores.length)], sim: true, hab: 0.45 + Math.random() * 0.5});
+  s.part.push({id: uid(), nome, setor: setores[Math.floor(Math.random() * setores.length)], sim: true, hab: 0.45 + Math.random() * 0.5, b: bonSorteio()});
   return true;
 }
 function agendaSim(s) {
@@ -2342,8 +2387,8 @@ function snap(s) {
     }
   }
   return {id: s.id, chave: s.chave, titulo: s.titulo, instrutor: s.instrutor, meta: s.meta, metaTxt: metaTxtS(s), mom: s.mom || "", tela: s.aj.telao, som: s.aj.som, ranking: s.aj.ranking, entrada: s.entrada,
-    mat: matSnap(s), fase: f, min: Math.max(1, Math.round(s.itens.reduce((a, x) => a + (ehPergunta(x) ? (x.tempo || 20) + 8 : 120), 0) / 60)), nPart: s.part.length, part: s.part.slice(-60).map(p => ({n: p.nome, c: p.cor})), item, numPerg, totalPerg, nPerg, resp, dist, url: linkEntrar(s),
-    resumo: f.etapa === "podio" ? {porPerg: s.itens.map((x, i) => [x, i]).filter(([x]) => vale(x)).map(([, i], k) => ({n: k + 1, pct: s.part.length ? Math.round(100 * s.part.filter(p => ((s.resp[p.id] || {})[i] || {}).ok).length / s.part.length) : 0})), pct: c.pct, efic: c.efic, reforco: c.reforco, metaOk: c.metaOk, nq: c.nq, top: c.ranking.slice(0, 10).map(p => ({n: p.nome, c: p.cor, ac: p.ac, pts: p.pts}))} : null};
+    mat: matSnap(s), fase: f, min: Math.max(1, Math.round(s.itens.reduce((a, x) => a + (ehPergunta(x) ? (x.tempo || 20) + 8 : 120), 0) / 60)), nPart: s.part.length, part: s.part.slice(-60).map(p => ({n: p.nome, c: p.cor, b: p.b})), item, numPerg, totalPerg, nPerg, resp, dist, url: linkEntrar(s),
+    resumo: f.etapa === "podio" ? {porPerg: s.itens.map((x, i) => [x, i]).filter(([x]) => vale(x)).map(([, i], k) => ({n: k + 1, pct: s.part.length ? Math.round(100 * s.part.filter(p => ((s.resp[p.id] || {})[i] || {}).ok).length / s.part.length) : 0})), pct: c.pct, efic: c.efic, reforco: c.reforco, metaOk: c.metaOk, nq: c.nq, top: c.ranking.slice(0, 10).map(p => ({n: p.nome, c: p.cor, b: p.b, ac: p.ac, pts: p.pts}))} : null};
 }
 function publicar(s, vazioId) {
   const sn = snap(s); AO.snap = sn;
@@ -2374,9 +2419,9 @@ function telaoHTML(sn) {
   if (f.etapa === "espera") {
     corpo = `${topo(`<b>${esc(sn.titulo)}</b><span>${sn.instrutor ? "instrutor " + esc(sn.instrutor) : ""}</span>`)}
       <div class="lobm"><div class="join"><div class="qr" data-qr="${esc(sn.url)}"></div><div><div class="kl">ou abra o Sabiá e digite</div><div class="kk">${fmtChave(sn.chave)}</div></div>
-        <div class="how"><div><b>1</b>Aponte a câmera para o QR</div><div><b>2</b>Toque no seu nome</div><div><b>3</b>Escolha sua cor e aguarde</div></div></div>
+        <div class="how"><div><b>1</b>Aponte a câmera para o QR</div><div><b>2</b>Toque no seu nome</div><div><b>3</b>Monte seu bicho e aguarde</div></div></div>
         <div class="room"><div class="rh"><b>${sn.nPart}</b><span>${sn.nPart === 1 ? "pessoa na sala" : "pessoas na sala"}${sn.entrada ? "" : " · entrada fechada"}</span></div>
-        <div class="crowd ${sn.nPart <= 14 ? "g" : ""}">${sn.part.map(p => `<span class="cw">${av(p.n, p.c)}${esc(p.n.split(" ")[0])}</span>`).join("") || `<span style="font-size:22px;color:var(--tel-ink2)">Ninguém entrou ainda.</span>`}</div>
+        <div class="crowd ${sn.nPart <= 14 ? "g" : ""}">${sn.part.map(p => `<span class="cw">${avB(p.n, p.c, p.b)}${esc(p.n.split(" ")[0])}</span>`).join("") || `<span style="font-size:22px;color:var(--tel-ink2)">Ninguém entrou ainda.</span>`}</div>
         <div class="facts"><div><b>${sn.nPerg}</b><span>perguntas valendo</span></div><div><b>${sn.min} min</b><span>de duração</span></div><div><b>${sn.metaTxt || sn.meta + "%"}</b><span>de meta</span></div></div></div></div>
       <div class="tfoot"><span>Começa quando o instrutor tocar em <b>Iniciar</b> · ${sn.nPerg} perguntas</span></div>`;
   } else if (f.etapa === "explicacao") {
@@ -2396,13 +2441,13 @@ function telaoHTML(sn) {
       : `<span class="bigc">${sn.resp} de ${sn.nPart}</span><span style="color:var(--tel-ink2)">já responderam</span>`;
     corpo = `${topo(`<b>${it.ensaio ? "Pergunta de teste" : "Pergunta " + sn.numPerg + " de " + sn.totalPerg}</b>${prog(sn.numPerg)}`)}<div class="tq"><h2>${esc(it.enunciado)}${rev ? "" : btnTelVoz(it)}</h2>${rev ? "" : rel}</div>${tiles}<div class="answ">${rodape}</div>`;
   } else if (f.etapa === "podio") {
-    const r = sn.resumo, t = r.top, bl = (p, pos, h) => p ? `<div class="pl ${pos === 1 ? "p1" : ""}">${av(p.n, p.c)}<div class="blk" style="height:${h}px"><b>${pos}º</b><strong>${esc(p.n)}</strong>${p.ac} de ${r.nq} · ${p.pts} pts</div></div>` : "";
+    const r = sn.resumo, t = r.top, bl = (p, pos, h) => p ? `<div class="pl ${pos === 1 ? "p1" : ""}">${avB(p.n, p.c, p.b)}<div class="blk" style="height:${h}px"><b>${pos}º</b><strong>${esc(p.n)}</strong>${p.ac} de ${r.nq} · ${p.pts} pts</div></div>` : "";
     const conf = sn.som === "ligado" ? `<div class="conf">${Array.from({length: 26}, (_, k) => `<i style="left:${(k * 37) % 100}%;background:${COR_ALT[k % 4]};animation-delay:${(k % 9) * .35}s"></i>`).join("")}</div>` : "";
     corpo = `${topo(`<b>Resultado da turma</b><span>${esc(sn.titulo)}</span>`, `<span class="pillk">${sn.nPart} PESSOAS</span>`)}
       <div class="podm"><div class="podl"><div>${sn.mom === "pre" ? `<h2>Pré-teste concluído</h2><div class="res"><span>${r.pct}% de acerto médio</span><span>ponto de partida da turma</span></div>` : `<h2>${r.metaOk ? "A turma bateu a meta" : "A turma ficou abaixo da meta"}</h2><div class="res"><span class="${r.metaOk ? "g" : "r"}">${r.pct}% de acerto · meta ${sn.metaTxt || sn.meta + "%"}</span><span>${r.efic} de ${sn.nPart} eficazes</span>${r.reforco ? `<span>${r.reforco} vão para o reforço</span>` : ""}</div>`}</div>
         <div class="pq">${r.porPerg.map(q => `<div><span class="bar"><i style="height:${Math.max(4, q.pct)}%;background:${q.pct >= sn.meta ? "var(--ok)" : "var(--sabia)"}"></i></span><b>${q.pct}%</b><span>P${q.n}</span></div>`).join("")}</div>
         ${sn.ranking ? `<div class="stage">${bl(t[1], 2, 150)}${bl(t[0], 1, 205)}${bl(t[2], 3, 112)}</div>` : ""}</div>
-        <div class="podr"><h3>${sn.ranking ? "Do 4º ao 10º" : "Resultado"}</h3>${sn.ranking ? t.slice(3).map((p, k) => `<div class="pr2"><b>${k + 4}º</b>${av(p.n, p.c)}<span>${esc(p.n.split(" ").length > 1 ? p.n.split(" ")[0] + " " + p.n.split(" ").slice(-1)[0] : p.n)}</span><span class="num">${p.pts}</span></div>`).join("") || `<span style="color:var(--tel-ink2);font-size:17px">Sem mais participantes.</span>` : `<span style="color:var(--tel-ink2);font-size:17px">O ranking está desligado nesta sessão.</span>`}</div></div>${conf}`;
+        <div class="podr"><h3>${sn.ranking ? "Do 4º ao 10º" : "Resultado"}</h3>${sn.ranking ? t.slice(3).map((p, k) => `<div class="pr2"><b>${k + 4}º</b>${avB(p.n, p.c, p.b)}<span>${esc(p.n.split(" ").length > 1 ? p.n.split(" ")[0] + " " + p.n.split(" ").slice(-1)[0] : p.n)}</span><span class="num">${p.pts}</span></div>`).join("") || `<span style="color:var(--tel-ink2);font-size:17px">Sem mais participantes.</span>` : `<span style="color:var(--tel-ink2);font-size:17px">O ranking está desligado nesta sessão.</span>`}</div></div>${conf}`;
   }
   return `<div class="tel${claro}">${corpo}</div>`;
 }
@@ -2485,11 +2530,11 @@ function vSala(id) {
         ? `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px"><span class="chip" id="redeSt">Conectando...</span><button class="b sm" data-act="roster">${ic("list", 'style="width:16px;height:16px"')}Lista de nomes${(s.roster || []).length ? " (" + s.roster.length + ")" : ""}</button></div><p class="sm mut" style="margin:8px 0 0">Os participantes entram pelo QR do telão ou por este link, no celular.</p>`
         : `<p class="sm mut" style="margin:10px 0 0">Para os celulares entrarem, ligue o Firebase em <a href="#/ajustes">Ajustes</a>. Sem isso, ensaie com participantes simulados.</p>`}</section>
     <section class="k"><div class="kh" style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${ic("people", 'style="color:var(--brand-ink)"')}<h3 style="font-size:16px">Participantes</h3><span class="chip">${s.part.length}</span>${respondeu.length || f.etapa === "pergunta" ? `<span class="chip ${respondeu.length === s.part.length && s.part.length ? "ok" : ""}">${respondeu.length} responderam</span>` : ""}</div>
-      <div class="pgrid">${s.part.map(p => `<span class="pp ${respondeu.includes(p) ? "ok" : ""}">${av(p.nome, p.cor)}${esc(p.nome.split(" ")[0])}${p.real && f.etapa === "espera" ? `<button class="px" data-act="rmpart" data-id="${esc(p.id)}" aria-label="Remover ${esc(p.nome)}">${ic("x", 'style="width:12px;height:12px"')}</button>` : ""}${p.real && f.etapa === "podio" ? `<span class="sm mut" title="${p.ass ? "assinou" : "ainda não assinou"}">${p.ass ? "assinou" : "..."}</span>` : ""}</span>`).join("") || '<span class="sm mut">Ninguém entrou ainda.</span>'}</div>
+      <div class="pgrid">${s.part.map(p => `<span class="pp ${respondeu.includes(p) ? "ok" : ""}">${avB(p.nome, p.cor, p.b)}${esc(p.nome.split(" ")[0])}${p.real && f.etapa === "espera" ? `<button class="px" data-act="rmpart" data-id="${esc(p.id)}" aria-label="Remover ${esc(p.nome)}">${ic("x", 'style="width:12px;height:12px"')}</button>` : ""}${p.real && f.etapa === "podio" ? `<span class="sm mut" title="${p.ass ? "assinou" : "ainda não assinou"}">${p.ass ? "assinou" : "..."}</span>` : ""}</span>`).join("") || '<span class="sm mut">Ninguém entrou ainda.</span>'}</div>
       <div class="sim" style="margin-top:10px"><label class="opt" style="min-height:40px"><input type="checkbox" data-sim="on" ${s.sim.on ? "checked" : ""}><span>Simular participantes</span></label><label class="sr" for="simn">Quantidade</label><input class="in" id="simn" type="number" min="1" max="24" value="${s.sim.alvo}" data-sim="alvo" style="width:84px"><button class="b sm" data-act="simmais">${ic("plus", 'style="width:16px;height:16px"')}Mais um</button></div></section>
     ${f.etapa === "podio" ? refCard(s) + cmCard(s) : ""}
     ${dist ? `<section class="k"><h3 style="font-size:16px;margin-bottom:8px">Respostas desta pergunta</h3>${dist}</section>` : ""}
-    ${s.part.length && s.aj.ranking && f.etapa !== "espera" ? `<section class="k"><h3 style="font-size:16px;margin-bottom:6px">Ranking ao vivo</h3><div class="rk">${c.ranking.slice(0, 5).map((p, k) => `<div class="rr"><b class="num">${k + 1}º</b>${av(p.nome, p.cor)}<span>${esc(p.nome)}</span><span class="num">${p.pts}</span></div>`).join("")}</div></section>` : ""}
+    ${s.part.length && s.aj.ranking && f.etapa !== "espera" ? `<section class="k"><h3 style="font-size:16px;margin-bottom:6px">Ranking ao vivo</h3><div class="rk">${c.ranking.slice(0, 5).map((p, k) => `<div class="rr"><b class="num">${k + 1}º</b>${avB(p.nome, p.cor, p.b)}<span>${esc(p.nome)}</span><span class="num">${p.pts}</span></div>`).join("")}</div></section>` : ""}
     <button class="b g bad" data-act="fechar-sala" style="justify-self:start">${ic("x")}Encerrar sala</button></div>
     <aside class="k prev" aria-label="O que a turma vê"><div style="display:flex;align-items:center;gap:8px"><b style="font-family:var(--f-disp)">O que a turma vê</b><span class="grow" style="flex:1"></span><button class="b sm" data-act="telao">${ic("screen", 'style="width:16px;height:16px"')}Abrir em outra tela</button></div>
       <div class="telwrap">${telaoHTML(sn)}</div><span class="sm mut">Esta prévia mostra o mesmo que o telão. Em outra janela ou projetor, use "Abrir em outra tela". No telão: F tela cheia, P modo projetor, A apresentação (espaço avança).</span></aside>`;
@@ -4702,6 +4747,154 @@ function matValida(m) {
   if (caps.some(c => !c)) return null;
   return {nome: m.nome.slice(0, 200), tipo: m.tipo, bytes: Number(m.bytes) > 0 ? Number(m.bytes) : 0, caps, em: new Date().toISOString()};
 }
+
+/* ===== v1.4.0 · bonecos: cada participante monta o seu bicho (animal, cor, roupa, detalhes, cosméticos) ===== */
+/* As imagens ficam em bon/ (arquivos separados, 320 px, guardados pelo sw.js para funcionar sem internet).
+   O boneco viaja como um código curto: animal.cor.roupa.detalhe+detalhe.cabeca.pescoco  (ex.: "cachorro.3.xadrez.sardas.mago.colar"). */
+const BON = {
+  bichos: ["cachorro", "gato", "guaxinim", "raposa", "onca", "veado", "jegue", "tatu", "prea", "moco", "teiu", "jacare", "tartaruga", "sabia", "carcara", "asa-branca", "cardeal"],
+  nomeBicho: {cachorro: "Cachorro", gato: "Gato", guaxinim: "Guaxinim", raposa: "Raposa", onca: "Onça-parda", veado: "Veado-catingueiro", jegue: "Jegue", tatu: "Tatu-bola", prea: "Preá", moco: "Mocó", teiu: "Teiú", jacare: "Jacaré", tartaruga: "Tartaruga", sabia: "Sabiá", carcara: "Carcará", "asa-branca": "Asa-branca", cardeal: "Cardeal"},
+  cores: [null, [60, 48, 44], [245, 240, 232], [150, 150, 155], [170, 95, 45], [110, 80, 60], [232, 202, 150], [110, 150, 210], [232, 150, 182], [120, 180, 120]],
+  nomeCor: ["Natural", "Preto", "Branco", "Cinza", "Ruivo", "Chocolate", "Creme", "Azul", "Rosa", "Verde"],
+  roupas: ["colete-refletivo", "colete-couro", "xadrez", "jaleco", "camiseta", "capa"],
+  detalhes: ["brinco-argola", "brinco-perola", "piercing-sobrancelha", "piercing-orelha", "tatuagem-coracao", "tatuagem-estrela", "tatuagem-raio", "mancha-olho", "sardas", "mancha-testa", "pintas"],
+  cabeca: ["mago", "oculos", "escuros", "coroa", "cangaceiro", "capacete", "bone", "laco", "pirata", "chef", "fone", "flor", "vaqueiro", "palha", "sombrinha", "oculos-protecao", "abafador", "capacete-lanterna", "gorro", "tiara", "aureola", "chifrinhos", "bone-tras"],
+  pescoco: ["lenco", "cracha", "gravata", "cachecol", "medalha", "colar"],
+  nome: {"colete-refletivo": "Colete refletivo", "colete-couro": "Colete de couro", xadrez: "Camisa xadrez", jaleco: "Jaleco", camiseta: "Camiseta da fazenda", capa: "Capa de herói",
+    "brinco-argola": "Brinco de argola", "brinco-perola": "Brinco de pérola", "piercing-sobrancelha": "Piercing na sobrancelha", "piercing-orelha": "Piercing triplo", "tatuagem-coracao": "Tatuagem de coração", "tatuagem-estrela": "Tatuagem de estrela", "tatuagem-raio": "Tatuagem de raio", "mancha-olho": "Mancha no olho", sardas: "Sardas", "mancha-testa": "Mancha na testa", pintas: "Pintas",
+    mago: "Chapéu de mago", oculos: "Óculos redondos", escuros: "Óculos escuros", coroa: "Coroa", cangaceiro: "Chapéu de cangaceiro", capacete: "Capacete", bone: "Boné", laco: "Laço", pirata: "Pirata", chef: "Chapéu de chef", fone: "Fone", flor: "Flor",
+    vaqueiro: "Chapéu de vaqueiro", palha: "Chapéu de palha", sombrinha: "Sombrinha de frevo", "oculos-protecao": "Óculos de proteção", abafador: "Abafador", "capacete-lanterna": "Capacete com lanterna", gorro: "Gorro de Natal", tiara: "Tiara de orelhinhas", aureola: "Auréola", chifrinhos: "Chifrinhos", "bone-tras": "Boné para trás",
+    lenco: "Lenço de cangaceiro", cracha: "Crachá", gravata: "Gravata-borboleta", cachecol: "Cachecol", medalha: "Medalha de ouro", colar: "Colar de flores"},
+  semRoupa: ["tatu", "tartaruga"], semDetalhe: ["jacare", "teiu"], semNoRosto: ["jacare", "teiu"], noRosto: ["oculos", "escuros", "oculos-protecao", "pirata"],
+  desce: {jacare: 23, teiu: 13},          // cabeças mais baixas que o cubo padrão (pixels na imagem de 320)
+  MAX_DET: 4, img: new Map(), url: new Map(), base: "bon/"
+};
+
+/* ---------- código do boneco ---------- */
+const bonCodigo = o => [o.a, o.cor || 0, o.roupa || "", (o.det || []).join("+"), o.cab || "", o.pes || ""].join(".");
+function bonLer(cod) {
+  if (typeof cod !== "string" || cod.length > 160 || !/^[a-z0-9.+-]+$/.test(cod)) return null;
+  const p = cod.split("."); if (p.length !== 6 || !BON.bichos.includes(p[0])) return null;
+  const a = p[0], cor = Number(p[1]);
+  const o = {a, cor: Number.isInteger(cor) && cor >= 0 && cor < BON.cores.length ? cor : 0,
+    roupa: BON.roupas.includes(p[2]) && !BON.semRoupa.includes(a) ? p[2] : "",
+    det: BON.semDetalhe.includes(a) ? [] : [...new Set(p[3].split("+").filter(d => BON.detalhes.includes(d)))].slice(0, BON.MAX_DET),
+    cab: BON.cabeca.includes(p[4]) && !(BON.semNoRosto.includes(a) && BON.noRosto.includes(p[4])) ? p[4] : "",
+    pes: BON.pescoco.includes(p[5]) ? p[5] : ""};
+  return o;
+}
+const bonValido = cod => { const o = bonLer(cod); return o ? bonCodigo(o) : ""; };
+const sorteia = l => l[Math.floor(Math.random() * l.length)];
+const bonInicial = () => bonCodigo({a: Math.random() < 0.5 ? "gato" : "cachorro", cor: 0});      // todos começam com gato ou cachorro
+function bonSorteio() {
+  const a = sorteia(BON.bichos), o = {a, cor: Math.random() < 0.5 ? 0 : Math.floor(Math.random() * BON.cores.length)};
+  if (!BON.semRoupa.includes(a) && Math.random() < 0.6) o.roupa = sorteia(BON.roupas);
+  if (!BON.semDetalhe.includes(a)) o.det = BON.detalhes.filter(() => Math.random() < 0.12).slice(0, 2);
+  if (Math.random() < 0.75) o.cab = sorteia(BON.cabeca.filter(c => !(BON.semNoRosto.includes(a) && BON.noRosto.includes(c))));
+  if (Math.random() < 0.4) o.pes = sorteia(BON.pescoco);
+  return bonCodigo(o);
+}
+
+/* ---------- desenho (canvas, guardado por código) ---------- */
+function bonImg(caminho) {
+  if (!BON.img.has(caminho)) BON.img.set(caminho, new Promise(ok => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = BON.base + caminho; }));
+  return BON.img.get(caminho);
+}
+async function bonDesenha(cod) {
+  if (BON.url.has(cod)) return BON.url.get(cod);
+  const o = bonLer(cod); if (!o) return "";
+  const pedido = (async () => {
+    const cam = [`bichos/${o.a}.webp`];
+    if (o.cor) cam.push(`camadas/${o.a}__pelagem.webp`);
+    if (o.roupa) cam.push(`camadas/${o.a}__${o.roupa}.webp`);
+    o.det.forEach(d => cam.push(`camadas/${o.a}__${d}.webp`));
+    if (o.pes) cam.push(`cosmeticos/${o.pes}.webp`);
+    if (o.cab) cam.push(`cosmeticos/${o.cab}.webp`);
+    const im = await Promise.all(cam.map(bonImg)); if (!im[0]) return "";
+    const W = im[0].naturalWidth || 320, cv = document.createElement("canvas"); cv.width = cv.height = W; const g = cv.getContext("2d");
+    g.drawImage(im[0], 0, 0, W, W); let k = 1;
+    if (o.cor) {                                        // pinta só a pelagem: cinza da camada x cor escolhida
+      const pel = im[k++];
+      if (pel) {
+        const t = document.createElement("canvas"); t.width = t.height = W; const h = t.getContext("2d"), c = BON.cores[o.cor].map(v => Math.min(255, Math.round(v * 1.25)));
+        h.drawImage(pel, 0, 0, W, W); h.globalCompositeOperation = "multiply"; h.fillStyle = `rgb(${c.join(",")})`; h.fillRect(0, 0, W, W);
+        h.globalCompositeOperation = "destination-in"; h.drawImage(pel, 0, 0, W, W); g.drawImage(t, 0, 0);
+      }
+    }
+    const dz = Math.round((BON.desce[o.a] || 0) * W / 320);
+    for (; k < im.length; k++) {
+      if (!im[k]) continue;
+      const ehCos = cam[k].startsWith("cosmeticos/");
+      g.drawImage(im[k], 0, ehCos ? dz : 0, W, W);
+    }
+    try { return cv.toDataURL("image/webp", 0.9); } catch (e) { return cv.toDataURL(); }
+  })();
+  BON.url.set(cod, pedido); return pedido;
+}
+const bonHtml = (cod, cls = "") => `<img class="bon ${cls}" data-bon="${esc(cod)}" alt="" width="320" height="320" decoding="async">`;
+const avB = (n, c, b, cls = "") => b && bonLer(b) ? `<span class="avb ${cls}" aria-hidden="true">${bonHtml(b)}</span>` : av(n, c);
+function bonHidrata(raiz) {
+  (raiz || document).querySelectorAll("img[data-bon]:not([data-ok])").forEach(i => {
+    i.dataset.ok = "1"; bonDesenha(i.dataset.bon).then(u => { if (u) i.src = u; else i.closest(".avb") && i.closest(".avb").classList.add("vazio"); });
+  });
+}
+new MutationObserver(() => bonHidrata()).observe(document.documentElement, {childList: true, subtree: true});
+
+/* ---------- celular: montar o bicho ---------- */
+const BON_LS = "sabia-bon";
+function bonMeu() {
+  if (!CE.bon) { let v = ""; try { v = localStorage.getItem(BON_LS) || ""; } catch (e) {} CE.bon = bonValido(v) || bonInicial(); try { localStorage.setItem(BON_LS, CE.bon); } catch (e) {} }
+  return CE.bon;
+}
+const bonEscolhaCel = () => `<div class="fd bon-esc"><span class="lbl">Seu bicho</span><div class="bon-linha"><span class="avb bon-m">${bonHtml(bonMeu())}</span><span class="sm mut">${esc(BON.nomeBicho[bonLer(bonMeu()).a])}. Monte do seu jeito: cor, roupa, brincos, chapéu.</span><button type="button" class="b" data-act="cbon">Montar meu bicho</button></div></div>`;
+const BON_ABAS = [["bicho", "Bicho"], ["cor", "Cor"], ["roupa", "Roupa"], ["det", "Detalhes"], ["cab", "Cabeça"], ["pes", "Pescoço"]];
+function bonOpcoes(o, aba) {
+  const com = mud => bonCodigo(Object.assign({}, o, mud));
+  if (aba === "bicho") return BON.bichos.map(a => ({v: a, t: BON.nomeBicho[a], cod: bonCodigo({a, cor: 0}), on: o.a === a}));
+  if (aba === "cor") return BON.cores.map((c, k) => ({v: String(k), t: BON.nomeCor[k], cod: com({cor: k}), on: o.cor === k}));
+  if (aba === "roupa") return BON.semRoupa.includes(o.a) ? [] : [{v: "", t: "Sem roupa", cod: com({roupa: ""}), on: !o.roupa}].concat(BON.roupas.map(r => ({v: r, t: BON.nome[r], cod: com({roupa: r}), on: o.roupa === r})));
+  if (aba === "det") return BON.semDetalhe.includes(o.a) ? [] : BON.detalhes.map(d => ({v: d, t: BON.nome[d], cod: com({det: o.det.includes(d) ? o.det : [...o.det, d].slice(-BON.MAX_DET)}), on: o.det.includes(d)}));
+  if (aba === "cab") return [{v: "", t: "Nada", cod: com({cab: ""}), on: !o.cab}].concat(BON.cabeca.filter(c => !(BON.semNoRosto.includes(o.a) && BON.noRosto.includes(c))).map(c => ({v: c, t: BON.nome[c], cod: com({cab: c}), on: o.cab === c})));
+  return [{v: "", t: "Nada", cod: com({pes: ""}), on: !o.pes}].concat(BON.pescoco.map(p => ({v: p, t: BON.nome[p], cod: com({pes: p}), on: o.pes === p})));
+}
+function bonEditorCel() {
+  const o = bonLer(CE.bonEd) || bonLer(bonInicial()), aba = CE.bonAba || "bicho", op = bonOpcoes(o, aba);
+  const vazio = aba === "roupa" ? "O casco não deixa vestir roupa neste bicho." : aba === "det" ? "Este bicho não tem brincos nem pintas." : "";
+  return `<div class="cc bon-ed">${cabCel()}<div class="cb">
+    <div class="bon-topo"><span class="avb bon-g">${bonHtml(bonCodigo(o))}</span><div class="bon-tt"><h1>Monte seu bicho</h1><b>${esc(BON.nomeBicho[o.a])}</b><span class="sm mut">${o.cor ? esc(BON.nomeCor[o.cor]) : "Cor natural"}${o.roupa ? " · " + esc(BON.nome[o.roupa]) : ""}${o.cab ? " · " + esc(BON.nome[o.cab]) : ""}</span>
+      <button type="button" class="b sm" data-act="cbonsort">Sortear</button></div></div>
+    <div class="bon-abas" role="tablist">${BON_ABAS.map(([k, t]) => `<button type="button" role="tab" class="bon-aba${k === aba ? " on" : ""}" aria-selected="${k === aba}" data-act="cbonaba" data-v="${k}">${t}${k === "det" && o.det.length ? ` <span class="num">${o.det.length}</span>` : ""}</button>`).join("")}</div>
+    ${aba === "det" && op.length ? `<p class="sm mut" style="margin:0">Escolha até ${BON.MAX_DET}. Toque de novo para tirar.</p>` : ""}
+    ${op.length ? `<div class="bon-op bon-${aba}">${op.map(x => `<button type="button" class="bon-i${x.on ? " on" : ""}" data-act="cbonset" data-aba="${aba}" data-v="${esc(x.v)}" aria-pressed="${x.on}" aria-label="${esc(x.t)}">${aba === "cor" ? `<span class="bon-cor" style="background:${BON.cores[x.v | 0] ? "rgb(" + BON.cores[x.v | 0].join(",") + ")" : "linear-gradient(135deg,#d9a35a,#8a5a2b)"}"></span>` : `<span class="bon-mini">${bonHtml(x.cod)}</span>`}<span class="bon-n">${esc(x.t)}</span></button>`).join("")}</div>` : `<p class="mut">${vazio}</p>`}
+    <div class="bon-fim"><button type="button" class="b" data-act="cbonnao">Cancelar</button><button type="button" class="b p" data-act="cbonok">${ic("check")}Pronto</button></div>
+  </div></div>`;
+}
+function bonAplica(aba, v) {
+  const o = bonLer(CE.bonEd); if (!o) return;
+  if (aba === "bicho") { o.a = v; Object.assign(o, bonLer(bonCodigo(o))); }
+  else if (aba === "cor") o.cor = Number(v) || 0;
+  else if (aba === "roupa") o.roupa = v;
+  else if (aba === "det") o.det = o.det.includes(v) ? o.det.filter(d => d !== v) : [...o.det, v].slice(-BON.MAX_DET);
+  else if (aba === "cab") o.cab = v;
+  else if (aba === "pes") o.pes = v;
+  CE.bonEd = bonValido(bonCodigo(o));
+}
+async function bonSalva() {
+  CE.bon = bonValido(CE.bonEd) || CE.bon; try { localStorage.setItem(BON_LS, CE.bon); } catch (e) {}
+  if (CE.entrou && CE.pid && CE.base && CE.chave) { try { await Rede.req(CE.base, "PATCH", "/salas/" + CE.chave + "/part/" + CE.pid, {b: CE.bon}); } catch (e) {} }
+}
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act;
+  if (!a.startsWith("cbon")) return;
+  if (a === "cbon") { const n = $("#ce-n"); if (n) CE.nome = n.value; CE.bonEd = bonMeu(); CE.bonAba = "bicho"; CE.bonAberto = true; }
+  else if (a === "cbonaba") CE.bonAba = el.dataset.v;
+  else if (a === "cbonset") bonAplica(el.dataset.aba, el.dataset.v);
+  else if (a === "cbonsort") CE.bonEd = bonSorteio();
+  else if (a === "cbonnao") CE.bonAberto = false;
+  else if (a === "cbonok") { CE.bonAberto = false; bonSalva(); }
+  CE.html = ""; if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); pintaCel();
+  if (a === "cbonok" || a === "cbonnao" || a === "cbon") window.scrollTo(0, 0);
+});
 
 function render() {
   if (!S) return;

@@ -1,0 +1,58 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "_teste": { ".read": true, ".write": true, ".validate": "newData.isString() && newData.val().length < 40" },
+    "selos": {
+      "$codigo": {
+        ".read": true,
+        ".write": "!data.exists()",
+        ".validate": "$codigo.matches(/^SAB-[0-9A-F]{4}(-[0-9A-F]{4}){4}$/) && newData.hasChildren(['t']) && newData.child('t').isNumber() && newData.child('t').val() === now",
+        "t": {},
+        "$outro": { ".validate": false }
+      }
+    },
+    "salas": {
+      "$chave": {
+        ".read": true,
+        "pub": { ".write": true },
+        "res": { ".write": true },
+        "part": { "$pid": {
+          ".write": true,
+          ".validate": "newData.hasChildren(['n']) && newData.child('n').isString() && newData.child('n').val().length <= 60",
+          "n": {},
+          "c": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 64" },
+          "s": { ".validate": "newData.isString() && newData.val().length <= 60" },
+          "t": { ".validate": "newData.isNumber()" },
+          "ref": { "$i": {
+            ".validate": "newData.hasChildren(['t', 'ok'])",
+            "t": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 3" },
+            "ok": { ".validate": "newData.isNumber() && (newData.val() === 0 || newData.val() === 1)" },
+            "$outro": { ".validate": false }
+          } },
+          "com": { "$id": {
+            ".validate": "newData.hasChildren(['k', 'x', 't'])",
+            "k": { ".validate": "newData.isString() && newData.val().length <= 20" },
+            "x": { ".validate": "newData.isString() && newData.val().length <= 300" },
+            "t": { ".validate": "newData.isNumber()" },
+            "$outro": { ".validate": false }
+          } },
+          "rsp": { "$id": {
+            ".validate": "newData.hasChildren(['x'])",
+            "x": { ".validate": "newData.isString() && newData.val().length <= 300" },
+            "$outro": { ".validate": false }
+          } },
+          "$outro": { ".validate": false }
+        } },
+        "resp": { "$pid": { "$idx": {
+          ".write": "!data.exists() || !newData.exists()",
+          ".validate": "newData.hasChild('r')"
+        } } },
+        "ass": { "$pid": {
+          ".write": "!data.exists() || !newData.exists()",
+          ".validate": "newData.isString() && newData.val().length < 40000"
+        } }
+      }
+    }
+  }
+}

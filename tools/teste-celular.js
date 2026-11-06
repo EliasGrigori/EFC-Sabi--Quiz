@@ -42,7 +42,7 @@ const tem=async(p,txt,sel='body',ms=8000)=>espera(p,([t,s])=>{const e=document.q
  // 3. celular A entra (nome livre)
  const A=await celular('A');await A.goto(link);
  ok('Celular mostra o formulário de nome',await tem(A,'Quem é você','body'));
- await A.fill('#ce-n','Maria Silva');await A.click('[data-act=ccor][data-k="3"]');
+ await A.fill('#ce-n','Maria Silva');
  await A.click('button[type=submit]');
  ok('Celular A entra e aguarda',await tem(A,'Você está na sala'));
  ok('Instrutor vê Maria na sala',await tem(p,'Maria','.pgrid'));
@@ -170,7 +170,7 @@ const tem=async(p,txt,sel='body',ms=8000)=>espera(p,([t,s])=>{const e=document.q
  const ses=est.sessoes.find(x=>x.estado==='encerrada');
  ok('Resultado guarda 3 pessoas reais',ses&&ses.resultado.pessoas===3&&ses.resultado.tabela.every(t=>t.nome&&t.pts>=0));
  ok('Assinatura fica na sessão guardada',ses&&ses.part.some(x=>x.ass&&x.ass.startsWith('data:image')));
- ok('Cor escolhida no celular fica guardada',ses&&ses.part.some(x=>x.cor===3));
+ ok('Bicho do celular fica guardado na sessão (v1.4.0)',ses&&ses.part.some(x=>typeof x.b==='string'&&/^(gato|cachorro)\./.test(x.b)));
  // 13. segurança e celular
  const bad=await celular('E');
  await p.evaluate(()=>{location.hash='#/treinos'});await p.waitForSelector('.tr:not(.h)');await p.click('[data-act=aba][data-v=ativos]');
@@ -178,7 +178,7 @@ const tem=async(p,txt,sel='body',ms=8000)=>espera(p,([t,s])=>{const e=document.q
  const link2=await p.getAttribute('[data-act=copiar]','data-v');
  await bad.goto(link2);await bad.waitForSelector('#ce-n');await bad.fill('#ce-n','<img src=x onerror=window.__x=1> Zé');await bad.click('button[type=submit]');
  await tem(bad,'Você está na sala');await tem(p,'Zé','.pgrid');
- ok('Nome com HTML não executa no celular nem no instrutor',(await bad.evaluate(()=>window.__x))===undefined&&(await p.evaluate(()=>window.__x))===undefined&&!(await p.innerHTML('.pgrid')).includes('<img'));
+ ok('Nome com HTML não executa no celular nem no instrutor',(await bad.evaluate(()=>window.__x))===undefined&&(await p.evaluate(()=>window.__x))===undefined&&(await p.evaluate(()=>!document.querySelector('.pgrid [onerror]'))));
  ok('Não sou eu remove a pessoa da sala',await (async()=>{await bad.click('[data-act=cnaosou]');return await tem(bad,'Quem é você')&&await espera(p,()=>document.querySelectorAll('.pgrid .pp').length===0,null,5000)})());
  await bad.fill('#ce-n','Zeca Souza');await bad.click('button[type=submit]');await tem(bad,'Você está na sala');
  ok('Celular sem rolagem lateral',await bad.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
