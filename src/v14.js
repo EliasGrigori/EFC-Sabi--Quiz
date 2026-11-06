@@ -17,7 +17,7 @@ const BON = {
     lenco: "Lenço de cangaceiro", cracha: "Crachá", gravata: "Gravata-borboleta", cachecol: "Cachecol", medalha: "Medalha de ouro", colar: "Colar de flores"},
   semRoupa: ["tatu", "tartaruga"], semDetalhe: ["jacare", "teiu"], semNoRosto: ["jacare", "teiu"], noRosto: ["oculos", "escuros", "oculos-protecao", "pirata"],
   desce: {jacare: 23, teiu: 13},          // cabeças mais baixas que o cubo padrão (pixels na imagem de 320)
-  MAX_DET: 4, img: new Map(), url: new Map(), base: "bon/"
+  MAX_DET: 4, recorte: [35, 30, 250], img: new Map(), url: new Map(), base: "bon/"
 };
 
 /* ---------- código do boneco ---------- */
@@ -77,7 +77,10 @@ async function bonDesenha(cod) {
       const ehCos = cam[k].startsWith("cosmeticos/");
       g.drawImage(im[k], 0, ehCos ? dz : 0, W, W);
     }
-    try { return cv.toDataURL("image/webp", 0.9); } catch (e) { return cv.toDataURL(); }
+    /* recorte fixo: tira a borda vazia em volta do bicho (o mesmo para todos, para manter o tamanho entre eles) */
+    const R = BON.recorte, f = W / 320, out = document.createElement("canvas"); out.width = out.height = Math.round(R[2] * f);
+    out.getContext("2d").drawImage(cv, R[0] * f, R[1] * f, R[2] * f, R[2] * f, 0, 0, out.width, out.height);
+    try { return out.toDataURL("image/webp", 0.9); } catch (e) { return out.toDataURL(); }
   })();
   BON.url.set(cod, pedido); return pedido;
 }

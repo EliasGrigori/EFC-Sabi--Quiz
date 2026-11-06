@@ -1,4 +1,4 @@
-/* v1.4.1: resposta que chega atrasada conta, iniciais sem hífen, bichos maiores no celular. uso: SABIA_REGRAS=1 node teste-v141.js <dist> <prints> */
+/* v1.4.1 e v1.4.2: resposta que chega atrasada conta, iniciais sem hífen, bichos maiores no celular. uso: SABIA_REGRAS=1 node teste-v141.js <dist> <prints> */
 const {chromium}=require('playwright');const http=require('http'),fs=require('fs'),path=require('path');const {criar}=require('./rtdb-mock.js');
 const D=process.argv[2],OUT=process.argv[3];fs.mkdirSync(OUT,{recursive:true});
 const srv=http.createServer((q,r)=>{let f=path.join(D,decodeURIComponent(q.url.split('?')[0]));if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,b)=>{if(e){r.writeHead(404);r.end();return}const t={'.html':'text/html','.js':'text/javascript','.json':'application/json','.webp':'image/webp','.png':'image/png'}[path.extname(f)]||'application/octet-stream';r.writeHead(200,{'content-type':t});r.end(b)})});
@@ -15,7 +15,9 @@ const cc=await b.newContext({viewport:{width:390,height:844},hasTouch:true,isMob
 await A.goto(link);await A.waitForSelector('#ce-n');await A.fill('#ce-n','Maria - Silva');
 // tamanhos na tela de nome
 const m1=await A.evaluate(()=>{const e=document.querySelector('.bon-m');return e?e.getBoundingClientRect().width:0});
-ok('Bicho na tela de nome está maior (112 px)',m1>=110,String(m1));
+ok('Quadro do bicho na tela de nome maior (140 px)',m1>=138,String(m1));
+const rc=await A.evaluate(async()=>{const u=await bonDesenha('jacare.0...mago.lenco');const im=new Image();im.src=u;await im.decode();return im.naturalWidth});
+ok('Bicho recortado para ocupar mais o quadro (250 de 320 px)',rc===250,String(rc));
 await A.screenshot({path:OUT+'/cel-nome.png'});
 // montador em 2 colunas
 await A.click('[data-act=cbon]');await A.waitForSelector('.bon-op');await A.waitForTimeout(600);
@@ -34,7 +36,9 @@ await A.click('[data-act=cbonaba][data-v=bicho]');
 await A.click('[data-act=cbonok]');await A.waitForTimeout(400);
 await A.click('button[type=submit]');await A.waitForFunction(()=>document.body.innerText.includes('Você está na sala'),null,{timeout:8000}).catch(()=>{});await A.waitForTimeout(700);
 const e2=await A.evaluate(()=>{const e=document.querySelector('.eu2 .avb');return e?e.getBoundingClientRect().width:0});
-ok('Bicho na espera está maior (150 px)',e2>=148,String(e2));
+ok('Bicho na espera bem maior, em cima do nome (pelo menos 220 px)',e2>=220,String(e2));
+const emp=await A.evaluate(()=>{const a=document.querySelector('.eu2 .avb').getBoundingClientRect(),n=document.querySelector('.eu2 b').getBoundingClientRect();return n.top>=a.bottom-2});
+ok('Nome fica embaixo do bicho na espera',emp);
 await A.screenshot({path:OUT+'/cel-espera.png'});
 await p.waitForFunction(()=>sala(AO.id).part.some(x=>x.real),null,{timeout:8000}).catch(()=>{});
 // ---- resposta atrasada

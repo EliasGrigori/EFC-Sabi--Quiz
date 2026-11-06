@@ -41,6 +41,7 @@ mesmas funções, cara nova. Versões recomeçam do zero (v0.1.0 até v1.0.0).
 | v1.3.1 | publicada em 05/11/2026 (commit 686dd55) | Material de até 300 MB (HTML até 30 MB), só no aparelho; título e capítulos viajam na exportação do treinamento e, no outro aparelho, o painel pede para anexar de novo o mesmo arquivo |
 | v1.4.0 | publicada (commit c083cf0, 06/11/2026) | Bonecos: cada participante monta o seu bicho no celular (17 animais, 10 cores, 6 roupas, 11 detalhes, 23 cosméticos de cabeça e 6 de pescoço); todos começam com gato ou cachorro sorteado; boneco na sala, telão, ranking e pódio; regra nova no Firebase (campo b) |
 | v1.4.1 | publicada (commit b3e3591, 06/11/2026) | Bichos maiores no celular (opções do montador em 2 colunas), resposta que chega atrasada (até 4 s) conta, aba Cor do montador corrigida (erro da v1.4.0), iniciais ignoram hífen; sem regra nova no Firebase |
+| v1.4.2 | pronta, aguardando aprovação | Bicho maior dentro do quadro (recorte fixo de 250 px), quadro de 140 px na tela de nome, bicho de 240 px em cima do nome na espera |
 
 ## Paridade com o EFCquiz (79 funções)
 v0.1.0: 10 prontas e 11 parciais. v0.2.0 completa as opções de Aplicar, o controle ao vivo e o telão. v0.3.0 entrega o editor e as versões. v0.4.0 entrega o celular do participante. v0.5.0 entrega relatórios, PDFs e conferência. v0.6.0 entrega reforço, reavaliação, pré e pós-teste e rever no celular v0.7.0 entrega pessoas, mensagens, comentário no celular e desafio entre setores (detalhe em features.csv: 67 prontas, 11 parciais, 1 faltando de 79 (v0.8.0 entrega perfis, porta de entrada, conta do EFClaudian, Ajustes completo e observações; v1.0.0 entrega banco de perguntas, criar com IA, pergunta de teste, voz, ouvir, carimbo e regras do Firebase mais firmes)).
@@ -192,3 +193,10 @@ Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 tre
 - **Iniciais:** `iniciais()` só usa palavras com letra ou número e pega a primeira letra/número de cada uma.
 - **Testes:** `teste-v141.js` (18 conferências; 8 falham na v1.4.0); `rodar-tudo.sh` tem 19 suítes. Prints de antes e depois: `shot-antes141.js`.
 - **Decisão do Elias (06/11/2026):** relatório e PDF continuam sem bonecos.
+
+## v1.4.2 · bichos ainda maiores (src/v14.js, v14.css)
+- **Pedido do Elias (06/11/2026):** além do quadro, o bicho deve ficar maior dentro do quadrado; na espera, abrir espaço para o bicho ficar maior.
+- **Recorte:** `bonDesenha` monta em 320 px e entrega só a área `BON.recorte = [35, 30, 250]` (x, y, lado). A área foi medida pela união das partes opacas de todas as imagens (bichos 54–265 × 46–271, cosméticos até y 33, `desce` do jacaré até y 281). O recorte é fixo para todos, para manter o tamanho entre bichos.
+- **Tamanhos:** tela de nome 140 px; espera `min(240px, 62vw)` com o nome embaixo; zoom das miniaturas de Cabeça/Detalhes 1,5 (origem 37% 34%) e Pescoço 1,33 (40% 55%); máscara radial 88%.
+- **Testes:** `teste-v141.js` cobre também a v1.4.2 (20 conferências); `teste-v14.js` lê a cor da pelagem em (145, 160) por causa do recorte. Folha de conferência dos 34 bichos (com e sem chapéu de mago): `folha142.js`.
+- **Pergunta do Elias:** atrasar o app em +0,3 s para compensar o atraso dos celulares. Resposta: a janela de 4 s da v1.4.1 já faz isso, e melhor, porque só espera quando há resposta a caminho; atraso fixo deixaria o controle mais lento e não cobriria celulares com 1–2 s de atraso.

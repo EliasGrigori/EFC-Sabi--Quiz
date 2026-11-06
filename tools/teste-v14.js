@@ -29,8 +29,8 @@ const tem=async(p,txt,sel='body',ms=8000)=>espera(p,([t,s])=>{const e=document.q
  ok('Sortear sempre gera um código válido',u.sort);
  // 2. desenho
  const des=await p.evaluate(async()=>{const a=await bonDesenha('cachorro.0....');const c=await bonDesenha('cachorro.1....');const d=await bonDesenha('cachorro.1.capa.sardas.coroa.medalha');
-  const px=async(u,x,y)=>{const i=new Image();i.src=u;await i.decode();const cv=document.createElement('canvas');cv.width=cv.height=320;const g=cv.getContext('2d');g.drawImage(i,0,0);return [...g.getImageData(x,y,1,1).data]};
-  return {a:a.length>1000,c:c.length>1000,difere:a!==c,camadas:d!==c&&d.length>1000,cache:BON.url.size>=3,pa:await px(a,180,190),pc:await px(c,180,190)}});
+  const px=async(u,x,y)=>{const i=new Image();i.src=u;await i.decode();const cv=document.createElement('canvas');cv.width=cv.height=i.naturalWidth;const g=cv.getContext('2d');g.drawImage(i,0,0);return [...g.getImageData(x,y,1,1).data]};
+  return {a:a.length>1000,c:c.length>1000,difere:a!==c,camadas:d!==c&&d.length>1000,cache:BON.url.size>=3,pa:await px(a,145,160),pc:await px(c,145,160)}});
  ok('Desenha o boneco a partir das imagens',des.a&&des.c);
  ok('Trocar a cor pinta a pelagem (o pixel do corpo fica bem mais escuro no preto)',des.difere&&(des.pc[0]+des.pc[1]+des.pc[2])<(des.pa[0]+des.pa[1]+des.pa[2])*0.6,JSON.stringify([des.pa,des.pc]));
  ok('Roupa, detalhe e cosméticos entram por cima',des.camadas);

@@ -1,21 +1,21 @@
 /* ===== v1.4.0 · bonecos ===== */
 .avb{display:inline-block;flex:none;width:26px;height:26px;position:relative;line-height:0}
-.avb img{width:100%;height:100%;object-fit:contain;display:block;-webkit-mask-image:radial-gradient(closest-side,#000 78%,transparent 100%);mask-image:radial-gradient(closest-side,#000 78%,transparent 100%)}
+.avb img{width:100%;height:100%;object-fit:contain;display:block;-webkit-mask-image:radial-gradient(closest-side,#000 88%,transparent 100%);mask-image:radial-gradient(closest-side,#000 88%,transparent 100%)}
 .avb img:not([src]){visibility:hidden}
 .avb.vazio{border-radius:50%;background:var(--sunk)}
 /* tamanhos por lugar: o boneco ocupa mais que o círculo de antes, porque tem corpo */
 .pp .avb{width:34px;height:34px;margin:-6px 0 -6px -4px}
 .rk .rr .avb{width:42px;height:42px;margin:-8px 0}
 .eu .avb{width:42px;height:42px;margin:-9px 0}
-.eu2 .avb{width:150px;height:150px}
+.eu2{flex-direction:column;gap:6px;font-size:22px;text-align:center}.eu2 .avb{width:min(240px,62vw);height:min(240px,62vw)}
 .tel .cw .avb{width:52px;height:52px;margin:-10px -2px -10px -6px}
 .tel .crowd.g .cw .avb{width:66px;height:66px}
 .tel .pl .avb{width:200px;height:200px;margin-bottom:-24px}
 .tel .podr .pr2 .avb{width:42px;height:42px;margin:-6px 0}
 /* celular: escolher e montar */
-.bon-linha{display:grid;grid-template-columns:112px 1fr;gap:4px 12px;align-items:center}
+.bon-linha{display:grid;grid-template-columns:140px 1fr;gap:4px 12px;align-items:center}
 .bon-linha .b{grid-column:1 / -1;justify-self:start}
-.bon-m{width:112px;height:112px;background:var(--sunk);border-radius:16px}
+.bon-m{width:140px;height:140px;background:var(--sunk);border-radius:16px}
 .bon-topo{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center}
 .bon-g{width:150px;height:150px;background:var(--sunk);border-radius:20px}
 .bon-tt{display:grid;gap:4px;justify-items:start;min-width:0}.bon-tt h1{margin:0;font-size:20px}.bon-tt .sm{overflow-wrap:anywhere}
@@ -28,8 +28,8 @@
 .bon-n{font-size:14px;font-weight:600;line-height:1.2;text-align:center;overflow-wrap:anywhere}
 .bon-mini{display:block;width:100%;aspect-ratio:1/1;overflow:hidden;line-height:0;border-radius:10px;background:var(--sunk)}
 .bon-mini img{width:100%;height:100%;object-fit:contain}
-.bon-cab .bon-mini img,.bon-det .bon-mini img{transform:scale(1.9);transform-origin:40% 36%}
-.bon-pes .bon-mini img{transform:scale(1.7);transform-origin:42% 52%}
+.bon-cab .bon-mini img,.bon-det .bon-mini img{transform:scale(1.5);transform-origin:37% 34%}
+.bon-pes .bon-mini img{transform:scale(1.33);transform-origin:40% 55%}
 .bon-amostra{width:84px;height:84px;border-radius:50%;border:2px solid var(--line);margin:8px 0 6px}
 .bon-fim{display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;background:var(--surface);padding-top:8px}
 .bon-ed .b{min-height:44px}
