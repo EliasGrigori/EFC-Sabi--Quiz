@@ -199,9 +199,12 @@ function ingerir(s, M) {
     const p = s.part.find(x => x.id === pid); if (!p || !rs) return;
     Object.entries(rs).forEach(([idx, o]) => {
       const i = Number(idx); if (!Number.isInteger(i) || (s.resp[pid] || {})[i] || !o) return;
-      if (s.fase.etapa !== "pergunta" || s.fase.idx !== i) return;
+      const aberta = s.fase.etapa === "pergunta" && s.fase.idx === i;
+      /* resposta que demorou a chegar: vale se a pergunta fechou há poucos segundos */
+      const tarde = !aberta && s.ult && s.ult.i === i && Date.now() - s.ult.fim <= GRACA_RESP;
+      if (!aberta && !tarde) return;
       const r = respValida(o.r, s.itens[i]); if (r === null) return;
-      registrar(s, p, i, r); mud = true;
+      registrar(s, p, i, r, tarde); mud = true;
     });
   });
   Object.entries(partes).forEach(([pid, v]) => {

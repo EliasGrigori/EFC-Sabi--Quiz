@@ -883,32 +883,32 @@ label.b.sm{cursor:pointer}
 .avb.vazio{border-radius:50%;background:var(--sunk)}
 /* tamanhos por lugar: o boneco ocupa mais que o círculo de antes, porque tem corpo */
 .pp .avb{width:34px;height:34px;margin:-6px 0 -6px -4px}
-.rk .rr .avb{width:30px;height:30px;margin:-4px 0}
-.eu .avb{width:30px;height:30px;margin:-4px 0}
-.eu2 .avb{width:92px;height:92px}
+.rk .rr .avb{width:42px;height:42px;margin:-8px 0}
+.eu .avb{width:42px;height:42px;margin:-9px 0}
+.eu2 .avb{width:150px;height:150px}
 .tel .cw .avb{width:52px;height:52px;margin:-10px -2px -10px -6px}
 .tel .crowd.g .cw .avb{width:66px;height:66px}
 .tel .pl .avb{width:200px;height:200px;margin-bottom:-24px}
 .tel .podr .pr2 .avb{width:42px;height:42px;margin:-6px 0}
 /* celular: escolher e montar */
-.bon-linha{display:grid;grid-template-columns:76px 1fr;gap:4px 12px;align-items:center}
+.bon-linha{display:grid;grid-template-columns:112px 1fr;gap:4px 12px;align-items:center}
 .bon-linha .b{grid-column:1 / -1;justify-self:start}
-.bon-m{width:76px;height:76px;background:var(--sunk);border-radius:16px}
-.bon-topo{display:grid;grid-template-columns:132px 1fr;gap:12px;align-items:center}
-.bon-g{width:132px;height:132px;background:var(--sunk);border-radius:20px}
+.bon-m{width:112px;height:112px;background:var(--sunk);border-radius:16px}
+.bon-topo{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center}
+.bon-g{width:150px;height:150px;background:var(--sunk);border-radius:20px}
 .bon-tt{display:grid;gap:4px;justify-items:start;min-width:0}.bon-tt h1{margin:0;font-size:20px}.bon-tt .sm{overflow-wrap:anywhere}
 .bon-abas{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.bon-aba{min-height:44px;padding:0 8px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
+.bon-aba{min-height:40px;padding:0 6px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
 .bon-aba.on{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
-.bon-op{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));grid-auto-rows:max-content;gap:8px;max-height:46dvh;overflow:auto;padding:2px}
-.bon-i{display:grid;align-content:start;gap:4px;justify-items:center;padding:6px 4px 8px;border-radius:14px;border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit;min-height:44px}
+.bon-op{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:max-content;gap:10px;max-height:56dvh;overflow:auto;padding:2px}
+.bon-i{display:grid;align-content:start;gap:4px;justify-items:center;padding:6px 6px 8px;border-radius:16px;border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit;min-height:44px}
 .bon-i.on{border-color:var(--sabia);background:var(--warn-soft,var(--sunk))}
-.bon-n{font-size:12px;line-height:1.2;text-align:center;overflow-wrap:anywhere}
-.bon-mini{display:block;width:72px;height:72px;overflow:hidden;line-height:0;border-radius:10px;background:var(--sunk)}
+.bon-n{font-size:14px;font-weight:600;line-height:1.2;text-align:center;overflow-wrap:anywhere}
+.bon-mini{display:block;width:100%;aspect-ratio:1/1;overflow:hidden;line-height:0;border-radius:10px;background:var(--sunk)}
 .bon-mini img{width:100%;height:100%;object-fit:contain}
 .bon-cab .bon-mini img,.bon-det .bon-mini img{transform:scale(1.9);transform-origin:40% 36%}
 .bon-pes .bon-mini img{transform:scale(1.7);transform-origin:42% 52%}
-.bon-cor{width:52px;height:52px;border-radius:50%;border:2px solid var(--line);margin:8px 0 6px}
+.bon-amostra{width:84px;height:84px;border-radius:50%;border:2px solid var(--line);margin:8px 0 6px}
 .bon-fim{display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;background:var(--surface);padding-top:8px}
 .bon-ed .b{min-height:44px}
 
@@ -974,7 +974,7 @@ label.b.sm{cursor:pointer}
 </script>
 <script>
 "use strict";
-const VERSAO = "1.4.0";
+const VERSAO = "1.4.1";
 const MODELOS = [{"id":"m-epi","titulo":"Equipamentos de proteção no trabalho","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Para que serve o equipamento de proteção e quando usar","texto":""},{"tipo":"multipla","enunciado":"Quando o equipamento de proteção deve ser usado?","alternativas":["Só quando o responsável está olhando","Durante toda a atividade que exige o equipamento","Só nos dias de muito calor","Só no começo do turno"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"A proteção vale durante toda a atividade. Tirar no meio do serviço deixa a pessoa exposta."},{"tipo":"vf","enunciado":"Pode emprestar o seu equipamento de proteção de uso individual a um colega.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"O equipamento é de uso pessoal. O colega deve pedir o dele ao responsável."},{"tipo":"multipla","enunciado":"O equipamento rasgou ou quebrou durante o trabalho. O que fazer?","alternativas":["Continuar e trocar no fim do mês","Avisar o responsável e trocar antes de continuar","Remendar com fita","Trabalhar sem ele"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Equipamento danificado não protege. Avise e troque antes de voltar à atividade."},{"tipo":"vf","enunciado":"O equipamento de proteção precisa ser do tamanho certo para quem usa.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Equipamento folgado ou apertado atrapalha e protege mal."},{"tipo":"ordenar","enunciado":"Coloque na ordem o cuidado com o equipamento depois do uso.","alternativas":["Limpar conforme a orientação","Conferir se há rasgo ou defeito","Guardar em local limpo e seco"],"tempo":45,"uso":"avaliacao","porque":"Limpar, conferir e guardar: assim ele está pronto e seguro para o próximo uso."},{"tipo":"multipla","enunciado":"Onde guardar o equipamento de proteção?","alternativas":["Em local limpo, seco e conhecido por todos","No chão, perto do trabalho","Dentro do carro","Onde der"],"correta":0,"tempo":20,"uso":"gincana","porque":"Guardado no lugar certo, o equipamento dura mais e é fácil de achar."}]},{"id":"m-hig","titulo":"Higiene das mãos e pessoal","meta":80,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Higiene pessoal protege quem trabalha e quem é atendido","texto":""},{"tipo":"multipla","enunciado":"Você acordou com febre ou diarreia. O que fazer antes de começar o dia?","alternativas":["Trabalhar normalmente","Avisar o responsável antes de entrar na área","Tomar um remédio e entrar","Só usar máscara"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Doença passa de pessoa para pessoa e para os alimentos. O responsável decide a sua atividade antes de você entrar."},{"tipo":"vf","enunciado":"Corte na mão deve ficar coberto com curativo e luva.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"Curativo e luva impedem contato do ferimento com o que a pessoa toca."},{"tipo":"multipla","enunciado":"Onde se pode comer e beber durante o turno?","alternativas":["No meio da atividade","Só na área definida para isso","Dentro da área de trabalho","Em qualquer lugar"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Comida e bebida só na área definida, longe do trabalho e do material."},{"tipo":"vf","enunciado":"Unha comprida ou com esmalte é permitida na área de manuseio.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Unha comprida acumula sujeira e o esmalte pode soltar."},{"tipo":"ordenar","enunciado":"Coloque na ordem a entrada na área de manuseio.","alternativas":["Prender o cabelo e colocar a touca","Lavar as mãos","Calçar as luvas, se a atividade pedir"],"tempo":45,"uso":"avaliacao","porque":"Touca primeiro, depois mãos lavadas e por último as luvas: assim as mãos limpas não tocam o cabelo."},{"tipo":"vf","enunciado":"Brinco, anel e pulseira devem ser retirados antes de entrar.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":15,"uso":"gincana","porque":"Adornos acumulam sujeira e podem cair."}]},{"id":"m-inc","titulo":"Como comunicar um problema ou acidente","meta":75,"descricao":"Modelo pronto. Revise com o seu material antes de aplicar.","itens":[{"tipo":"explicacao","enunciado":"Avisar logo evita que o problema cresça","texto":""},{"tipo":"multipla","enunciado":"Quando avisar o responsável sobre um problema ou acidente?","alternativas":["Só no fim da semana","O quanto antes","Só se alguém perguntar","Nunca, se for pequeno"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Quanto antes o responsável souber, mais cedo ele resolve e evita que se repita."},{"tipo":"multipla","enunciado":"O que não pode faltar no aviso?","alternativas":["Só o nome de quem viu","O que aconteceu, onde e quando","Nada, o responsável descobre","Só o horário"],"correta":1,"tempo":30,"uso":"avaliacao","porque":"Sem saber o que, onde e quando, fica difícil achar a causa e resolver."},{"tipo":"vf","enunciado":"Quase acidente, que não machucou ninguém, também deve ser avisado.","alternativas":["Verdadeiro","Falso"],"correta":0,"tempo":20,"uso":"avaliacao","porque":"O quase acidente mostra o risco antes que alguém se machuque."},{"tipo":"vf","enunciado":"Pode mexer no local do acidente antes de o responsável chegar, para arrumar tudo.","alternativas":["Verdadeiro","Falso"],"correta":1,"tempo":20,"uso":"avaliacao","porque":"Mexer apaga as pistas do que aconteceu. Só mexa se for preciso para socorrer alguém ou evitar outro risco."},{"tipo":"ordenar","enunciado":"Coloque as etapas na ordem certa.","alternativas":["Garantir a segurança de todos","Avisar o responsável","Registrar o que aconteceu","Acompanhar a solução"],"tempo":60,"uso":"avaliacao","porque":"Primeiro a segurança, depois o aviso, o registro e o acompanhamento: cada etapa depende da anterior."},{"tipo":"multipla","enunciado":"Quem deve avisar um problema?","alternativas":["Só o chefe","Qualquer pessoa que perceber","Só quem se machucou","Só quem está de plantão"],"correta":1,"tempo":20,"uso":"gincana","porque":"Quem percebe primeiro tem o dever de avisar. Todos ajudam a evitar o problema."}]}];
 const SETORES_PADRAO = ["Packing", "Laboratório", "Campo", "Almoxarifado", "Oficina", "Segurança"];
 const $ = (s, r = document) => r.querySelector(s);
@@ -1852,9 +1852,12 @@ function ingerir(s, M) {
     const p = s.part.find(x => x.id === pid); if (!p || !rs) return;
     Object.entries(rs).forEach(([idx, o]) => {
       const i = Number(idx); if (!Number.isInteger(i) || (s.resp[pid] || {})[i] || !o) return;
-      if (s.fase.etapa !== "pergunta" || s.fase.idx !== i) return;
+      const aberta = s.fase.etapa === "pergunta" && s.fase.idx === i;
+      /* resposta que demorou a chegar: vale se a pergunta fechou há poucos segundos */
+      const tarde = !aberta && s.ult && s.ult.i === i && Date.now() - s.ult.fim <= GRACA_RESP;
+      if (!aberta && !tarde) return;
       const r = respValida(o.r, s.itens[i]); if (r === null) return;
-      registrar(s, p, i, r); mud = true;
+      registrar(s, p, i, r, tarde); mud = true;
     });
   });
   Object.entries(partes).forEach(([pid, v]) => {
@@ -2256,7 +2259,7 @@ try { AO.ch = new BroadcastChannel("sabia-telao"); } catch(e) {}
 
 const sala = id => S.sessoes.find(x => x.id === id);
 const hash = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
-const iniciais = n => n.split(/\s+/).filter(Boolean).slice(0, 2).map(x => x[0]).join("").toUpperCase();
+const iniciais = n => n.split(/\s+/).filter(x => /[\p{L}\p{N}]/u.test(x)).slice(0, 2).map(x => x.match(/[\p{L}\p{N}]/u)[0]).join("").toUpperCase();
 const av = (n, c) => `<span class="av" style="background:${CORES_AV[Number.isInteger(c) && c >= 0 && c < CORES_AV.length ? c : hash(n) % CORES_AV.length]}" aria-hidden="true">${esc(iniciais(n))}</span>`;
 const embaralhado = (n, seed) => { // ordem fixa por pergunta, nunca igual à certa
   const a = [...Array(n).keys()]; let x = seed + 7;
@@ -2298,7 +2301,7 @@ const ehPergunta = it => it.tipo !== "explicacao";
 const vale = it => ehPergunta(it) && it.uso !== "ensaio";
 function entrarItem(s, i) {
   const it = s.itens[i], agora = Date.now();
-  limparSim();
+  fechouPerg(s); limparSim();
   if (!ehPergunta(it)) s.fase = {etapa: "explicacao", idx: i, t0: agora, dur: 0};
   else {
     const dur = s.aj.tempo === "fecha" ? (it.tempo || 20) * 1000 * (s.aj.extra ? 1.5 : 1) : 0;
@@ -2306,8 +2309,11 @@ function entrarItem(s, i) {
     agendaSim(s);
   }
 }
-function irResultado(s) { limparSim(); s.fase = Object.assign({}, s.fase, {etapa: "resultado", t0: Date.now(), dur: 0}); beep(660); }
-function irPodio(s) { limparSim(); s.fase = {etapa: "podio", idx: s.itens.length, t0: Date.now(), dur: 0}; beep(880); }
+/* resposta que sai do celular antes do toque "passar" mas só chega depois: guardamos a pergunta que acabou de fechar */
+const GRACA_RESP = 4000;
+function fechouPerg(s) { if (s.fase && s.fase.etapa === "pergunta") s.ult = {i: s.fase.idx, tp: s.fase.t0, dur: s.fase.dur || 0, fim: Date.now()}; }
+function irResultado(s) { fechouPerg(s); limparSim(); s.fase = Object.assign({}, s.fase, {etapa: "resultado", t0: Date.now(), dur: 0}); beep(660); }
+function irPodio(s) { fechouPerg(s); limparSim(); s.fase = {etapa: "podio", idx: s.itens.length, t0: Date.now(), dur: 0}; beep(880); }
 function seguir(s) { const i = s.fase.idx + 1; if (i >= s.itens.length) irPodio(s); else entrarItem(s, i); }
 /* no pré-teste a resposta certa não aparece: depois da pergunta vai direto para a próxima etapa */
 function fimPergunta(s) { if (s.mom === "pre") seguir(s); else irResultado(s); }
@@ -2341,8 +2347,9 @@ function encerrar(s) {
   if (AO.id === s.id) AO.id = null;
   salvar(); publicar(null, s.id); UI.aba = "encerradas"; ir("#/treinos"); aviso("Sessão encerrada e guardada em Encerradas");
 }
-function registrar(s, p, i, r) {
-  const it = s.itens[i], f = s.fase, ms = Date.now() - f.t0;
+function registrar(s, p, i, r, tarde) {
+  /* tarde: a resposta saiu do celular antes de fechar a pergunta e chegou logo depois; conta como se tivesse chegado no último instante */
+  const it = s.itens[i], f = tarde ? {t0: s.ult.tp, dur: s.ult.dur} : s.fase, ms = (tarde ? s.ult.fim : Date.now()) - f.t0;
   const ok = it.tipo === "ordenar" ? (Array.isArray(r) && r.every((v, k) => v === k)) : r === it.correta;
   const bonus = s.aj.gincana && f.dur ? Math.round(500 * Math.max(0, 1 - ms / f.dur)) : 0;
   (s.resp[p.id] = s.resp[p.id] || {})[i] = {r, ok, ms, pts: vale(it) && ok ? 1000 + bonus : 0};
@@ -4865,7 +4872,7 @@ function bonEditorCel() {
       <button type="button" class="b sm" data-act="cbonsort">Sortear</button></div></div>
     <div class="bon-abas" role="tablist">${BON_ABAS.map(([k, t]) => `<button type="button" role="tab" class="bon-aba${k === aba ? " on" : ""}" aria-selected="${k === aba}" data-act="cbonaba" data-v="${k}">${t}${k === "det" && o.det.length ? ` <span class="num">${o.det.length}</span>` : ""}</button>`).join("")}</div>
     ${aba === "det" && op.length ? `<p class="sm mut" style="margin:0">Escolha até ${BON.MAX_DET}. Toque de novo para tirar.</p>` : ""}
-    ${op.length ? `<div class="bon-op bon-${aba}">${op.map(x => `<button type="button" class="bon-i${x.on ? " on" : ""}" data-act="cbonset" data-aba="${aba}" data-v="${esc(x.v)}" aria-pressed="${x.on}" aria-label="${esc(x.t)}">${aba === "cor" ? `<span class="bon-cor" style="background:${BON.cores[x.v | 0] ? "rgb(" + BON.cores[x.v | 0].join(",") + ")" : "linear-gradient(135deg,#d9a35a,#8a5a2b)"}"></span>` : `<span class="bon-mini">${bonHtml(x.cod)}</span>`}<span class="bon-n">${esc(x.t)}</span></button>`).join("")}</div>` : `<p class="mut">${vazio}</p>`}
+    ${op.length ? `<div class="bon-op bon-${aba}">${op.map(x => `<button type="button" class="bon-i${x.on ? " on" : ""}" data-act="cbonset" data-aba="${aba}" data-v="${esc(x.v)}" aria-pressed="${x.on}" aria-label="${esc(x.t)}">${aba === "cor" ? `<span class="bon-amostra" style="background:${BON.cores[x.v | 0] ? "rgb(" + BON.cores[x.v | 0].join(",") + ")" : "linear-gradient(135deg,#d9a35a,#8a5a2b)"}"></span>` : `<span class="bon-mini">${bonHtml(x.cod)}</span>`}<span class="bon-n">${esc(x.t)}</span></button>`).join("")}</div>` : `<p class="mut">${vazio}</p>`}
     <div class="bon-fim"><button type="button" class="b" data-act="cbonnao">Cancelar</button><button type="button" class="b p" data-act="cbonok">${ic("check")}Pronto</button></div>
   </div></div>`;
 }

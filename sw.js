@@ -1,5 +1,5 @@
 /* Sabiá · funciona sem internet: guarda a casca e as fontes na primeira visita */
-const V = "sabia-1.4.0";
+const V = "sabia-1.4.1";
 const CASCA = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(V).then(c => c.addAll(CASCA)
   .then(() => fetch("bon/lista.json").then(r => r.json()).then(l => c.addAll(l.map(x => "bon/" + x))).catch(() => {}))   /* bonecos (v1.4.0): guardados para funcionar sem internet */

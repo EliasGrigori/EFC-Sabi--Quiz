@@ -9,7 +9,7 @@ try { AO.ch = new BroadcastChannel("sabia-telao"); } catch(e) {}
 
 const sala = id => S.sessoes.find(x => x.id === id);
 const hash = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
-const iniciais = n => n.split(/\s+/).filter(Boolean).slice(0, 2).map(x => x[0]).join("").toUpperCase();
+const iniciais = n => n.split(/\s+/).filter(x => /[\p{L}\p{N}]/u.test(x)).slice(0, 2).map(x => x.match(/[\p{L}\p{N}]/u)[0]).join("").toUpperCase();
 const av = (n, c) => `<span class="av" style="background:${CORES_AV[Number.isInteger(c) && c >= 0 && c < CORES_AV.length ? c : hash(n) % CORES_AV.length]}" aria-hidden="true">${esc(iniciais(n))}</span>`;
 const embaralhado = (n, seed) => { // ordem fixa por pergunta, nunca igual à certa
   const a = [...Array(n).keys()]; let x = seed + 7;
@@ -51,7 +51,7 @@ const ehPergunta = it => it.tipo !== "explicacao";
 const vale = it => ehPergunta(it) && it.uso !== "ensaio";
 function entrarItem(s, i) {
   const it = s.itens[i], agora = Date.now();
-  limparSim();
+  fechouPerg(s); limparSim();
   if (!ehPergunta(it)) s.fase = {etapa: "explicacao", idx: i, t0: agora, dur: 0};
   else {
     const dur = s.aj.tempo === "fecha" ? (it.tempo || 20) * 1000 * (s.aj.extra ? 1.5 : 1) : 0;
@@ -59,8 +59,11 @@ function entrarItem(s, i) {
     agendaSim(s);
   }
 }
-function irResultado(s) { limparSim(); s.fase = Object.assign({}, s.fase, {etapa: "resultado", t0: Date.now(), dur: 0}); beep(660); }
-function irPodio(s) { limparSim(); s.fase = {etapa: "podio", idx: s.itens.length, t0: Date.now(), dur: 0}; beep(880); }
+/* resposta que sai do celular antes do toque "passar" mas só chega depois: guardamos a pergunta que acabou de fechar */
+const GRACA_RESP = 4000;
+function fechouPerg(s) { if (s.fase && s.fase.etapa === "pergunta") s.ult = {i: s.fase.idx, tp: s.fase.t0, dur: s.fase.dur || 0, fim: Date.now()}; }
+function irResultado(s) { fechouPerg(s); limparSim(); s.fase = Object.assign({}, s.fase, {etapa: "resultado", t0: Date.now(), dur: 0}); beep(660); }
+function irPodio(s) { fechouPerg(s); limparSim(); s.fase = {etapa: "podio", idx: s.itens.length, t0: Date.now(), dur: 0}; beep(880); }
 function seguir(s) { const i = s.fase.idx + 1; if (i >= s.itens.length) irPodio(s); else entrarItem(s, i); }
 /* no pré-teste a resposta certa não aparece: depois da pergunta vai direto para a próxima etapa */
 function fimPergunta(s) { if (s.mom === "pre") seguir(s); else irResultado(s); }
@@ -94,8 +97,9 @@ function encerrar(s) {
   if (AO.id === s.id) AO.id = null;
   salvar(); publicar(null, s.id); UI.aba = "encerradas"; ir("#/treinos"); aviso("Sessão encerrada e guardada em Encerradas");
 }
-function registrar(s, p, i, r) {
-  const it = s.itens[i], f = s.fase, ms = Date.now() - f.t0;
+function registrar(s, p, i, r, tarde) {
+  /* tarde: a resposta saiu do celular antes de fechar a pergunta e chegou logo depois; conta como se tivesse chegado no último instante */
+  const it = s.itens[i], f = tarde ? {t0: s.ult.tp, dur: s.ult.dur} : s.fase, ms = (tarde ? s.ult.fim : Date.now()) - f.t0;
   const ok = it.tipo === "ordenar" ? (Array.isArray(r) && r.every((v, k) => v === k)) : r === it.correta;
   const bonus = s.aj.gincana && f.dur ? Math.round(500 * Math.max(0, 1 - ms / f.dur)) : 0;
   (s.resp[p.id] = s.resp[p.id] || {})[i] = {r, ok, ms, pts: vale(it) && ok ? 1000 + bonus : 0};

@@ -25,5 +25,6 @@ wait
 run v13 teste-v13.js dist shots/r_v13 &
 run v14 teste-v14.js dist shots/r_v14 &
 run v14off teste-v14-offline.js dist &
+run v141 teste-v141.js dist shots/r_v141 &
 wait
 echo FIM
