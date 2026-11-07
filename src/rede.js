@@ -171,7 +171,11 @@ function resDe(s) {
     const pt = s.part.find(x => x.id === p.id); if (!pt || !pt.real) return;
     const base = {tot: p.pts, np: s.part.length}; if (s.aj.ranking) base.pos = pos.get(p.id);
     if (f.etapa === "resultado") { const r = (s.resp[p.id] || {})[f.idx]; out[p.id] = Object.assign(base, {i: f.idx, ok: r ? (r.ok ? 1 : 0) : -1, pts: r ? r.pts : 0}); }
-    else out[p.id] = Object.assign(base, {i: -1, ac: p.ac, nq: c.nq, pct: p.pct, ok: p.pct >= s.meta ? 1 : 0});
+    else {
+      /* q: perguntas que a pessoa acertou (índices). O celular usa para acertar o que guardou, caso uma resposta atrasada tenha virado acerto depois */
+      const rr = s.resp[p.id] || {}, q = Object.keys(rr).filter(k => rr[k] && rr[k].ok).map(Number).sort((a, b) => a - b);
+      out[p.id] = Object.assign(base, {i: -1, ac: p.ac, nq: c.nq, pct: p.pct, ok: p.pct >= s.meta ? 1 : 0, q});
+    }
   });
   return Object.keys(out).length ? out : null;
 }
@@ -213,7 +217,7 @@ function ingerir(s, M) {
       const i = Number(idx), it = s.itens[i]; if (!Number.isInteger(i) || !it || !vale(it) || !o) return;
       const t = Number(o.t), ok = Number(o.ok) === 1 ? 1 : 0; if (!Number.isInteger(t) || t < 1 || t > 3) return;
       const R = (s.refaz = s.refaz || {}), L = (R[pid] = R[pid] || {}), a = L[i];
-      if (!a || a.t !== t || a.ok !== ok) { L[i] = {t, ok}; mud = true; }
+      if (!a || t > a.t || (t === a.t && ok > a.ok)) { L[i] = {t, ok}; mud = true; } // nunca volta para uma tentativa mais antiga
     });
   });
   const nCom = ingerirCom(s, partes); if (nCom) { mud = true; setTimeout(pesAviso, 0); }

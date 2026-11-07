@@ -36,7 +36,7 @@ const tem=async(p,txt,sel='body',ms=8000)=>espera(p,([t,s])=>{const e=document.q
  ok('Instrutor vê Celulares conectados',await tem(p,'Celulares conectados','#redeSt'));
  ok('Sem simulados quando o Firebase está ligado',(await p.locator('.pgrid .pp').count())===0&&(await p.isDisabled('[data-act=proxima]')));
  const link=await p.getAttribute('[data-act=copiar]','data-v');
- ok('Link de entrada leva chave e banco',link.includes('#/entrar/'+chave+'/b-'));
+ ok('Link de entrada leva chave e banco (b- no banco de teste, p- e o projeto no Firebase real)',/#\/entrar\/\d{6}\/[bp]-/.test(link)&&link.includes('#/entrar/'+chave+'/'),link.split('#')[1]);
  await p.waitForFunction(k=>true,chave);
  ok('Sala publicada no banco sem a resposta certa',(()=>{const t=mock.tree();const s=t&&t.salas&&t.salas[chave];return !!s&&!!s.pub&&s.pub.meta.titulo&&s.pub.fase.etapa==='espera'})());
  // 3. celular A entra (nome livre)

@@ -1,11 +1,11 @@
-# Roteiro de verificação do Grok · Sabiá (v0.1.0 a v1.4.2, tudo em um só)
+# Roteiro de verificação do Grok · Sabiá (v0.1.0 a v1.4.3, tudo em um só)
 
 Como usar: confira as versões na ordem. Cada parte diz o que foi feito, como conferir e outros erros para procurar.
 Use um navegador no computador e um celular (ou janela de 390 px). Não use dados reais de pessoas.
 A parte da v0.4.0 precisa de um Realtime Database do Firebase configurado (veja PASSO-A-PASSO-FIREBASE-v0.4.0.md). A da v0.5.0 precisa de uma sessão encerrada. A da v0.6.0 precisa de 4 ou 5 pessoas de teste (nomes inventados). A da v0.7.0 precisa do Firebase e de um celular. A da v0.8.0 precisa de contas do EFClaudian.
 Escreva os achados em `CAIXA-DO-GROK.md`, dizendo a versão de cada um. Não altere outros arquivos.
 
-Partes: v0.1.0, v0.2.0, v0.3.0, v0.4.0, v0.5.0, v0.6.0, v0.7.0, v0.8.0, v1.0.0, v1.0.1, v1.1.0, v1.2.0, v1.3.0, v1.3.1, v1.4.0, v1.4.1 e v1.4.2, nesta ordem. A v1.0.0 muda as regras do Firebase: publique as regras novas antes de conferir as partes que usam celular.
+Partes: v0.1.0, v0.2.0, v0.3.0, v0.4.0, v0.5.0, v0.6.0, v0.7.0, v0.8.0, v1.0.0, v1.0.1, v1.1.0, v1.2.0, v1.3.0, v1.3.1, v1.4.0, v1.4.1, v1.4.2 e v1.4.3, nesta ordem. A v1.0.0 muda as regras do Firebase: publique as regras novas antes de conferir as partes que usam celular.
 
 Lembrete: o que está na seção "Ainda não existe" de uma versão pode já existir numa versão mais nova deste arquivo.
 
@@ -612,3 +612,24 @@ Copie `docs/firebase-rules.json` (ou Ajustes > Copiar regras) e publique no cons
 - Bicho borrado demais em telas grandes (o desenho tem 250 px).
 - Chapéu ou rabo sumindo pela máscara das bordas.
 - Na espera, botões empurrados para fora da tela em celulares baixos.
+
+# Roteiro do Grok · Sabiá v1.4.3 (resposta que se perdia)
+
+## O que foi feito
+1. **Celular corrige o resultado guardado:** se a resposta chega ao instrutor depois de fechar a pergunta, o instrutor conta (v1.4.1) e agora o celular também atualiza o que guardou (`guardaRev` atualiza quando o resultado muda). No pódio, o instrutor manda em `res/{pid}.q` a lista das perguntas que a pessoa acertou, e o celular acerta as contas (`acertaRevPodio`).
+2. **Janela da resposta atrasada:** de 4 s para 10 s (`GRACA_RESP`).
+3. **Treino no celular em ordem:** as tentativas (`part/{pid}/ref/{i}`) vão uma de cada vez (`CE.filaRef`), e o instrutor nunca troca uma tentativa mais nova por uma mais antiga.
+4. **Testes:** `rtdb-mock.js` aceita `SABIA_ATRASO=ms` (cada pedido espera entre ms e 2 x ms); `teste-reforco-cel.js` espera o banco com paciência; `teste-celular.js` aceita o link `p-` do Firebase real; nova suíte "lento" no `rodar-tudo.sh`.
+
+## Como conferir
+1. Ajustes mostra "Sabiá v1.4.3".
+2. `teste-reforco-cel.js` no Firebase real, 2 rodadas: 48/48, José com 6 de 6 e "Você acertou tudo" no celular dele.
+3. Mock lento: `SABIA_ATRASO=1500 node teste-reforco-cel.js dist prints` deve dar 48/48. (Na v1.4.2 dava 9 falhas.)
+4. À mão, 2 celulares: responder e, no mesmo instante, tocar em passar, várias vezes. No pódio, o celular não pode dizer "pergunta para rever" de uma pergunta que o instrutor contou como certa.
+5. Treinar de novo no celular, errando e acertando rápido: o cartão "Treino no celular" do instrutor e o relatório mostram a pergunta recuperada.
+6. Nenhuma regra nova no Firebase.
+
+## Outros erros para procurar
+- Resposta contada duas vezes ou pontos em dobro.
+- Resposta que chega mais de 10 s depois entrando no ranking.
+- Celular mostrando acerto que o instrutor não contou (o contrário do erro corrigido).

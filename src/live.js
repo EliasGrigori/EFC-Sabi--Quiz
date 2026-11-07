@@ -60,7 +60,7 @@ function entrarItem(s, i) {
   }
 }
 /* resposta que sai do celular antes do toque "passar" mas só chega depois: guardamos a pergunta que acabou de fechar */
-const GRACA_RESP = 4000;
+const GRACA_RESP = 10000;
 function fechouPerg(s) { if (s.fase && s.fase.etapa === "pergunta") s.ult = {i: s.fase.idx, tp: s.fase.t0, dur: s.fase.dur || 0, fim: Date.now()}; }
 function irResultado(s) { fechouPerg(s); limparSim(); s.fase = Object.assign({}, s.fase, {etapa: "resultado", t0: Date.now(), dur: 0}); beep(660); }
 function irPodio(s) { fechouPerg(s); limparSim(); s.fase = {etapa: "podio", idx: s.itens.length, t0: Date.now(), dur: 0}; beep(880); }

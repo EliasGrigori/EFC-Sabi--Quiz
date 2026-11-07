@@ -1,5 +1,7 @@
 /* Servidor de teste que imita o Realtime Database (REST + eventos em tempo real). Só para os testes, não é o Firebase. */
 const http = require("http");
+/* SABIA_ATRASO=ms imita a demora da internet de verdade (cada pedido espera entre ms e 2x ms) */
+const ATRASO = () => { const ms = Number(process.env.SABIA_ATRASO || 0); return ms ? ms + Math.random() * ms : 0; };
 function criar(opc) {
   opc = opc || {};
   const SIM = require("./rules-sim.js");
@@ -23,7 +25,7 @@ function criar(opc) {
     const cors = {"access-control-allow-origin": "*", "access-control-allow-headers": "*", "access-control-allow-methods": "GET,PUT,PATCH,DELETE,OPTIONS"};
     if (q.method === "OPTIONS") { r.writeHead(204, cors); return r.end(); }
     const u = new URL(q.url, "http://x"), caminho = decodeURIComponent(u.pathname).replace(/\.json$/, ""), s = seg(caminho);
-    let corpo = ""; q.on("data", d => corpo += d); q.on("end", () => {
+    let corpo = ""; q.on("data", d => corpo += d); q.on("end", () => setTimeout(() => {
       reqs.push(q.method + " " + caminho);
       if (q.method === "GET" && (q.headers.accept || "").includes("text/event-stream")) {
         r.writeHead(200, Object.assign({"content-type": "text/event-stream", "cache-control": "no-cache", connection: "keep-alive"}, cors));
@@ -40,7 +42,7 @@ function criar(opc) {
       if (q.method === "DELETE") { if (!tenta(caminho, null)) return j(401, {error: "Permission denied"}); avisa(); return j(200, null); }
       if (q.method === "PATCH") { for (const k of Object.keys(v || {})) { if (!tenta("/" + s.concat(seg(k)).join("/"), v[k] === undefined ? null : v[k])) return j(401, {error: "Permission denied"}); } avisa(); return j(200, v); }
       j(405, {});
-    });
+    }, ATRASO()));
   });
   return new Promise(ok => srv.listen(0, "127.0.0.1", () => ok({url: "http://127.0.0.1:" + srv.address().port, tree: () => tree, reqs, negadas, regras: () => regras, fecha: () => { ouvintes.forEach(o => o.res.end()); srv.close(); }})));
 }

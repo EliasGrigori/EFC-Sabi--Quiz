@@ -56,11 +56,20 @@ function aoPub() {
 }
 
 /* guarda no aparelho cada pergunta já revelada, para rever e treinar depois */
+function acertaRevPodio() {
+  const r = CE.res; if (!CE.entrou || !r || r.i !== -1 || !Array.isArray(r.q)) return;
+  const certas = new Set(r.q.map(Number)); let mudou = false;
+  Object.keys(CE.rev).forEach(k => { const x = CE.rev[k], ok = certas.has(Number(k)); if (ok && x.ok !== 1) { x.ok = 1; mudou = true; } else if (!ok && x.ok === 1) { x.ok = 0; mudou = true; } });
+  if (mudou) gravaLS("sabia-rv-", CE.rev);
+}
 function guardaRev() {
+  acertaRevPodio();
   const f = CE.pub && CE.pub.fase, m = CE.pub && CE.pub.meta; if (!CE.entrou || !f || f.etapa !== "resultado" || !m || m.mom === "pre") return;
-  const it = itemCel(); if (!it || it.ensaio || CE.rev[f.idx]) return;
+  const it = itemCel(); if (!it || it.ensaio) return;
   const r = CE.res && CE.res.i === f.idx ? CE.res : null; if (!r || ![1, 0, -1].includes(r.ok)) return;
-  const mine = CE.resp[f.idx];
+  const mine = CE.resp[f.idx], ja = CE.rev[f.idx];
+  /* já guardada: só atualiza se o instrutor mudou o resultado (resposta que chegou atrasada e virou acerto) */
+  if (ja) { if (ja.ok === r.ok) return; ja.ok = r.ok; if (mine !== undefined) ja.m = typeof mine === "object" ? lista(mine).map(Number) : mine; gravaLS("sabia-rv-", CE.rev); return; }
   CE.rev[f.idx] = {n: f.numPerg, e: it.enunciado, t: it.tipo, a: it.alts, o: it.ordem || null, c: Number.isInteger(it.correta) ? it.correta : null, p: it.porque || "", m: mine === undefined ? null : (typeof mine === "object" ? lista(mine).map(Number) : mine), ok: r.ok};
   gravaLS("sabia-rv-", CE.rev);
 }
@@ -214,7 +223,9 @@ function refazerResp(r) {
 }
 function enviarRef(i, st) {
   if (!CE.pub || !CE.base || !CE.pid) return;
-  Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/part/" + CE.pid + "/ref/" + i, {t: st.t, ok: st.ok === 1 ? 1 : 0}).catch(() => {});
+  /* uma tentativa de cada vez: se duas fossem juntas, a mais antiga poderia chegar depois e apagar a mais nova */
+  const corpo = {t: st.t, ok: st.ok === 1 ? 1 : 0}, cam = "/salas/" + CE.chave + "/part/" + CE.pid + "/ref/" + i, base = CE.base;
+  CE.filaRef = (CE.filaRef || Promise.resolve()).then(() => Rede.req(base, "PUT", cam, corpo)).catch(() => {});
 }
 
 /* ---------- comentário rápido e aparelho compartilhado (v0.7.0) ---------- */

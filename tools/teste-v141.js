@@ -67,7 +67,7 @@ const idxTarde=await p.evaluate(()=>{const s=sala(AO.id);return s.fase.idx});
 await p.evaluate(async([pid,idx])=>{const s=sala(AO.id),it=s.itens[idx];await Rede.req(Rede.url(),'PUT','/salas/'+s.chave+'/resp/'+pid+'/'+idx,{r:it.correta});},[dados.pid,idxTarde]).catch(()=>{});
 await p.waitForTimeout(1500);
 const v3=await p.evaluate(([pid,i])=>{const s=sala(AO.id);return s.resp[pid]&&s.resp[pid][i]},[dados.pid,idxTarde]);
-ok('Resposta que chega muito depois (mais de 4 s) não conta',!v3,JSON.stringify(v3));
+ok('Resposta que chega muito depois (mais de 10 s) não conta',!v3,JSON.stringify(v3));
 // caso 4: pergunta antiga, sem ser a última fechada, não conta
 const v4a=await p.evaluate(([pid,q2])=>{const s=sala(AO.id);return s.resp[pid]&&s.resp[pid][q2]},[dados.pid,q2]);
 ok('Pergunta que nunca foi aberta não recebe resposta',!v4a);

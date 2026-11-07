@@ -3,7 +3,10 @@ const {criar}=require('./rtdb-mock.js');
 const D=process.argv[2],OUT=process.argv[3];fs.mkdirSync(OUT,{recursive:true});
 const srv=http.createServer((q,r)=>{let f=path.join(D,q.url.split('?')[0]);if(f.endsWith('/'))f+='index.html';fs.readFile(f,(e,b)=>{if(e){r.writeHead(404);r.end();return}const t={'.html':'text/html','.js':'text/javascript','.json':'application/json'}[path.extname(f)]||'application/octet-stream';r.writeHead(200,{'content-type':t});r.end(b)})});
 const log=[];const ok=(n,c,x='')=>{log.push((c?'OK   ':'FALHA ')+n+(x?' · '+x:''));};
-const espera=async(p,fn,arg,ms=8000)=>{try{await p.waitForFunction(fn,arg,{timeout:ms});return true}catch(e){return false}};
+const LENTO=Number(process.env.SABIA_ATRASO||0)*8;
+const espera=async(p,fn,arg,ms=8000)=>{try{await p.waitForFunction(fn,arg,{timeout:ms+LENTO});return true}catch(e){return false}};
+/* lê part/pid/ref da Maria no banco, esperando até a condição valer (o banco pode ser lento) */
+const refMaria=async(mock,chave,cond)=>{let r=null;for(let k=0;k<40+LENTO/250;k++){const sl=mock.tree()&&mock.tree().salas&&mock.tree().salas[chave];const pt=(sl&&sl.part)||{};const pid=Object.keys(pt).find(x=>pt[x].n==='Maria Silva');r=pid?pt[pid].ref:null;if(r&&cond(r))return r;await new Promise(z=>setTimeout(z,250));}return r||{};};
 const tem=async(p,txt,sel='body',ms=8000)=>espera(p,([t,s])=>{const e=document.querySelector(s);return !!e&&e.innerText.includes(t)},[txt,sel],ms);
 (async()=>{
  const mock=await criar();
@@ -97,9 +100,9 @@ const tem=async(p,txt,sel='body',ms=8000)=>espera(p,([t,s])=>{const e=document.q
  ok('Acertar na 2ª tentativa mostra Agora sim com a explicação',await tem(A,'Agora sim')&&await tem(A,'Tentativa 2 de 3'));
  await A.screenshot({path:OUT+'/r-agora-sim.png'});
  await espera(p,i=>1,null,200);
- const ref1=await (async()=>{await new Promise(r=>setTimeout(r,500));const pt=mock.tree().salas[chave].part;const pid=Object.keys(pt).find(k=>pt[k].n==='Maria Silva');return pt[pid].ref})();
+ const ref1=await refMaria(mock,chave,r=>r[q1.i]&&r[q1.i].t===2);
  ok('Tentativas são enviadas ao banco em part/pid/ref',ref1&&ref1[q1.i]&&ref1[q1.i].t===2&&ref1[q1.i].ok===1,JSON.stringify(ref1));
- ok('Instrutor vê que 1 pessoa já refez e 1 pergunta recuperada',await tem(p,'1 de 1 já','#refcard',6000)&&await tem(p,'1 de '+errA+' perguntas recuperadas','#refcard',6000));
+ ok('Instrutor vê que 1 pessoa já refez e 1 pergunta recuperada',await tem(p,'1 de 1 já','#refcard',6000+LENTO)&&await tem(p,'1 de '+errA+' perguntas recuperadas','#refcard',6000+LENTO));
  await p.screenshot({path:OUT+'/r-sala-refcard.png'});
  // próxima: errar três vezes
  await A.click('[data-act=crprox]');
@@ -109,7 +112,7 @@ const tem=async(p,txt,sel='body',ms=8000)=>espera(p,([t,s])=>{const e=document.q
  await dar(false);
  ok('Errar 3 vezes mostra a resposta certa e a explicação',await tem(A,'Não foi dessa vez')&&await tem(A,'A resposta certa')&&(await A.locator('.cert').count())===1);
  await A.screenshot({path:OUT+'/r-tres-erros.png'});
- const ref2=await (async()=>{await new Promise(r=>setTimeout(r,500));const pt=mock.tree().salas[chave].part;const pid=Object.keys(pt).find(k=>pt[k].n==='Maria Silva');return pt[pid].ref})();
+ const ref2=await refMaria(mock,chave,r=>r[q2.i]&&r[q2.i].t===3);
  ok('Banco guarda t=3 e ok=0 para a que não recuperou',ref2[q2.i]&&ref2[q2.i].t===3&&ref2[q2.i].ok===0,JSON.stringify(ref2));
  // recarregar: tentativas persistem e a 3x errada não volta
  await A.reload();await tem(A,'certas','body',8000);
@@ -122,6 +125,7 @@ const tem=async(p,txt,sel='body',ms=8000)=>espera(p,([t,s])=>{const e=document.q
  await A.click('[data-act=cvolta]');
  // aviso: contagem final no instrutor
  // ---------- encerra a sala e confere relatório
+ await espera(p,()=>{const s=S.sessoes.find(x=>x.estado==='sala');return !!s&&!!s.refaz&&Object.values(s.refaz).some(o=>Object.values(o).some(x=>x&&x.t===3))},null,4000);
  await p.click('[data-act=fechar-sala]');await p.click('[data-act=encerrar-ok]');await p.waitForSelector('.tr:not(.h)');
  const sres=await p.evaluate(()=>{const s=S.sessoes.find(x=>x.estado==='encerrada');const r=resumoRefaz(s);return {refaz:s.refaz?Object.keys(s.refaz).length:0,r:r&&{pessoas:r.pessoas,fez:r.fez,rec:r.rec},id:s.id,cod:s.cod,integra:integra(s)}});
  ok('Sessão encerrada guarda o treino feito',sres.refaz===1&&sres.r&&sres.r.fez===2&&sres.r.rec===1,JSON.stringify(sres));
@@ -129,6 +133,7 @@ const tem=async(p,txt,sel='body',ms=8000)=>espera(p,([t,s])=>{const e=document.q
  await p.evaluate(id=>{location.hash='#/relatorios/'+id;render()},sres.id);await p.waitForSelector('.rl-top');
  ok('Relatório mostra Treino feito no celular',/Treino feito no celular/.test(await p.innerText('.rel'))&&/Maria Silva/.test(await p.innerText('.rel')));
  await p.waitForTimeout(3700);await p.screenshot({path:OUT+'/r-rel-refaz.png'});
+ for(let k=0;k<LENTO/250&&!(mock.tree()===null||!mock.tree().salas||!mock.tree().salas[chave]);k++)await new Promise(z=>setTimeout(z,250));
  ok('Banco foi limpo ao encerrar',mock.tree()===null||!mock.tree().salas||!mock.tree().salas[chave]);
  // celular depois do encerramento
  await tem(A,'A sala foi encerrada');

@@ -42,6 +42,7 @@ mesmas funções, cara nova. Versões recomeçam do zero (v0.1.0 até v1.0.0).
 | v1.4.0 | publicada (commit c083cf0, 06/11/2026) | Bonecos: cada participante monta o seu bicho no celular (17 animais, 10 cores, 6 roupas, 11 detalhes, 23 cosméticos de cabeça e 6 de pescoço); todos começam com gato ou cachorro sorteado; boneco na sala, telão, ranking e pódio; regra nova no Firebase (campo b) |
 | v1.4.1 | publicada (commit b3e3591, 06/11/2026) | Bichos maiores no celular (opções do montador em 2 colunas), resposta que chega atrasada (até 4 s) conta, aba Cor do montador corrigida (erro da v1.4.0), iniciais ignoram hífen; sem regra nova no Firebase |
 | v1.4.2 | publicada (commit 5e21fa5, 06/11/2026) | Bicho maior dentro do quadro (recorte fixo de 250 px), quadro de 140 px na tela de nome, bicho de 240 px em cima do nome na espera |
+| v1.4.3 | aprovada em 07/11/2026 e publicada | Correção da suspeita do Grok (v0.6.0, José com 5 de 6 no Firebase real): celular corrige o resultado quando a resposta atrasada vira acerto, pódio manda a lista de acertos, janela de 10 s, tentativas do treino em ordem; testes com internet lenta (SABIA_ATRASO) |
 
 ## Paridade com o EFCquiz (79 funções)
 v0.1.0: 10 prontas e 11 parciais. v0.2.0 completa as opções de Aplicar, o controle ao vivo e o telão. v0.3.0 entrega o editor e as versões. v0.4.0 entrega o celular do participante. v0.5.0 entrega relatórios, PDFs e conferência. v0.6.0 entrega reforço, reavaliação, pré e pós-teste e rever no celular v0.7.0 entrega pessoas, mensagens, comentário no celular e desafio entre setores (detalhe em features.csv: 67 prontas, 11 parciais, 1 faltando de 79 (v0.8.0 entrega perfis, porta de entrada, conta do EFClaudian, Ajustes completo e observações; v1.0.0 entrega banco de perguntas, criar com IA, pergunta de teste, voz, ouvir, carimbo e regras do Firebase mais firmes)).
@@ -200,3 +201,12 @@ Início 53% → 41% (meta 29%). Aplicar 45% → 39% (meta 40%). Medido com 3 tre
 - **Tamanhos:** tela de nome 140 px; espera `min(240px, 62vw)` com o nome embaixo; zoom das miniaturas de Cabeça/Detalhes 1,5 (origem 37% 34%) e Pescoço 1,33 (40% 55%); máscara radial 88%.
 - **Testes:** `teste-v141.js` cobre também a v1.4.2 (20 conferências); `teste-v14.js` lê a cor da pelagem em (145, 160) por causa do recorte. Folha de conferência dos 34 bichos (com e sem chapéu de mago): `folha142.js`.
 - **Pergunta do Elias:** atrasar o app em +0,3 s para compensar o atraso dos celulares. Resposta: a janela de 4 s da v1.4.1 já faz isso, e melhor, porque só espera quando há resposta a caminho; atraso fixo deixaria o controle mais lento e não cobriria celulares com 1–2 s de atraso.
+
+## v1.4.3 · resposta que se perdia (src/celular.js, rede.js, live.js)
+- **Origem:** CAIXA-DO-GROK de 07/11/2026 (v0.1.0 a v0.7.0): no Firebase real, `teste-reforco-cel.js` deu 45/48 duas vezes; a resposta do José (B) na P5 não contou.
+- **Reprodução:** `rtdb-mock.js` com `SABIA_ATRASO` (cada pedido espera entre ms e 2 x ms). Com 800 ms, a v1.4.2 também falhava: o instrutor contava 6 de 6, mas o celular dizia "1 pergunta para rever".
+- **Causa 1:** `guardaRev` gravava o resultado da pergunta uma vez só. Na resposta atrasada, o celular recebia `ok:-1`, guardava, e não aceitava a correção. Agora atualiza quando `res.ok` muda (e grava a resposta `m`). No pódio, `resDe` manda `q` (índices acertados) e `acertaRevPodio` acerta `CE.rev`.
+- **Causa 2:** com 1,5 a 3 s por pedido, a resposta chegava depois dos 4 s. `GRACA_RESP` = 10000 ms. Sem brecha: o celular só manda resposta enquanto mostra a pergunta.
+- **Causa 3:** tentativas do treino (`part/{pid}/ref/{i}`) iam em paralelo e a mais antiga podia chegar depois e apagar a mais nova. Celular em fila (`CE.filaRef`); `ingerir` só aceita `t` maior (ou mesmo `t` com `ok` maior).
+- **Testes:** `teste-reforco-cel.js` espera o banco (função `refMaria`, esperas maiores com `SABIA_ATRASO`); `teste-celular.js` aceita link `p-`; suíte "lento" (`SABIA_ATRASO=1500`) no `rodar-tudo.sh` (20 suítes). Na v1.4.2, 9 falhas com 1500 ms; na v1.4.3, 0 em 3 rodadas.
+- **Firebase:** sem regra nova (`res` não tem validação de campos; `q` é uma lista de números).
