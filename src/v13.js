@@ -94,7 +94,7 @@ async function matAnexar(t, file, manter) {   // manter = anexar de novo o mesmo
   let caps;
   try {
     if (tipo === "pptx") { const sl = await pptxLer(file, false); if (!sl.length) return {ok: false, msg: "Não achei slides neste PPTX."}; caps = sl.map((x, i) => ({t: x.titulo || x.linhas.map(l => l.t)[0] || "Slide " + (i + 1), p: i})); }
-    else if (tipo === "pdf") caps = [{t: "Documento inteiro", p: 1}];
+    else if (tipo === "pdf") caps = (!manter && await Promise.race([aprCapsPdf(file).catch(() => null), new Promise(r => setTimeout(() => r(null), 20000))])) || [{t: "Documento inteiro", p: 1}];   // v1.5.0: marcadores ou um capítulo por slide
     else caps = [{t: "Documento inteiro", p: 0}];
   } catch (e) { return {ok: false, msg: String(e.message || "Não consegui ler o arquivo.")}; }
   if (manter && t.material && tipo === "pptx" && caps.length !== t.material.caps.length) return {ok: false, msg: "Este PPTX tem " + caps.length + " slides e o original tinha " + t.material.caps.length + ". Anexe o mesmo arquivo, ou use \"Trocar arquivo\" (desliga as ligações)."};

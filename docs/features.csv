@@ -78,3 +78,5 @@ Desafio entre setores: placar do mês sem nomes (X05),Relatório,could,yes,yes,"
 Conferir registro pelo código do rodapé do PDF,Conferir,must,yes,yes,código SAB-... no rodapé do PDF; recalcula e confere com os dados guardados ou com o .json (v0.5.0)
 Configurações: identificação / perfil / aparência / telão / demonstração / setores e pessoas / armazenamento / integração / observações,Configurações,must,yes,yes,Ajustes com índice de 10 seções (v0.8.0)
 Caixa de mensagens do responsável (X02),Mensagens,should,yes,partial,Mensagens do instrutor com contador no menu e aviso no Início; sem separar por responsável (v0.7.0)
+Apresentar o material (PDF desenhado página por página) no painel / outra janela / telão,Material,should,no,yes,"Novo no Sabiá (v1.5.0): PDF.js guardado no app, setas, toque, capítulos, tela cheia; controle apresenta no telão a qualquer momento"
+Prompt padrão para a IA gerar as atividades (múltipla / V ou F / sequência),Criar,should,no,yes,"Novo no Sabiá (v1.5.0): copiar, colar na IA com o conteúdo, importar o .json"

@@ -1,0 +1,32 @@
+/* ===== v1.5.0 · Apresentar e prompt padrão (prefixos ap-, ia-pad) ===== */
+/* página do PDF desenhada: ocupa o espaço do visor, centrada, sem rolagem */
+.mt-c:has(.ap-palco){display:grid;grid-template:minmax(0,1fr)/minmax(0,1fr);min-height:0;overflow:hidden}
+.ap-palco{align-self:stretch;justify-self:stretch;min-height:0;display:grid;place-items:center;overflow:hidden;touch-action:pan-y pinch-zoom}
+.ap-pg{display:block;max-width:100%;max-height:100%;background:#fff;box-shadow:0 2px 14px rgba(0,0,0,.28);border-radius:4px}
+.dl.mt .ap-palco{height:min(68dvh,760px)}
+.matov .mt-c{display:grid}
+.matov.ap-apr{gap:8px;padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+.matov.ap-apr .mt-sl{max-width:1100px;margin:0 auto;width:100%}
+/* barra do visor: capítulos e tela cheia */
+.mt-bar{flex-wrap:wrap}
+.ap-cap{min-height:36px;max-width:min(320px,46vw);padding:4px 30px 4px 10px;font-size:14px}
+.matov .ap-cap{background:transparent;color:var(--m-ink);border-color:var(--m-line)}
+.matov .ap-cap option{color:#122120;background:#fff}
+@media (max-width:620px){.ap-lbl{display:none}.ap-cap{max-width:100%;flex:1 1 140px}}
+/* controle da sala */
+.ap-ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 10px;border:1px dashed var(--line);border-radius:12px}
+.ap-ctl.on{border-style:solid;border-color:var(--br,#C85A1E);background:var(--sunk,rgba(0,0,0,.03))}
+.ap-ctl > .sm{flex:1 1 180px;min-width:0}
+.ap-nav{display:inline-flex;gap:6px}
+/* painel: dica do PPTX */
+.ap-dica{margin:0;padding:10px 12px;border-radius:12px;background:var(--warn-soft,#FBE6D8);border:1px solid var(--line);line-height:1.45}
+/* tela #/apresentar (outra janela, projetor) */
+.ap-ini{min-height:100dvh;display:grid;place-content:center;justify-items:center;gap:14px;padding:24px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px));text-align:center;background:#0A2C2B;color:#F2F7F6}
+.ap-ini h1{margin:0;font-size:clamp(26px,4vw,44px);text-wrap:balance}
+.ap-ini .mut{color:#A6C3C0}
+.ap-ini .b:not(.p){background:transparent;color:#F2F7F6;border-color:#22524F}
+/* prompt padrão */
+.ia-pad{display:grid;gap:8px;padding:12px;border-radius:14px;border:1px solid var(--line);background:var(--sunk,rgba(0,0,0,.03))}
+.ia-pad-b{display:flex;flex-wrap:wrap;gap:8px}
+.ia-pad details summary{cursor:pointer;min-height:36px;display:flex;align-items:center}
+.ia-pad textarea{width:100%;font-size:12px}

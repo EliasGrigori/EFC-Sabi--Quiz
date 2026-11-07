@@ -134,7 +134,7 @@ function promptIA() {
   const mat = IA.material.trim();
   return `Você é um instrutor de segurança, higiene e qualidade em uma propriedade rural. Crie um treinamento curto sobre: ${IA.tema.trim()}.
 ${IA.publico.trim() ? "Público: " + IA.publico.trim() + ".\n" : ""}Quantidade: ${IA.n} perguntas que valem nota, mais 1 explicação no começo.
-${mat ? `Use SOMENTE o material abaixo como fonte. Não invente regra, número ou prazo que não esteja nele.\n---\n${mat.slice(0, 6000)}\n---\n` : "Use apenas boas práticas amplamente aceitas. Quando não tiver certeza, deixe a pergunta de fora.\n"}
+${mat ? `Use SOMENTE o material abaixo como fonte. Não invente regra, número ou prazo que não esteja nele.\n---\n${mat.slice(0, 50000)}\n---\n` : "Use apenas boas práticas amplamente aceitas. Quando não tiver certeza, deixe a pergunta de fora.\n"}
 Responda SOMENTE com um JSON válido, sem texto antes ou depois e sem marcas de código. Formato:
 {"titulo":"...","meta":80,"descricao":"...","itens":[
  {"tipo":"explicacao","enunciado":"título do assunto","texto":"pontos principais, um por linha"},
@@ -168,7 +168,7 @@ function dlgIA() {
     <div class="fd"><label for="ia-t">Assunto do treinamento</label><input class="in" id="ia-t" data-ia="tema" maxlength="140" required value="${esc(IA.tema)}" placeholder="Ex.: Lavagem das mãos antes da ordenha"></div>
     <div class="row2"><div class="fd"><label for="ia-p">Para quem (opcional)</label><input class="in" id="ia-p" data-ia="publico" maxlength="100" value="${esc(IA.publico)}" placeholder="Ex.: ordenhadores novos"></div>
       <div class="fd"><label for="ia-n">Perguntas</label><select class="in" id="ia-n" data-ia="n">${IA_NS.map(n => `<option value="${n}" ${IA.n === n ? "selected" : ""}>${n}</option>`).join("")}</select></div></div>
-    <div class="fd"><label for="ia-m">Seu material ou POP (opcional)</label><textarea class="in ta" id="ia-m" data-ia="material" rows="3" maxlength="6000" placeholder="Cole aqui o texto do POP. Com ele, a IA não inventa regra.">${esc(IA.material)}</textarea></div>
+    <div class="fd"><label for="ia-m">Seu material ou POP (opcional)</label><textarea class="in ta" id="ia-m" data-ia="material" rows="3" maxlength="50000" placeholder="Cole aqui o texto do POP. Com ele, a IA não inventa regra.">${esc(IA.material)}</textarea></div>
     <button class="b p" type="submit">${ic("edit")}Montar o texto</button>
     ${pronto ? `<div class="fd"><label for="ia-out">Texto para colar na IA</label><textarea class="in ta mono" id="ia-out" readonly rows="6">${esc(IA.prompt)}</textarea></div><button type="button" class="b" data-act="iacopiar">${ic("copy")}Copiar o texto</button>` : ""}
     <div class="fd"><label for="ia-r">Resposta da IA</label><textarea class="in ta mono" id="ia-r" data-ia="resp" rows="5" placeholder='Cole aqui o JSON que a IA devolveu (começa com { )'>${esc(IA.resp)}</textarea></div>

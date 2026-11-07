@@ -26,7 +26,8 @@ const tem = async (p, txt, sel = 'body', ms = 8000) => espera(p, ([t, s]) => { c
   const EX = (e) => ({tipo: 'explicacao', enunciado: e, texto: 'Texto de apoio.', uso: 'avaliacao', tempo: 20});
   const tid = await p.evaluate(([a, b2, q1, q2]) => { const t = criarDoZero('Higiene da ordenha', 80); [a, b2, q1, q2].forEach(x => t.itens.push(clone(x))); salvar(); return t.id }, [EX('Lavar as mãos'), EX('Tempo de contato'), Q('Quando lavar?', 1), Q('Quanto tempo?', 2)]);
   const abrirMat = async () => { await ir('#/editar/' + tid); await p.waitForSelector('.edit'); await p.click('[data-act=painel]'); await p.waitForSelector('.dl.pn'); await p.click('.pn-t [data-v=material]'); await p.waitForTimeout(150); };
-  const anexar = async f => { await p.setInputFiles('#mt-arq', f.startsWith('/') ? f : FX + f); await p.waitForTimeout(700); };
+  const lido = async () => { await espera(p, () => !/Lendo/.test((document.querySelector('#mt-st') || {}).textContent || ''), null, 25000); await p.waitForTimeout(300); };   // v1.5.0: o PDF é lido para montar os capítulos
+  const anexar = async f => { await p.setInputFiles('#mt-arq', f.startsWith('/') ? f : FX + f); await p.waitForTimeout(200); await lido(); };
   const temp = async () => await p.locator('#mt-st').innerText().catch(() => '');
 
   // ---------- A. painel: aba Material
@@ -138,13 +139,13 @@ const tem = async (p, txt, sel = 'body', ms = 8000) => espera(p, ([t, s]) => { c
   await p.click('[data-act=painel]'); await p.waitForSelector('.dl.pn'); await p.click('.pn-t [data-v=material]');
   await p.click('[data-act=mtcdel][data-i="1"]'); await p.waitForTimeout(200);
   ok('Apagar um capítulo anterior reajusta a ligação da explicação', await p.evaluate(t => { const x = treino(t); return x.material.caps.length === 2 && x.itens[0].cap === 1 && x.material.caps[1].t === 'Parte prática' }, tp));
-  await p.click('[data-act=mtprev]'); await p.waitForSelector('.dl.mt iframe');
-  ok('O visor do PDF usa o leitor do navegador (iframe blob na página 1)', await p.evaluate(() => { const f = document.querySelector('.dl.mt iframe'); return /^blob:.*#page=1$/.test(f.getAttribute('src')) && !!document.querySelector('.dl.mt a[target=_blank]') }));
+  await p.click('[data-act=mtprev]'); await p.waitForSelector('.dl.mt canvas.ap-pg');
+  ok('O visor do PDF desenha a página 1 (v1.5.0: PDF.js, não mais o leitor do navegador)', await espera(p, () => { const c = document.querySelector('.dl.mt canvas.ap-pg'); return !!c && c.dataset.pg === '1' && document.querySelector('.dl.mt .mt-t').innerText.includes('Página 1 de 3') && !document.querySelector('.dl.mt iframe') }));
   await p.keyboard.press('Escape'); await p.waitForTimeout(150);
   const sp = await p.evaluate(tp => { const t = treino(tp); const s = {id: uid(), treinoId: t.id, versao: t.versao, itens: clone(t.itens), preset: 'aovivo', setores: [], instrutor: 'E', local: '', horas: '1', aj: Object.assign({}, AJ_PADRAO), estado: 'sala', titulo: t.titulo, meta: t.meta, chave: '111222', entrada: true, part: [{id: uid(), nome: 'M', setor: 'Campo', real: true, cor: 1}], resp: {}, fase: {etapa: 'espera', idx: -1, t0: 0, dur: 0}, sim: {on: false, alvo: 0}, criada: new Date().toISOString()}; S.sessoes.push(s); AO.id = s.id; salvar(); location.hash = '#/sala/' + s.id; return s.id }, tp);
-  await p.waitForTimeout(400); await p.click('[data-act=proxima]'); await p.waitForTimeout(400); await p.click('[data-act=matver]'); await p.waitForSelector('.dl.mt iframe');
-  ok('Capítulo do PDF abre na página dele', await p.evaluate(() => /#page=3$/.test(document.querySelector('.dl.mt iframe').getAttribute('src')) && document.querySelector('.dl.mt').innerText.includes('Parte prática')));
-  ok('PDF não mostra setas de slide', await p.evaluate(() => document.querySelector('.mt-nav').hidden));
+  await p.waitForTimeout(400); await p.click('[data-act=proxima]'); await p.waitForTimeout(400); await p.click('[data-act=matver]'); await p.waitForSelector('.dl.mt canvas.ap-pg');
+  ok('Capítulo do PDF abre na página dele', await espera(p, () => { const c = document.querySelector('.dl.mt canvas.ap-pg'); return !!c && c.dataset.pg === '3' && document.querySelector('.dl.mt').innerText.includes('Parte prática') }));
+  ok('PDF mostra as setas de página (v1.5.0)', await p.evaluate(() => !document.querySelector('.mt-nav').hidden && document.querySelector('.dl.mt .mt-t').innerText.includes('Página 3 de 3')));
   await p.keyboard.press('Escape');
 
   // ---------- G. HTML sem scripts
@@ -187,9 +188,9 @@ const tem = async (p, txt, sel = 'body', ms = 8000) => espera(p, ([t, s]) => { c
   await ir('#/editar/' + ti); await p.waitForSelector('.edit'); await p.click('[data-act=painel]'); await p.waitForSelector('.dl.pn'); await p.click('.pn-t [data-v=material]');
   ok('Importado: mostra o nome e os capítulos, e avisa que o arquivo não está aqui', await espera(p, () => { const f = document.querySelector('#mt-falta'); return !!f && f.innerText.includes('não está neste aparelho') && f.innerText.includes('aula.pptx') }, null, 3000) && (await p.locator('.mt-caps li').count()) === 4);
   await p.screenshot({path: path.join(OUT, 'material-importado.png')});
-  await p.setInputFiles('#mt-re', FX + 'manual.pdf'); await p.waitForTimeout(500);
+  await p.setInputFiles('#mt-re', FX + 'manual.pdf'); await p.waitForTimeout(200); await lido();
   ok('Anexar outro tipo de arquivo é recusado', (await temp()).includes('mesmo tipo') && await p.evaluate(async t => !(await matLer(t)), ti));
-  await p.setInputFiles('#mt-re', FX + 'aula2.pptx'); await p.waitForTimeout(500);
+  await p.setInputFiles('#mt-re', FX + 'aula2.pptx'); await p.waitForTimeout(200); await lido();
   ok('PPTX com outro número de slides é recusado', (await temp()).includes('2 slides') && (await temp()).includes('4'));
   await p.setInputFiles('#mt-re', FX + 'aula.pptx'); await p.waitForTimeout(800);
   ok('Anexar o mesmo arquivo volta a funcionar e mantém capítulos e ligações', await p.evaluate(async t => { const x = treino(t), r = await matLer(t); return !!r && x.material.caps.length === 4 && x.itens[0].cap === 1 && x.material.caps[1].t === 'Lavagem das mãos' }, ti) && (await p.locator('#mt-falta .mt-falta').count()) === 0);

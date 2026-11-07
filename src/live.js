@@ -169,8 +169,8 @@ function beep(f) {
 const forma = k => `<span class="sh"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span>`;
 function telaoHTML(sn) {
   const claro = sn && sn.tela === "claro" ? " claro" : "";
-  if (!sn) return `<div class="tel${claro}"><div class="tt"><svg viewBox="0 0 48 48" style="width:34px;height:34px"><use href="#logo"/></svg><b>Sabiá</b></div><div class="vaz"><div><b style="font-family:var(--f-disp);font-size:44px;color:var(--tel-ink)">Aguardando a sala</b><br>O instrutor abre a sala no Sabiá e esta tela se liga sozinha.</div></div></div>`;
-  const f = sn.fase, it = sn.item, topo = (mid, dir) => `<div class="tt"><svg viewBox="0 0 48 48" style="width:34px;height:34px"><use href="#logo"/></svg>${mid}<div class="grow"></div>${dir || `<span class="pillk">CHAVE ${fmtChave(sn.chave)}</span>`}</div>`;
+  if (!sn) return `<div class="tel${claro}"><div class="tt"><svg viewBox="0 0 48 48" style="width:48px;height:48px;margin:-7px 0"><use href="#logo"/></svg><b>Sabiá</b></div><div class="vaz"><div><b style="font-family:var(--f-disp);font-size:44px;color:var(--tel-ink)">Aguardando a sala</b><br>O instrutor abre a sala no Sabiá e esta tela se liga sozinha.</div></div></div>`;
+  const f = sn.fase, it = sn.item, topo = (mid, dir) => `<div class="tt"><svg viewBox="0 0 48 48" style="width:48px;height:48px;margin:-7px 0"><use href="#logo"/></svg>${mid}<div class="grow"></div>${dir || `<span class="pillk">CHAVE ${fmtChave(sn.chave)}</span>`}</div>`;
   const prog = n => `<div class="tprog">${Array.from({length: sn.totalPerg}, (_, k) => `<i class="${k + 1 < n ? "d" : k + 1 === n ? "c" : ""}"></i>`).join("")}</div>`;
   let corpo = "";
   if (f.etapa === "espera") {
@@ -278,7 +278,7 @@ function vSala(id) {
     <section class="k etapa" aria-live="polite"><div class="eh"><span class="chip br">${ETAPA[f.etapa]}</span>${it && f.etapa !== "espera" && f.etapa !== "podio" ? `<span class="sm mut">${ehPergunta(it) ? (it.uso === "ensaio" ? "pergunta de teste" : "pergunta " + sn.numPerg + " de " + sn.totalPerg) : "explicação"}</span>` : ""}${tempo}</div>
       ${it && f.etapa !== "espera" && f.etapa !== "podio" ? `<div style="font-weight:600">${esc(it.enunciado)}</div>` : ""}${barra}
       <button class="b p go" data-act="proxima" ${ap.dis ? "disabled" : ""}>${ic(ap.i)}${ap.t}</button>
-      ${matBtnCtl(sn)}
+      ${matBtnCtl(sn)}${aprCtlHtml(sn)}
       ${ap.dis ? `<span class="sm mut">Espere alguém entrar, ou ligue os participantes simulados abaixo.</span>` : ""}
       <div class="tl2" role="list" aria-label="Etapas">${passos}</div></section>
     <section class="k"><div class="chave"><div><div class="lbl">Chave da sala</div><div class="cod" id="cod">${fmtChave(s.chave)}</div></div><span class="chip ${s.entrada ? "ok" : "warn"}">${s.entrada ? "entrada aberta" : "entrada fechada"}</span></div>

@@ -28,5 +28,6 @@ run v14off teste-v14-offline.js dist &
 run v141 teste-v141.js dist shots/r_v141 &
 # v1.4.3: o treino do celular com internet lenta (cada pedido ao banco espera de 1,5 a 3 s)
 SABIA_ATRASO=1500 run lento teste-reforco-cel.js dist shots/r_lento &
+run v15 teste-v15.js dist shots/r_v15 &
 wait
 echo FIM

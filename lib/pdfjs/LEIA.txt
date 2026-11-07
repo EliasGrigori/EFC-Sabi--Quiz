@@ -1,0 +1,3 @@
+PDF.js 4.10.38 (Mozilla, licença Apache 2.0), build "legacy" de pdfjs-dist.
+Usado pelo Sabiá v1.5.0 para desenhar o PDF do material página por página, sem internet.
+Em pdf.worker.min.js, 30 caracteres de controle dentro de textos foram trocados pela forma escrita \xHH (mesmo valor), para o arquivo poder ir na prévia.

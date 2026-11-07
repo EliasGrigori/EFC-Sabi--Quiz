@@ -161,9 +161,9 @@ const tem = async (p, txt, sel = 'body', ms = 8000) => espera(p, ([t, s]) => { c
   ok('Botões do painel com área de toque de 36 px ou mais', alvoMin);
 
   // ---------- E. logotipo de dentro do app
-  ok('O logotipo do app é o desenho novo (imagem embutida)', await p.evaluate(() => { const i = document.querySelector('#logo image'); return !!i && i.getAttribute('href').startsWith('data:image/jpeg;base64,') && !document.querySelector('#logo path') }));
+  ok('O logotipo do app é o desenho, recortado e sem a moldura da foto (v1.5.0)', await p.evaluate(() => { const i = document.querySelector('#logo image'); return !!i && i.getAttribute('href').startsWith('data:image/webp;base64,') && !i.getAttribute('clip-path') && !document.querySelector('#logo path') }));
   await ir('#/inicio'); await p.waitForSelector('.rail .lg');
-  ok('O menu lateral mostra o desenho preenchendo o quadrinho de 48 px', await p.evaluate(() => { const r = document.querySelector('.rail .lg svg').getBoundingClientRect(); return Math.round(r.width) === 48 && Math.round(r.height) === 48 }));
+  ok('O menu lateral mostra o desenho maior, com 64 px e sem fundo (v1.5.0)', await p.evaluate(() => { const l = document.querySelector('.rail .lg'), r = l.querySelector('svg').getBoundingClientRect(); return Math.round(r.width) === 64 && Math.round(r.height) === 64 && getComputedStyle(l).backgroundColor === 'rgba(0, 0, 0, 0)' }));
   ok('O desenho aparece também em Próximo passo', await p.evaluate(() => { const e = document.querySelector('.coach .ms svg'); if (!e) return true; const r = e.getBoundingClientRect(); return r.width >= 50 }));
   ok('O cabeçalho do celular usa o mesmo logotipo', await pc.evaluate(() => { const c = document.querySelector('header.ch svg use'); return !c || c.getAttribute('href') === '#logo' }));
   ok('Sem erros de JS', errs.length === 0, errs.slice(0, 3).join(' | '));
