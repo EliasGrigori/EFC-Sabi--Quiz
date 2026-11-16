@@ -23,18 +23,18 @@ const FAKE=`window.firebase={__falso:true,apps:[],initializeApp(c){this.apps.pus
  const nav=async()=>p.evaluate(()=>[...document.querySelectorAll('#rail .ri')].map(a=>a.textContent.replace(/\d+/g,'').trim()).join('|'));
  await p.goto(U+'?demo=1');await p.waitForSelector('.coach');
  // ---- perfis
- ok('Perfil padrão é Primário e o menu mostra tudo',(await nav())==='Início|Treinos|Pendências|Pessoas|Mensagens|Relatórios|Conferir|Ajustes',await nav());
+ ok('Perfil padrão é Primário e o menu mostra tudo',(await nav())==='Início|Treinos|Pendências|Pessoas|Mensagens|Relatórios|Autenticar documento|Ajustes',await nav());
  await ir('#/ajustes');
- ok('Ajustes tem o índice com 10 seções',(await p.locator('.aj-ind .sc').count())===10);
+ ok('Ajustes tem o índice com 10 seções',(await p.locator('.aj-ind .aj-ii').count())===10);
  const ids=await p.evaluate(()=>AJ_IND.map(x=>x[0]));
  ok('Cada item do índice leva a uma seção que existe',await p.evaluate(ids=>ids.every(i=>!!document.getElementById(i)),ids));
  await p.click('.aj-ind [data-v=aj-integra]');await p.waitForTimeout(500);
  ok('Tocar no índice foca a seção',await p.evaluate(()=>document.activeElement.id==='aj-integra'));
  await p.screenshot({path:OUT+'/i-ajustes.png',fullPage:true});
  await p.selectOption('#aj-pf','colaborador');await p.waitForTimeout(300);
- ok('Colaborador: menu só com Início, Treinos, Relatórios, Conferir e Ajustes',(await nav())==='Início|Treinos|Relatórios|Conferir|Ajustes',await nav());
- ok('Colaborador: barra de baixo sem Pendências nem Mensagens',await p.evaluate(()=>[...document.querySelectorAll('#bnav a')].map(a=>a.textContent.replace(/\d+/g,'').trim()).join('|')==='Início|Treinos|Mais'));
- for(const h of ['#/pessoas','#/pendencias','#/mensagens','#/aplicar/x','#/editar/x','#/sala/x','#/telao/x']){await ir(h);ok('Colaborador: '+h+' volta ao Início',(await p.evaluate(()=>location.hash))==='#/inicio');}
+ ok('Colaborador: menu com Início, Treinos, Pendências (só consulta, v1.6.0 parte 4), Relatórios, Autenticar documento e Ajustes',(await nav())==='Início|Treinos|Pendências|Relatórios|Autenticar documento|Ajustes',await nav());
+ ok('Colaborador: barra de baixo com Pendências e sem Mensagens',await p.evaluate(()=>[...document.querySelectorAll('#bnav a')].map(a=>a.textContent.replace(/\d+/g,'').trim()).join('|')==='Início|Treinos|Pendências|Mais'));
+ for(const h of ['#/pessoas','#/mensagens','#/aplicar/x','#/editar/x','#/sala/x','#/telao/x']){await ir(h);ok('Colaborador: '+h+' volta ao Início',(await p.evaluate(()=>location.hash))==='#/inicio');}
  ok('Colaborador: Início explica o perfil',(await p.locator('.coach').innerText()).includes('Colaborador'));
  ok('Colaborador: Início sem modelos para usar',(await p.locator('[data-act=usarmodelo]:visible').count())===0);
  await ir('#/treinos');
@@ -64,10 +64,10 @@ const FAKE=`window.firebase={__falso:true,apps:[],initializeApp(c){this.apps.pus
  await p.screenshot({path:OUT+'/i-obs.png'});
  // ---- telão/som/demo/obs do Ajustes
  await ir('#/ajustes');
- await p.click('[data-act=padrao][data-c=telaoPadrao][data-v=claro]');await p.click('[data-act=padrao][data-c=somPadrao][data-v=desligado]');await p.waitForTimeout(200);
+ await p.click('#aj-telaoPadrao');await p.click('[data-act=padrao][data-c=telaoPadrao][data-v=claro]');await p.click('#aj-somPadrao');await p.click('[data-act=padrao][data-c=somPadrao][data-v=desligado]');await p.waitForTimeout(200);
  ok('Padrões de telão e som viram o ponto de partida de Aplicar',await p.evaluate(()=>{UI.apl=null;return AJ_PADRAO.telao==='claro'&&AJ_PADRAO.som==='desligado'}));
  await ir('#/aplicar/'+tid);ok('Aplicar abre com telão claro',await p.evaluate(()=>UI.apl&&UI.apl.aj.telao==='claro'&&UI.apl.aj.som==='desligado'));
- await ir('#/ajustes');await p.click('[data-act=padrao][data-c=telaoPadrao][data-v=escuro]');await p.click('[data-act=padrao][data-c=somPadrao][data-v=ligado]');
+ await ir('#/ajustes');await p.click('#aj-telaoPadrao');await p.click('[data-act=padrao][data-c=telaoPadrao][data-v=escuro]');await p.click('#aj-somPadrao');await p.click('[data-act=padrao][data-c=somPadrao][data-v=ligado]');
  await p.fill('#c-obs','Lembrar de revisar o setor Packing');await p.waitForTimeout(200);
  ok('Observações do Ajustes ficam guardadas',await p.evaluate(()=>S.cfg.obs==='Lembrar de revisar o setor Packing'));
  await p.evaluate(()=>{S.treinamentos=[];S.sessoes=[{id:'t1',estado:'encerrada',aj:{teste:true},part:[],itens:[]},{id:'o1',estado:'encerrada',aj:{},part:[],itens:[]}];salvar();render()});await p.waitForTimeout(200);
@@ -112,7 +112,7 @@ const FAKE=`window.firebase={__falso:true,apps:[],initializeApp(c){this.apps.pus
  ok('Conta com estrela vira Líder estrela',await p.evaluate(()=>perfilAtual()==='estrela'&&podeGerir()));
  await p.click('[data-act=intsairtudo]');await p.waitForTimeout(300);
  await entrar('joao@x.com','123456');
- ok('Login por e-mail; conta colaborador restringe o menu',(await nav())==='Início|Treinos|Relatórios|Conferir|Ajustes'&&await p.evaluate(()=>perfilAtual()==='colaborador'));
+ ok('Login por e-mail; conta colaborador restringe o menu',(await nav())==='Início|Treinos|Pendências|Relatórios|Autenticar documento|Ajustes'&&await p.evaluate(()=>perfilAtual()==='colaborador'));
  await p.click('[data-act=intsairtudo]');await p.waitForTimeout(300);
  // ---- porta de entrada
  await p.evaluate(()=>{S.cfg.perfil='primario';salvar()});

@@ -111,7 +111,7 @@ function aprBarra(box, m) {
 }
 function aprTelaCheia() {
   const alvo = document.querySelector(".matov") || document.documentElement;
-  try { if (document.fullscreenElement) document.exitFullscreen(); else (alvo.requestFullscreen ? alvo.requestFullscreen() : Promise.reject()).catch(() => aviso("O navegador não deixou. Use F11.")); } catch (e) { aviso("O navegador não deixou. Use F11."); }
+  try { if (document.fullscreenElement) document.exitFullscreen(); else (alvo.requestFullscreen ? alvo.requestFullscreen() : Promise.reject()).catch(() => aviso("O navegador não deixou. Use F11.", null, null, "erro")); } catch (e) { aviso("O navegador não deixou. Use F11.", null, null, "erro"); }
 }
 /* redesenha a página quando a janela muda de tamanho (tela cheia, girar o tablet) */
 window.addEventListener("resize", () => { clearTimeout(APR.redim); APR.redim = setTimeout(() => { const a = MAT.aberto, box = matCaixa(); if (a && box && a.m.tipo === "pdf") matPintar(box, a.m, a.cap, a.pg); }, 150); });
@@ -187,11 +187,11 @@ document.addEventListener("click", e => {
   const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act;
   if (a === "aprtela") aprTelaCheia();
   else if (a === "aprpainel") { const m = aprMatDe(treino(UI.ed && UI.ed.id)); if (!m) return; const d = $("#dlg"); if (d && d.open) d.close(); aprAbrir(m, {cheia: true}); }   // o painel é modal: fechado, o visor recebe o toque
-  else if (a === "aprjanela") { const t = treino(UI.ed && UI.ed.id); if (!t) return; const w = window.open(location.pathname + location.search + "#/apresentar/" + t.id, "sabia-apresentar"); if (!w) aviso("O navegador bloqueou a janela. Permita janelas para este site."); }
+  else if (a === "aprjanela") { const t = treino(UI.ed && UI.ed.id); if (!t) return; const w = window.open(location.pathname + location.search + "#/apresentar/" + t.id, "sabia-apresentar"); if (!w) aviso("O navegador bloqueou a janela. Permita janelas para este site.", null, null, "erro"); }
   else if (a === "aprcomecar") { const m = aprMatDe(treino(el.dataset.id)); if (m) aprAbrir(m, {cheia: el.dataset.v !== "0", janela: true}); }
-  else if (a === "aprtel") { const sn = AO.snap; if (!sn || !sn.mat) return; if (!AO.ch) { aviso("Abra o telão primeiro."); return; } const c = sn.item && sn.item.cap !== null && sn.item.cap !== undefined ? sn.item.cap : 0; try { AO.ch.postMessage({t: "cmd", a: "apr", id: sn.id, cap: c}); } catch (x) {}
+  else if (a === "aprtel") { const sn = AO.snap; if (!sn || !sn.mat) return; if (!AO.ch) { aviso("Abra o telão primeiro.", null, null, "erro"); return; } const c = sn.item && sn.item.cap !== null && sn.item.cap !== undefined ? sn.item.cap : 0; try { AO.ch.postMessage({t: "cmd", a: "apr", id: sn.id, cap: c}); } catch (x) {}
     /* o telão responde com a página aberta; sem resposta, ele não está aberto */
-    setTimeout(() => { if (!APR.ctl.on && rota().v === "sala") aviso("O telão não respondeu. Toque em Abrir telão e depois em Apresentar no telão."); }, 2000); }
+    setTimeout(() => { if (!APR.ctl.on && rota().v === "sala") aviso("O telão não respondeu. Toque em Abrir telão e depois em Apresentar no telão.", null, null, "erro"); }, 2000); }
   else if (a === "aprver") { const sn = AO.snap; if (sn && sn.mat) matAbrir(sn.mat, sn.item && sn.item.cap != null ? sn.item.cap : 0, "ctl"); }
   else if (a === "aprctl") { const sn = AO.snap; if (sn && AO.ch) try { AO.ch.postMessage({t: "cmd", a: "aprir", id: sn.id, d: Number(el.dataset.d) || 0}); } catch (x) {} }
   else if (a === "aprparar") { const sn = AO.snap; if (sn && AO.ch) try { AO.ch.postMessage({t: "cmd", a: "aprfim", id: sn.id}); } catch (x) {} APR.ctl = {on: false, pg: 0, n: 0, t: ""}; const c = $(".ap-ctl"); if (c) c.outerHTML = aprCtlHtml(sn); }
@@ -277,7 +277,7 @@ dlgIA = function () {
 document.addEventListener("click", e => {
   const el = e.target.closest("[data-act=iapadrao]"); if (!el) return;
   const sel = () => { const d = el.closest(".ia-pad").querySelector("details"), o = $("#ia-pad-txt"); if (d) d.open = true; if (o) { o.focus(); o.select(); } aviso("Selecionei o texto: use Copiar."); };
-  try { navigator.clipboard.writeText(PROMPT_PADRAO).then(() => aviso("Prompt copiado. Cole na IA com o conteúdo do treinamento."), sel); } catch (x) { sel(); }
+  try { navigator.clipboard.writeText(PROMPT_PADRAO).then(() => aviso("Prompt copiado. Cole na IA com o conteúdo do treinamento.", null, null, "ok"), sel); } catch (x) { sel(); }
 });
 /* importar: aceita o arquivo da IA mesmo com texto ou marcas de código em volta, e marca "Criado com IA" */
 function jsonSolto(txt) {

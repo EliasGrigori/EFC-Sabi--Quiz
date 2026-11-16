@@ -147,7 +147,7 @@ document.addEventListener("click", e => {
   else if ((a === "matant" || a === "matprox") && MAT.aberto) { const box = matCaixa(); if (box) matPintar(box, MAT.aberto.m, MAT.aberto.cap + (a === "matprox" ? 1 : -1)); }
   else if (a === "matver" || a === "mattel") {   // controle: ver aqui ou mandar para o telão
     const sn = AO.snap, it = sn && sn.item; if (!sn || !sn.mat || !it || it.cap === null || it.cap === undefined) return;
-    if (a === "matver") matAbrir(sn.mat, it.cap, "ctl"); else if (AO.ch) { try { AO.ch.postMessage({t: "cmd", a: "material", id: sn.id, cap: it.cap}); } catch (e2) {} aviso("Material enviado ao telão"); }
+    if (a === "matver") matAbrir(sn.mat, it.cap, "ctl"); else if (AO.ch) { try { AO.ch.postMessage({t: "cmd", a: "material", id: sn.id, cap: it.cap}); } catch (e2) {} aviso("Material enviado ao telão", null, null, "ok"); }
   } else if (a === "tvmat") { const sn = AO.snap; if (sn && sn.mat && sn.item && sn.item.cap !== null && sn.item.cap !== undefined) matAbrir(sn.mat, sn.item.cap, "tel"); }
 });
 document.addEventListener("keydown", e => {
@@ -212,11 +212,11 @@ document.addEventListener("change", async e => {
   const t = treino(UI.ed && UI.ed.id); if (!t) return; const st = $("#mt-st"); if (st) st.textContent = "Lendo o arquivo...";
   const r = await matAnexar(t, x.files[0], x.dataset.mt === "re"); x.value = "";
   if (!r.ok) { const s2 = $("#mt-st"); if (s2) { s2.textContent = r.msg; s2.classList.add("warn"); } return; }
-  mtRepinta(); aviso(r.caps > 1 ? `Material anexado: ${r.caps} capítulos` : "Material anexado"); if (rota().v === "editar") pintaCentro();
+  mtRepinta(); aviso(r.caps > 1 ? `Material anexado: ${r.caps} capítulos` : "Material anexado", null, null, "ok"); if (rota().v === "editar") pintaCentro();
 });
 document.addEventListener("click", async e => {
   const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act, t = treino(UI.ed && UI.ed.id);
-  if (a === "mtdel" && t) { await matRemover(t); mtRepinta(); pintaCentro(); aviso("Material removido"); }
+  if (a === "mtdel" && t) { await matRemover(t); mtRepinta(); pintaCentro(); aviso("Material removido", null, null, "ok"); }
   else if (a === "mtcdel" && t && t.material) { const i = Number(el.dataset.i); t.material.caps.splice(i, 1); t.itens.forEach(x => { if (x.cap === i) delete x.cap; else if (x.cap > i) x.cap--; }); salvar(); mtRepinta(); pintaCentro(); }
   else if (a === "mtprev" && t && t.material) matAbrir({tid: t.id, nome: t.material.nome, tipo: t.material.tipo, caps: t.material.caps.map(c => c.t), pg: t.material.caps.map(c => c.p)}, 0, "ctl");
 });

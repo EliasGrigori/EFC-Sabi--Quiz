@@ -197,8 +197,9 @@ function pnCorpo(t) {
 function dlgPainel() {
   const t = treino(UI.ed && UI.ed.id); if (!t) return;
   const d = $("#dlg"), ab = [["geral", "Visão geral"], ["versoes", "Acerto por versão"], ["coment", "Comentários"], ["material", "Material"]];
-  d.innerHTML = `<div class="dl pn"><header><h2>Painel do treinamento</h2><button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header>
-    <p class="sm mut" style="margin:0">${esc(t.titulo)}</p>
+  /* v1.6.0: gaveta no padrão R8: linha de cima com o tipo e o X; o título com a largura toda embaixo */
+  d.innerHTML = `<div class="dl pn"><header class="gv-h"><span class="gv-k">Painel do treinamento</span><button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header>
+    <h2 class="gv-t" id="pn-tt">${esc(t.titulo)}</h2>
     <div class="chips pn-t" role="group" aria-label="Seções do painel">${ab.map(([k, n]) => `<button type="button" class="sc" data-act="pntab" data-v="${k}" aria-pressed="${PN.aba === k}">${n}</button>`).join("")}</div>
     <div id="pn-corpo">${pnCorpo(t)}</div></div>`;
   if (!d.open) d.showModal();

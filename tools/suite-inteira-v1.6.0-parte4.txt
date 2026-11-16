@@ -1,0 +1,29 @@
+teste:  
+editor: 49 OK / 0 FALHAS 
+live:  
+celular: 66 OK / 0 FALHAS 
+regras: 44 OK / 0 FALHAS 
+reforco: 72 OK / 0 FALHAS 
+relat: 58 OK / 0 FALHAS 
+integra: 65 OK / 0 FALHAS 
+v10cel: 24 OK / 0 FALHAS 
+v10: 77 OK / 0 FALHAS 
+pessoascel: 30 OK / 0 FALHAS 
+pessoas: 84 OK / 0 FALHAS 
+offline:  
+v12: 33 OK / 0 FALHAS 
+v11: 58 OK / 0 FALHAS 
+reforcocel: 48 OK / 0 FALHAS 
+v14off: 2 OK / 0 FALHAS 
+v141: 20 OK / 0 FALHAS 
+v14: 36 OK / 0 FALHAS 
+v15: 49 OK / 0 FALHAS 
+v13: 72 OK / 0 FALHAS 
+lento: 48 OK / 0 FALHAS 
+v151: 17 OK / 0 FALHAS 
+v160p3: 43 OK de 43 
+v160p2: 46 OK de 46 
+v160: 62 OK de 62 
+v152: 22 OK de 22 
+v160p4: 74 OK de 74 
+FIM

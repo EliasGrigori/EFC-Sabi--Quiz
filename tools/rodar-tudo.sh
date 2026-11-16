@@ -30,4 +30,12 @@ run v141 teste-v141.js dist shots/r_v141 &
 SABIA_ATRASO=1500 run lento teste-reforco-cel.js dist shots/r_lento &
 run v15 teste-v15.js dist shots/r_v15 &
 wait
+run v151 teste-v151.js dist shots/r_v151 &
+run v160 teste-v160.js dist shots/r_v160 &
+run v160p2 teste-v160p2.js dist shots/r_v160p2 &
+run v160p3 teste-v160p3.js dist shots/r_v160p3 &
+run v152 teste-v152.js dist shots/r_v152 &
+wait
+run v160p4 teste-v160p4.js dist shots/r_v160p4 &
+wait
 echo FIM

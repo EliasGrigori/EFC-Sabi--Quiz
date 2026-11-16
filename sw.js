@@ -1,5 +1,5 @@
 /* Sabiá · funciona sem internet: guarda a casca e as fontes na primeira visita */
-const V = "sabia-1.5.0";
+const V = "sabia-1.6.0";
 const CASCA = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(V).then(c => c.addAll(CASCA)
   .then(() => c.addAll(["lib/pdfjs/pdf.min.js", "lib/pdfjs/pdf.worker.min.js"]).catch(() => {}))   /* v1.5.0: leitor de PDF do Apresentar */

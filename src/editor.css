@@ -6,7 +6,7 @@
 .ed-meta{display:grid;grid-template-columns:minmax(0,1fr) 84px;gap:8px}
 .ed-meta .full{grid-column:1/-1}
 .ta{min-height:44px;padding:10px 12px;line-height:1.4;font:inherit;resize:vertical}
-.qlist{display:grid;gap:2px;max-height:calc(100dvh - 330px);min-height:60px;overflow:auto;margin:0 -4px;padding:0 4px}
+.qlist{position:relative;display:grid;gap:2px;max-height:calc(100dvh - 330px);min-height:60px;overflow:auto;margin:0 -4px;padding:0 4px}
 button.qi{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:8px;align-items:center;width:100%;text-align:left;min-height:52px;padding:6px 8px;border:1.5px solid transparent;border-radius:12px;background:transparent;cursor:pointer;color:var(--ink)}
 button.qi:hover{background:var(--sunk)}
 button.qi[aria-current="true"]{background:var(--sabia-soft);border-color:var(--sabia)}
@@ -53,7 +53,7 @@ select.in{padding-right:8px}
 .df i{font-style:normal;font-weight:700;font-family:var(--f-mono);flex:none;width:18px}
 .df .ad{color:var(--ok)}.df .rm{color:var(--bad)}.df .ch{color:var(--warn)}
 .vs{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end}
-@media (max-width:1180px){
+@media (max-width:1340px){ /* v1.6.0: +156 px do menu lateral com nomes */
   .edit{grid-template-columns:268px minmax(0,1fr)}
   .edr{grid-column:2;position:static}
 }

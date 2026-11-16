@@ -34,7 +34,7 @@ function estat(s) {
 }
 const tempoTxt = t => t ? (Math.round(t * 10) / 10).toString().replace(".", ",") + " s" : "–";
 
-/* ---------- código de conferência ---------- */
+/* ---------- código de autenticação (era "de conferência" até a v1.6.0 parte 3) ---------- */
 function canonSessao(s) {
   const c = calc(s), qs = s.itens.map((it, i) => [it, i]).filter(([it]) => vale(it));
   const pessoas = c.pessoas.map(p => {
@@ -67,10 +67,10 @@ function csvSessao(s) {
   const cmp = comparativo(s), cm = cmp ? new Map(cmp.lin.map(x => [nk(x.nome), x])) : null;
   const cab = ["Nome", "Setor", "Acertos", "Perguntas", "Percentual", "Pontos", "Situação", "Assinou", ...e.perg.map(q => "P" + q.n), ...(cm ? [cmp.rot + " (%)", "Variação (pp)"] : [])];
   const linhas = e.pessoas.map(p => { const rs = s.resp[p.id] || {}; return [p.nome, p.setor || "", p.ac, e.c.nq, p.pct, p.pts, p.sit, p.ass ? "Sim" : "Não", ...e.perg.map(q => rs[q.i] ? (rs[q.i].ok ? "Certo" : "Errado") : "-"), ...(cm ? (() => { const x = cm.get(nk(p.nome)); return x ? [x.antes, x.dif] : ["", ""]; })() : [])]; });
-  const topo = [["Treinamento", s.titulo], ["Versão", verTxt(s)], ["Data", dtc(s.fim)], ["Instrutor", s.instrutor || ""], ["Local", s.local || ""], ["Carga horária", horasTxt(s.horas)], ["Meta", metaTxtS(s)], ["Tipo", TIPO_TXT[tipoSessao(s)]], ...(s.mom ? [["Momento", MOM_TXT[s.mom] + (s.dias ? " de " + s.dias + " dias" : "")]] : []), ["Código de conferência", garantirCodigo(s)], []];
+  const topo = [["Treinamento", s.titulo], ["Versão", verTxt(s)], ["Data", dtc(s.fim)], ["Instrutor", s.instrutor || ""], ["Local", s.local || ""], ["Carga horária", horasTxt(s.horas)], ["Meta", metaTxtS(s)], ["Tipo", TIPO_TXT[tipoSessao(s)]], ...(s.mom ? [["Momento", MOM_TXT[s.mom] + (s.dias ? " de " + s.dias + " dias" : "")]] : []), ["Código de autenticação", garantirCodigo(s)], []];
   return "﻿" + topo.concat([cab], linhas).map(l => l.map(celCsv).join(";")).join("\r\n") + "\r\n";
 }
-function abrirPdf(bytes) { const u = URL.createObjectURL(new Blob([bytes], {type: "application/pdf"})); const w = window.open(u, "_blank"); if (!w) aviso("O navegador bloqueou a janela. Use o botão de baixar."); setTimeout(() => URL.revokeObjectURL(u), 60000); }
+function abrirPdf(bytes) { const u = URL.createObjectURL(new Blob([bytes], {type: "application/pdf"})); const w = window.open(u, "_blank"); if (!w) aviso("O navegador bloqueou a janela. Use o botão de baixar.", null, null, "erro"); setTimeout(() => URL.revokeObjectURL(u), 60000); }
 
 /* ---------- PDFs ---------- */
 function pdfBase(s, nomeDoc) {
@@ -78,7 +78,7 @@ function pdfBase(s, nomeDoc) {
   d.rodape = (d, n, N) => {
     d.linha(M, H - 42, W - M, H - 42, {cor: "#c4cfce"});
     d.texto(M, H - 30, d.corta("Sabiá " + VERSAO + " · " + s.titulo, 135, 8), {tam: 8, cor: "#5a6b6a"});
-    d.texto(W / 2 + 30, H - 30, "Código de conferência " + cod, {tam: 8, neg: true, cor: "#0E4A48", al: "cen"});
+    d.texto(W / 2 + 30, H - 30, "Código de autenticação " + cod, {tam: 8, neg: true, cor: "#0E4A48", al: "cen"});
     d.texto(W - M, H - 30, `Página ${n} de ${N}`, {tam: 8, cor: "#5a6b6a", al: "dir"});
   };
   d.cab = d => { d.texto(M, d.y + 8, d.corta(nomeDoc + " · " + s.titulo + " (continuação)", W - 2 * M, 9), {tam: 9, cor: "#5a6b6a"}); d.y += 22; };
@@ -136,7 +136,7 @@ function pdfRegistro(s) {
   if (rfz) {
     pdfSecao(d, "Treino feito no celular", 40 + rfz.lin.length * 18);
     d.tabela([{t: "Nome", w: 210}, {t: "Erros", w: 50, al: "cen"}, {t: "Treinou", w: 50, al: "cen"}, {t: "Recuperou", w: 70, al: "cen"}, {t: "Tentativas", w: 70, al: "cen"}], rfz.lin.map(x => [x.nome, String(x.erros), String(x.fez), String(x.rec), String(x.tent)]));
-    d.par(M, d.y + 4, "O treino feito no celular nao altera a nota, o ranking, o codigo de conferencia nem a fila de reforco.", W - 2 * M, {tam: 8, cor: "#5a6b6a"}); d.y += 18;
+    d.par(M, d.y + 4, "O treino feito no celular nao altera a nota, o ranking, o codigo de autenticacao nem a fila de reforco.", W - 2 * M, {tam: 8, cor: "#5a6b6a"}); d.y += 18;
   }
   if (e.perg.length) {
     pdfSecao(d, "Assertividade por pergunta");
@@ -152,7 +152,7 @@ function pdfRegistro(s) {
     const r = d.imgCabe(s.foto, M, d.y, 300, 200); if (r) { d.y += 206; d.texto(M, d.y + 6, "Foto registrada em " + dtc(s.fotoEm || s.fim), {tam: 8, cor: "#5a6b6a"}); d.y += 16; }
   }
   d.garante(60); d.y += 6;
-  d.par(M, d.y, "Para conferir este registro, digite o código do rodapé em Conferir, no menu do Sabiá. O código muda se qualquer nome, resultado, pergunta, data, instrutor ou assinatura for alterado. A foto da turma não entra no cálculo.", W - 2 * M, {tam: 8, cor: "#5a6b6a"});
+  d.par(M, d.y, "Para autenticar este documento, digite o código do rodapé em Autenticar documento, no menu do Sabiá. O código muda se qualquer nome, resultado, pergunta, data, instrutor ou assinatura for alterado. A foto da turma não entra no cálculo.", W - 2 * M, {tam: 8, cor: "#5a6b6a"});
   return d.saida();
 }
 
@@ -173,7 +173,7 @@ function pdfPresenca(s) {
 
 /* ---------- ações ---------- */
 function reaplicar(s) {
-  const t = treino(s.treinoId); if (!t) { aviso("O treinamento desta sessão foi removido"); return; }
+  const t = treino(s.treinoId); if (!t) { aviso("O treinamento desta sessão foi removido", null, null, "erro"); return; }
   const e = estat(s); if (!e.abaixo.length) { aviso("Todos atingiram a meta"); return; }
   UI.apl = {id: t.id, preset: "aovivo", setores: (s.setores || []).slice(), instrutor: s.instrutor || S.cfg.instrutor, local: s.local || S.cfg.local, horas: s.horas || "1", aj: Object.assign({}, AJ_PADRAO, PRESETS.aovivo.aj), roster: e.abaixo.map(p => p.nome), reaplicaDe: s.id, mom: "ref", base: {rot: "Resultado anterior", itens: e.abaixo.map(p => ({nome: p.nome, pct: p.pct, fim: s.fim}))}};
   ir("#/aplicar/" + t.id);
@@ -181,11 +181,11 @@ function reaplicar(s) {
 async function salvarFoto(s, arq) {
   try {
     let u = await imagemJpeg(arq, 1400, 0.72); if (u.length > 450000) u = await imagemJpeg(arq, 1000, 0.6);
-    s.foto = u; s.fotoEm = new Date().toISOString(); salvar(); render(); aviso("Foto da turma guardada");
-  } catch (err) { aviso("Não consegui abrir essa imagem"); }
+    s.foto = u; s.fotoEm = new Date().toISOString(); salvar(); render(); aviso("Foto da turma guardada", null, null, "ok");
+  } catch (err) { aviso("Não consegui abrir essa imagem", null, null, "erro"); }
 }
 async function salvarLogo(arq) {
-  try { S.cfg.logo = await imagemJpeg(arq, 480, 0.85); salvar(); render(); aviso("Logotipo guardado"); } catch (err) { aviso("Não consegui abrir essa imagem"); }
+  try { S.cfg.logo = await imagemJpeg(arq, 480, 0.85); salvar(); render(); aviso("Logotipo guardado", null, null, "ok"); } catch (err) { aviso("Não consegui abrir essa imagem", null, null, "erro"); }
 }
 
 /* ---------- tela: relatórios ---------- */
@@ -199,6 +199,7 @@ function vRelatorios(id) {
   topo("Relatórios", l.length ? `${l.length} sessão${l.length === 1 ? "" : "ões"} encerrada${l.length === 1 ? "" : "s"}` : "");
   $("#app").className = "body rel";
   if (!l.length) { $("#app").innerHTML = `${relModo("sessoes")}<section class="k vazio">${ic("chart", 'style="width:32px;height:32px;color:var(--brand-ink)"')}<b>Nenhuma sessão encerrada ainda</b><span class="sm">Quando você encerrar uma sala, o resultado, a lista de presença e o PDF de registro aparecem aqui.</span><a class="b p" href="#/treinos">${ic("list")}Ir para Treinos</a></section>`; return; }
+  if (!id) { relLista(l); return; }
   const s = sessaoRel(id); REL.sid = s.id; garantirCodigo(s);
   const e = estat(s), tp = tipoSessao(s), t = treino(s.treinoId);
   const opt = l.map(x => `<option value="${x.id}" ${x.id === s.id ? "selected" : ""}>${esc(x.titulo)} · ${dtd(x.fim)}${tipoSessao(x) === "teste" ? " (teste)" : tipoSessao(x) === "ensaio" ? " (ensaio)" : ""}</option>`).join("");
@@ -212,10 +213,10 @@ function vRelatorios(id) {
       <div class="fd"><label for="rl-s">Sessão</label><select class="in" id="rl-s">${opt}</select></div>
       <div class="rl-meta" aria-label="Dados da sessão"><span class="chip ${tp === "real" ? "ok" : "warn"}">${TIPO_TXT[tp]}</span>${s.mom ? `<span class="chip br">${MOM_TXT[s.mom]}${s.dias ? " · " + s.dias + " dias" : ""}</span>` : ""}<span class="chip">${dtc(s.fim)}</span><span class="chip">${esc(s.instrutor || "sem instrutor")}</span>${s.local ? `<span class="chip">${esc(s.local)}</span>` : ""}<span class="chip">${horasTxt(s.horas)}</span><span class="chip">${verTxt(s)}</span>${s.reaplicaDe ? '<span class="chip br">Reaplicação</span>' : ""}</div>
       <div class="rl-docs"><button class="b p" data-act="relpdf">${ic("file")}PDF de registro</button><button class="b" data-act="relpres">${ic("file")}Lista de presença</button>${folhaBtn(s)}<details class="mais"><summary class="b">Mais${ic("down", 'style="width:16px;height:16px"')}</summary><div class="mp2"><button class="b g" data-act="relcsv">${ic("sheet")}Planilha (CSV)</button><button class="b g" data-act="reljson">${ic("download")}Sessão (.json)</button><button class="b g" data-act="relabrir" title="Abre o PDF de registro em outra aba para imprimir">${ic("print")}Imprimir</button></div></details></div>
-      <div class="rl-cod sm"><span class="mut">Código de conferência</span> <b class="mono" id="relcod">${esc(s.cod)}</b> <button class="b sm g" data-act="copiacod" aria-label="Copiar o código" title="Copiar">${ic("copy", 'style="width:16px;height:16px"')}</button>${s.codTardio ? '<span class="chip warn" title="Sessão encerrada antes da v0.5.0: o código foi gerado quando você abriu o relatório pela primeira vez">gerado depois</span>' : ""}</div>
+      <div class="rl-cod sm"><span class="mut">Código de autenticação</span> <b class="mono" id="relcod">${esc(s.cod)}</b> <button class="b sm g" data-act="copiacod" aria-label="Copiar o código" title="Copiar">${ic("copy", 'style="width:16px;height:16px"')}</button>${s.codTardio ? '<span class="chip warn" title="Sessão encerrada antes da v0.5.0: o código foi gerado quando você abriu o relatório pela primeira vez">gerado depois</span>' : ""}</div>
       ${carimboHtml(s)}
     </section>
-    <div class="seg rl-abas" role="group" aria-label="Relatório">${abas.map(([k, n]) => `<button data-act="relaba" data-v="${k}" aria-pressed="${REL.aba === k}">${n}</button>`).join("")}</div>
+    <div class="seg abas rl-abas" role="group" aria-label="Relatório">${abas.map(([k, n]) => `<button data-act="relaba" data-v="${k}" aria-pressed="${REL.aba === k}">${n}</button>`).join("")}</div>
     ${corpo}`;
 }
 function relResumo(s, e, t) {
@@ -227,15 +228,15 @@ function relResumo(s, e, t) {
   const semAss = e.pessoas.filter(p => !p.ass && !p.sim).length;
   const ac = [];
   ac.push(s.mom === "pre"
-    ? `<li><span class="ai">${ic("clock")}</span><span><b>Pré-teste: ponto de partida de ${e.nota}%</b><br><span class="sm mut">Nenhuma resposta certa foi mostrada. Depois do conteúdo, aplique o pós-teste para medir o ganho de aprendizado.</span></span><button class="b sm p" data-act="aplicarpos" data-id="${s.id}" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Aplicar pós-teste</button></li>`
+    ? `<li><span class="ai">${ic("clock")}</span><span><b>Pré-teste: ponto de partida de ${e.nota}%</b><br><span class="sm mut">Nenhuma resposta certa foi mostrada. Depois do conteúdo, aplique o pós-teste para medir o ganho de aprendizado.</span></span>${podeGerir() ? `<button class="b sm p" data-act="aplicarpos" data-id="${s.id}" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Aplicar pós-teste</button>` : "<span></span>"}</li>`
     : e.abaixo.length
-    ? `<li><span class="ai warn">${ic("warn")}</span><span><b>${e.abaixo.length} pessoa${e.abaixo.length === 1 ? "" : "s"} abaixo da meta de ${metaTxtS(s)}</b><br><span class="sm mut">${esc(e.abaixo.slice(0, 4).map(p => p.nome).join(", "))}${e.abaixo.length > 4 ? " e mais " + (e.abaixo.length - 4) : ""}</span></span><button class="b sm p" data-act="reaplicar" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Reaplicar para elas</button></li>`
+    ? `<li><span class="ai warn">${ic("warn")}</span><span><b>${e.abaixo.length} pessoa${e.abaixo.length === 1 ? "" : "s"} abaixo da meta de ${metaTxtS(s)}</b><br><span class="sm mut">${esc(e.abaixo.slice(0, 4).map(p => p.nome).join(", "))}${e.abaixo.length > 4 ? " e mais " + (e.abaixo.length - 4) : ""}</span></span>${podeGerir() ? `<button class="b sm p" data-act="reaplicar" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Reaplicar para elas</button>` : "<span></span>"}</li>`
     : `<li><span class="ai ok">${ic("check")}</span><span><b>Todos atingiram a meta de ${metaTxtS(s)}</b></span><span></span></li>`);
   if (e.fracas.length) ac.push(`<li><span class="ai warn">${ic("edit")}</span><span><b>${e.fracas.length} pergunta${e.fracas.length === 1 ? "" : "s"} com menos de 60% de acerto</b><br><span class="sm mut">${e.fracas.map(q => "P" + q.n).join(", ")}: vale rever o texto ou reforçar o conteúdo.</span></span>${t ? `<a class="b sm" href="#/editar/${t.id}">${ic("edit", 'style="width:16px;height:16px"')}Revisar no editor</a>` : "<span></span>"}</li>`);
   if (semAss) ac.push(`<li><span class="ai warn">${ic("warn")}</span><span><b>${semAss} pessoa${semAss === 1 ? "" : "s"} sem assinatura de presença</b><br><span class="sm mut">A lista de presença em PDF deixa o espaço em branco para assinar no papel.</span></span><span></span></li>`);
   ac.push(s.foto
-    ? `<li><span class="ai ok">${ic("check")}</span><span><b>Foto da turma guardada</b><br><span class="sm mut">Sai no PDF de registro. ${dtc(s.fotoEm || s.fim)}</span></span><span class="acs"><label class="b sm" for="rl-foto">Trocar</label><button class="b sm bad" data-act="rmfoto">Remover</button></span></li>`
-    : `<li><span class="ai">${ic("camera")}</span><span><b>Sem foto da turma</b><br><span class="sm mut">É a evidência impressa no PDF de registro.</span></span><label class="b sm" for="rl-foto">${ic("camera", 'style="width:16px;height:16px"')}Adicionar foto</label></li>`);
+    ? `<li><span class="ai ok">${ic("check")}</span><span><b>Foto da turma guardada</b><br><span class="sm mut">Sai no PDF de registro. ${dtc(s.fotoEm || s.fim)}</span></span>${podeGerir() ? `<span class="acs"><label class="b sm" for="rl-foto">Trocar</label><button class="b sm bad" data-act="rmfoto">Remover</button></span>` : "<span></span>"}</li>`
+    : `<li><span class="ai">${ic("camera")}</span><span><b>Sem foto da turma</b><br><span class="sm mut">É a evidência impressa no PDF de registro.</span></span>${podeGerir() ? `<label class="b sm" for="rl-foto">${ic("camera", 'style="width:16px;height:16px"')}Adicionar foto</label>` : "<span></span>"}</li>`);
   return `<div class="k rsm q4"><div><b>${e.nota}%</b><span>Nota média</span></div>${s.mom === "pre" ? `<div><b>${e.c.pessoas.length}</b><span>Pessoas</span></div>` : `<div class="${e.c.efic < e.c.pessoas.length ? "w" : ""}"><b>${e.c.efic} de ${e.c.pessoas.length}</b><span>Atingiram a meta</span></div>`}<div><b>${e.c.pct}%</b><span>Acerto geral</span></div><div><b>${tempoTxt(e.tempo)}</b><span>Tempo médio por resposta</span></div></div>
     <section class="k"><h3 class="rh">O que fazer agora</h3><ul class="acoes">${ac.join("")}</ul><input type="file" id="rl-foto" accept="image/*" class="sr"></section>
     ${relCmp(s)}${relRefaz(s)}
@@ -272,14 +273,14 @@ function relSetores(s, e) {
 
 /* ---------- tela: conferir ---------- */
 function vConferir() {
-  topo("Conferir registro", "Prove que um PDF confere com os dados guardados");
+  topo("Autenticar documento", "Prove que um PDF do Sabiá não foi mexido: o código dele tem de bater com os dados guardados");
   $("#app").className = "body page rel";
   const l = encerradas();
   const r = CF.res;
   const msg = !r ? "" : `<section class="k cf-r ${r.t}" role="status"><span class="ai ${r.t === "ok" ? "ok" : "warn"}">${ic(r.t === "ok" ? "shield" : "warn")}</span><div><b>${esc(r.titulo)}</b><p class="sm" style="margin:4px 0 0">${r.texto}</p></div></section>`;
   $("#app").innerHTML = `<section class="k"><h3 class="rh">Digite o código do rodapé do PDF</h3>
-      <form data-form="conferir" class="cf-f"><div class="fd" style="flex:1;min-width:240px"><label for="cf-c">Código de conferência</label><input class="in mono" id="cf-c" value="${esc(CF.cod)}" placeholder="SAB-XXXX-XXXX-XXXX-XXXX-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false"></div><button class="b p" type="submit">${ic("shield")}Conferir</button></form>
-      <div class="cf-ou sm mut">ou confira um arquivo de sessão exportado: <label class="b sm" for="cf-arq">${ic("upload", 'style="width:16px;height:16px"')}Escolher .json</label><input type="file" id="cf-arq" accept=".json,application/json" class="sr"></div></section>
+      <form data-form="conferir" class="cf-f"><div class="fd" style="flex:1;min-width:240px"><label for="cf-c">Código de autenticação</label><input class="in mono" id="cf-c" value="${esc(CF.cod)}" placeholder="SAB-XXXX-XXXX-XXXX-XXXX-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false"></div><button class="b p" type="submit">${ic("shield")}Autenticar</button></form>
+      <div class="cf-ou sm mut">ou autentique um arquivo de sessão exportado: <label class="b sm" for="cf-arq">${ic("upload", 'style="width:16px;height:16px"')}Escolher .json</label><input type="file" id="cf-arq" accept=".json,application/json" class="sr"></div></section>
     ${msg}
     ${seloConsulta()}
     <section class="k"><h3 class="rh">Sessões guardadas neste aparelho</h3>${l.length ? `<div class="rtw"><table class="rtb"><thead><tr><th>Sessão</th><th class="hide-m">Data</th><th>Código</th><th>Integridade</th></tr></thead><tbody>${l.map(x => { const ok = integra(x); return `<tr><td><b>${esc(x.titulo)}</b><br><span class="sm mut">${esc(TIPO_TXT[tipoSessao(x)])}</span></td><td class="hide-m sm">${dtc(x.fim)}</td><td class="mono sm">${esc(x.cod)}${x.codTardio ? ' <span class="chip">gerado depois</span>' : ""}</td><td><span class="chip ${ok ? "ok" : "bad"}">${ok ? "Íntegro" : "Alterado depois de encerrar"}</span></td></tr>`; }).join("")}</tbody></table></div>` : '<p class="sm mut" style="margin:0">Nenhuma sessão encerrada ainda.</p>'}</section>
@@ -296,7 +297,7 @@ function conferirCodigo(txt) {
   if (!s) { CF.res = {t: "no", titulo: "Nenhuma sessão deste aparelho tem esse código", texto: "Pode ser de outro aparelho (importe os dados em Ajustes) ou o PDF foi alterado. Se foi aplicada em outro aparelho, confira também pelo arquivo de sessão (.json)."}; return; }
   const e = estat(s);
   if (!integra(s)) { CF.res = {t: "no", titulo: "Atenção: a sessão foi alterada depois de encerrada", texto: `O código ${esc(c)} é de “${esc(s.titulo)}” (${dtc(s.fim)}), mas os dados guardados hoje geram outro código. Não use este registro sem explicar a diferença.`}; return; }
-  CF.res = {t: "ok", titulo: "Registro confere", texto: `${esc(s.titulo)} (${verTxt(s)}), ${dtc(s.fim)}, instrutor ${esc(s.instrutor || "não informado")}. ${e.c.pessoas.length} pessoa${e.c.pessoas.length === 1 ? "" : "s"}, acerto geral de ${e.c.pct}%. Os dados guardados batem com o código do PDF. <a href="#/relatorios/${s.id}">Abrir o relatório</a>.${tipoSessao(s) !== "real" ? " <b>Esta sessão é " + (tipoSessao(s) === "teste" ? "de teste" : "um ensaio com simulados") + ", não é registro oficial.</b>" : ""}${s.codTardio ? " O código foi gerado depois do encerramento (sessão anterior à v0.5.0)." : ""}`};
+  CF.res = {t: "ok", titulo: "Documento autêntico", texto: `${esc(s.titulo)} (${verTxt(s)}), ${dtc(s.fim)}, instrutor ${esc(s.instrutor || "não informado")}. ${e.c.pessoas.length} pessoa${e.c.pessoas.length === 1 ? "" : "s"}, acerto geral de ${e.c.pct}%. Os dados guardados batem com o código do PDF. <a href="#/relatorios/${s.id}">Abrir o relatório</a>.${tipoSessao(s) !== "real" ? " <b>Esta sessão é " + (tipoSessao(s) === "teste" ? "de teste" : "um ensaio com simulados") + ", não é registro oficial.</b>" : ""}${s.codTardio ? " O código foi gerado depois do encerramento (sessão anterior à v0.5.0)." : ""}`};
 }
 function conferirArquivo(arq) {
   const fr = new FileReader();
@@ -330,19 +331,19 @@ document.addEventListener("click", e => {
   else if (a === "reljson") baixarBlob(nomeArq("sessao", s, "json"), new Blob([JSON.stringify({sabia: "sessao", versao: VERSAO, codigo: garantirCodigo(s), sessao: s}, null, 2)], {type: "application/json"}));
   else if (a === "relabrir") abrirPdf(pdfRegistro(s));
   else if (a === "reaplicar") reaplicar(s);
-  else if (a === "rmfoto") { delete s.foto; delete s.fotoEm; salvar(); render(); aviso("Foto removida"); }
+  else if (a === "rmfoto") { delete s.foto; delete s.fotoEm; salvar(); render(); aviso("Foto removida", null, null, "ok"); }
   else if (a === "verass") {
     const p = s.part.find(x => x.id === el.dataset.id); if (!p || !p.ass) return;
     const d = $("#dlg"); d.innerHTML = `<div class="dl"><header><h2>Assinatura de ${esc(p.nome)}</h2><button class="b ic g" data-act="fechar" aria-label="Fechar">${ic("x")}</button></header><div class="assg"><img src="${p.ass}" alt="Assinatura de ${esc(p.nome)}"></div><p class="sm mut" style="margin:0">${esc(s.titulo)}, ${dtc(s.fim)}</p></div>`; d.showModal();
   }
-  else if (a === "copiacod") { try { navigator.clipboard.writeText(s.cod).then(() => aviso("Código copiado"), () => aviso("Não consegui copiar")); } catch (err) { aviso("Não consegui copiar"); } }
-  else if (a === "rmlogo") { delete S.cfg.logo; salvar(); render(); aviso("Logotipo removido"); }
+  else if (a === "copiacod") { try { navigator.clipboard.writeText(s.cod).then(() => aviso("Código copiado", null, null, "ok"), () => aviso("Não consegui copiar", null, null, "erro")); } catch (err) { aviso("Não consegui copiar", null, null, "erro"); } }
+  else if (a === "rmlogo") { delete S.cfg.logo; salvar(); render(); aviso("Logotipo removido", null, null, "ok"); }
   else if (a === "rmroster") { if (UI.apl) { delete UI.apl.roster; delete UI.apl.reaplicaDe; render(); } }
 });
 document.addEventListener("change", e => {
   const t = e.target;
   if (t.id === "rl-s") { REL.sid = t.value; ir("#/relatorios/" + t.value); }
-  else if (t.id === "rl-foto" && t.files[0]) { const s = sessaoRel(REL.sid); if (s) salvarFoto(s, t.files[0]); t.value = ""; }
+  else if (t.id === "rl-foto" && t.files[0] && podeGerir()) { const s = sessaoRel(REL.sid); if (s) salvarFoto(s, t.files[0]); t.value = ""; }
   else if (t.id === "c-logo" && t.files[0]) { salvarLogo(t.files[0]); t.value = ""; }
   else if (t.id === "cf-arq" && t.files[0]) { conferirArquivo(t.files[0]); t.value = ""; }
 });
@@ -350,3 +351,9 @@ document.addEventListener("submit", e => {
   const f = e.target.closest("[data-form='conferir']"); if (!f) return; e.preventDefault();
   conferirCodigo($("#cf-c").value); render();
 });
+
+/* v1.6.0 parte 3 (R1): a lista das sessões encerradas mora em Relatórios (antes era a aba Encerradas de Treinos) */
+function relLista(l) {
+  const lin = x => `<div class="tr"><div class="t"><b>${esc(x.titulo)}</b><span>${dm(x.fim)} · ${esc(x.instrutor || "sem instrutor")}${x.local ? " · " + esc(x.local) : ""}${x.mom ? " · " + esc(MOM_TXT[x.mom] || "") : ""}${tipoSessao(x) === "teste" ? " · teste" : tipoSessao(x) === "ensaio" ? " · ensaio" : ""}</span></div><span class="num hide-m">${x.resultado.pessoas}</span><span class="num hide-m">${x.resultado.pct}%</span><span class="hide-m"><span class="chip ${x.resultado.metaOk ? "ok" : "warn"}">${x.resultado.metaOk ? "meta atingida" : "abaixo da meta"}</span></span><div class="acts"><a class="b sm" href="#/relatorios/${x.id}">${ic("chart", 'style="width:16px;height:16px"')}Relatório</a></div></div>`;
+  $("#app").innerHTML = `${relModo("sessoes")}<section class="k tbl rl-lista" aria-label="Sessões encerradas"><div class="tr h"><span>Sessão</span><span class="hide-m">Pessoas</span><span class="hide-m">Acerto</span><span class="hide-m">Meta</span><span></span></div>${l.map(lin).join("")}</section>`;
+}

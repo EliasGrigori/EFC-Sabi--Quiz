@@ -6,7 +6,7 @@ Teste rápido e modo demonstração (simulado ou pessoas reais com sessões TEST
 Tema seguindo o EFClaudian (claro/escuro/temas),Aparência,must,yes,yes,localStorage sv2-theme
 Funciona sem internet (service worker + IndexedDB),Base,must,yes,yes,aviso de espaço cheio
 Lista de treinamentos com resumo (avaliações / em reforço / acerto médio),Treinamentos,must,yes,yes,KPIs no topo
-Abas Avaliações / Reforço / Encerradas / Teste,Treinamentos,must,yes,yes,contadores nas abas
+Treinos só com a lista de treinamentos (sem abas),Treinamentos,must,yes,yes,"v1.6.0 parte 3: Encerradas foi para Relatórios (lista), Reforço fica em Pendências; antes eram abas com contadores"
 Busca e filtro recolhível único,Treinamentos,must,yes,yes,preferência do Elias
 Vista em lista ou cartões,Treinamentos,should,yes,yes,
 Novo treinamento: modelo pronto (X06),Criação,must,yes,yes,revisar com o POP antes de aplicar
@@ -80,3 +80,20 @@ Configurações: identificação / perfil / aparência / telão / demonstração
 Caixa de mensagens do responsável (X02),Mensagens,should,yes,partial,Mensagens do instrutor com contador no menu e aviso no Início; sem separar por responsável (v0.7.0)
 Apresentar o material (PDF desenhado página por página) no painel / outra janela / telão,Material,should,no,yes,"Novo no Sabiá (v1.5.0): PDF.js guardado no app, setas, toque, capítulos, tela cheia; controle apresenta no telão a qualquer momento"
 Prompt padrão para a IA gerar as atividades (múltipla / V ou F / sequência),Criar,should,no,yes,"Novo no Sabiá (v1.5.0): copiar, colar na IA com o conteúdo, importar o .json"
+Rolagem só dentro do app (janela e menu parados em todas as telas),Base,must,yes,yes,"v1.5.2: página não estica mais com os campos .sr (S01, S04); teste-v152.js"
+Digitar no editor sem a tela pular,Editor,must,yes,yes,v1.5.2: lista rola só por dentro e só ao trocar a pergunta (S02); teste-v152.js
+Tema Claro e Escuro da família EFC (marfim e ouro; Dourado),Base,must,yes,yes,"v1.6.0: tokens do EFCwork v0.6.16; segue o aparelho sem escolha; botão no topo; teste-v160.js"
+Letras embutidas (funcionam sem internet),Base,should,no,yes,"v1.6.0: Fraunces e Source Sans 3 em base64 no app; sem Google Fonts"
+Menu em grupos com recolher e caminho no topo,Base,must,yes,yes,"v1.6.0: Treinamentos, Turma, Análise; caminho Grupo / Tela / item; gaveta no celular; teste-v160.js"
+Ajustes em grupos com índice,Ajustes,should,no,yes,"v1.6.0: 4 grupos, índice parado no PC, marca a seção na tela"
+Início com o que pede atenção e as últimas sessões,Início,should,no,yes,"v1.6.0 parte 2: sem a lista repetida de Treinos; cada linha abre a tela certa; teste-v160p2.js"
+Escolhas em lista retrátil (tema, telão, som, formato),Base,should,no,yes,"v1.6.0 parte 2: teclado, Esc, fora; reaproveita as ações antigas"
+Janelas, gaveta e aviso com movimento,Base,should,no,yes,"v1.6.0 parte 2: 250/150 ms janelas, 400/350 ms gaveta, aviso t-toast; movimento reduzido respeitado"
+Relatórios abre com a lista das sessões encerradas,Relatórios,must,yes,yes,"v1.6.0 parte 3 (R1): encerrar a sala abre o relatório da sessão; teste-v160p3.js"
+Tela Autenticar documento (era Conferir registro),Relatórios,must,yes,yes,"v1.6.0 parte 3: nome no menu, no Mais e no rodapé do PDF"
+Momento da aplicação em lista retrátil,Aplicar,should,no,yes,"v1.6.0 parte 3 (R4): Pós-teste desligado sem pré-teste"
+Fluidez completa (título, lista, aviso, faíscas, Painel),Base,should,no,yes,"v1.6.0 parte 3 (Fatia D): aviso com tipo dito por quem chama; movimento reduzido respeitado; teste-v160p3.js"
+Colaborador consulta Pendências (sem aplicar nem dar baixa),Pendências,must,yes,yes,"v1.6.0 parte 4 (P1); relatório também sem foto, Reaplicar e Pós-teste para o Colaborador"
+Código de autenticação (era de conferência),Relatórios,must,yes,yes,"v1.6.0 parte 4 (P2); botão Autenticar e resultado Documento autêntico"
+Telão no padrão EFC (cores, letras, cantos, chave, véu no resultado, pódio, festa única),Telão,must,yes,yes,"v1.6.0 parte 4 (Fatia E); varredura-fatiaE.js e teste-v160p4.js"
+Celular do participante no padrão EFC e com movimento,Celular,must,yes,yes,"v1.6.0 parte 4 (Fatia E); três pontos no lugar da roda"

@@ -1,0 +1,1234 @@
+[
+ {
+  "ap": "telão",
+  "tema": "claro",
+  "tela": "Espera vazia",
+  "tamanhos": 8,
+  "lista_tam": [
+   "15px",
+   "17px",
+   "18px",
+   "22px",
+   "24px",
+   "40px",
+   "56px",
+   "64px"
+  ],
+  "cantos": 3,
+  "lista_cantos": [
+   "24px",
+   "16px",
+   "18px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3",
+   "ui-monospace"
+  ],
+  "contraste": 4,
+  "ruins": [
+   "span.pillk \"CHAVE 936 056\" 4.41",
+   "b. \"1\" 4.41",
+   "b. \"2\" 4.41",
+   "b. \"3\" 4.41"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "claro",
+  "tela": "Nome",
+  "tamanhos": 4,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "17px",
+   "26px"
+  ],
+  "cantos": 2,
+  "lista_cantos": [
+   "7px",
+   "16px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "claro",
+  "tela": "Na sala",
+  "tamanhos": 6,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "15px",
+   "17px",
+   "22px",
+   "26px"
+  ],
+  "cantos": 1,
+  "lista_cantos": [
+   "7px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "claro",
+  "tela": "Espera com gente",
+  "tamanhos": 8,
+  "lista_tam": [
+   "15px",
+   "17px",
+   "18px",
+   "22px",
+   "24px",
+   "40px",
+   "56px",
+   "64px"
+  ],
+  "cantos": 3,
+  "lista_cantos": [
+   "24px",
+   "16px",
+   "18px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3",
+   "ui-monospace"
+  ],
+  "contraste": 4,
+  "ruins": [
+   "span.pillk \"CHAVE 936 056\" 4.41",
+   "b. \"1\" 4.41",
+   "b. \"2\" 4.41",
+   "b. \"3\" 4.41"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "claro",
+  "tela": "Explicação",
+  "tamanhos": 3,
+  "lista_tam": [
+   "18px",
+   "24px",
+   "54px"
+  ],
+  "cantos": 0,
+  "lista_cantos": [],
+  "fontes": [
+   "Fraunces",
+   "ui-monospace",
+   "Source Sans 3"
+  ],
+  "contraste": 1,
+  "ruins": [
+   "span.pillk \"CHAVE 936 056\" 4.41"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "claro",
+  "tela": "Explicação",
+  "tamanhos": 5,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "15px",
+   "17px",
+   "26px"
+  ],
+  "cantos": 0,
+  "lista_cantos": [],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "claro",
+  "tela": "Pergunta V ou F",
+  "tamanhos": 7,
+  "lista_tam": [
+   "18px",
+   "20px",
+   "24px",
+   "30px",
+   "34px",
+   "42px",
+   "44px"
+  ],
+  "cantos": 2,
+  "lista_cantos": [
+   "4px",
+   "20px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "ui-monospace",
+   "Source Sans 3"
+  ],
+  "contraste": 1,
+  "ruins": [
+   "span.pillk \"CHAVE 936 056\" 4.41"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "claro",
+  "tela": "Pergunta Ordenar",
+  "tamanhos": 7,
+  "lista_tam": [
+   "18px",
+   "20px",
+   "24px",
+   "28px",
+   "34px",
+   "42px",
+   "44px"
+  ],
+  "cantos": 2,
+  "lista_cantos": [
+   "4px",
+   "16px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "ui-monospace",
+   "Source Sans 3"
+  ],
+  "contraste": 1,
+  "ruins": [
+   "span.pillk \"CHAVE 936 056\" 4.41"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "claro",
+  "tela": "Pergunta Ordenar",
+  "tamanhos": 4,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "17px",
+   "22px"
+  ],
+  "cantos": 4,
+  "lista_cantos": [
+   "4px",
+   "99px",
+   "7px",
+   "14px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "claro",
+  "tela": "Pergunta Múltipla",
+  "tamanhos": 7,
+  "lista_tam": [
+   "18px",
+   "20px",
+   "24px",
+   "30px",
+   "34px",
+   "42px",
+   "44px"
+  ],
+  "cantos": 2,
+  "lista_cantos": [
+   "4px",
+   "20px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "ui-monospace",
+   "Source Sans 3"
+  ],
+  "contraste": 2,
+  "ruins": [
+   "span.pillk \"CHAVE 936 056\" 4.41",
+   "span. \"Só se alguém per\" 2.83"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "claro",
+  "tela": "Pergunta Múltipla",
+  "tamanhos": 5,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "17px",
+   "18px",
+   "22px"
+  ],
+  "cantos": 5,
+  "lista_cantos": [
+   "4px",
+   "99px",
+   "7px",
+   "16px",
+   "10px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 2,
+  "ruins": [
+   "span. \"Só se alguém per\" 2.83",
+   "span. \"Nunca, se for pe\" 4.48"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "claro",
+  "tela": "Respondeu",
+  "tamanhos": 5,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "15px",
+   "17px",
+   "26px"
+  ],
+  "cantos": 1,
+  "lista_cantos": [
+   "4px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "claro",
+  "tela": "Conferindo",
+  "tamanhos": 5,
+  "lista_tam": [
+   "18px",
+   "20px",
+   "24px",
+   "30px",
+   "42px"
+  ],
+  "cantos": 2,
+  "lista_cantos": [
+   "4px",
+   "20px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "ui-monospace",
+   "Source Sans 3"
+  ],
+  "contraste": 2,
+  "ruins": [
+   "span.pillk \"CHAVE 936 056\" 4.41",
+   "span. \"Só se alguém per\" 2.83"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [
+   "gira@cf-rd"
+  ],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "claro",
+  "tela": "Conferindo",
+  "tamanhos": 5,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "15px",
+   "17px",
+   "26px"
+  ],
+  "cantos": 1,
+  "lista_cantos": [
+   "4px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [
+   "gira@rodar"
+  ],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "claro",
+  "tela": "Resultado",
+  "tamanhos": 7,
+  "lista_tam": [
+   "18px",
+   "19px",
+   "20px",
+   "24px",
+   "30px",
+   "34px",
+   "42px"
+  ],
+  "cantos": 3,
+  "lista_cantos": [
+   "4px",
+   "20px",
+   "12px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "ui-monospace",
+   "Source Sans 3"
+  ],
+  "contraste": 7,
+  "ruins": [
+   "span.pillk \"CHAVE 936 056\" 4.41",
+   "span. \"Só no fim da sem\" 1.77",
+   "span.pc \"0%\" 2.25",
+   "span. \"Só se alguém per\" 1.47",
+   "span.pc \"0%\" 1.92",
+   "span. \"Nunca, se for pe\" 1.80"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "claro",
+  "tela": "Resultado",
+  "tamanhos": 6,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "15px",
+   "17px",
+   "24px",
+   "30px"
+  ],
+  "cantos": 4,
+  "lista_cantos": [
+   "4px",
+   "18px",
+   "12px",
+   "7px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3",
+   "ui-monospace"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "claro",
+  "tela": "Pódio",
+  "tamanhos": 8,
+  "lista_tam": [
+   "15px",
+   "17px",
+   "18px",
+   "19px",
+   "20px",
+   "24px",
+   "34px",
+   "44px"
+  ],
+  "cantos": 4,
+  "lista_cantos": [
+   "8px",
+   "6px",
+   "18px",
+   "20px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3",
+   "ui-monospace"
+  ],
+  "contraste": 2,
+  "ruins": [
+   "span.pillk \"3 PESSOAS\" 4.41",
+   "span.r \"17% de acerto · \" 4.41"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [
+   "cai@"
+  ],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "claro",
+  "tela": "Fim (assinatura)",
+  "tamanhos": 7,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "15px",
+   "17px",
+   "18px",
+   "24px",
+   "30px"
+  ],
+  "cantos": 5,
+  "lista_cantos": [
+   "18px",
+   "5px",
+   "14px",
+   "7px",
+   "12px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "escuro",
+  "tela": "Espera vazia",
+  "tamanhos": 8,
+  "lista_tam": [
+   "15px",
+   "17px",
+   "18px",
+   "22px",
+   "24px",
+   "40px",
+   "56px",
+   "64px"
+  ],
+  "cantos": 3,
+  "lista_cantos": [
+   "24px",
+   "16px",
+   "18px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3",
+   "ui-monospace"
+  ],
+  "contraste": 4,
+  "ruins": [
+   "span.pillk \"CHAVE 570 528\" 1.97",
+   "b. \"1\" 1.97",
+   "b. \"2\" 1.97",
+   "b. \"3\" 1.97"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "escuro",
+  "tela": "Nome",
+  "tamanhos": 4,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "17px",
+   "26px"
+  ],
+  "cantos": 2,
+  "lista_cantos": [
+   "7px",
+   "16px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "escuro",
+  "tela": "Na sala",
+  "tamanhos": 6,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "15px",
+   "17px",
+   "22px",
+   "26px"
+  ],
+  "cantos": 1,
+  "lista_cantos": [
+   "7px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "escuro",
+  "tela": "Espera com gente",
+  "tamanhos": 8,
+  "lista_tam": [
+   "15px",
+   "17px",
+   "18px",
+   "22px",
+   "24px",
+   "40px",
+   "56px",
+   "64px"
+  ],
+  "cantos": 3,
+  "lista_cantos": [
+   "24px",
+   "16px",
+   "18px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3",
+   "ui-monospace"
+  ],
+  "contraste": 4,
+  "ruins": [
+   "span.pillk \"CHAVE 570 528\" 1.97",
+   "b. \"1\" 1.97",
+   "b. \"2\" 1.97",
+   "b. \"3\" 1.97"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "escuro",
+  "tela": "Explicação",
+  "tamanhos": 3,
+  "lista_tam": [
+   "18px",
+   "24px",
+   "54px"
+  ],
+  "cantos": 0,
+  "lista_cantos": [],
+  "fontes": [
+   "Fraunces",
+   "ui-monospace",
+   "Source Sans 3"
+  ],
+  "contraste": 1,
+  "ruins": [
+   "span.pillk \"CHAVE 570 528\" 1.97"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "escuro",
+  "tela": "Explicação",
+  "tamanhos": 5,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "15px",
+   "17px",
+   "26px"
+  ],
+  "cantos": 0,
+  "lista_cantos": [],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "escuro",
+  "tela": "Pergunta V ou F",
+  "tamanhos": 7,
+  "lista_tam": [
+   "18px",
+   "20px",
+   "24px",
+   "30px",
+   "34px",
+   "42px",
+   "44px"
+  ],
+  "cantos": 2,
+  "lista_cantos": [
+   "4px",
+   "20px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "ui-monospace",
+   "Source Sans 3"
+  ],
+  "contraste": 1,
+  "ruins": [
+   "span.pillk \"CHAVE 570 528\" 1.97"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "escuro",
+  "tela": "Pergunta Ordenar",
+  "tamanhos": 7,
+  "lista_tam": [
+   "18px",
+   "20px",
+   "24px",
+   "28px",
+   "34px",
+   "42px",
+   "44px"
+  ],
+  "cantos": 2,
+  "lista_cantos": [
+   "4px",
+   "16px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "ui-monospace",
+   "Source Sans 3"
+  ],
+  "contraste": 5,
+  "ruins": [
+   "span.pillk \"CHAVE 570 528\" 1.97",
+   "b. \"1\" 1.97",
+   "b. \"2\" 1.97",
+   "b. \"3\" 1.97",
+   "b. \"4\" 1.97"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "escuro",
+  "tela": "Pergunta Ordenar",
+  "tamanhos": 4,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "17px",
+   "22px"
+  ],
+  "cantos": 4,
+  "lista_cantos": [
+   "4px",
+   "99px",
+   "7px",
+   "14px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "escuro",
+  "tela": "Pergunta Múltipla",
+  "tamanhos": 7,
+  "lista_tam": [
+   "18px",
+   "20px",
+   "24px",
+   "30px",
+   "34px",
+   "42px",
+   "44px"
+  ],
+  "cantos": 2,
+  "lista_cantos": [
+   "4px",
+   "20px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "ui-monospace",
+   "Source Sans 3"
+  ],
+  "contraste": 2,
+  "ruins": [
+   "span.pillk \"CHAVE 570 528\" 1.97",
+   "span. \"Só se alguém per\" 2.83"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "escuro",
+  "tela": "Pergunta Múltipla",
+  "tamanhos": 5,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "17px",
+   "18px",
+   "22px"
+  ],
+  "cantos": 5,
+  "lista_cantos": [
+   "4px",
+   "99px",
+   "7px",
+   "16px",
+   "10px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 2,
+  "ruins": [
+   "span. \"Só se alguém per\" 2.83",
+   "span. \"Nunca, se for pe\" 4.48"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "escuro",
+  "tela": "Respondeu",
+  "tamanhos": 5,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "15px",
+   "17px",
+   "26px"
+  ],
+  "cantos": 1,
+  "lista_cantos": [
+   "4px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "escuro",
+  "tela": "Conferindo",
+  "tamanhos": 5,
+  "lista_tam": [
+   "18px",
+   "20px",
+   "24px",
+   "30px",
+   "42px"
+  ],
+  "cantos": 2,
+  "lista_cantos": [
+   "4px",
+   "20px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "ui-monospace",
+   "Source Sans 3"
+  ],
+  "contraste": 2,
+  "ruins": [
+   "span.pillk \"CHAVE 570 528\" 1.97",
+   "span. \"Só se alguém per\" 2.83"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [
+   "gira@cf-rd"
+  ],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "escuro",
+  "tela": "Conferindo",
+  "tamanhos": 5,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "15px",
+   "17px",
+   "26px"
+  ],
+  "cantos": 1,
+  "lista_cantos": [
+   "4px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [
+   "gira@rodar"
+  ],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "escuro",
+  "tela": "Resultado",
+  "tamanhos": 7,
+  "lista_tam": [
+   "18px",
+   "19px",
+   "20px",
+   "24px",
+   "30px",
+   "34px",
+   "42px"
+  ],
+  "cantos": 3,
+  "lista_cantos": [
+   "4px",
+   "20px",
+   "12px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "ui-monospace",
+   "Source Sans 3"
+  ],
+  "contraste": 7,
+  "ruins": [
+   "span.pillk \"CHAVE 570 528\" 1.97",
+   "span. \"Só no fim da sem\" 1.77",
+   "span.pc \"0%\" 2.25",
+   "span. \"Só se alguém per\" 1.47",
+   "span.pc \"0%\" 1.92",
+   "span. \"Nunca, se for pe\" 1.80"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "escuro",
+  "tela": "Resultado",
+  "tamanhos": 6,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "15px",
+   "17px",
+   "24px",
+   "30px"
+  ],
+  "cantos": 4,
+  "lista_cantos": [
+   "4px",
+   "18px",
+   "12px",
+   "7px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3",
+   "ui-monospace"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ },
+ {
+  "ap": "telão",
+  "tema": "escuro",
+  "tela": "Pódio",
+  "tamanhos": 8,
+  "lista_tam": [
+   "15px",
+   "17px",
+   "18px",
+   "19px",
+   "20px",
+   "24px",
+   "34px",
+   "44px"
+  ],
+  "cantos": 4,
+  "lista_cantos": [
+   "8px",
+   "6px",
+   "18px",
+   "20px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3",
+   "ui-monospace"
+  ],
+  "contraste": 2,
+  "ruins": [
+   "span.pillk \"3 PESSOAS\" 1.97",
+   "span.r \"11% de acerto · \" 1.97"
+  ],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [
+   "cai@"
+  ],
+  "transAll": 0
+ },
+ {
+  "ap": "celular",
+  "tema": "escuro",
+  "tela": "Fim (assinatura)",
+  "tamanhos": 7,
+  "lista_tam": [
+   "13px",
+   "14px",
+   "15px",
+   "17px",
+   "18px",
+   "24px",
+   "30px"
+  ],
+  "cantos": 5,
+  "lista_cantos": [
+   "18px",
+   "5px",
+   "14px",
+   "7px",
+   "12px"
+  ],
+  "fontes": [
+   "Fraunces",
+   "Source Sans 3"
+  ],
+  "contraste": 0,
+  "ruins": [],
+  "pequenos": 0,
+  "lista_peq": [],
+  "lado": 0,
+  "transborda": 0,
+  "infinitas": [],
+  "transAll": 0
+ }
+]

@@ -28,7 +28,7 @@
 .rel .ai svg{width:18px;height:18px}
 .rel .ai.ok{background:var(--ok-soft);color:var(--ok)}
 .rel .ai.warn{background:var(--warn-soft);color:var(--warn)}
-.rtw{overflow-x:auto;margin:0 -4px;padding:0 4px}
+.rtw{position:relative;overflow-x:auto;margin:0 -4px;padding:0 4px}
 .rtb{width:100%;border-collapse:collapse;font-size:14px}
 .rtb th,.rtb td{text-align:left;padding:8px 10px;border-top:1px solid var(--line);vertical-align:middle}
 .rtb thead th{border-top:0;font-size:12px;font-weight:700;color:var(--ink2);background:var(--surface2);white-space:nowrap}
@@ -40,7 +40,7 @@
 .rel .asm img{display:block;max-width:64px;height:auto}
 .rel .assg{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;display:grid;place-items:center}
 .rel .assg img{max-width:100%;height:auto}
-.rel .mapa{overflow:auto;max-height:60vh}
+.rel .mapa{position:relative;overflow:auto;max-height:60vh}
 .rel .mp th.nm,.mp td.nm{position:sticky;left:0;background:var(--surface);font-weight:600;min-width:130px;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:1}
 .rel .mp thead th.nm{background:var(--surface2)}
 .mc{text-align:center !important;width:40px;min-width:40px;padding:6px 4px !important}

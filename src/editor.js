@@ -125,7 +125,13 @@ function pintaLista() {
   }).join("") : `<span class="sm mut" style="padding:6px 4px">Nenhuma pergunta ainda.</span>`;
   const pt = problemasTreino(t), nq = t.itens.filter(i => i.tipo !== "explicacao").length;
   $("#edSt").innerHTML = t.itens.length ? (pt.length ? `<span class="chip warn">${pt.length} para revisar</span>` : (nq ? `<span class="chip ok">Pronto para aplicar</span>` : `<span class="chip warn">Só explicações</span>`)) + `<span>${nq} pergunta${nq === 1 ? "" : "s"}</span>` : "";
-  const ac = el.querySelector('[aria-current="true"]'); if (ac && ac.scrollIntoView && el.scrollHeight > el.clientHeight) ac.scrollIntoView({block: "nearest"});
+  /* v1.5.2: rola só a lista, e só quando a escolha muda (antes o scrollIntoView rolava o app inteiro a cada letra) */
+  const ac = el.querySelector('[aria-current="true"]');
+  if (ac && el.dataset.rs !== String(UI.ed.sel) && el.scrollHeight > el.clientHeight) {
+    const r = ac.getBoundingClientRect(), e = el.getBoundingClientRect();
+    if (r.top < e.top) el.scrollTop -= e.top - r.top; else if (r.bottom > e.bottom) el.scrollTop += r.bottom - e.bottom;
+    el.dataset.rs = String(UI.ed.sel);
+  }
 }
 function altLinha(it, k) {
   const a = it.alternativas[k], tp = it.tipo;
@@ -194,7 +200,7 @@ function pintaPrev() {
 function comUndo(t, msg, fn) {
   const antes = JSON.stringify({itens: t.itens, sel: UI.ed.sel, sujo: t.sujo});
   editou(t); fn(); salvar();
-  aviso(msg, "Desfazer", () => { const o = JSON.parse(antes); t.itens = o.itens; UI.ed.sel = o.sel; t.sujo = o.sujo; salvar(); if (rota().v === "editar") pintaTudo(); });
+  aviso(msg, "Desfazer", () => { const o = JSON.parse(antes); t.itens = o.itens; UI.ed.sel = o.sel; t.sujo = o.sujo; salvar(); if (rota().v === "editar") pintaTudo(); }, "ok");
 }
 function trocarTipo(it, tipo) {
   const base = novoItem(tipo), vel = it.alternativas || [];
@@ -217,7 +223,7 @@ document.addEventListener("click", e => {
   else if (a === "edadd") { editou(t); t.itens.push(novoItem(v)); UI.ed.sel = t.itens.length - 1; pintaTudo(); const f = $("#e-en"); if (f) f.focus(); }
   else if (a === "edtipo") { if (it.tipo === v) return; comUndo(t, "Formato trocado", () => { t.itens[i] = trocarTipo(it, v); }); pintaTudo(); }
   else if (a === "edup" || a === "eddown") { const j = a === "edup" ? i - 1 : i + 1; if (j < 0 || j >= t.itens.length) return; editou(t); [t.itens[i], t.itens[j]] = [t.itens[j], t.itens[i]]; UI.ed.sel = j; pintaTudo(); const b = $(`[data-act="${a}"]`); if (b && !b.disabled) b.focus(); }
-  else if (a === "eddup") { editou(t); const c = clone(it); t.itens.splice(i + 1, 0, c); UI.ed.sel = i + 1; pintaTudo(); aviso("Pergunta duplicada"); }
+  else if (a === "eddup") { editou(t); const c = clone(it); t.itens.splice(i + 1, 0, c); UI.ed.sel = i + 1; pintaTudo(); aviso("Pergunta duplicada", null, null, "ok"); }
   else if (a === "eddel") { comUndo(t, "Pergunta excluída", () => { t.itens.splice(i, 1); UI.ed.sel = Math.min(i, t.itens.length - 1); }); pintaTudo(); }
   else if (a === "altadd") { editou(t); it.alternativas.push(""); pintaCentro(); pintaLista(); pintaPrev(); const f = $(`[data-ealt="${it.alternativas.length - 1}"]`); if (f) f.focus(); }
   else if (a === "altdel") {
@@ -235,7 +241,7 @@ document.addEventListener("click", e => {
     t.itens = clone(ver.itens); if (ver.titulo !== undefined) t.titulo = ver.titulo; if (ver.meta !== undefined) { t.meta = ver.meta; if (ver.metaTipo === "pts") t.metaTipo = "pts"; else delete t.metaTipo; }
     t.sujo = n !== t.versao; t.atualizado = agora(); UI.ed.sel = 0; UI.cmp = null; salvar();
     $("#dlg").close(); render();
-    aviso(`v${String(n).padStart(2, "0")} trazida para o rascunho`, "Desfazer", () => { const o = JSON.parse(antes); Object.assign(t, o); salvar(); if (rota().v === "editar") render(); });
+    aviso(`v${String(n).padStart(2, "0")} trazida para o rascunho`, "Desfazer", () => { const o = JSON.parse(antes); Object.assign(t, o); salvar(); if (rota().v === "editar") render(); }, "ok");
   }
 });
 document.addEventListener("input", e => {
@@ -264,5 +270,5 @@ document.addEventListener("change", e => {
 document.addEventListener("submit", e => {
   const f = e.target.closest("[data-form='versao']"); if (!f) return; e.preventDefault();
   const t = treino(UI.ed && UI.ed.id); if (!t || !t.sujo) return;
-  const n = salvarVersao(t, $("#v-nota").value.trim()); UI.cmp = null; $("#dlg").close(); pintaTopo(); aviso(`Versão v${String(n).padStart(2, "0")} salva`);
+  const n = salvarVersao(t, $("#v-nota").value.trim()); UI.cmp = null; $("#dlg").close(); pintaTopo(); aviso(`Versão v${String(n).padStart(2, "0")} salva`, null, null, "ok");
 });

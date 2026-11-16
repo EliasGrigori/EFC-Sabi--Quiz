@@ -1,0 +1,41 @@
+FALHA P1: o Colaborador abre Pendências
+FALHA P1: e vê quem está em reforço
+OK   P1: sem os botões "Aplicar reforço" e "Dar baixa"
+FALHA P1: aviso de que é só para consultar
+FALHA P1: Pendências aparece no menu do Colaborador
+FALHA P1: mesmo à força, aplicar e dar baixa ficam barrados para o Colaborador
+FALHA P1: um "Dar baixa" forçado não registra nada
+FALHA P1: o "Pede atenção" do Início mostra o reforço ao Colaborador
+FALHA P1 (revisor): no relatório, o Colaborador não vê Reaplicar, Pós-teste, Trocar, Remover nem Adicionar foto
+FALHA P1 (revisor): e essas ações ficam barradas no código
+OK   P1: o perfil Primário continua com os botões
+FALHA P1: no celular, Pendências fica na barra de baixo do Colaborador
+FALHA P2: o relatório diz "Código de autenticação"
+FALHA P2: o campo da tela Autenticar documento também
+FALHA P2: a planilha da sessão também
+FALHA P2: nenhum "código de conferência" sobrou no app (nem no PDF)
+FALHA P2: o rodapé do PDF manda "autenticar este documento"
+FALHA P2 (revisor): a tela usa "Autenticar" no botão e "Documento autêntico" no resultado
+OK   P2: o código continua o mesmo (PDFs antigos seguem conferindo)
+FALHA E escuro: telão nas cores da família EFC (azul-noite), sem o petróleo antigo · rgb(10, 44, 43)
+FALHA E escuro: a chave sem maiúsculas espaçadas ("Chave 123 456") · {"t":"CHAVE 515 313","tt":"none","ls":"1.08px"}
+FALHA E escuro: espera com até 7 tamanhos de letra e até 3 tipos de canto · {"tam":8,"can":3,"lt":"24px 17px 18px 64px 15px 56px 22px 40px","lc":"24px 16px 18px"}
+FALHA E escuro: quem entra na sala aparece suave no telão, sem a tela inteira piscar · {"chips":[0,0],"join":0}
+OK   E escuro: no celular, a contagem de quem está na sala muda sem a tela entrar de novo · 0
+FALHA E escuro: a pergunta entra e as 4 alternativas entram em sequência (40 ms entre elas) · {"tiles":[[],[],[],[]],"h2":0}
+OK   E escuro: as 4 cores das alternativas são as mesmas de antes · rgb(201, 67, 43) rgb(42, 99, 194) rgb(201, 143, 0) rgb(42, 135, 82)
+FALHA Fatia E escuro (parou: a peça não existe ou não respondeu) · page.evaluate: TypeError: Failed to execute 'getComputedStyle' on 'Window': parameter 1 is not of type 'Element'.
+FALHA E claro: telão nas cores da família EFC (marfim), sem o petróleo antigo · rgb(243, 247, 246)
+FALHA E claro: a chave sem maiúsculas espaçadas ("Chave 123 456") · {"t":"CHAVE 716 007","tt":"none","ls":"1.08px"}
+FALHA E claro: espera com até 7 tamanhos de letra e até 3 tipos de canto · {"tam":8,"can":3,"lt":"24px 17px 18px 64px 15px 56px 22px 40px","lc":"24px 16px 18px"}
+FALHA E claro: quem entra na sala aparece suave no telão, sem a tela inteira piscar · {"chips":[0,0],"join":0}
+OK   E claro: no celular, a contagem de quem está na sala muda sem a tela entrar de novo · 0
+FALHA E claro: a pergunta entra e as 4 alternativas entram em sequência (40 ms entre elas) · {"tiles":[[],[],[],[]],"h2":0}
+OK   E claro: as 4 cores das alternativas são as mesmas de antes · rgb(201, 67, 43) rgb(42, 99, 194) rgb(201, 143, 0) rgb(42, 135, 82)
+FALHA Fatia E claro (parou: a peça não existe ou não respondeu) · page.evaluate: TypeError: Failed to execute 'getComputedStyle' on 'Window': parameter 1 is not of type 'Element'.
+FALHA Celular: "Conectando à sala" com os três pontos, sem a roda que girava sem parar · {"pt":0,"roda":1}
+FALHA Celular: nada infinito enquanto conecta
+OK   Com "movimento reduzido", a pergunta aparece direto no telão
+FALHA Reduzido (parou: a peça não existe ou não respondeu) · page.waitForSelector: Timeout 30000ms exceeded.
+OK   Console sem erro
+9 OK de 40 · ERRO

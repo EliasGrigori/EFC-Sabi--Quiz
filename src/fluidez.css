@@ -1,0 +1,34 @@
+/* ===== v1.6.0 parte 3 · Fatia D: fluidez completa (receitas do fluidez.css do EFCwork, com os nomes do Sabiá) ===== */
+/* título que entra letra por letra saindo do desfoque; no escuro, cor lisa enquanto entra */
+.tb h1.fz-tt .fz-l{display:inline-block;opacity:0;filter:blur(8px);transform:translateY(-.2em);animation:fzTt var(--duration-very-slow) var(--ease-smooth-out) forwards;animation-delay:calc(var(--i) * var(--duration-stagger))}
+/* no escuro: cada letra leva o seu pedaço do mesmo degradê do título, então o fim não troca de cor */
+:root[data-tema="escuro"] .tb h1.fz-tt{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:var(--a)}
+:root[data-tema="escuro"] .tb h1.fz-tt .fz-l{background:var(--ouroTit) calc(var(--fz-x) * -1) 0/var(--fz-w) 100% no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes fzTt{to{opacity:1;filter:none;transform:none}}
+/* aviso: o visto que se desenha; a tremida curta no erro */
+/* o aviso tem fundo invertido (escuro no tema claro), por isso as cores "Inv" */
+.av-vs,.av-er{display:inline-grid;flex:none;margin-right:-6px}
+.av-vs{color:var(--okInv)}.av-er{color:var(--crInv)}
+.av-vs svg,.av-er svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.av-er svg{stroke-width:2.2}
+#toast.fz-treme{animation:fzTreme var(--duration-quick) linear}
+@keyframes fzTreme{0%{transform:translateX(0)}25%{transform:translateX(6px)}50%{transform:translateX(-4px)}75%{transform:translateX(2px)}100%{transform:translateX(0)}}
+/* faíscas ao salvar (só no botão dourado, só quando deu certo) */
+.fz-spk{position:fixed;z-index:120;width:0;height:0;pointer-events:none}
+.fz-spk i{position:absolute;left:-1px;top:0;width:2px;height:9px;border-radius:2px;background:var(--a);transform-origin:50% 0;animation:fzSpk var(--duration-very-slow) var(--ease-smooth-out) forwards}
+@keyframes fzSpk{from{transform:rotate(var(--r)) translateY(6px) scaleY(1);opacity:1}to{transform:rotate(var(--r)) translateY(26px) scaleY(.2);opacity:0}}
+/* itens que entram em sequência (Painel) */
+.fz-li{animation:fzLi var(--duration-fast) var(--ease-smooth-out) backwards;animation-delay:calc(var(--i) * var(--duration-stagger))}
+@keyframes fzLi{from{opacity:0;transform:translateY(10px) scale(.98)}}
+/* desfoque no fim do que rola (Painel e menu do celular), só quando tem mais embaixo */
+#dlg:has(.dl.pn)::after,.rail::after{content:"";position:sticky;bottom:0;display:block;flex:none;height:48px;margin-top:-48px;pointer-events:none;opacity:0;transition:opacity var(--duration-fast) var(--ease-out);
+  -webkit-mask:linear-gradient(transparent,#000);mask:linear-gradient(transparent,#000);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);background:linear-gradient(transparent,var(--bg1))}
+.rail::after{background:linear-gradient(transparent,var(--sb))}
+#dlg.fz-mais::after,.rail.fz-mais::after{opacity:1}
+@media (prefers-reduced-motion:reduce){
+  .tb h1.fz-tt .fz-l{animation:none;opacity:1;filter:none;transform:none}
+  #toast.fz-treme,.fz-spk i,.fz-li{animation:none!important}
+  #dlg:has(.dl.pn)::after,.rail::after{transition:none}
+}
+/* v1.6.0 parte 4 · Fatia E: com "movimento reduzido", os três pontos já aparecem acesos */
+@media (prefers-reduced-motion:reduce){.cf-pt i{opacity:1!important}}

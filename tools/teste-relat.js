@@ -27,7 +27,7 @@ const sh=(c)=>{try{return cp.execSync(c,{encoding:'utf8',stdio:['ignore','pipe',
  ok('Encerrar guarda código de conferência',/^SAB-[0-9A-F]{4}(-[0-9A-F]{4}){4}$/.test(info.cod),info.cod);
  ok('Sessão fica encerrada',info.estado==='encerrada');
  // ---- Encerradas tem link para o relatório
- await p.evaluate(()=>{UI.aba='encerradas';location.hash='#/treinos';render()});await p.waitForSelector('a[href^="#/relatorios/"]');
+ await p.evaluate(()=>{location.hash='#/relatorios';render()});await p.waitForSelector('a[href^="#/relatorios/"]');
  ok('Encerradas mostra o botão Relatório',true);await p.screenshot({path:OUT+'/r-encerradas.png'});
  await p.click('a[href^="#/relatorios/"]');await p.waitForSelector('.rl-top');
  const txt=await p.innerText('.rel');
@@ -109,7 +109,7 @@ const sh=(c)=>{try{return cp.execSync(c,{encoding:'utf8',stdio:['ignore','pipe',
  await p.evaluate(()=>{location.hash='#/conferir'});await p.waitForSelector('#cf-c');
  ok('Conferir lista a sessão como íntegra',(await p.innerText('.rtb')).includes('Íntegro'));
  await p.fill('#cf-c',info.cod.toLowerCase().replace(/-/g,' '));await p.click('.cf-f button[type=submit]');
- await p.waitForSelector('.cf-r.ok');ok('Código correto confere (mesmo digitado em minúsculas e com espaços)',(await p.innerText('.cf-r')).includes('Registro confere'));
+ await p.waitForSelector('.cf-r.ok');ok('Código correto confere (mesmo digitado em minúsculas e com espaços)',(await p.innerText('.cf-r')).includes('Documento autêntico'));
  await p.screenshot({path:OUT+'/r-conferir.png'});
  await p.fill('#cf-c','SAB-0000-0000-0000-0000-0000');await p.click('.cf-f button[type=submit]');await p.waitForSelector('.cf-r.no');
  ok('Código desconhecido é recusado',(await p.innerText('.cf-r')).includes('Nenhuma sessão'));

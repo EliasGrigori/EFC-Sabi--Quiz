@@ -156,7 +156,7 @@ function dlgImportar() {
 function pesDel(id) {
   const i = S.pessoas.findIndex(p => p.id === id); if (i < 0) return;
   const [p] = S.pessoas.splice(i, 1); pesMudou(); render();
-  aviso(`${p.nome} excluída do cadastro`, "Desfazer", () => { S.pessoas.splice(Math.min(i, S.pessoas.length), 0, p); pesMudou(); render(); });
+  aviso(`${p.nome} excluída do cadastro`, "Desfazer", () => { S.pessoas.splice(Math.min(i, S.pessoas.length), 0, p); pesMudou(); render(); }, "ok");
 }
 
 /* ---------- mensagens: comentários rápidos que a turma envia pelo celular ---------- */
@@ -231,7 +231,7 @@ function placarHtml(D, grande) {
   if (!D.placar.length) return `<p class="sm mut" style="margin:0">Ainda não há setor com ${MIN_SETOR} pessoas ou mais neste período.</p>`;
   return `<ol class="ds-l${grande ? " g" : ""}">${D.placar.map((g, i) => `<li><span class="ds-p num">${i + 1}º</span><b class="ds-s">${esc(g.setor)}</b><span class="ds-b" role="img" aria-label="${g.pct}% de acerto"><i style="width:${g.pct}%"></i></span><b class="num ds-c">${g.pct}%</b><span class="sm mut ds-n">${plural(g.pess.size, "pessoa", "pessoas")} · ${plural(g.n, "resposta", "respostas")}</span></li>`).join("")}</ol>`;
 }
-function relModo(at) { return `<div class="seg rel-modo" role="group" aria-label="Relatórios"><button data-act="relmodo" data-v="sessoes" aria-pressed="${at === "sessoes"}">Sessões</button><button data-act="relmodo" data-v="desafio" aria-pressed="${at === "desafio"}">Desafio entre setores</button></div>`; }
+function relModo(at) { return `<div class="seg abas rel-modo" role="group" aria-label="Relatórios"><button data-act="relmodo" data-v="sessoes" aria-pressed="${at === "sessoes"}">Sessões</button><button data-act="relmodo" data-v="desafio" aria-pressed="${at === "desafio"}">Desafio entre setores</button></div>`; }
 function vDesafio() {
   const M = mesDs(), D = dadosSetores(M);
   if (PES.dsTela) {
@@ -253,7 +253,7 @@ function vMais() {
   topo("Mais", "");
   $("#app").className = "body page mais";
   const it = ([h, n, i, d]) => `<a class="k mais-i" href="#/${h}"><span class="mais-ic">${ic(i)}</span><span><b>${n}</b><span class="sm mut">${d}</span></span></a>`;
-  $("#app").innerHTML = [["pessoas", "Pessoas", "people", "Cadastro por setor, histórico e selos"], ["relatorios", "Relatórios", "chart", "Resultado de cada sessão e desafio entre setores"], ["conferir", "Conferir", "shield", "Confirmar um registro pelo código"], ["ajustes", "Ajustes", "gear", "Identificação, perfil, integração, setores e dados"]].filter(x => rotaOk(x[0])).map(it).join("");
+  $("#app").innerHTML = [["pessoas", "Pessoas", "people", "Cadastro por setor, histórico e selos"], ["relatorios", "Relatórios", "chart", "Resultado de cada sessão e desafio entre setores"], ["conferir", "Autenticar documento", "shield", "Provar que um PDF não foi mexido"], ["ajustes", "Ajustes", "gear", "Identificação, perfil, integração, setores e dados"]].filter(x => rotaOk(x[0])).map(it).join("");
 }
 
 /* ---------- eventos ---------- */
@@ -268,8 +268,8 @@ document.addEventListener("click", e => {
   else if (a === "pesdel") pesDel(id);
   else if (a === "pestodos") { PES.todos = !PES.todos; render(); }
   else if (a === "pessugtog") { PES.sug = !PES.sug; render(); }
-  else if (a === "pessug") { const p = novaPessoa(el.dataset.nome, el.dataset.setor); if (p) { render(); aviso(`${p.nome} cadastrada`); } }
-  else if (a === "pessugall") { const l = sugeridas(); l.forEach(g => novaPessoa(g.nome, g.setor)); render(); aviso(plural(l.length, "pessoa cadastrada", "pessoas cadastradas")); }
+  else if (a === "pessug") { const p = novaPessoa(el.dataset.nome, el.dataset.setor); if (p) { render(); aviso(`${p.nome} cadastrada`, null, null, "ok"); } }
+  else if (a === "pessugall") { const l = sugeridas(); l.forEach(g => novaPessoa(g.nome, g.setor)); render(); aviso(plural(l.length, "pessoa cadastrada", "pessoas cadastradas"), null, null, "ok"); }
   else if (a === "msgfiltro") { PES.msgFiltro = !PES.msgFiltro; render(); }
   else if (a === "msgtodas") { PES.msgTodas = !PES.msgTodas; render(); }
   else if (a === "msgresp") { PES.resp = id || null; PES.respTxt = ""; render(); const t = $("#msg-r"); if (t) t.focus(); }
@@ -277,13 +277,13 @@ document.addEventListener("click", e => {
   else if (a === "msgdel") {
     const i = (S.mensagens || []).findIndex(x => x.id === id); if (i < 0) return;
     const [m] = S.mensagens.splice(i, 1); salvar(); render(); menu(rota().v);
-    aviso("Mensagem excluída", "Desfazer", () => { S.mensagens.splice(Math.min(i, S.mensagens.length), 0, m); salvar(); render(); menu(rota().v); });
+    aviso("Mensagem excluída", "Desfazer", () => { S.mensagens.splice(Math.min(i, S.mensagens.length), 0, m); salvar(); render(); menu(rota().v); }, "ok");
   }
   else if (a === "msgenviar") {
     const m = (S.mensagens || []).find(x => x.id === id), tx = String(PES.respTxt || "").replace(/\s+/g, " ").trim().slice(0, 300);
-    if (!m) return; if (tx.length < 2) { aviso("Escreva a resposta antes de enviar."); return; }
+    if (!m) return; if (tx.length < 2) { aviso("Escreva a resposta antes de enviar.", null, null, "erro"); return; }
     m.resposta = tx; m.respEm = Date.now(); m.lida = true; PES.resp = null; PES.respTxt = ""; salvar(); render(); menu(rota().v);
-    enviarRsp(m, tx).then(ok => aviso(ok ? "Resposta enviada ao celular" : "Resposta guardada. A sala já está fechada, então ela fica só aqui."));
+    enviarRsp(m, tx).then(ok => aviso(ok ? "Resposta enviada ao celular" : "Resposta guardada. A sala já está fechada, então ela fica só aqui.", null, null, ok ? "ok" : ""));
   }
   else if (a === "relmodo") { location.hash = v === "desafio" ? "#/relatorios/desafio" : "#/relatorios"; }
   else if (a === "dsmodo") { const M = mesDs(); M.ano = v === "ano"; render(); }
@@ -304,7 +304,7 @@ document.addEventListener("change", e => {
   else if (t.id === "ms-s") { PES.msgSt = t.value; render(); }
   else if (t.dataset.jn && t.value) {
     const p = S.pessoas.find(x => x.id === t.value); if (!p) return;
-    const ap = new Set(p.apelidos || []); ap.add(t.dataset.jn); p.apelidos = [...ap]; pesMudou(); render(); aviso(`"${t.dataset.jn}" agora conta como ${p.nome}`);
+    const ap = new Set(p.apelidos || []); ap.add(t.dataset.jn); p.apelidos = [...ap]; pesMudou(); render(); aviso(`"${t.dataset.jn}" agora conta como ${p.nome}`, null, null, "ok");
   }
 });
 document.addEventListener("submit", e => {
@@ -315,13 +315,13 @@ document.addEventListener("submit", e => {
     const outra = pessoaPorNome(nome);
     if (f.dataset.id) {
       const p = S.pessoas.find(x => x.id === f.dataset.id); if (!p) return;
-      if (outra && outra !== p) { aviso("Já existe outra pessoa com esse nome."); return; }
+      if (outra && outra !== p) { aviso("Já existe outra pessoa com esse nome.", null, null, "erro"); return; }
       const ant = p.nome, apl = new Set(ap); if (nk0(ant) !== nk0(nome)) apl.add(ant);   // o nome antigo continua valendo para o histórico
       p.nome = nome; p.setor = setor; p.apelidos = [...apl].slice(0, 12); const at = $("#pe-at"); p.ativo = at ? at.checked : true;
-      pesMudou(); $("#dlg").close(); render(); aviso("Pessoa salva");
+      pesMudou(); $("#dlg").close(); render(); aviso("Pessoa salva", null, null, "ok");
     } else {
-      if (outra) { aviso("Já existe uma pessoa com esse nome."); return; }
-      const p = novaPessoa(nome, setor); if (p) { p.apelidos = ap; pesMudou(); } $("#dlg").close(); render(); aviso(`${nome} cadastrada`);
+      if (outra) { aviso("Já existe uma pessoa com esse nome.", null, null, "erro"); return; }
+      const p = novaPessoa(nome, setor); if (p) { p.apelidos = ap; pesMudou(); } $("#dlg").close(); render(); aviso(`${nome} cadastrada`, null, null, "ok");
     }
   } else {
     let n = 0; const sets = new Set(S.cfg.setores);
@@ -330,6 +330,6 @@ document.addEventListener("submit", e => {
       const st = limpaNome(b); if (st && !sets.has(st)) { S.cfg.setores.push(st); sets.add(st); }
       novaPessoa(nome, st); n++;
     });
-    $("#dlg").close(); render(); aviso(n ? plural(n, "pessoa cadastrada", "pessoas cadastradas") : "Nenhum nome novo na lista");
+    $("#dlg").close(); render(); aviso(n ? plural(n, "pessoa cadastrada", "pessoas cadastradas") : "Nenhum nome novo na lista", null, null, n ? "ok" : "");
   }
 });

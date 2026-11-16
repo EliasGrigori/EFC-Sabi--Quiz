@@ -47,13 +47,13 @@ document.addEventListener("click", async e => {
   if (a === "selocar" || a === "selover") {
     const s = sessaoRel(REL.sid); if (!s) return;
     if (a === "selover") {
-      if (!Rede.ok()) { aviso("Configure o Firebase em Ajustes."); return; }
-      try { const t = await lerSelo(garantirCodigo(s)); if (t === null) aviso("O Firebase não tem carimbo para este código."); else if (t !== s.selo.t) aviso("O horário no Firebase é diferente do guardado!"); else aviso("Confere: o Firebase tem o mesmo horário."); }
-      catch (x) { aviso("Sem conexão com o Firebase."); }
+      if (!Rede.ok()) { aviso("Configure o Firebase em Ajustes.", null, null, "erro"); return; }
+      try { const t = await lerSelo(garantirCodigo(s)); if (t === null) aviso("O Firebase não tem carimbo para este código.", null, null, "erro"); else if (t !== s.selo.t) aviso("O horário no Firebase é diferente do guardado!", null, null, "erro"); else aviso("Confere: o Firebase tem o mesmo horário.", null, null, "ok"); }
+      catch (x) { aviso("Sem conexão com o Firebase.", null, null, "erro"); }
       return;
     }
     SELO.ocup = true; SELO.msg = ""; render();
-    const r = await carimbar(s); SELO.ocup = false; SELO.msg = r.ok ? "" : r.msg; if (rota().v === "relatorios") render(); aviso(r.msg);
+    const r = await carimbar(s); SELO.ocup = false; SELO.msg = r.ok ? "" : r.msg; if (rota().v === "relatorios") render(); aviso(r.msg, null, null, r.ok ? "ok" : "erro");
   } else if (a === "selocons") {
     const campo = $("#cf-c"), c = normCodigo(campo ? campo.value : CF.cod);
     if (!c) { SELO.cons = {ok: false, titulo: "Código inválido.", texto: "Digite o código no campo acima (SAB-XXXX-XXXX-XXXX-XXXX-XXXX)."}; render(); return; }
@@ -112,18 +112,18 @@ document.addEventListener("click", e => {
   if (!["bnabrir", "bnguardar", "bntodas", "bninserir", "bnexcluir", "bndesfazer", "iarevisei"].includes(a)) return;
   const t = treino(UI.ed && UI.ed.id);
   if (a === "bnabrir") { if (!t) return; BN.q = ""; BN.tipo = ""; BN.desf = null; dlgBanco(); }
-  else if (a === "bnguardar") { const it = t && t.itens[UI.ed.sel]; if (!it) return; const r = guardarNoBanco([it], t.titulo); aviso(r.novas ? "Pergunta guardada no banco" : r.repetidas ? "Essa pergunta já está no banco" : "Escreva o enunciado antes de guardar"); }
-  else if (a === "bntodas") { if (!t) return; const r = guardarNoBanco(t.itens, t.titulo); dlgBanco(); aviso(r.novas ? r.novas + " guardada" + (r.novas === 1 ? "" : "s") + " no banco" + (r.repetidas ? ", " + r.repetidas + " já estava" + (r.repetidas === 1 ? "" : "m") : "") : "Nada novo para guardar"); }
+  else if (a === "bnguardar") { const it = t && t.itens[UI.ed.sel]; if (!it) return; const r = guardarNoBanco([it], t.titulo); aviso(r.novas ? "Pergunta guardada no banco" : r.repetidas ? "Essa pergunta já está no banco" : "Escreva o enunciado antes de guardar", null, null, r.novas ? "ok" : r.repetidas ? "" : "erro"); }
+  else if (a === "bntodas") { if (!t) return; const r = guardarNoBanco(t.itens, t.titulo); dlgBanco(); aviso(r.novas ? r.novas + " guardada" + (r.novas === 1 ? "" : "s") + " no banco" + (r.repetidas ? ", " + r.repetidas + " já estava" + (r.repetidas === 1 ? "" : "m") : "") : "Nada novo para guardar", null, null, r.novas ? "ok" : ""); }
   else if (a === "bninserir") {
     const it = bancoLista().find(x => x.bid === el.dataset.id); if (!t || !it) return;
     const c = semAudio(it); delete c.bid; delete c.de; delete c.quando;
-    editou(t); t.itens.push(c); UI.ed.sel = t.itens.length - 1; pintaTudo(); bnRepinta(); aviso("Pergunta inserida no final");
+    editou(t); t.itens.push(c); UI.ed.sel = t.itens.length - 1; pintaTudo(); bnRepinta(); aviso("Pergunta inserida no final", null, null, "ok");
   }
   else if (a === "bnexcluir") {
     const b = bancoLista(), i = b.findIndex(x => x.bid === el.dataset.id); if (i < 0) return; const [rem] = b.splice(i, 1); BN.desf = {rem, i}; salvar(); bnRepinta();
   }
   else if (a === "bndesfazer") { if (!BN.desf) return; const b = bancoLista(); b.splice(Math.min(BN.desf.i, b.length), 0, BN.desf.rem); BN.desf = null; salvar(); bnRepinta(); }
-  else if (a === "iarevisei") { const tt = treino(el.dataset.id); if (tt) { delete tt.ia; salvar(); render(); aviso("Marcado como revisado"); } }
+  else if (a === "iarevisei") { const tt = treino(el.dataset.id); if (tt) { delete tt.ia; salvar(); render(); aviso("Marcado como revisado", null, null, "ok"); } }
 });
 const iaAviso = t => t && t.ia ? `<section class="k ia-av" role="note"><b>Criado com IA: confira antes de aplicar</b><span class="sm">Leia cada pergunta e a resposta marcada com o POP da fazenda. A IA pode errar ou inventar regra.</span><button class="b sm" data-act="iarevisei" data-id="${esc(t.id)}">${ic("check", 'style="width:16px;height:16px"')}Já revisei</button></section>` : "";
 
@@ -179,12 +179,12 @@ function dlgIA() {
 document.addEventListener("click", e => {
   const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act;
   if (a === "dlgia") { dlgIA(); }
-  else if (a === "iacopiar") { try { navigator.clipboard.writeText(IA.prompt).then(() => aviso("Texto copiado. Cole na IA."), () => { const o = $("#ia-out"); if (o) { o.select(); } aviso("Selecionei o texto: use Copiar do celular."); }); } catch (x) { const o = $("#ia-out"); if (o) o.select(); } }
+  else if (a === "iacopiar") { try { navigator.clipboard.writeText(IA.prompt).then(() => aviso("Texto copiado. Cole na IA.", null, null, "ok"), () => { const o = $("#ia-out"); if (o) { o.select(); } aviso("Selecionei o texto: use Copiar do celular."); }); } catch (x) { const o = $("#ia-out"); if (o) o.select(); } }
   else if (a === "iacriar") {
     try {
       const t = lerRespostaIA(IA.resp); const nq = t.itens.filter(isQ).length, prob = problemasTreino(t).length;
       S.treinamentos.unshift(t); salvar(); IA.erro = ""; IA.resp = ""; IA.prompt = ""; const d = $("#dlg"); if (d.open) d.close();
-      ir("#/editar/" + t.id); aviso(`"${t.titulo}" criado com ${nq} pergunta${nq === 1 ? "" : "s"}${prob ? ". Há " + prob + " para revisar." : ". Confira cada uma."}`);
+      ir("#/editar/" + t.id); aviso(`"${t.titulo}" criado com ${nq} pergunta${nq === 1 ? "" : "s"}${prob ? ". Há " + prob + " para revisar." : ". Confira cada uma."}`, null, null, "ok");
     } catch (x) { IA.erro = IA.resp.trim() ? "Não consegui ler essa resposta. Confira se você copiou o JSON inteiro, do primeiro { ao último }, ou peça à IA para responder só com o JSON." : "Cole primeiro a resposta da IA."; const m = $("#ia-erro"); if (m) m.textContent = IA.erro; }
   }
 });
@@ -239,7 +239,7 @@ document.addEventListener("click", e => {
   const el = e.target.closest("[data-act='couvir']"); if (!el) return;
   if (OUV.falando) { ouvirParar(); el.setAttribute("aria-pressed", "false"); return; }
   const it = typeof itemCel === "function" ? itemCel() : null;
-  if (ouvirTexto(el.dataset.modo === "r" ? textoResultado(it) : textoPergunta(it))) el.setAttribute("aria-pressed", "true"); else aviso("Este celular não consegue ler em voz alta.");
+  if (ouvirTexto(el.dataset.modo === "r" ? textoResultado(it) : textoPergunta(it))) el.setAttribute("aria-pressed", "true"); else aviso("Este celular não consegue ler em voz alta.", null, null, "erro");
 });
 
 /* ---------- voz gravada pelo instrutor (toca no telão) ---------- */
@@ -259,8 +259,8 @@ function vozHtml(it) {
 function vozRepinta() { const b = $("#vz-box"), t = treino(UI.ed && UI.ed.id), it = t && t.itens[UI.ed.sel]; if (b && it) b.outerHTML = vozHtml(it); }
 async function vozGravar() {
   const t = treino(UI.ed && UI.ed.id), it = t && t.itens[UI.ed.sel]; if (!it || VOZ.rec) return;
-  if (!podeGravar()) { aviso("Este navegador não grava voz."); return; }
-  try { VOZ.stream = await navigator.mediaDevices.getUserMedia({audio: true}); } catch (e) { aviso("Sem permissão para usar o microfone."); return; }
+  if (!podeGravar()) { aviso("Este navegador não grava voz.", null, null, "erro"); return; }
+  try { VOZ.stream = await navigator.mediaDevices.getUserMedia({audio: true}); } catch (e) { aviso("Sem permissão para usar o microfone.", null, null, "erro"); return; }
   try {
     const rec = new MediaRecorder(VOZ.stream); VOZ.chunks = []; VOZ.it = it; VOZ.rec = rec; VOZ.t0 = Date.now();
     rec.ondataavailable = ev => { if (ev.data && ev.data.size) VOZ.chunks.push(ev.data); };
@@ -268,19 +268,19 @@ async function vozGravar() {
     rec.start(); VOZ.tm = setTimeout(vozParar, VOZ_MAX * 1000);
     VOZ.tick = setInterval(() => { const el = $("#vz-t"); if (el) { const s = Math.floor((Date.now() - VOZ.t0) / 1000); el.textContent = "Gravando " + Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); } }, 250);
     vozRepinta();
-  } catch (e) { vozLimpa(); aviso("Não consegui gravar neste aparelho."); }
+  } catch (e) { vozLimpa(); aviso("Não consegui gravar neste aparelho.", null, null, "erro"); }
 }
 function vozParar() { clearTimeout(VOZ.tm); clearInterval(VOZ.tick); try { if (VOZ.rec && VOZ.rec.state !== "inactive") VOZ.rec.stop(); } catch (e) { vozLimpa(); } }
 function vozLimpa() { clearTimeout(VOZ.tm); clearInterval(VOZ.tick); try { if (VOZ.stream) VOZ.stream.getTracks().forEach(x => x.stop()); } catch (e) {} VOZ.rec = null; VOZ.stream = null; }
 function vozFim(t) {
   const it = VOZ.it, tipo = (VOZ.rec && VOZ.rec.mimeType) || "audio/webm", chunks = VOZ.chunks; vozLimpa(); VOZ.it = null;
-  const blob = new Blob(chunks, {type: tipo}); if (!blob.size) { vozRepinta(); aviso("Não gravou nada. Tente de novo."); return; }
+  const blob = new Blob(chunks, {type: tipo}); if (!blob.size) { vozRepinta(); aviso("Não gravou nada. Tente de novo.", null, null, "erro"); return; }
   const fr = new FileReader();
   fr.onload = () => {
     const url = String(fr.result);
-    if (!audioOk(url) || blob.size > VOZ_BYTES) { vozRepinta(); aviso("A gravação ficou grande demais. Fale por menos tempo."); return; }
-    if (!t.itens.includes(it)) { aviso("A pergunta mudou antes de terminar. Grave de novo."); return; }
-    editou(t); it.audio = url; if (UI.ed && rota().v === "editar") { vozRepinta(); pintaPrev(); } aviso("Voz guardada");
+    if (!audioOk(url) || blob.size > VOZ_BYTES) { vozRepinta(); aviso("A gravação ficou grande demais. Fale por menos tempo.", null, null, "erro"); return; }
+    if (!t.itens.includes(it)) { aviso("A pergunta mudou antes de terminar. Grave de novo.", null, null, "erro"); return; }
+    editou(t); it.audio = url; if (UI.ed && rota().v === "editar") { vozRepinta(); pintaPrev(); } aviso("Voz guardada", null, null, "ok");
   };
   fr.readAsDataURL(blob);
 }
@@ -288,7 +288,7 @@ document.addEventListener("click", e => {
   const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act;
   if (a === "vozgravar") vozGravar();
   else if (a === "vozparar") vozParar();
-  else if (a === "vozdel") { const t = treino(UI.ed && UI.ed.id), it = t && t.itens[UI.ed.sel]; if (!it) return; const antes = it.audio; editou(t); delete it.audio; vozRepinta(); pintaPrev(); aviso("Voz removida", "Desfazer", () => { it.audio = antes; salvar(); if (rota().v === "editar") { vozRepinta(); pintaPrev(); } }); }
+  else if (a === "vozdel") { const t = treino(UI.ed && UI.ed.id), it = t && t.itens[UI.ed.sel]; if (!it) return; const antes = it.audio; editou(t); delete it.audio; vozRepinta(); pintaPrev(); aviso("Voz removida", "Desfazer", () => { it.audio = antes; salvar(); if (rota().v === "editar") { vozRepinta(); pintaPrev(); } }, "ok"); }
   else if (a === "tvoz") { const s = AO.snap && AO.snap.item; if (s && s.voz) tocarVoz(s.voz); }
 });
 let audioTel = null, vozTocada = "";

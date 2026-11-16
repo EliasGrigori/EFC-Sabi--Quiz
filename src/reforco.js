@@ -52,11 +52,10 @@ function momAplicar(a, t) {
     return `<div class="reap"><span class="sm">${a.dias ? "Reavaliação de " + a.dias + " dias. " : ""}${txt}</span><button class="b sm g" data-act="rmmom">Aplicação normal</button></div>`;
   }
   const pres = prePossiveis(t.id);
-  const bt = (v, n, dis) => `<button type="button" data-act="mom" data-v="${v}" aria-pressed="${(a.mom || "") === v}" ${dis ? "disabled" : ""}>${n}</button>`;
   const ajuda = a.mom === "pre" ? "Mede o que a turma já sabe. Não mostra a resposta certa nem o ranking e não entra no reforço."
     : a.mom === "pos" ? "Aplica depois do conteúdo e mostra o ganho de aprendizado de cada pessoa."
     : pres.length ? "Normal, ou pós-teste de um pré-teste já feito." : "Para medir o ganho, aplique antes um pré-teste.";
-  return `<div class="fd mom"><span class="lbl" id="mom-l">Momento da aplicação</span><div class="seg" role="group" aria-labelledby="mom-l">${bt("", "Normal")}${bt("pre", "Pré-teste")}${bt("pos", "Pós-teste", !pres.length)}</div>
+  return `<div class="fd mom"><span class="lbl" id="mom-l">Momento da aplicação</span>${escolha({id: "apl-mom", rotulo: "Momento da aplicação", act: "mom", valor: a.mom || "", ops: [{v: "", nome: "Normal"}, {v: "pre", nome: "Pré-teste", desc: "Mede o que a turma já sabe, antes do conteúdo"}, {v: "pos", nome: "Pós-teste", desc: pres.length ? "Depois do conteúdo: mostra o ganho de cada pessoa" : "Precisa de um pré-teste feito antes", dis: !pres.length}]})}
     <span class="sm mut">${ajuda}</span>
     ${a.mom === "pos" ? `<label class="sr" for="mom-pre">Pré-teste para comparar</label><select class="in" id="mom-pre" data-preid="1">${pres.map(x => `<option value="${x.id}" ${a.base && a.base.sid === x.id ? "selected" : ""}>Pré-teste de ${dtd(x.fim)} · ${x.resultado.pessoas} pessoa${x.resultado.pessoas === 1 ? "" : "s"}${tipoSessao(x) !== "real" ? " (" + (tipoSessao(x) === "teste" ? "teste" : "ensaio") + ")" : ""}</option>`).join("")}</select>` : ""}</div>`;
 }
@@ -125,7 +124,7 @@ function aplicarPend(tipo, treinoId, d) {
   let itens = pendencias()[tipo].filter(r => r.treinoId === treinoId && (tipo !== "reav" || r.d === d));
   if (tipo === "ref") {
     const livres = itens.filter(r => !r.bloqueada);
-    if (!livres.length && itens.length) { aviso(`A 3ª tentativa só pode ser a partir de ${fmtDia(Math.min(...itens.map(r => r.libera)))}`); return; }
+    if (!livres.length && itens.length) { aviso(`A 3ª tentativa só pode ser a partir de ${fmtDia(Math.min(...itens.map(r => r.libera)))}`, null, null, "erro"); return; }
     itens = livres;
   }
   if (!itens.length) { aviso("Nada pendente aqui"); return; }
@@ -140,7 +139,7 @@ function darBaixa(tipo, k, d) {
   const P = pendencias(), r = P[tipo].find(x => x.k === k && (tipo !== "reav" || x.d === d)); if (!r) return;
   const b = {k, tipo: tipo === "reav" ? "reav" + r.d : tipo, em: new Date().toISOString(), nome: r.nome};
   (S.baixas = S.baixas || []).push(b); salvar(); render();
-  aviso(`Baixa registrada para ${r.nome.split(" ")[0]}`, "Desfazer", () => { S.baixas = S.baixas.filter(x => x !== b); salvar(); render(); });
+  aviso(`Baixa registrada para ${r.nome.split(" ")[0]}`, "Desfazer", () => { S.baixas = S.baixas.filter(x => x !== b); salvar(); render(); }, "ok");
 }
 
 /* ---------- reforço no celular, visto da sala ---------- */
@@ -196,7 +195,7 @@ function relCmp(s) {
 }
 function relRefaz(s) {
   const r = resumoRefaz(s); if (!r) return "";
-  return `<section class="k"><h3 class="rh">Treino feito no celular</h3><p class="sm" style="margin:0 0 8px"><b>${plural(r.pessoas, "pessoa treinou", "pessoas treinaram")}</b> perguntas que tinham errado e <b>recuperou${r.rec === 1 ? "" : "ram"} ${r.rec} de ${r.fez}</b>. É só treino: não altera nota, ranking, código de conferência nem a fila de reforço.</p>
+  return `<section class="k"><h3 class="rh">Treino feito no celular</h3><p class="sm" style="margin:0 0 8px"><b>${plural(r.pessoas, "pessoa treinou", "pessoas treinaram")}</b> perguntas que tinham errado e <b>recuperou${r.rec === 1 ? "" : "ram"} ${r.rec} de ${r.fez}</b>. É só treino: não altera nota, ranking, código de autenticação nem a fila de reforço.</p>
     <div class="rtw"><table class="rtb"><thead><tr><th>Nome</th><th class="n">Erros</th><th class="n">Treinou</th><th class="n">Recuperou</th><th class="n hide-m">Tentativas</th></tr></thead><tbody>${r.lin.map(x => `<tr><td><b>${esc(x.nome)}</b></td><td class="n num">${x.erros}</td><td class="n num">${x.fez}</td><td class="n num">${x.rec}</td><td class="n num hide-m">${x.tent}</td></tr>`).join("")}</tbody></table></div></section>`;
 }
 
@@ -209,23 +208,23 @@ function linhaPend(tipo, r) {
   }
   else if (tipo === "reav") { det = `Sessão de ${dtd(r.fim)} com ${r.pct}%`; ch = r.falta < 0 ? `<span class="chip warn">atrasada ${plural(-r.falta, "dia", "dias")}</span>` : r.falta === 0 ? `<span class="chip warn">vence hoje</span>` : `<span class="chip">em ${plural(r.falta, "dia", "dias")}</span>`; }
   else { det = `Última vez em ${dtd(r.fim)} com ${r.pct}%`; ch = r.falta < 0 ? `<span class="chip warn">venceu há ${plural(-r.falta, "dia", "dias")}</span>` : r.falta === 0 ? `<span class="chip warn">vence hoje</span>` : `<span class="chip">vence em ${plural(r.falta, "dia", "dias")}</span>`; }
-  return `<div class="pnd-p">${av(r.nome, hash(r.nome) % CORES_AV.length)}<div class="pnd-n"><b>${esc(r.nome)}</b><span class="sm mut">${r.setor ? esc(r.setor) + " · " : ""}${det}</span></div>${ch}<button class="b sm g" data-act="baixa" data-tipo="${tipo === "esgot" ? "ref" : tipo}" data-k="${esc(r.k)}" data-d="${r.d || ""}" aria-label="Dar baixa em ${esc(r.nome)}">Dar baixa</button></div>`;
+  return `<div class="pnd-p">${av(r.nome, hash(r.nome) % CORES_AV.length)}<div class="pnd-n"><b>${esc(r.nome)}</b><span class="sm mut">${r.setor ? esc(r.setor) + " · " : ""}${det}</span></div>${ch}${podeGerir() ? `<button class="b sm g" data-act="baixa" data-tipo="${tipo === "esgot" ? "ref" : tipo}" data-k="${esc(r.k)}" data-d="${r.d || ""}" aria-label="Dar baixa em ${esc(r.nome)}">Dar baixa</button>` : ""}</div>`;
 }
 function corpoPend(tipo, P) {
   const exp = {ref: "Quem ficou abaixo da meta. A nota oficial é a da 1ª tentativa. A 2ª pode ser no mesmo dia e a 3ª só em outro dia. Depois da 3ª a pessoa sai da fila.",
     reav: "Quem deve refazer a avaliação nos prazos escolhidos no editor (30, 60 ou 90 dias). Aparecem as que vencem em até 14 dias e as atrasadas.",
     val: "Treinamentos com validade escolhida no editor. Aparecem os que vencem em até 30 dias e os vencidos."}[tipo];
   const gs = gruposPend(tipo, P), esg = tipo === "ref" ? P.esgot : [];
-  const bloco = esg.length ? `<details class="k pnd-esg"><summary><b>${plural(esg.length, "pessoa usou", "pessoas usaram")} as 3 tentativas e continua abaixo da meta</b><span class="sm mut">Decida fora do Sabiá, por exemplo um treinamento presencial. Dar baixa registra que isso foi resolvido.</span></summary><div class="pnd-l">${esg.map(r => linhaPend("esgot", r)).join("")}</div></details>` : "";
+  const bloco = esg.length ? `<details class="k pnd-esg"><summary><b>${plural(esg.length, "pessoa usou", "pessoas usaram")} as 3 tentativas e continua abaixo da meta</b><span class="sm mut">Decida fora do Sabiá, por exemplo um treinamento presencial.${podeGerir() ? " Dar baixa registra que isso foi resolvido." : ""}</span></summary><div class="pnd-l">${esg.map(r => linhaPend("esgot", r)).join("")}</div></details>` : "";
   if (!gs.length) {
-    const cfg = tipo === "ref" ? "" : S.treinamentos.some(t => tipo === "reav" ? (t.reav || []).length : t.per > 0) ? "" : `<br>Nenhum treinamento tem ${tipo === "reav" ? "reavaliação" : "validade"} configurada. Abra um treinamento no editor para escolher.`;
+    const cfg = tipo === "ref" ? "" : S.treinamentos.some(t => tipo === "reav" ? (t.reav || []).length : t.per > 0) ? "" : `<br>Nenhum treinamento tem ${tipo === "reav" ? "reavaliação" : "validade"} configurada. ${podeGerir() ? "Abra um treinamento no editor para escolher." : "Quem configura são os perfis Primário e Líder estrela."}`;
     return `<p class="sm mut pnd-ex">${exp}</p><section class="k vazio">${ic("check", 'style="width:32px;height:32px;color:var(--ok)"')}<b>${tipo === "ref" ? "Ninguém em reforço" : tipo === "reav" ? "Nenhuma reavaliação para os próximos dias" : "Nenhuma validade perto de vencer"}</b><span class="sm">${tipo === "ref" ? "Só entram aqui as sessões oficiais encerradas com gente abaixo da meta." : "Só contam sessões oficiais encerradas."}${cfg}</span></section>${bloco}`;
   }
   return `<p class="sm mut pnd-ex">${exp}</p>` + gs.map(g => {
     const n2 = g.itens.filter(r => r.rodada === 2).length, n3 = g.itens.filter(r => r.rodada === 3 && !r.bloqueada).length, bl = g.itens.filter(r => r.bloqueada), livres = g.itens.length - bl.length;
     const sub = tipo === "reav" ? `Reavaliação de ${g.d} dias · ${plural(g.itens.length, "pessoa", "pessoas")}` : tipo === "ref" ? [n2 && `${n2} na 2ª tentativa`, n3 && `${n3} na 3ª`, bl.length && `${bl.length} espera o dia da 3ª (a partir de ${fmtDia(Math.min(...bl.map(r => r.libera)))})`].filter(Boolean).join(" · ") : plural(g.itens.length, "pessoa", "pessoas");
     return `<section class="k pnd-g"><div class="pnd-h"><div><b>${esc(g.t.titulo)}</b><span class="sm mut">${sub}</span></div>
-      <button class="b p" data-act="aplicarpend" data-tipo="${tipo}" data-id="${g.treinoId}" data-d="${g.d || ""}" ${tipo === "ref" && !livres ? "disabled" : ""}>${ic("play", 'style="width:16px;height:16px"')}${tipo === "ref" ? "Aplicar reforço" : tipo === "reav" ? "Aplicar reavaliação" : "Aplicar renovação"}</button></div>
+      ${podeGerir() ? `<button class="b p" data-act="aplicarpend" data-tipo="${tipo}" data-id="${g.treinoId}" data-d="${g.d || ""}" ${tipo === "ref" && !livres ? "disabled" : ""}>${ic("play", 'style="width:16px;height:16px"')}${tipo === "ref" ? "Aplicar reforço" : tipo === "reav" ? "Aplicar reavaliação" : "Aplicar renovação"}</button>` : ""}</div>
       <div class="pnd-l">${g.itens.map(r => linhaPend(tipo, r)).join("")}</div></section>`;
   }).join("") + bloco;
 }
@@ -235,12 +234,7 @@ function vPendencias() {
   $("#app").className = "body pnd";
   if (!PND.aba || !["ref", "reav", "val"].includes(PND.aba)) PND.aba = P.ref.length ? "ref" : P.reav.length ? "reav" : P.val.length ? "val" : "ref";
   const abas = [["ref", "Reforço", P.ref.length], ["reav", "Reavaliar", P.reav.length], ["val", "Validade", P.val.length]];
-  $("#app").innerHTML = `<div class="seg pnd-abas" role="group" aria-label="Tipo de pendência">${abas.map(([k, nm, c]) => `<button data-act="pndaba" data-v="${k}" aria-pressed="${PND.aba === k}">${nm}<i>${c}</i></button>`).join("")}</div>${corpoPend(PND.aba, P)}`;
-}
-/* usado na aba "Em reforço" de Treinos */
-function reforcoEmTreinos() {
-  const P = pendencias();
-  return `<div class="pnd pnd-in">${corpoPend("ref", P)}</div>`;
+  $("#app").innerHTML = `<div class="seg abas pnd-abas" role="group" aria-label="Tipo de pendência">${abas.map(([k, nm, c]) => `<button data-act="pndaba" data-v="${k}" aria-pressed="${PND.aba === k}">${nm}<i>${c}</i></button>`).join("")}</div>${podeGerir() ? "" : `<p class="sm mut pnd-col">${ic("eye", 'style="width:16px;height:16px"')}Só para consultar. Quem aplica e dá baixa são os perfis Primário e Líder estrela.</p>`}${corpoPend(PND.aba, P)}`;
 }
 
 /* ---------- eventos ---------- */
@@ -264,7 +258,7 @@ document.addEventListener("click", e => {
   }
   else if (a === "rmmom" && UI.apl) { UI.apl.mom = undefined; UI.apl.dias = undefined; UI.apl.base = undefined; render(); }
   else if (a === "aplicarpos") {
-    const x = S.sessoes.find(y => y.id === el.dataset.id), t = x && treino(x.treinoId); if (!t) { aviso("O treinamento desta sessão foi removido"); return; }
+    const x = S.sessoes.find(y => y.id === el.dataset.id), t = x && treino(x.treinoId); if (!t) { aviso("O treinamento desta sessão foi removido", null, null, "erro"); return; }
     UI.apl = {id: t.id, preset: "aovivo", setores: (x.setores || []).slice(), instrutor: x.instrutor || S.cfg.instrutor, local: x.local || S.cfg.local, horas: x.horas || "1", aj: Object.assign({}, AJ_PADRAO, PRESETS.aovivo.aj),
       roster: x.resultado.tabela.map(p => p.nome), mom: "pos", base: baseDePre(x.id)};
     ir("#/aplicar/" + t.id);

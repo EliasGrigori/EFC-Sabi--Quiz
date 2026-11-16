@@ -1,0 +1,744 @@
+diff -ruN /tmp/src-p3/celular.css src/celular.css
+--- /tmp/src-p3/celular.css	2026-11-16 06:22:11.944487834 -0300
++++ src/celular.css	2026-11-16 09:28:30.986145167 -0300
+@@ -22,31 +22,34 @@
+ .eu2 .av{width:40px;height:40px;font-size:15px}
+ .ok-i{width:64px;height:64px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center}
+ .ok-i.er{background:var(--bad-soft);color:var(--bad)}
+-.rodar{width:36px;height:36px;border-radius:50%;border:4px solid var(--line);border-top-color:var(--sabia);animation:gira 1s linear infinite}
+-@keyframes gira{to{transform:rotate(360deg)}}
++/* v1.6.0 parte 4: no lugar da roda que girava sem parar, três pontos que acendem uma vez (ver .cf-pt em live.css) */
++.cb .cf-pt i{width:12px;height:12px}
+ .tiles{display:grid;gap:10px}
+-.ct2{display:flex;align-items:center;gap:12px;width:100%;min-height:72px;border:3px solid transparent;border-radius:16px;color:#fff;font-size:18px;font-weight:700;text-align:left;padding:10px 14px;cursor:pointer;font-family:var(--f-body)}
++.ct2{display:flex;align-items:center;gap:12px;width:100%;min-height:72px;border:3px solid transparent;border-radius:var(--r);color:var(--altTx);font-size:19px;font-weight:700;text-align:left;padding:10px 14px;cursor:pointer;font-family:var(--f-body);transition:transform var(--duration-instant,80ms) var(--ease-out,ease-out)}
++.ct2:active:not([disabled]){transform:scale(.97)}
++/* amarelo: letra escura para ler bem (a cor da alternativa continua a mesma) */
++.ct2.k2{color:var(--altTxEsc)}.ct2.k2 .sh2{background:var(--altSomb)}
+ .ct2.sel{border-color:var(--ink);box-shadow:0 0 0 3px var(--surface) inset}
+ .ct2[disabled]{opacity:.7}
+-.sh2{width:34px;height:34px;flex:none;display:grid;place-items:center;background:rgba(255,255,255,.2);border-radius:10px}
++.sh2{width:34px;height:34px;flex:none;display:grid;place-items:center;background:rgba(255,255,255,.2);border-radius:var(--rs)}
+ .sh2 svg{width:22px;height:22px}
+ .ords{display:grid;gap:8px}
+-.ot{display:flex;align-items:center;gap:12px;min-height:60px;width:100%;border:2px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);font-size:17px;font-weight:600;text-align:left;padding:8px 12px;cursor:pointer}
++.ot{display:flex;align-items:center;gap:12px;min-height:60px;width:100%;border:2px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink);font-size:17px;font-weight:600;text-align:left;padding:8px 12px;cursor:pointer}
+ .ot b{width:32px;height:32px;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;flex:none;font-family:var(--f-mono)}
+ .ot.on{background:var(--sabia-soft);border-color:var(--sabia)}
+ .ot.on b{background:var(--sabia);border:0;color:var(--on-sabia)}
+ .bar2{display:flex;gap:10px}.bar2 .b{flex:1;min-height:52px}
+-.rs{display:grid;gap:6px;justify-items:center;text-align:center;border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:18px 14px}
++.rs{display:grid;gap:6px;justify-items:center;text-align:center;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:18px 14px}
+ .rs.ac{border-color:var(--ok)}.rs.er{border-color:var(--bad)}
+ .rs h1{font-size:24px}
+ .pts{margin:0;font-family:var(--f-disp);font-size:30px;font-weight:700;color:var(--ok)}
+ .rk2{margin:4px 0 0}
+ .cert{margin:2px 0 0;font-size:19px;text-align:center}
+ ol.cert{text-align:left;padding-left:26px}
+-.por{margin:0;background:var(--sunk);border-radius:12px;padding:10px 12px}
++.por{margin:0;background:var(--sunk);border-radius:var(--r);padding:10px 12px}
+ .sug{display:grid;gap:6px}
+ .sug:empty{display:none}
+-.sg{min-height:48px;text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:0 14px;font-size:16px;font-weight:600;color:var(--ink);cursor:pointer}
++.sg{min-height:48px;text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:var(--rs);padding:0 14px;font-size:17px;font-weight:600;color:var(--ink);cursor:pointer}
+ .sg:hover{border-color:var(--sabia)}
+ .cores{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
+ .co{aspect-ratio:1;min-height:40px;border-radius:50%;border:3px solid transparent;color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
+@@ -54,14 +57,14 @@
+ .erro{margin:0;color:var(--bad);font-weight:600;min-height:0}
+ .erro:empty{display:none}
+ .as{display:grid;gap:8px}
+-#cassin{width:100%;height:150px;border:2px dashed var(--ink3);border-radius:14px;background:#fff;touch-action:none}
++#cassin{width:100%;height:150px;border:2px dashed var(--ink3);border-radius:var(--r);background:#fff;touch-action:none}
+ .pbar{height:8px;border-radius:99px;background:var(--sunk);overflow:hidden}
+ .pbar i{display:block;height:100%;background:var(--sabia);width:0}
+ .pts.w{color:var(--warn)}
+ 
+ /* ===== v0.6.0 · progresso, rever e refazer ===== */
+ .prg{display:flex;gap:4px}
+-.prg i{flex:1;height:8px;border-radius:4px;background:var(--line);min-width:6px}
++.prg i{flex:1;height:8px;border-radius:999px;background:var(--line);min-width:6px}
+ .prg i.c{background:var(--ok)}
+ .prg i.e{background:var(--sabia);background-image:repeating-linear-gradient(135deg,rgb(255 255 255/.55) 0 3px,transparent 3px 6px)}
+ .prg i.a{background:var(--brand);opacity:.55}
+@@ -70,7 +73,7 @@
+ .rv{display:grid;gap:10px;width:100%;text-align:left}
+ .rv h2{font-size:18px}
+ .rv-b{display:grid;gap:8px;width:100%}
+-.rvq{display:grid;gap:2px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
++.rvq{display:grid;gap:2px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+ .rvq h2{font-size:17px;line-height:1.25}
+ .rvm{margin:0;color:var(--bad);font-weight:600}
+ ol.rvm{padding-left:20px;margin:0}
+@@ -80,7 +83,7 @@
+ .cmt h2{font-size:18px}
+ .cmt .ta{min-height:96px;padding:10px 12px;font-family:inherit;resize:vertical}
+ .cmt-t{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+-.cmt-t button{min-height:48px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font-weight:600;font-size:15px;cursor:pointer}
++.cmt-t button{min-height:48px;border:1.5px solid var(--line);border-radius:var(--rs);background:var(--surface);color:var(--ink);font-weight:600;font-size:15px;cursor:pointer}
+ .cmt-t button[aria-pressed="true"]{border-color:var(--sabia);background:var(--sabia-soft)}
+-.cmt-e{display:grid;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;justify-items:start}
+-.cmt-r{margin:0;background:var(--sunk);border-radius:10px;padding:8px 10px;width:100%}
++.cmt-e{display:grid;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;justify-items:start}
++.cmt-r{margin:0;background:var(--sunk);border-radius:var(--rs);padding:8px 10px;width:100%}
+diff -ruN /tmp/src-p3/celular.js src/celular.js
+--- /tmp/src-p3/celular.js	2026-11-16 06:22:11.944441808 -0300
++++ src/celular.js	2026-11-16 09:28:30.984736153 -0300
+@@ -96,7 +96,7 @@
+   const {tela, html} = montaCel();
+   if (html === CE.html && tela === CE.tela) return;
+   if (tela !== CE.tela) ouvirParar();
+-  CE.tela = tela; CE.html = html; $("#app").innerHTML = html; pintaTelaCel();
++  const telaAntes = CE.tela; CE.tela = tela; CE.html = html; $("#app").innerHTML = html; pintaTelaCel(); if (typeof celMov === "function") celMov(telaAntes, tela);
+ }
+ function pintaTelaCel() { tickTempo(); const c = $("#cassin"); if (c) prepararAssinatura(c); }
+ function montaCel() {
+@@ -105,7 +105,7 @@
+   if (!CE.chave) return {tela: "chave", html: `<div class="cc">${cabCel()}<form class="cb" data-form="celchave"><h1>Entrar na sala</h1><p class="mut" style="margin:0">Digite a chave de 6 números que está no telão.</p>
+     <div class="fd"><label for="ce-k">Chave da sala</label><input class="in big" id="ce-k" inputmode="numeric" pattern="[0-9 ]*" maxlength="7" autocomplete="off" placeholder="000 000"></div><button class="b p g2" type="submit">Entrar</button></form></div>`};
+   if (CE.erro === "semdb") return {tela: "erro", html: `<div class="cc">${cabCel()}<div class="cb"><h1>Use o QR ou o link</h1><p class="mut" style="margin:0">Este aparelho ainda não sabe onde fica a sala. Aponte a câmera para o QR do telão ou abra o link que o instrutor enviou. Nas próximas vezes basta digitar a chave.</p><a class="b" href="#/entrar">Digitar outra chave</a></div></div>`};
+-  if (!CE.visto) return {tela: "conectando", html: `<div class="cc">${cabCel()}<div class="cb ct"><div class="rodar"></div><h1>${CE.st === "erro" ? "Não consegui conectar" : "Conectando à sala..."}</h1><p class="mut" style="margin:0">${CE.st === "erro" ? "Confira a internet e tente de novo." : "Aguarde um instante."}</p>${CE.st === "erro" ? `<button class="b" data-act="cretry">Tentar de novo</button>` : ""}</div></div>`};
++  if (!CE.visto) return {tela: "conectando", html: `<div class="cc">${cabCel()}<div class="cb ct">${CE.st === "erro" ? "" : `<span class="cf-pt" aria-hidden="true"><i></i><i></i><i></i></span>`}<h1>${CE.st === "erro" ? "Não consegui conectar" : "Conectando à sala..."}</h1><p class="mut" style="margin:0">${CE.st === "erro" ? "Confira a internet e tente de novo." : "Aguarde um instante."}</p>${CE.st === "erro" ? `<button class="b" data-act="cretry">Tentar de novo</button>` : ""}</div></div>`};
+   if (CE.vista && (CE.entrou || CE.jaEntrou) && errosCel().length) return CE.vista === "rever" ? telaRever() : telaRefazer();
+   if (!CE.pub) return CE.jaEntrou
+     ? {tela: "fim", html: `<div class="cc">${cabCel()}<div class="cb ct"><h1>A sala foi encerrada</h1><p class="mut" style="margin:0">Obrigado por participar.</p>${blocoRevisao()}<a class="b" href="#/entrar">Entrar em outra sala</a></div></div>`}
+@@ -136,14 +136,14 @@
+       corpo = `<div class="ords">${ord.map(k => `<button class="ot ${pos(k) >= 0 ? "on" : ""}" data-act="cord" data-k="${k}" ${pos(k) >= 0 ? "disabled" : ""}><b>${pos(k) >= 0 ? pos(k) + 1 : ""}</b><span>${esc(it.alts[k])}</span></button>`).join("")}</div>
+         <div class="bar2"><button class="b" data-act="cordz" ${CE.ord.length ? "" : "disabled"}>Desfazer</button><button class="b p" data-act="cordok" ${CE.ord.length === ord.length && !CE.enviando ? "" : "disabled"}>${CE.enviando ? "Enviando..." : "Enviar ordem"}</button></div><p class="mut sm" style="margin:0">Toque nos passos na ordem certa.</p>`;
+     } else {
+-      corpo = `<div class="tiles">${it.alts.map((a, k) => `<button class="ct2 ${CE.sel === k ? "sel" : ""}" style="background:${COR_ALT[k % 4]}" data-act="cresp" data-k="${k}" ${CE.enviando ? "disabled" : ""}><span class="sh2"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span><span>${esc(a)}</span></button>`).join("")}</div>
++      corpo = `<div class="tiles">${it.alts.map((a, k) => `<button class="ct2 k${k % 4} ${CE.sel === k ? "sel" : ""}" style="background:${COR_ALT[k % 4]}" data-act="cresp" data-k="${k}" ${CE.enviando ? "disabled" : ""}><span class="sh2"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span><span>${esc(a)}</span></button>`).join("")}</div>
+         ${m.confirmar ? `<button class="b p g2" data-act="cconf" ${CE.sel === null || CE.enviando ? "disabled" : ""}>${CE.enviando ? "Enviando..." : "Confirmar resposta"}</button>` : ""}`;
+     }
+     return {tela: "pergunta", html: `<div class="cc">${cabCel()}<div class="cb">${faixa(rot, tempo)}<h1 class="q">${esc(it.enunciado)}</h1>${btnOuvir("p")}${corpo}</div></div>`};
+   }
+   if (t === "resultado" && it && f.conf) {
+     const mine = CE.resp[f.idx];
+-    return {tela: "conferindo", html: `<div class="cc">${cabCel()}<div class="cb ct">${faixa(it.ensaio ? "Pergunta de teste" : `Pergunta ${f.numPerg} de ${f.totalPerg}`)}<div class="rodar"></div><h1>Conferindo respostas...</h1><p class="mut" style="margin:0">${mine === undefined ? "O resultado aparece em instantes." : "Sua resposta foi enviada. O resultado aparece em instantes."}</p></div></div>`};
++    return {tela: "conferindo", html: `<div class="cc">${cabCel()}<div class="cb ct">${faixa(it.ensaio ? "Pergunta de teste" : `Pergunta ${f.numPerg} de ${f.totalPerg}`)}<span class="cf-pt" aria-hidden="true"><i></i><i></i><i></i></span><h1>Conferindo respostas...</h1><p class="mut" style="margin:0">${mine === undefined ? "O resultado aparece em instantes." : "Sua resposta foi enviada. O resultado aparece em instantes."}</p></div></div>`};
+   }
+   if (t === "resultado" && it) {
+     const r = CE.res && CE.res.i === f.idx ? CE.res : null, rank = m.ranking && r && r.pos ? `<p class="rk2">Você está em <b>${r.pos}º</b> de ${r.np}${it.ensaio ? "" : " · " + r.tot + " pontos"}</p>` : "";
+@@ -214,7 +214,7 @@
+     const ord = atual.o || atual.a.map((_, k) => k), pos = k => rf.ord.indexOf(k);
+     corpo = `<div class="ords">${ord.map(k => `<button class="ot ${pos(k) >= 0 ? "on" : ""}" data-act="crord" data-k="${k}" ${pos(k) >= 0 ? "disabled" : ""}><b>${pos(k) >= 0 ? pos(k) + 1 : ""}</b><span>${esc(atual.a[k])}</span></button>`).join("")}</div>
+       <div class="bar2"><button class="b" data-act="crordz" ${rf.ord.length ? "" : "disabled"}>Desfazer</button><button class="b p" data-act="crordok" ${rf.ord.length === ord.length ? "" : "disabled"}>Conferir ordem</button></div><p class="mut sm" style="margin:0">Toque nos passos na ordem certa.</p>`;
+-  } else corpo = `<div class="tiles">${atual.a.map((a, k) => `<button class="ct2" style="background:${COR_ALT[k % 4]}" data-act="crtoca" data-k="${k}"><span class="sh2"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span><span>${esc(a)}</span></button>`).join("")}</div>`;
++  } else corpo = `<div class="tiles">${atual.a.map((a, k) => `<button class="ct2 k${k % 4}" style="background:${COR_ALT[k % 4]}" data-act="crtoca" data-k="${k}"><span class="sh2"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span><span>${esc(a)}</span></button>`).join("")}</div>`;
+   return {tela: "refazer", html: `<div class="cc">${cabCel()}<div class="cb">${cab}<p class="mut sm" style="margin:0"><b>Tentativa ${tent} de 3</b> · não vale nota</p><h1 class="q">${esc(atual.e)}</h1>${corpo}<button class="b g" data-act="cvolta">Sair do treino</button></div></div>`};
+ }
+ function refazerResp(r) {
+diff -ruN /tmp/src-p3/efc-tokens.css src/efc-tokens.css
+--- /tmp/src-p3/efc-tokens.css	2026-11-16 06:22:11.944580540 -0300
++++ src/efc-tokens.css	2026-11-16 09:28:30.987931755 -0300
+@@ -28,3 +28,5 @@
+ /* Sabiá v1.6.0 parte 3: cores do aviso (fundo invertido) e o degradê do título no escuro, para não ficarem escritas direto */
+ :root{--okInv:#7fbf98;--crInv:#e38b7d;--ouroTit:linear-gradient(90deg,#f7e2a8,#d9b46a 60%,#c29640)}
+ :root[data-tema="escuro"]{--okInv:#2f7d4f;--crInv:#b33a32}
++/* Sabiá v1.6.0 parte 4: letra sobre as 4 cores das alternativas (escura só no amarelo) e a barra do telão, que é sempre escura */
++:root{--altTx:#fff;--altTxEsc:#1c1406;--altSomb:rgba(28,20,6,.14);--tvBg:rgb(11 13 22/.85);--tvTx:#f3eee3;--tvOn:#d9b46a}
+diff -ruN /tmp/src-p3/fluidez.css src/fluidez.css
+--- /tmp/src-p3/fluidez.css	2026-11-16 06:22:11.944758109 -0300
++++ src/fluidez.css	2026-11-16 06:29:45.017566657 -0300
+@@ -30,3 +30,5 @@
+   #toast.fz-treme,.fz-spk i,.fz-li{animation:none!important}
+   #dlg:has(.dl.pn)::after,.rail::after{transition:none}
+ }
++/* v1.6.0 parte 4 · Fatia E: com "movimento reduzido", os três pontos já aparecem acesos */
++@media (prefers-reduced-motion:reduce){.cf-pt i{opacity:1!important}}
+diff -ruN /tmp/src-p3/fluidez.js src/fluidez.js
+--- /tmp/src-p3/fluidez.js	2026-11-16 06:22:11.944741387 -0300
++++ src/fluidez.js	2026-11-16 09:29:03.589884674 -0300
+@@ -100,3 +100,97 @@
+ }).observe(document.getElementById("dlg"), {childList: true});
+ document.addEventListener("click", e => { if (e.target.closest('[data-act="pntab"]')) setTimeout(() => { fzSequencia($("#pn-corpo")); fzFimLista($("#dlg")); }, 0); });
+ document.addEventListener("click", e => { if (e.target.closest('[data-act="menuabre"]')) setTimeout(() => fzFimLista($("#rail")), 30); });
++
++/* ===== v1.6.0 parte 4 · Fatia E: movimento do telão e do celular do participante =====
++   O telão e o celular são redesenhados a cada novidade (alguém entra, alguém responde, uma resposta atrasada chega).
++   A entrada só acontece quando a etapa muda. Se a tela for redesenhada no meio da entrada, as animações recomeçam do ponto
++   em que estavam (atraso negativo, FZ_OFF), então nada pula nem apaga de novo. Sem animação, tudo aparece no estado final. */
++const TEL = {chave: null, ant0: null, t0: 0};
++const CELM = {tela: null, t0: 0};
++const FZ_JANELA = 2400;   /* depois disso, a entrada já terminou: redesenho não refaz nada */
++let FZ_OFF = 0;
++const fzEase = "cubic-bezier(.22,1,.36,1)";
++const fzA = (el, kf, o) => el && el.animate ? el.animate(kf, Object.assign({easing: fzEase, fill: "backwards"}, o, {delay: (o.delay || 0) - FZ_OFF})) : null;
++function fzEntra(els, o = {}) {
++  const d = o.d || fzMs("--duration-medium", 350), passo = o.passo == null ? fzMs("--duration-stagger", 40) : o.passo, max = o.max == null ? 6 : o.max, y = o.y == null ? 14 : o.y, base = o.atraso || 0;
++  [...els].filter(Boolean).forEach((e, i) => fzA(e, [{opacity: 0, transform: `translateY(${y}px)${o.esc ? " scale(" + o.esc + ")" : ""}`}, {opacity: 1, transform: "none"}], {duration: d, delay: base + Math.min(i, max) * passo}));
++}
++/* três pontos que acendem uma vez, um depois do outro (Conferindo, Conectando); acesos é o estado normal */
++function fzPontos(raiz) { raiz.querySelectorAll(".cf-pt i").forEach((i, n) => fzA(i, [{opacity: .25}, {opacity: 1}], {duration: fzMs("--duration-fast", 250), delay: n * fzMs("--duration-medium", 350)})); }
++function telChave(sn) { if (!sn) return "nada"; const f = sn.fase || {}; return [sn.id, f.etapa, f.idx, f.conf ? "c" : (f.etapa === "resultado" ? "r" : "")].join("|"); }
++function telAntes(w) { return {nomes: new Set([...w.querySelectorAll(".cw")].map(e => e.dataset.n || e.textContent))}; }
++function telMov(w, sn, antes) {
++  const k = telChave(sn), agora = performance.now(), novo = k !== TEL.chave;
++  if (novo) { TEL.ant0 = TEL.chave; TEL.chave = k; TEL.t0 = agora; }
++  const t = w.querySelector(".tel"); if (!t || !fzMov()) return;
++  const desde = agora - TEL.t0;
++  if (!novo) {   /* mesma etapa: quem acabou de entrar na sala aparece suave */
++    if (antes) w.querySelectorAll(".cw").forEach(e => { if (!antes.nomes.has(e.dataset.n || e.textContent)) fzA(e, [{opacity: 0, transform: "scale(.9)"}, {opacity: 1, transform: "none"}], {duration: fzMs("--duration-fast", 250)}); });
++    if (desde > FZ_JANELA) return;
++  }
++  FZ_OFF = novo ? 0 : desde;
++  try { telEntrada(t, sn, TEL.ant0, antes && !novo ? antes.nomes : null); } finally { FZ_OFF = 0; }
++}
++function telEntrada(t, sn, ant, jaTinha) {
++  const f = sn && sn.fase || {}, et = f.etapa, pa = (ant || "").split("|"), mesmoItem = !!sn && pa[0] === sn.id && +pa[2] === f.idx && ["pergunta", "resultado"].includes(pa[1]) && ["pergunta", "resultado"].includes(et);
++  if (!mesmoItem) fzEntra(t.querySelectorAll(".tt > b, .tt > span:not(.pillk), .tt .tprog"), {d: fzMs("--duration-quick", 150), y: 0, passo: 0});
++  if (!sn) { fzEntra(t.querySelectorAll(".vaz > div")); return; }
++  if (et === "espera") fzEntra([t.querySelector(".join"), t.querySelector(".rh"), ...[...t.querySelectorAll(".cw")].filter(e => !jaTinha || jaTinha.has(e.dataset.n || e.textContent)), ...t.querySelectorAll(".facts > div")], {max: 12});
++  else if (et === "explicacao") fzEntra(t.querySelectorAll(".expl > *"));
++  else if (et === "pergunta" || et === "resultado") {
++    if (!mesmoItem) {
++      fzEntra([t.querySelector(".tq")]);
++      fzEntra(t.querySelectorAll(".tile, .ordl > div"), {d: fzMs("--duration-fast", 250), y: 0, esc: .96, atraso: 80});
++      fzEntra(t.querySelectorAll(".answ > *"), {d: fzMs("--duration-fast", 250), y: 0, passo: 0, atraso: 150});
++    }
++    if (f.conf) fzPontos(t);
++    else if (et === "resultado") {   /* revelar: véu nas erradas, contorno na certa; a letra das erradas some e volta já na cor nova (não troca seca) */
++      const d = fzMs("--duration-medium", 350);
++      t.querySelectorAll(".tile.off").forEach(e => { try { e.animate([{opacity: 0}, {opacity: .72}], {duration: d, easing: fzEase, pseudoElement: "::before", fill: "backwards", delay: -FZ_OFF}); } catch (x) {} fzEntra(e.children, {d: fzMs("--duration-fast", 250), y: 0, passo: 0, atraso: 100}); });
++      t.querySelectorAll(".tile.cor").forEach(e => { try { e.animate([{opacity: 0, transform: "scale(1.04)"}, {opacity: 1, transform: "none"}], {duration: d, easing: fzEase, pseudoElement: "::after", fill: "backwards", delay: -FZ_OFF}); } catch (x) {} });
++      fzEntra(t.querySelectorAll(".tile.cor .pc, .ordl > div"), {d: fzMs("--duration-fast", 250), y: 0, esc: .96});
++      fzEntra(t.querySelectorAll(".answ > *"), {d: fzMs("--duration-fast", 250), y: 6, passo: 0});
++    }
++  } else if (et === "podio") {
++    fzEntra(t.querySelectorAll(".podl > div:first-child, .podr"));
++    t.querySelectorAll(".pq .bar i").forEach((b, i) => fzA(b, [{transform: "scaleY(0)"}, {transform: "none"}], {duration: fzMs("--duration-very-slow", 500), delay: 150 + Math.min(i, 10) * fzMs("--duration-stagger", 40)}));
++    fzEntra(t.querySelectorAll(".pq b, .pq > div > span:last-child"), {d: fzMs("--duration-fast", 250), y: 0, passo: 0, atraso: 400});
++    /* blocos do pódio sobem: 3º, 2º e por último o 1º */
++    const ord = {p3: 300, p2: 450, p1: 600};
++    t.querySelectorAll(".stage .pl").forEach(pl => {
++      const pos = pl.classList.contains("p1") ? "p1" : pl === pl.parentElement.firstElementChild ? "p2" : "p3", at = ord[pos];
++      fzA(pl.querySelector(".blk"), [{transform: "scaleY(0)"}, {transform: "none"}], {duration: fzMs("--duration-very-slow", 500), delay: at});
++      fzA(pl.querySelector(".avb, .av"), [{opacity: 0, transform: "translateY(20px)"}, {opacity: 1, transform: "none"}], {duration: fzMs("--duration-medium", 350), delay: at + 300});
++    });
++    fzFesta(t, t.querySelector(".stage .p1 .blk") || t.querySelector(".podl h2"), 1000);
++  }
++}
++/* festa do pódio: os papéis coloridos saem uma vez de cima do 1º lugar e somem (500 ms cada), nada que cai sem parar.
++   O bloco ainda está achatado quando a festa é marcada: o topo é calculado pela base e pela altura de verdade dele. */
++function fzFesta(t, alvo, atraso) {
++  const c = t.querySelector(".conf"); if (!c || !alvo) return;
++  const rt = t.getBoundingClientRect(), k = rt.width / 1280 || 1, ra = alvo.getBoundingClientRect();
++  const x0 = (ra.left + ra.width / 2 - rt.left) / k, y0 = (ra.bottom - rt.top) / k - alvo.offsetHeight;
++  [...c.children].forEach((p, n) => {
++    const ang = (-90 + ((n * 47) % 140) - 70) * Math.PI / 180, dist = 120 + (n * 53) % 150, dx = Math.cos(ang) * dist, dy = Math.sin(ang) * dist + 40, rot = ((n * 97) % 360) - 180;
++    p.style.left = x0 + "px"; p.style.top = y0 + "px";
++    fzA(p, [{opacity: 1, transform: "translate(-50%,0) rotate(0deg)"}, {opacity: 0, transform: `translate(calc(-50% + ${dx}px),${dy}px) rotate(${rot}deg)`}], {duration: fzMs("--duration-very-slow", 500), delay: atraso + (n % 6) * fzMs("--duration-stagger", 40), easing: "cubic-bezier(.16,1,.3,1)", fill: "both"});
++  });
++}
++/* celular do participante: a tela nova entra; as alternativas em sequência; o visto e o cartão do resultado aparecem.
++   Redesenho na mesma tela (alguém entrou, chegou a contagem) continua de onde estava. */
++function celMov(antes, tela) {
++  const agora = performance.now();
++  if (tela !== CELM.tela) { CELM.tela = tela; CELM.t0 = agora; }
++  if (!fzMov()) return;
++  const desde = antes === tela ? agora - CELM.t0 : 0;
++  if (antes === tela && desde > FZ_JANELA) return;
++  const cb = $("#app .cb"); if (!cb) return;
++  FZ_OFF = desde;
++  try {
++    fzEntra(cb.children, {d: fzMs("--duration-fast", 250), y: 10});
++    fzEntra(cb.querySelectorAll(".ct2, .ot"), {d: fzMs("--duration-fast", 250), y: 0, esc: .97, atraso: 80});
++    cb.querySelectorAll(".ok-i").forEach(e => fzA(e, [{opacity: 0, transform: "scale(.8)"}, {opacity: 1, transform: "none"}], {duration: fzMs("--duration-fast", 250), delay: 80}));
++    fzPontos(cb);
++  } finally { FZ_OFF = 0; }
++}
+diff -ruN /tmp/src-p3/index.html src/index.html
+--- /tmp/src-p3/index.html	2026-11-16 06:22:11.944279580 -0300
++++ src/index.html	2026-11-16 06:22:19.669739562 -0300
+@@ -266,7 +266,7 @@
+     <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 9V4h10v5M7 17H4v-7h16v7h-3"/><rect x="7" y="14" width="10" height="6"/></symbol>
+     <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 21V4M6 5h11l-2.5 4L17 13H6"/></symbol>
+     <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4l9 16H3L12 4zM12 10v4M12 17v.5"/></symbol>
+-    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5c3-1 5-1 8 1 3-2 5-2 8-1v13c-3-1-5-1-8 1-3-2-5-2-8-1z"/><path d="M12 6v13"/></symbol>
++    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5c3-1 5-1 8 1 3-2 5-2 8-1v13c-3-1-5-1-8 1-3-2-5-2-8-1z"/><path d="M12 6v13"/></symbol><symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+   </defs>
+ </svg>
+ 
+diff -ruN /tmp/src-p3/integra.js src/integra.js
+--- /tmp/src-p3/integra.js	2026-11-16 06:22:11.944393976 -0300
++++ src/integra.js	2026-11-16 09:28:08.218588512 -0300
+@@ -19,10 +19,10 @@
+ function perfilAtual() { const p = contaAtiva() ? INT.conta.perfil : (S && S.cfg && S.cfg.perfil); return PERFIS[p] ? p : "primario"; }
+ const podeGerir = () => perfilAtual() !== "colaborador";
+ const podeObs = () => podeGerir();
+-const ROTAS_COL = ["inicio", "treinos", "relatorios", "conferir", "ajustes", "mais", "entrar"];
++const ROTAS_COL = ["inicio", "treinos", "pendencias", "relatorios", "conferir", "ajustes", "mais", "entrar"];
+ const rotaOk = v => podeGerir() || ROTAS_COL.includes(v);
+ const navOk = id => rotaOk(id);
+-const ACOES_GERIR = ["novo", "dlg", "usarmodelo", "excluir", "duplicar", "impor", "preparar", "apagartudo", "apagarok", "obsadd", "obsdel"];
++const ACOES_GERIR = ["novo", "dlg", "usarmodelo", "excluir", "duplicar", "impor", "preparar", "apagartudo", "apagarok", "obsadd", "obsdel", "aplicarpend", "baixa", "rmfoto", "reaplicar", "aplicarpos"];   /* v1.6.0 parte 4 (P1): o Colaborador consulta Pendências, sem aplicar nem dar baixa */
+ 
+ /* ---------- ativação do aparelho ---------- */
+ const ativado = () => lsG(LS_ATIV) === "1" || contaAtiva();
+diff -ruN /tmp/src-p3/live.css src/live.css
+--- /tmp/src-p3/live.css	2026-11-16 06:22:11.944511556 -0300
++++ src/live.css	2026-11-16 09:34:57.230354197 -0300
+@@ -37,94 +37,115 @@
+ .sim{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+ .sim input[type=number]{width:84px}
+ 
+-/* telão (1280×720 fixos, escalados) */
+-.tel{--tel-bg:#0A2C2B;--tel-bg2:#0F3836;--tel-card:#134240;--tel-ink:#F2F7F6;--tel-ink2:#A6C3C0;--tel-line:#22524F;--a1:#C9432B;--a2:#2A63C2;--a3:#C98F00;--a4:#2A8752;
+-  width:1280px;height:720px;background:var(--tel-bg);color:var(--tel-ink);font-family:var(--f-body);display:flex;flex-direction:column;overflow:hidden}
+-.tel.claro{--tel-bg:#F3F7F6;--tel-bg2:#E4ECEB;--tel-card:#FFFFFF;--tel-ink:#122120;--tel-ink2:#4A5C5B;--tel-line:#CBD8D6}
++/* telão (1280×720 fixos, escalados)
++   v1.6.0 parte 4 (Fatia E): cores da família EFC, com tema próprio do telão (escuro dourado ou claro marfim, escolhido na sessão,
++   independente do tema do app). Letras numa escala de 6 tamanhos (18, 22, 28, 34, 44, 64), cantos de 2 tipos (16 e 8) mais o círculo.
++   As 4 cores e formas das alternativas não mudam: são função do quiz. */
++.tel{--tel-bg:#0b0d16;--tel-bg2:#121524;--tel-card:#181c2e;--tel-ink:#f3eee3;--tel-ink2:#bcb3a1;--tel-line:#2a2b3b;
++  --tel-a:#d9b46a;--tel-aS:rgba(217,180,106,.15);--tel-aTx:#f0d48f;--tel-onA:#1c1406;--tel-ok:#7fbf98;--tel-anel:#fff;--tel-r:16px;--tel-rs:8px;
++  --a1:#C9432B;--a2:#2A63C2;--a3:#C98F00;--a4:#2A8752;
++  width:1280px;height:720px;background:var(--tel-bg);color:var(--tel-ink);font-family:var(--f-body);display:flex;flex-direction:column;overflow:hidden;position:relative}
++.tel.claro{--tel-bg:#f7f5ef;--tel-bg2:#f2eee4;--tel-card:#fffefb;--tel-ink:#1e1b14;--tel-ink2:#5b5443;--tel-line:#e6dfcf;
++  --tel-a:#9a7128;--tel-aS:rgba(154,113,40,.12);--tel-aTx:#7d5a1c;--tel-onA:#fffefb;--tel-ok:#2f7d4f;--tel-anel:var(--tel-ink)}
++.tel h2,.tel h3{font-family:var(--f-disp);font-weight:600;letter-spacing:0}
+ .tel .tt{display:flex;align-items:center;gap:14px;padding:18px 32px;border-bottom:1px solid var(--tel-line)}
+-.tel .tt b{font-family:var(--f-disp);font-size:24px}
+-.tel .tt span{color:var(--tel-ink2);font-size:17px}
++.tel .tt b{font-family:var(--f-disp);font-weight:600;font-size:28px}
++.tel .tt span{color:var(--tel-ink2);font-size:18px}
+ .tel .grow{flex:1}
+-.tel .pillk{background:var(--sabia);color:#fff!important;font-weight:700;border-radius:999px;padding:6px 16px;font-family:var(--f-mono);letter-spacing:.06em;font-size:18px!important}
++.tel .pillk{background:var(--tel-aS);color:var(--tel-aTx)!important;font-weight:600;border-radius:999px;padding:6px 18px;font-size:18px!important}
++.tel .pillk b{font-family:var(--f-mono);font-size:18px;font-weight:600;color:inherit}
+ .tel .tfoot{margin-top:auto;padding:14px 32px;border-top:1px solid var(--tel-line);color:var(--tel-ink2);font-size:18px;display:flex;gap:10px;align-items:center}
+ .tel .tfoot b{color:var(--tel-ink)}
+ .tel .lobm{flex:1;display:grid;grid-template-columns:420px 1fr;gap:32px;padding:28px 32px;min-height:0}
+-.tel .join{background:var(--tel-card);border:1px solid var(--tel-line);border-radius:24px;padding:24px;display:grid;gap:16px;justify-items:center;align-content:start}
+-.tel .qr{background:#fff;border-radius:16px;padding:12px;width:244px;height:244px;display:grid;place-items:center}
++.tel .join{background:var(--tel-card);border:1px solid var(--tel-line);border-radius:var(--tel-r);padding:24px;display:grid;gap:16px;justify-items:center;align-content:start}
++.tel .qr{background:#fff;border-radius:var(--tel-r);padding:12px;width:244px;height:244px;display:grid;place-items:center}
+ .tel .qr canvas,.tel .qr img{width:220px!important;height:220px!important}
+ .tel .kl{color:var(--tel-ink2);font-size:18px;text-align:center}
+-.tel .kk{font-family:var(--f-mono);font-weight:600;font-size:64px;letter-spacing:.06em;line-height:1.05;text-align:center}
++.tel .kk{font-family:var(--f-mono);font-weight:600;font-size:64px;line-height:1.05;text-align:center}
+ .tel .how{display:grid;gap:8px;font-size:18px;width:100%}
+ .tel .how div{display:flex;gap:10px;align-items:center}
+-.tel .how b{width:28px;height:28px;border-radius:50%;background:var(--sabia);color:#fff;display:grid;place-items:center;font-size:15px;flex:none}
++.tel .how b{width:30px;height:30px;border-radius:50%;background:var(--tel-aS);color:var(--tel-aTx);display:grid;place-items:center;font-size:18px;flex:none}
+ .tel .room{display:grid;grid-template-rows:auto auto 1fr;gap:16px;min-height:0}
+-.tel .crowd.g .cw{font-size:24px;padding:6px 20px 6px 6px}.tel .crowd.g .cw .av{width:44px;height:44px;font-size:17px}
++.tel .crowd.g .cw{font-size:22px;padding:6px 20px 6px 6px}.tel .crowd.g .cw .av{width:44px;height:44px;font-size:18px}
+ .tel .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-self:end}
+-.tel .facts div{background:var(--tel-card);border:1px solid var(--tel-line);border-radius:18px;padding:14px 18px;display:grid;gap:2px}
+-.tel .facts b{font-family:var(--f-disp);font-size:40px;line-height:1.05}
++.tel .facts div{background:var(--tel-card);border:1px solid var(--tel-line);border-radius:var(--tel-r);padding:14px 18px;display:grid;gap:2px}
++.tel .facts b{font-family:var(--f-disp);font-weight:600;font-size:44px;line-height:1.05}
+ .tel .facts span{color:var(--tel-ink2);font-size:18px}
+ .tel .rh{display:flex;align-items:baseline;gap:12px}
+-.tel .rh b{font-family:var(--f-disp);font-size:56px;line-height:1}
++.tel .rh b{font-family:var(--f-disp);font-weight:600;font-size:64px;line-height:1}
+ .tel .rh span{font-size:22px;color:var(--tel-ink2)}
++.tel .ning{font-size:22px;color:var(--tel-ink2)}
+ .tel .crowd{display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start;overflow:hidden}
+-.tel .cw{display:flex;align-items:center;gap:8px;background:var(--tel-card);border:1px solid var(--tel-line);border-radius:999px;padding:5px 16px 5px 5px;font-size:19px}
+-.tel .cw .av{width:36px;height:36px;font-size:15px}
++.tel .cw{display:flex;align-items:center;gap:8px;background:var(--tel-card);border:1px solid var(--tel-line);border-radius:999px;padding:5px 16px 5px 5px;font-size:18px}
++.tel .cw .av{width:36px;height:36px;font-size:18px}
+ .tel .tq{padding:26px 32px 8px;display:flex;gap:28px;align-items:center}
+-.tel .tq h2{font-size:42px;line-height:1.12;flex:1;font-weight:700}
++.tel .tq h2{font-size:44px;line-height:1.12;flex:1}
+ .tel .ring{width:120px;height:120px;position:relative;display:grid;place-items:center;font-family:var(--f-mono);font-size:44px;font-weight:600;flex:none}
+ .tel .ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+ .tel .tprog{display:flex;gap:6px}
+-.tel .tprog i{width:26px;height:8px;border-radius:4px;background:var(--tel-line)}
+-.tel .tprog i.d{background:var(--ok)}.tel .tprog i.c{background:var(--sabia)}
++.tel .tprog i{width:26px;height:8px;border-radius:999px;background:var(--tel-line)}
++.tel .tprog i.d{background:var(--tel-ok)}.tel .tprog i.c{background:var(--tel-a)}
+ .tel .ttiles{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:12px 32px 14px;min-height:0}
+-.tel .tile{border-radius:20px;color:#fff;display:flex;align-items:center;gap:16px;padding:0 24px;font-size:30px;font-weight:700;line-height:1.15;position:relative;overflow:hidden}
++.tel .tile{border-radius:var(--tel-r);color:var(--altTx);display:flex;align-items:center;gap:16px;padding:0 24px;font-size:34px;font-weight:700;line-height:1.15;position:relative;overflow:hidden}
++.tel .tile>*{position:relative;z-index:1}
++/* amarelo: a letra fica escura para ler bem (a cor da alternativa continua a mesma) */
++.tel .tile.k2{color:var(--altTxEsc)}
+ .tel .tile .sh{width:46px;height:46px;flex:none}
+ .tel .tile .sh svg{width:100%;height:100%}
+-.tel .tile.off{opacity:.35}
+-.tel .tile .pc{margin-left:auto;font-family:var(--f-mono);font-size:30px;background:rgb(0 0 0/.28);border-radius:12px;padding:2px 12px}
+-.tel .tile.cor::after{content:"";position:absolute;inset:0;border:8px solid #fff;border-radius:20px}
++/* no resultado, as erradas ganham um véu da cor do fundo (a letra continua legível) e a certa ganha o contorno */
++.tel .tile.off::before{content:"";position:absolute;inset:0;background:var(--tel-bg);opacity:.72;z-index:0}
++.tel .tile.off{color:var(--tel-ink)}
++.tel .tile .pc{margin-left:auto;font-family:var(--f-mono);font-size:28px;background:rgb(0 0 0/.28);color:var(--altTx);border-radius:var(--tel-rs);padding:2px 12px}
++.tel .tile.off .pc{background:var(--tel-card);color:var(--tel-ink)}
++.tel .tile.cor::after{content:"";position:absolute;inset:0;border:8px solid var(--tel-anel);border-radius:var(--tel-r);z-index:2}
+ .tel .ordl{flex:1;display:grid;gap:10px;padding:12px 32px 14px;align-content:center}
+-.tel .ordl div{background:var(--tel-card);border:1px solid var(--tel-line);border-radius:16px;padding:14px 22px;font-size:28px;font-weight:600;display:flex;gap:16px;align-items:center}
+-.tel .ordl b{width:38px;height:38px;border-radius:50%;background:var(--sabia);color:#fff;display:grid;place-items:center;font-size:20px;flex:none}
+-.tel .answ{display:flex;align-items:center;gap:14px;padding:12px 32px;border-top:1px solid var(--tel-line);font-size:20px}
+-.tel .bigc{font-family:var(--f-disp);font-weight:700;font-size:34px}
++.tel .ordl div{background:var(--tel-card);border:1px solid var(--tel-line);border-radius:var(--tel-r);padding:14px 22px;font-size:28px;font-weight:600;display:flex;gap:16px;align-items:center}
++.tel .ordl b{width:40px;height:40px;border-radius:50%;background:var(--tel-a);color:var(--tel-onA);display:grid;place-items:center;font-size:22px;flex:none}
++.tel .answ{display:flex;align-items:center;gap:14px;padding:12px 32px;border-top:1px solid var(--tel-line);font-size:22px;min-height:68px}
++.tel .answ .porq{margin-left:18px;color:var(--tel-ink2);flex:1;font-size:22px}
++.tel .answ .mut{color:var(--tel-ink2)}
++.tel .bigc{font-family:var(--f-disp);font-weight:600;font-size:34px}
+ .tel .expl{flex:1;display:grid;align-content:center;gap:20px;padding:30px 80px}
+-.tel .expl h2{font-size:54px;line-height:1.1;font-weight:700}
+-.tel .expl p{font-size:30px;line-height:1.4;color:var(--tel-ink2);margin:0;max-width:30em}
++.tel .expl h2{font-size:64px;line-height:1.1}
++.tel .expl p{font-size:28px;line-height:1.4;color:var(--tel-ink2);margin:0;max-width:30em}
+ .tel .podm{flex:1;display:grid;grid-template-columns:1fr 380px;gap:28px;padding:22px 32px;min-height:0}
+ .tel .podl{display:grid;grid-template-rows:auto auto 1fr;gap:14px;min-height:0}
+-.tel .pq{display:flex;gap:12px;align-items:flex-end;height:96px}
+-.tel .pq>div{flex:1;display:grid;justify-items:center;gap:2px;font-size:15px;color:var(--tel-ink2);max-width:90px}
+-.tel .pq .bar{display:flex;align-items:flex-end;width:100%;height:48px;background:var(--tel-card);border-radius:8px;overflow:hidden}
+-.tel .pq .bar i{display:block;width:100%;border-radius:6px 6px 0 0}
+-.tel .pq b{color:var(--tel-ink);font-size:17px}
+-.tel .podl h2{font-size:44px;font-weight:700}
++.tel .pq{display:flex;gap:12px;align-items:flex-end;height:104px}
++.tel .pq>div{flex:1;display:grid;justify-items:center;gap:2px;font-size:18px;color:var(--tel-ink2);max-width:90px}
++.tel .pq .bar{display:flex;align-items:flex-end;width:100%;height:48px;background:var(--tel-card);border-radius:var(--tel-rs);overflow:hidden}
++.tel .pq .bar i{display:block;width:100%;border-radius:var(--tel-rs) var(--tel-rs) 0 0;transform-origin:50% 100%}
++.tel .pq b{color:var(--tel-ink);font-size:18px}
++.tel .podl h2{font-size:44px}
+ .tel .res{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+-.tel .res span{background:var(--tel-card);border:1px solid var(--tel-line);border-radius:999px;padding:6px 16px;font-size:20px}
+-.tel .res .g{background:var(--ok);border-color:var(--ok);color:#fff}
+-.tel .res .r{background:var(--sabia);border-color:var(--sabia);color:#fff}
++.tel .res span{background:var(--tel-card);border:1px solid var(--tel-line);border-radius:999px;padding:6px 16px;font-size:22px}
++.tel .res .g{background:var(--tel-ok);border-color:var(--tel-ok);color:var(--tel-bg)}
++.tel .res .r{background:var(--tel-aS);border-color:transparent;color:var(--tel-aTx)}
+ .tel .stage{display:flex;align-items:flex-end;justify-content:center;gap:16px;min-height:0}
+ .tel .pl{display:grid;justify-items:center;gap:8px;width:190px}
+-.tel .pl .av{width:84px;height:84px;font-size:32px}
+-.tel .pl.p1 .av{width:104px;height:104px;font-size:40px}
+-.tel .blk{width:100%;background:var(--tel-card);border:1px solid var(--tel-line);border-radius:18px 18px 0 0;padding:12px 8px;text-align:center;font-size:15px;color:var(--tel-ink2);display:grid;align-content:start;gap:2px}
+-.tel .blk b{font-family:var(--f-disp);font-size:34px;color:var(--sabia)}
+-.tel .blk strong{color:var(--tel-ink);font-size:19px}
+-.tel .podr{background:var(--tel-card);border:1px solid var(--tel-line);border-radius:20px;padding:16px 20px;display:grid;align-content:start;gap:0;overflow:hidden}
+-.tel .podr h3{font-size:20px;margin-bottom:6px}
++.tel .pl .av{width:84px;height:84px;font-size:34px}
++.tel .pl.p1 .av{width:104px;height:104px;font-size:44px}
++.tel .blk{width:100%;background:var(--tel-card);border:1px solid var(--tel-line);border-radius:var(--tel-r) var(--tel-r) 0 0;padding:10px 8px 6px;text-align:center;font-size:18px;line-height:1.3;color:var(--tel-ink2);display:grid;align-content:start;gap:2px;transform-origin:50% 100%}
++.tel .blk b{font-family:var(--f-disp);font-weight:600;font-size:28px;line-height:1.1;color:var(--tel-a)}
++.tel .blk strong{color:var(--tel-ink);font-size:18px;line-height:1.15;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
++.tel .podr{background:var(--tel-card);border:1px solid var(--tel-line);border-radius:var(--tel-r);padding:16px 20px;display:grid;align-content:start;gap:0;overflow:hidden}
++.tel .podr h3{font-size:22px;margin-bottom:6px}
+ .tel .podr .pr2{display:grid;grid-template-columns:30px 34px 1fr auto;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--tel-line);font-size:18px}
+-.tel .podr .pr2 .av{width:34px;height:34px;font-size:14px}
+-.tel .vaz{flex:1;display:grid;place-items:center;text-align:center;gap:12px;padding:40px;font-size:30px;color:var(--tel-ink2)}
+-.conf{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+-.conf i{position:absolute;top:-20px;width:12px;height:18px;border-radius:2px;animation:cai 3.6s linear infinite}
+-@keyframes cai{to{transform:translateY(760px) rotate(540deg)}}
++.tel .podr .pr2 .av{width:34px;height:34px;font-size:18px}
++.tel .podr .nada{color:var(--tel-ink2);font-size:18px}
++.tel .vaz{flex:1;display:grid;place-items:center;text-align:center;gap:12px;padding:40px;font-size:28px;color:var(--tel-ink2)}
++.tel .vaz b{font-family:var(--f-disp);font-weight:600;font-size:44px;color:var(--tel-ink)}
++/* festa do pódio: papéis coloridos que saem uma vez de cima do 1º lugar (500 ms), nada que cai sem parar */
++.conf{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3}
++.conf i{position:absolute;width:10px;height:16px;border-radius:2px;opacity:0}
+ @media (max-width:1100px){.sala{grid-template-columns:1fr}.prev{position:static}}
+ @media (max-width:760px){.tb .b[data-act=telao]{width:44px;padding:0}.tb .sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60vw}}
+ @media (prefers-reduced-motion:reduce){.conf{display:none}}
+ 
+ .pp .px{display:grid;place-items:center;width:24px;height:24px;border:0;background:transparent;color:var(--ink2);cursor:pointer;border-radius:50%;padding:0;margin-left:2px}
+ .pp .px:hover{color:var(--bad)}
+-/* v1.5.1: conferindo respostas (1 s antes do resultado) */
+-.tel .answ .cf-rd{width:26px;height:26px;border-radius:50%;border:4px solid var(--tel-line);border-top-color:#D45D17;animation:gira 1s linear infinite;flex:none}
+-.tel .answ .cf-tx{font-weight:700;font-size:24px}
+-@media (prefers-reduced-motion: reduce){.tel .answ .cf-rd{animation-duration:3s}}
++/* v1.5.1: conferindo respostas (1 s antes do resultado). v1.6.0 parte 4: no lugar da roda que girava sem parar,
++   três pontos que acendem uma vez, um depois do outro, e ficam acesos */
++.cf-pt{display:inline-flex;gap:6px;flex:none}
++.cf-pt i{width:10px;height:10px;border-radius:50%;background:var(--tel-a,var(--a))}
++.tel .answ .cf-pt i{width:12px;height:12px}
++.tel .answ .cf-tx{font-weight:600;font-size:22px}
+diff -ruN /tmp/src-p3/live.js src/live.js
+--- /tmp/src-p3/live.js	2026-11-16 06:22:11.944670431 -0300
++++ src/live.js	2026-11-16 09:28:30.982769096 -0300
+@@ -178,8 +178,8 @@
+ const forma = k => `<span class="sh"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span>`;
+ function telaoHTML(sn) {
+   const claro = sn && sn.tela === "claro" ? " claro" : "";
+-  if (!sn) return `<div class="tel${claro}"><div class="tt"><svg viewBox="0 0 48 48" style="width:48px;height:48px;margin:-7px 0"><use href="#logo"/></svg><b>Sabiá</b></div><div class="vaz"><div><b style="font-family:var(--f-disp);font-size:44px;color:var(--tel-ink)">Aguardando a sala</b><br>O instrutor abre a sala no Sabiá e esta tela se liga sozinha.</div></div></div>`;
+-  const f = sn.fase, it = sn.item, topo = (mid, dir) => `<div class="tt"><svg viewBox="0 0 48 48" style="width:48px;height:48px;margin:-7px 0"><use href="#logo"/></svg>${mid}<div class="grow"></div>${dir || `<span class="pillk">CHAVE ${fmtChave(sn.chave)}</span>`}</div>`;
++  if (!sn) return `<div class="tel${claro}"><div class="tt"><svg viewBox="0 0 48 48" style="width:48px;height:48px;margin:-7px 0"><use href="#logo"/></svg><b>Sabiá</b></div><div class="vaz"><div><b>Aguardando a sala</b><br>O instrutor abre a sala no Sabiá e esta tela se liga sozinha.</div></div></div>`;
++  const f = sn.fase, it = sn.item, topo = (mid, dir) => `<div class="tt"><svg viewBox="0 0 48 48" style="width:48px;height:48px;margin:-7px 0"><use href="#logo"/></svg>${mid}<div class="grow"></div>${dir || `<span class="pillk">Chave <b>${fmtChave(sn.chave)}</b></span>`}</div>`;
+   const prog = n => `<div class="tprog">${Array.from({length: sn.totalPerg}, (_, k) => `<i class="${k + 1 < n ? "d" : k + 1 === n ? "c" : ""}"></i>`).join("")}</div>`;
+   let corpo = "";
+   if (f.etapa === "espera") {
+@@ -187,34 +187,34 @@
+       <div class="lobm"><div class="join"><div class="qr" data-qr="${esc(sn.url)}"></div><div><div class="kl">ou abra o Sabiá e digite</div><div class="kk">${fmtChave(sn.chave)}</div></div>
+         <div class="how"><div><b>1</b>Aponte a câmera para o QR</div><div><b>2</b>Toque no seu nome</div><div><b>3</b>Monte seu bicho e aguarde</div></div></div>
+         <div class="room"><div class="rh"><b>${sn.nPart}</b><span>${sn.nPart === 1 ? "pessoa na sala" : "pessoas na sala"}${sn.entrada ? "" : " · entrada fechada"}</span></div>
+-        <div class="crowd ${sn.nPart <= 14 ? "g" : ""}">${sn.part.map(p => `<span class="cw">${avB(p.n, p.c, p.b)}${esc(p.n.split(" ")[0])}</span>`).join("") || `<span style="font-size:22px;color:var(--tel-ink2)">Ninguém entrou ainda.</span>`}</div>
++        <div class="crowd ${sn.nPart <= 14 ? "g" : ""}">${sn.part.map(p => `<span class="cw" data-n="${esc(p.n)}">${avB(p.n, p.c, p.b)}${esc(p.n.split(" ")[0])}</span>`).join("") || `<span class="ning">Ninguém entrou ainda.</span>`}</div>
+         <div class="facts"><div><b>${sn.nPerg}</b><span>perguntas valendo</span></div><div><b>${sn.min} min</b><span>de duração</span></div><div><b>${sn.metaTxt || sn.meta + "%"}</b><span>de meta</span></div></div></div></div>
+       <div class="tfoot"><span>Começa quando o instrutor tocar em <b>Iniciar</b> · ${sn.nPerg} perguntas</span></div>`;
+   } else if (f.etapa === "explicacao") {
+     corpo = `${topo(`<b>${esc(sn.titulo)}</b>`)}<div class="expl"><h2>${esc(it.enunciado)}${btnTelVoz(it)}</h2>${it.texto ? `<p>${esc(it.texto)}</p>` : ""}${matDicaTel(sn, it)}</div><div class="tfoot"><span>Atenção na explicação do instrutor</span></div>`;
+   } else if (f.etapa === "pergunta" || f.etapa === "resultado") {
+     const rev = f.etapa === "resultado" && !f.conf, n = it.alts.length;
+-    const rel = f.dur ? `<div class="ring"><svg viewBox="0 0 110 110"><circle cx="55" cy="55" r="48" fill="none" stroke="var(--tel-line)" stroke-width="9"/><circle data-k="c" data-fim="${f.t0 + f.dur}" data-dur="${f.dur}" cx="55" cy="55" r="48" fill="none" stroke="#D45D17" stroke-width="9" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="0"/></svg><span data-k="n" data-fim="${f.t0 + f.dur}" data-dur="${f.dur}">${Math.ceil(f.dur / 1000)}</span></div>` : "";
++    const rel = f.dur ? `<div class="ring"><svg viewBox="0 0 110 110"><circle cx="55" cy="55" r="48" fill="none" stroke="var(--tel-line)" stroke-width="9"/><circle data-k="c" data-fim="${f.t0 + f.dur}" data-dur="${f.dur}" cx="55" cy="55" r="48" fill="none" stroke="var(--tel-a)" stroke-width="9" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="0"/></svg><span data-k="n" data-fim="${f.t0 + f.dur}" data-dur="${f.dur}">${Math.ceil(f.dur / 1000)}</span></div>` : "";
+     let tiles;
+     if (it.tipo === "ordenar") {
+       const ordem = rev ? [...Array(n).keys()] : it.ordem;
+       tiles = `<div class="ordl">${ordem.map((k, pos) => `<div><b>${pos + 1}</b>${esc(it.alts[k])}</div>`).join("")}</div>`;
+     } else {
+       tiles = `<div class="ttiles">${it.alts.map((a, k) => { const pc = rev && sn.dist ? Math.round(100 * sn.dist[k] / Math.max(1, sn.resp)) : null; const cls = rev ? (k === it.correta ? " cor" : " off") : "";
+-        return `<div class="tile${cls}" style="background:${COR_ALT[k % 4]}">${forma(k)}<span>${esc(a)}</span>${pc !== null ? `<span class="pc">${pc}%</span>` : ""}</div>`; }).join("")}</div>`;
++        return `<div class="tile k${k % 4}${cls}" style="background:${COR_ALT[k % 4]}">${forma(k)}<span>${esc(a)}</span>${pc !== null ? `<span class="pc">${pc}%</span>` : ""}</div>`; }).join("")}</div>`;
+     }
+-    const rodape = rev ? (it.tipo === "ordenar" && sn.dist ? `<span class="bigc">${sn.dist.acertos} de ${sn.dist.total}</span><span>acertaram a ordem</span>` : `<span class="bigc">${sn.dist ? sn.dist[it.correta] : 0} de ${sn.resp}</span><span>acertaram</span>`) + (it.porque ? `<span style="margin-left:18px;color:var(--tel-ink2);flex:1;font-size:19px">${esc(it.porque)}</span>` : "")
+-      : f.conf ? `<span class="cf-rd" aria-hidden="true"></span><span class="cf-tx">Conferindo respostas...</span><span style="color:var(--tel-ink2)">${sn.resp} de ${sn.nPart} responderam</span>`
+-      : `<span class="bigc">${sn.resp} de ${sn.nPart}</span><span style="color:var(--tel-ink2)">já responderam</span>`;
++    const rodape = rev ? (it.tipo === "ordenar" && sn.dist ? `<span class="bigc">${sn.dist.acertos} de ${sn.dist.total}</span><span>acertaram a ordem</span>` : `<span class="bigc">${sn.dist ? sn.dist[it.correta] : 0} de ${sn.resp}</span><span>acertaram</span>`) + (it.porque ? `<span class="porq">${esc(it.porque)}</span>` : "")
++      : f.conf ? `<span class="cf-pt" aria-hidden="true"><i></i><i></i><i></i></span><span class="cf-tx">Conferindo respostas...</span><span class="mut">${sn.resp} de ${sn.nPart} responderam</span>`
++      : `<span class="bigc">${sn.resp} de ${sn.nPart}</span><span class="mut">já responderam</span>`;
+     corpo = `${topo(`<b>${it.ensaio ? "Pergunta de teste" : "Pergunta " + sn.numPerg + " de " + sn.totalPerg}</b>${prog(sn.numPerg)}`)}<div class="tq"><h2>${esc(it.enunciado)}${f.etapa === "resultado" ? "" : btnTelVoz(it)}</h2>${f.etapa === "resultado" ? "" : rel}</div>${tiles}<div class="answ">${rodape}</div>`;
+   } else if (f.etapa === "podio") {
+     const r = sn.resumo, t = r.top, bl = (p, pos, h) => p ? `<div class="pl ${pos === 1 ? "p1" : ""}">${avB(p.n, p.c, p.b)}<div class="blk" style="height:${h}px"><b>${pos}º</b><strong>${esc(p.n)}</strong>${p.ac} de ${r.nq} · ${p.pts} pts</div></div>` : "";
+-    const conf = sn.som === "ligado" ? `<div class="conf">${Array.from({length: 26}, (_, k) => `<i style="left:${(k * 37) % 100}%;background:${COR_ALT[k % 4]};animation-delay:${(k % 9) * .35}s"></i>`).join("")}</div>` : "";
+-    corpo = `${topo(`<b>Resultado da turma</b><span>${esc(sn.titulo)}</span>`, `<span class="pillk">${sn.nPart} PESSOAS</span>`)}
++    const conf = sn.som === "ligado" ? `<div class="conf" aria-hidden="true">${Array.from({length: 26}, (_, k) => `<i style="background:${COR_ALT[k % 4]}"></i>`).join("")}</div>` : "";
++    corpo = `${topo(`<b>Resultado da turma</b><span>${esc(sn.titulo)}</span>`, `<span class="pillk">${plural(sn.nPart, "pessoa", "pessoas")}</span>`)}
+       <div class="podm"><div class="podl"><div>${sn.mom === "pre" ? `<h2>Pré-teste concluído</h2><div class="res"><span>${r.pct}% de acerto médio</span><span>ponto de partida da turma</span></div>` : `<h2>${r.metaOk ? "A turma bateu a meta" : "A turma ficou abaixo da meta"}</h2><div class="res"><span class="${r.metaOk ? "g" : "r"}">${r.pct}% de acerto · meta ${sn.metaTxt || sn.meta + "%"}</span><span>${r.efic} de ${sn.nPart} eficazes</span>${r.reforco ? `<span>${r.reforco} vão para o reforço</span>` : ""}</div>`}</div>
+-        <div class="pq">${r.porPerg.map(q => `<div><span class="bar"><i style="height:${Math.max(4, q.pct)}%;background:${q.pct >= sn.meta ? "var(--ok)" : "var(--sabia)"}"></i></span><b>${q.pct}%</b><span>P${q.n}</span></div>`).join("")}</div>
++        <div class="pq">${r.porPerg.map(q => `<div><span class="bar"><i style="height:${Math.max(4, q.pct)}%;background:${q.pct >= sn.meta ? "var(--tel-ok)" : "var(--tel-a)"}"></i></span><b>${q.pct}%</b><span>P${q.n}</span></div>`).join("")}</div>
+         ${sn.ranking ? `<div class="stage">${bl(t[1], 2, 150)}${bl(t[0], 1, 205)}${bl(t[2], 3, 112)}</div>` : ""}</div>
+-        <div class="podr"><h3>${sn.ranking ? "Do 4º ao 10º" : "Resultado"}</h3>${sn.ranking ? t.slice(3).map((p, k) => `<div class="pr2"><b>${k + 4}º</b>${avB(p.n, p.c, p.b)}<span>${esc(p.n.split(" ").length > 1 ? p.n.split(" ")[0] + " " + p.n.split(" ").slice(-1)[0] : p.n)}</span><span class="num">${p.pts}</span></div>`).join("") || `<span style="color:var(--tel-ink2);font-size:17px">Sem mais participantes.</span>` : `<span style="color:var(--tel-ink2);font-size:17px">O ranking está desligado nesta sessão.</span>`}</div></div>${conf}`;
++        <div class="podr"><h3>${sn.ranking ? "Do 4º ao 10º" : "Resultado"}</h3>${sn.ranking ? t.slice(3).map((p, k) => `<div class="pr2"><b>${k + 4}º</b>${avB(p.n, p.c, p.b)}<span>${esc(p.n.split(" ").length > 1 ? p.n.split(" ")[0] + " " + p.n.split(" ").slice(-1)[0] : p.n)}</span><span class="num">${p.pts}</span></div>`).join("") || `<span class="nada">Sem mais participantes.</span>` : `<span class="nada">O ranking está desligado nesta sessão.</span>`}</div></div>${conf}`;
+   }
+   return `<div class="tel${claro}">${corpo}</div>`;
+ }
+@@ -222,7 +222,7 @@
+   root.querySelectorAll("[data-qr]").forEach(el => {
+     const url = el.dataset.qr;
+     if (AO.qrc[url]) { el.innerHTML = `<img src="${AO.qrc[url]}" alt="QR para entrar na sala">`; return; }
+-    try { new QRCode(el, {text: url, width: 220, height: 220, colorDark: "#0A2C2B", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M});
++    try { new QRCode(el, {text: url, width: 220, height: 220, colorDark: "#121524", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M});
+       const cv = el.querySelector("canvas"); if (cv) AO.qrc[url] = cv.toDataURL(); } catch(e) { el.textContent = "QR indisponível"; }
+   });
+ }
+@@ -230,7 +230,7 @@
+   document.querySelectorAll(".telwrap").forEach(w => { const k = w.clientWidth / 1280, t = w.firstElementChild; if (!t) return; w.style.height = (720 * k) + "px"; t.style.transform = `scale(${k})`; });
+   document.querySelectorAll(".telfull").forEach(w => { const k = Math.min(innerWidth / 1280, innerHeight / 720), t = w.firstElementChild; if (!t) return; t.style.transform = `translate(${-640 * k}px,${-360 * k}px) scale(${k})`; });
+ }
+-function pintarTelao() { const w = $(".telfull"); if (!w) return; w.innerHTML = telaoHTML(AO.snap); matAtualizaTelao(); hidratarQR(w); escalar(); tickTempo(); vozAuto(); }
++function pintarTelao() { const w = $(".telfull"); if (!w) return; const antes = typeof telAntes === "function" ? telAntes(w) : null; w.innerHTML = telaoHTML(AO.snap); matAtualizaTelao(); hidratarQR(w); escalar(); tickTempo(); vozAuto(); if (typeof telMov === "function") telMov(w, AO.snap, antes); }
+ function vTelao(id) {
+   document.body.classList.add("modo-telao"); $("#app").className = "body";
+   $("#app").innerHTML = `<div class="telfull" role="img" aria-label="Telão da sala"></div>${tvBarra()}`;
+diff -ruN /tmp/src-p3/reforco.css src/reforco.css
+--- /tmp/src-p3/reforco.css	2026-11-16 06:22:11.944374356 -0300
++++ src/reforco.css	2026-11-16 06:22:26.343130659 -0300
+@@ -7,6 +7,8 @@
+ .pnd .pnd-abas{display:flex;width:100%}
+ .pnd .pnd-abas button{flex:1;justify-content:center}
+ .pnd .pnd-ex{margin:0}
++.pnd .pnd-col{margin:0;display:flex;gap:8px;align-items:center}
++.pnd .pnd-col svg{flex:none;color:var(--tx3)}
+ .pnd .pnd-g{display:grid;gap:10px}
+ .pnd .pnd-h{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+ .pnd .pnd-h>div{display:grid;min-width:0}
+diff -ruN /tmp/src-p3/reforco.js src/reforco.js
+--- /tmp/src-p3/reforco.js	2026-11-16 06:22:11.944616738 -0300
++++ src/reforco.js	2026-11-16 09:28:11.088598211 -0300
+@@ -195,7 +195,7 @@
+ }
+ function relRefaz(s) {
+   const r = resumoRefaz(s); if (!r) return "";
+-  return `<section class="k"><h3 class="rh">Treino feito no celular</h3><p class="sm" style="margin:0 0 8px"><b>${plural(r.pessoas, "pessoa treinou", "pessoas treinaram")}</b> perguntas que tinham errado e <b>recuperou${r.rec === 1 ? "" : "ram"} ${r.rec} de ${r.fez}</b>. É só treino: não altera nota, ranking, código de conferência nem a fila de reforço.</p>
++  return `<section class="k"><h3 class="rh">Treino feito no celular</h3><p class="sm" style="margin:0 0 8px"><b>${plural(r.pessoas, "pessoa treinou", "pessoas treinaram")}</b> perguntas que tinham errado e <b>recuperou${r.rec === 1 ? "" : "ram"} ${r.rec} de ${r.fez}</b>. É só treino: não altera nota, ranking, código de autenticação nem a fila de reforço.</p>
+     <div class="rtw"><table class="rtb"><thead><tr><th>Nome</th><th class="n">Erros</th><th class="n">Treinou</th><th class="n">Recuperou</th><th class="n hide-m">Tentativas</th></tr></thead><tbody>${r.lin.map(x => `<tr><td><b>${esc(x.nome)}</b></td><td class="n num">${x.erros}</td><td class="n num">${x.fez}</td><td class="n num">${x.rec}</td><td class="n num hide-m">${x.tent}</td></tr>`).join("")}</tbody></table></div></section>`;
+ }
+ 
+@@ -208,23 +208,23 @@
+   }
+   else if (tipo === "reav") { det = `Sessão de ${dtd(r.fim)} com ${r.pct}%`; ch = r.falta < 0 ? `<span class="chip warn">atrasada ${plural(-r.falta, "dia", "dias")}</span>` : r.falta === 0 ? `<span class="chip warn">vence hoje</span>` : `<span class="chip">em ${plural(r.falta, "dia", "dias")}</span>`; }
+   else { det = `Última vez em ${dtd(r.fim)} com ${r.pct}%`; ch = r.falta < 0 ? `<span class="chip warn">venceu há ${plural(-r.falta, "dia", "dias")}</span>` : r.falta === 0 ? `<span class="chip warn">vence hoje</span>` : `<span class="chip">vence em ${plural(r.falta, "dia", "dias")}</span>`; }
+-  return `<div class="pnd-p">${av(r.nome, hash(r.nome) % CORES_AV.length)}<div class="pnd-n"><b>${esc(r.nome)}</b><span class="sm mut">${r.setor ? esc(r.setor) + " · " : ""}${det}</span></div>${ch}<button class="b sm g" data-act="baixa" data-tipo="${tipo === "esgot" ? "ref" : tipo}" data-k="${esc(r.k)}" data-d="${r.d || ""}" aria-label="Dar baixa em ${esc(r.nome)}">Dar baixa</button></div>`;
++  return `<div class="pnd-p">${av(r.nome, hash(r.nome) % CORES_AV.length)}<div class="pnd-n"><b>${esc(r.nome)}</b><span class="sm mut">${r.setor ? esc(r.setor) + " · " : ""}${det}</span></div>${ch}${podeGerir() ? `<button class="b sm g" data-act="baixa" data-tipo="${tipo === "esgot" ? "ref" : tipo}" data-k="${esc(r.k)}" data-d="${r.d || ""}" aria-label="Dar baixa em ${esc(r.nome)}">Dar baixa</button>` : ""}</div>`;
+ }
+ function corpoPend(tipo, P) {
+   const exp = {ref: "Quem ficou abaixo da meta. A nota oficial é a da 1ª tentativa. A 2ª pode ser no mesmo dia e a 3ª só em outro dia. Depois da 3ª a pessoa sai da fila.",
+     reav: "Quem deve refazer a avaliação nos prazos escolhidos no editor (30, 60 ou 90 dias). Aparecem as que vencem em até 14 dias e as atrasadas.",
+     val: "Treinamentos com validade escolhida no editor. Aparecem os que vencem em até 30 dias e os vencidos."}[tipo];
+   const gs = gruposPend(tipo, P), esg = tipo === "ref" ? P.esgot : [];
+-  const bloco = esg.length ? `<details class="k pnd-esg"><summary><b>${plural(esg.length, "pessoa usou", "pessoas usaram")} as 3 tentativas e continua abaixo da meta</b><span class="sm mut">Decida fora do Sabiá, por exemplo um treinamento presencial. Dar baixa registra que isso foi resolvido.</span></summary><div class="pnd-l">${esg.map(r => linhaPend("esgot", r)).join("")}</div></details>` : "";
++  const bloco = esg.length ? `<details class="k pnd-esg"><summary><b>${plural(esg.length, "pessoa usou", "pessoas usaram")} as 3 tentativas e continua abaixo da meta</b><span class="sm mut">Decida fora do Sabiá, por exemplo um treinamento presencial.${podeGerir() ? " Dar baixa registra que isso foi resolvido." : ""}</span></summary><div class="pnd-l">${esg.map(r => linhaPend("esgot", r)).join("")}</div></details>` : "";
+   if (!gs.length) {
+-    const cfg = tipo === "ref" ? "" : S.treinamentos.some(t => tipo === "reav" ? (t.reav || []).length : t.per > 0) ? "" : `<br>Nenhum treinamento tem ${tipo === "reav" ? "reavaliação" : "validade"} configurada. Abra um treinamento no editor para escolher.`;
++    const cfg = tipo === "ref" ? "" : S.treinamentos.some(t => tipo === "reav" ? (t.reav || []).length : t.per > 0) ? "" : `<br>Nenhum treinamento tem ${tipo === "reav" ? "reavaliação" : "validade"} configurada. ${podeGerir() ? "Abra um treinamento no editor para escolher." : "Quem configura são os perfis Primário e Líder estrela."}`;
+     return `<p class="sm mut pnd-ex">${exp}</p><section class="k vazio">${ic("check", 'style="width:32px;height:32px;color:var(--ok)"')}<b>${tipo === "ref" ? "Ninguém em reforço" : tipo === "reav" ? "Nenhuma reavaliação para os próximos dias" : "Nenhuma validade perto de vencer"}</b><span class="sm">${tipo === "ref" ? "Só entram aqui as sessões oficiais encerradas com gente abaixo da meta." : "Só contam sessões oficiais encerradas."}${cfg}</span></section>${bloco}`;
+   }
+   return `<p class="sm mut pnd-ex">${exp}</p>` + gs.map(g => {
+     const n2 = g.itens.filter(r => r.rodada === 2).length, n3 = g.itens.filter(r => r.rodada === 3 && !r.bloqueada).length, bl = g.itens.filter(r => r.bloqueada), livres = g.itens.length - bl.length;
+     const sub = tipo === "reav" ? `Reavaliação de ${g.d} dias · ${plural(g.itens.length, "pessoa", "pessoas")}` : tipo === "ref" ? [n2 && `${n2} na 2ª tentativa`, n3 && `${n3} na 3ª`, bl.length && `${bl.length} espera o dia da 3ª (a partir de ${fmtDia(Math.min(...bl.map(r => r.libera)))})`].filter(Boolean).join(" · ") : plural(g.itens.length, "pessoa", "pessoas");
+     return `<section class="k pnd-g"><div class="pnd-h"><div><b>${esc(g.t.titulo)}</b><span class="sm mut">${sub}</span></div>
+-      <button class="b p" data-act="aplicarpend" data-tipo="${tipo}" data-id="${g.treinoId}" data-d="${g.d || ""}" ${tipo === "ref" && !livres ? "disabled" : ""}>${ic("play", 'style="width:16px;height:16px"')}${tipo === "ref" ? "Aplicar reforço" : tipo === "reav" ? "Aplicar reavaliação" : "Aplicar renovação"}</button></div>
++      ${podeGerir() ? `<button class="b p" data-act="aplicarpend" data-tipo="${tipo}" data-id="${g.treinoId}" data-d="${g.d || ""}" ${tipo === "ref" && !livres ? "disabled" : ""}>${ic("play", 'style="width:16px;height:16px"')}${tipo === "ref" ? "Aplicar reforço" : tipo === "reav" ? "Aplicar reavaliação" : "Aplicar renovação"}</button>` : ""}</div>
+       <div class="pnd-l">${g.itens.map(r => linhaPend(tipo, r)).join("")}</div></section>`;
+   }).join("") + bloco;
+ }
+@@ -234,7 +234,7 @@
+   $("#app").className = "body pnd";
+   if (!PND.aba || !["ref", "reav", "val"].includes(PND.aba)) PND.aba = P.ref.length ? "ref" : P.reav.length ? "reav" : P.val.length ? "val" : "ref";
+   const abas = [["ref", "Reforço", P.ref.length], ["reav", "Reavaliar", P.reav.length], ["val", "Validade", P.val.length]];
+-  $("#app").innerHTML = `<div class="seg abas pnd-abas" role="group" aria-label="Tipo de pendência">${abas.map(([k, nm, c]) => `<button data-act="pndaba" data-v="${k}" aria-pressed="${PND.aba === k}">${nm}<i>${c}</i></button>`).join("")}</div>${corpoPend(PND.aba, P)}`;
++  $("#app").innerHTML = `<div class="seg abas pnd-abas" role="group" aria-label="Tipo de pendência">${abas.map(([k, nm, c]) => `<button data-act="pndaba" data-v="${k}" aria-pressed="${PND.aba === k}">${nm}<i>${c}</i></button>`).join("")}</div>${podeGerir() ? "" : `<p class="sm mut pnd-col">${ic("eye", 'style="width:16px;height:16px"')}Só para consultar. Quem aplica e dá baixa são os perfis Primário e Líder estrela.</p>`}${corpoPend(PND.aba, P)}`;
+ }
+ 
+ /* ---------- eventos ---------- */
+diff -ruN /tmp/src-p3/relat.js src/relat.js
+--- /tmp/src-p3/relat.js	2026-11-16 06:22:11.944352330 -0300
++++ src/relat.js	2026-11-16 09:28:08.217897728 -0300
+@@ -34,7 +34,7 @@
+ }
+ const tempoTxt = t => t ? (Math.round(t * 10) / 10).toString().replace(".", ",") + " s" : "–";
+ 
+-/* ---------- código de conferência ---------- */
++/* ---------- código de autenticação (era "de conferência" até a v1.6.0 parte 3) ---------- */
+ function canonSessao(s) {
+   const c = calc(s), qs = s.itens.map((it, i) => [it, i]).filter(([it]) => vale(it));
+   const pessoas = c.pessoas.map(p => {
+@@ -67,7 +67,7 @@
+   const cmp = comparativo(s), cm = cmp ? new Map(cmp.lin.map(x => [nk(x.nome), x])) : null;
+   const cab = ["Nome", "Setor", "Acertos", "Perguntas", "Percentual", "Pontos", "Situação", "Assinou", ...e.perg.map(q => "P" + q.n), ...(cm ? [cmp.rot + " (%)", "Variação (pp)"] : [])];
+   const linhas = e.pessoas.map(p => { const rs = s.resp[p.id] || {}; return [p.nome, p.setor || "", p.ac, e.c.nq, p.pct, p.pts, p.sit, p.ass ? "Sim" : "Não", ...e.perg.map(q => rs[q.i] ? (rs[q.i].ok ? "Certo" : "Errado") : "-"), ...(cm ? (() => { const x = cm.get(nk(p.nome)); return x ? [x.antes, x.dif] : ["", ""]; })() : [])]; });
+-  const topo = [["Treinamento", s.titulo], ["Versão", verTxt(s)], ["Data", dtc(s.fim)], ["Instrutor", s.instrutor || ""], ["Local", s.local || ""], ["Carga horária", horasTxt(s.horas)], ["Meta", metaTxtS(s)], ["Tipo", TIPO_TXT[tipoSessao(s)]], ...(s.mom ? [["Momento", MOM_TXT[s.mom] + (s.dias ? " de " + s.dias + " dias" : "")]] : []), ["Código de conferência", garantirCodigo(s)], []];
++  const topo = [["Treinamento", s.titulo], ["Versão", verTxt(s)], ["Data", dtc(s.fim)], ["Instrutor", s.instrutor || ""], ["Local", s.local || ""], ["Carga horária", horasTxt(s.horas)], ["Meta", metaTxtS(s)], ["Tipo", TIPO_TXT[tipoSessao(s)]], ...(s.mom ? [["Momento", MOM_TXT[s.mom] + (s.dias ? " de " + s.dias + " dias" : "")]] : []), ["Código de autenticação", garantirCodigo(s)], []];
+   return "﻿" + topo.concat([cab], linhas).map(l => l.map(celCsv).join(";")).join("\r\n") + "\r\n";
+ }
+ function abrirPdf(bytes) { const u = URL.createObjectURL(new Blob([bytes], {type: "application/pdf"})); const w = window.open(u, "_blank"); if (!w) aviso("O navegador bloqueou a janela. Use o botão de baixar.", null, null, "erro"); setTimeout(() => URL.revokeObjectURL(u), 60000); }
+@@ -78,7 +78,7 @@
+   d.rodape = (d, n, N) => {
+     d.linha(M, H - 42, W - M, H - 42, {cor: "#c4cfce"});
+     d.texto(M, H - 30, d.corta("Sabiá " + VERSAO + " · " + s.titulo, 135, 8), {tam: 8, cor: "#5a6b6a"});
+-    d.texto(W / 2 + 30, H - 30, "Código de conferência " + cod, {tam: 8, neg: true, cor: "#0E4A48", al: "cen"});
++    d.texto(W / 2 + 30, H - 30, "Código de autenticação " + cod, {tam: 8, neg: true, cor: "#0E4A48", al: "cen"});
+     d.texto(W - M, H - 30, `Página ${n} de ${N}`, {tam: 8, cor: "#5a6b6a", al: "dir"});
+   };
+   d.cab = d => { d.texto(M, d.y + 8, d.corta(nomeDoc + " · " + s.titulo + " (continuação)", W - 2 * M, 9), {tam: 9, cor: "#5a6b6a"}); d.y += 22; };
+@@ -136,7 +136,7 @@
+   if (rfz) {
+     pdfSecao(d, "Treino feito no celular", 40 + rfz.lin.length * 18);
+     d.tabela([{t: "Nome", w: 210}, {t: "Erros", w: 50, al: "cen"}, {t: "Treinou", w: 50, al: "cen"}, {t: "Recuperou", w: 70, al: "cen"}, {t: "Tentativas", w: 70, al: "cen"}], rfz.lin.map(x => [x.nome, String(x.erros), String(x.fez), String(x.rec), String(x.tent)]));
+-    d.par(M, d.y + 4, "O treino feito no celular nao altera a nota, o ranking, o codigo de conferencia nem a fila de reforco.", W - 2 * M, {tam: 8, cor: "#5a6b6a"}); d.y += 18;
++    d.par(M, d.y + 4, "O treino feito no celular nao altera a nota, o ranking, o codigo de autenticacao nem a fila de reforco.", W - 2 * M, {tam: 8, cor: "#5a6b6a"}); d.y += 18;
+   }
+   if (e.perg.length) {
+     pdfSecao(d, "Assertividade por pergunta");
+@@ -152,7 +152,7 @@
+     const r = d.imgCabe(s.foto, M, d.y, 300, 200); if (r) { d.y += 206; d.texto(M, d.y + 6, "Foto registrada em " + dtc(s.fotoEm || s.fim), {tam: 8, cor: "#5a6b6a"}); d.y += 16; }
+   }
+   d.garante(60); d.y += 6;
+-  d.par(M, d.y, "Para conferir este registro, digite o código do rodapé em Autenticar documento, no menu do Sabiá. O código muda se qualquer nome, resultado, pergunta, data, instrutor ou assinatura for alterado. A foto da turma não entra no cálculo.", W - 2 * M, {tam: 8, cor: "#5a6b6a"});
++  d.par(M, d.y, "Para autenticar este documento, digite o código do rodapé em Autenticar documento, no menu do Sabiá. O código muda se qualquer nome, resultado, pergunta, data, instrutor ou assinatura for alterado. A foto da turma não entra no cálculo.", W - 2 * M, {tam: 8, cor: "#5a6b6a"});
+   return d.saida();
+ }
+ 
+@@ -213,7 +213,7 @@
+       <div class="fd"><label for="rl-s">Sessão</label><select class="in" id="rl-s">${opt}</select></div>
+       <div class="rl-meta" aria-label="Dados da sessão"><span class="chip ${tp === "real" ? "ok" : "warn"}">${TIPO_TXT[tp]}</span>${s.mom ? `<span class="chip br">${MOM_TXT[s.mom]}${s.dias ? " · " + s.dias + " dias" : ""}</span>` : ""}<span class="chip">${dtc(s.fim)}</span><span class="chip">${esc(s.instrutor || "sem instrutor")}</span>${s.local ? `<span class="chip">${esc(s.local)}</span>` : ""}<span class="chip">${horasTxt(s.horas)}</span><span class="chip">${verTxt(s)}</span>${s.reaplicaDe ? '<span class="chip br">Reaplicação</span>' : ""}</div>
+       <div class="rl-docs"><button class="b p" data-act="relpdf">${ic("file")}PDF de registro</button><button class="b" data-act="relpres">${ic("file")}Lista de presença</button>${folhaBtn(s)}<details class="mais"><summary class="b">Mais${ic("down", 'style="width:16px;height:16px"')}</summary><div class="mp2"><button class="b g" data-act="relcsv">${ic("sheet")}Planilha (CSV)</button><button class="b g" data-act="reljson">${ic("download")}Sessão (.json)</button><button class="b g" data-act="relabrir" title="Abre o PDF de registro em outra aba para imprimir">${ic("print")}Imprimir</button></div></details></div>
+-      <div class="rl-cod sm"><span class="mut">Código de conferência</span> <b class="mono" id="relcod">${esc(s.cod)}</b> <button class="b sm g" data-act="copiacod" aria-label="Copiar o código" title="Copiar">${ic("copy", 'style="width:16px;height:16px"')}</button>${s.codTardio ? '<span class="chip warn" title="Sessão encerrada antes da v0.5.0: o código foi gerado quando você abriu o relatório pela primeira vez">gerado depois</span>' : ""}</div>
++      <div class="rl-cod sm"><span class="mut">Código de autenticação</span> <b class="mono" id="relcod">${esc(s.cod)}</b> <button class="b sm g" data-act="copiacod" aria-label="Copiar o código" title="Copiar">${ic("copy", 'style="width:16px;height:16px"')}</button>${s.codTardio ? '<span class="chip warn" title="Sessão encerrada antes da v0.5.0: o código foi gerado quando você abriu o relatório pela primeira vez">gerado depois</span>' : ""}</div>
+       ${carimboHtml(s)}
+     </section>
+     <div class="seg abas rl-abas" role="group" aria-label="Relatório">${abas.map(([k, n]) => `<button data-act="relaba" data-v="${k}" aria-pressed="${REL.aba === k}">${n}</button>`).join("")}</div>
+@@ -228,15 +228,15 @@
+   const semAss = e.pessoas.filter(p => !p.ass && !p.sim).length;
+   const ac = [];
+   ac.push(s.mom === "pre"
+-    ? `<li><span class="ai">${ic("clock")}</span><span><b>Pré-teste: ponto de partida de ${e.nota}%</b><br><span class="sm mut">Nenhuma resposta certa foi mostrada. Depois do conteúdo, aplique o pós-teste para medir o ganho de aprendizado.</span></span><button class="b sm p" data-act="aplicarpos" data-id="${s.id}" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Aplicar pós-teste</button></li>`
++    ? `<li><span class="ai">${ic("clock")}</span><span><b>Pré-teste: ponto de partida de ${e.nota}%</b><br><span class="sm mut">Nenhuma resposta certa foi mostrada. Depois do conteúdo, aplique o pós-teste para medir o ganho de aprendizado.</span></span>${podeGerir() ? `<button class="b sm p" data-act="aplicarpos" data-id="${s.id}" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Aplicar pós-teste</button>` : "<span></span>"}</li>`
+     : e.abaixo.length
+-    ? `<li><span class="ai warn">${ic("warn")}</span><span><b>${e.abaixo.length} pessoa${e.abaixo.length === 1 ? "" : "s"} abaixo da meta de ${metaTxtS(s)}</b><br><span class="sm mut">${esc(e.abaixo.slice(0, 4).map(p => p.nome).join(", "))}${e.abaixo.length > 4 ? " e mais " + (e.abaixo.length - 4) : ""}</span></span><button class="b sm p" data-act="reaplicar" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Reaplicar para elas</button></li>`
++    ? `<li><span class="ai warn">${ic("warn")}</span><span><b>${e.abaixo.length} pessoa${e.abaixo.length === 1 ? "" : "s"} abaixo da meta de ${metaTxtS(s)}</b><br><span class="sm mut">${esc(e.abaixo.slice(0, 4).map(p => p.nome).join(", "))}${e.abaixo.length > 4 ? " e mais " + (e.abaixo.length - 4) : ""}</span></span>${podeGerir() ? `<button class="b sm p" data-act="reaplicar" ${t ? "" : "disabled"}>${ic("play", 'style="width:16px;height:16px"')}Reaplicar para elas</button>` : "<span></span>"}</li>`
+     : `<li><span class="ai ok">${ic("check")}</span><span><b>Todos atingiram a meta de ${metaTxtS(s)}</b></span><span></span></li>`);
+   if (e.fracas.length) ac.push(`<li><span class="ai warn">${ic("edit")}</span><span><b>${e.fracas.length} pergunta${e.fracas.length === 1 ? "" : "s"} com menos de 60% de acerto</b><br><span class="sm mut">${e.fracas.map(q => "P" + q.n).join(", ")}: vale rever o texto ou reforçar o conteúdo.</span></span>${t ? `<a class="b sm" href="#/editar/${t.id}">${ic("edit", 'style="width:16px;height:16px"')}Revisar no editor</a>` : "<span></span>"}</li>`);
+   if (semAss) ac.push(`<li><span class="ai warn">${ic("warn")}</span><span><b>${semAss} pessoa${semAss === 1 ? "" : "s"} sem assinatura de presença</b><br><span class="sm mut">A lista de presença em PDF deixa o espaço em branco para assinar no papel.</span></span><span></span></li>`);
+   ac.push(s.foto
+-    ? `<li><span class="ai ok">${ic("check")}</span><span><b>Foto da turma guardada</b><br><span class="sm mut">Sai no PDF de registro. ${dtc(s.fotoEm || s.fim)}</span></span><span class="acs"><label class="b sm" for="rl-foto">Trocar</label><button class="b sm bad" data-act="rmfoto">Remover</button></span></li>`
+-    : `<li><span class="ai">${ic("camera")}</span><span><b>Sem foto da turma</b><br><span class="sm mut">É a evidência impressa no PDF de registro.</span></span><label class="b sm" for="rl-foto">${ic("camera", 'style="width:16px;height:16px"')}Adicionar foto</label></li>`);
++    ? `<li><span class="ai ok">${ic("check")}</span><span><b>Foto da turma guardada</b><br><span class="sm mut">Sai no PDF de registro. ${dtc(s.fotoEm || s.fim)}</span></span>${podeGerir() ? `<span class="acs"><label class="b sm" for="rl-foto">Trocar</label><button class="b sm bad" data-act="rmfoto">Remover</button></span>` : "<span></span>"}</li>`
++    : `<li><span class="ai">${ic("camera")}</span><span><b>Sem foto da turma</b><br><span class="sm mut">É a evidência impressa no PDF de registro.</span></span>${podeGerir() ? `<label class="b sm" for="rl-foto">${ic("camera", 'style="width:16px;height:16px"')}Adicionar foto</label>` : "<span></span>"}</li>`);
+   return `<div class="k rsm q4"><div><b>${e.nota}%</b><span>Nota média</span></div>${s.mom === "pre" ? `<div><b>${e.c.pessoas.length}</b><span>Pessoas</span></div>` : `<div class="${e.c.efic < e.c.pessoas.length ? "w" : ""}"><b>${e.c.efic} de ${e.c.pessoas.length}</b><span>Atingiram a meta</span></div>`}<div><b>${e.c.pct}%</b><span>Acerto geral</span></div><div><b>${tempoTxt(e.tempo)}</b><span>Tempo médio por resposta</span></div></div>
+     <section class="k"><h3 class="rh">O que fazer agora</h3><ul class="acoes">${ac.join("")}</ul><input type="file" id="rl-foto" accept="image/*" class="sr"></section>
+     ${relCmp(s)}${relRefaz(s)}
+@@ -279,8 +279,8 @@
+   const r = CF.res;
+   const msg = !r ? "" : `<section class="k cf-r ${r.t}" role="status"><span class="ai ${r.t === "ok" ? "ok" : "warn"}">${ic(r.t === "ok" ? "shield" : "warn")}</span><div><b>${esc(r.titulo)}</b><p class="sm" style="margin:4px 0 0">${r.texto}</p></div></section>`;
+   $("#app").innerHTML = `<section class="k"><h3 class="rh">Digite o código do rodapé do PDF</h3>
+-      <form data-form="conferir" class="cf-f"><div class="fd" style="flex:1;min-width:240px"><label for="cf-c">Código de conferência</label><input class="in mono" id="cf-c" value="${esc(CF.cod)}" placeholder="SAB-XXXX-XXXX-XXXX-XXXX-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false"></div><button class="b p" type="submit">${ic("shield")}Conferir</button></form>
+-      <div class="cf-ou sm mut">ou confira um arquivo de sessão exportado: <label class="b sm" for="cf-arq">${ic("upload", 'style="width:16px;height:16px"')}Escolher .json</label><input type="file" id="cf-arq" accept=".json,application/json" class="sr"></div></section>
++      <form data-form="conferir" class="cf-f"><div class="fd" style="flex:1;min-width:240px"><label for="cf-c">Código de autenticação</label><input class="in mono" id="cf-c" value="${esc(CF.cod)}" placeholder="SAB-XXXX-XXXX-XXXX-XXXX-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false"></div><button class="b p" type="submit">${ic("shield")}Autenticar</button></form>
++      <div class="cf-ou sm mut">ou autentique um arquivo de sessão exportado: <label class="b sm" for="cf-arq">${ic("upload", 'style="width:16px;height:16px"')}Escolher .json</label><input type="file" id="cf-arq" accept=".json,application/json" class="sr"></div></section>
+     ${msg}
+     ${seloConsulta()}
+     <section class="k"><h3 class="rh">Sessões guardadas neste aparelho</h3>${l.length ? `<div class="rtw"><table class="rtb"><thead><tr><th>Sessão</th><th class="hide-m">Data</th><th>Código</th><th>Integridade</th></tr></thead><tbody>${l.map(x => { const ok = integra(x); return `<tr><td><b>${esc(x.titulo)}</b><br><span class="sm mut">${esc(TIPO_TXT[tipoSessao(x)])}</span></td><td class="hide-m sm">${dtc(x.fim)}</td><td class="mono sm">${esc(x.cod)}${x.codTardio ? ' <span class="chip">gerado depois</span>' : ""}</td><td><span class="chip ${ok ? "ok" : "bad"}">${ok ? "Íntegro" : "Alterado depois de encerrar"}</span></td></tr>`; }).join("")}</tbody></table></div>` : '<p class="sm mut" style="margin:0">Nenhuma sessão encerrada ainda.</p>'}</section>
+@@ -297,7 +297,7 @@
+   if (!s) { CF.res = {t: "no", titulo: "Nenhuma sessão deste aparelho tem esse código", texto: "Pode ser de outro aparelho (importe os dados em Ajustes) ou o PDF foi alterado. Se foi aplicada em outro aparelho, confira também pelo arquivo de sessão (.json)."}; return; }
+   const e = estat(s);
+   if (!integra(s)) { CF.res = {t: "no", titulo: "Atenção: a sessão foi alterada depois de encerrada", texto: `O código ${esc(c)} é de “${esc(s.titulo)}” (${dtc(s.fim)}), mas os dados guardados hoje geram outro código. Não use este registro sem explicar a diferença.`}; return; }
+-  CF.res = {t: "ok", titulo: "Registro confere", texto: `${esc(s.titulo)} (${verTxt(s)}), ${dtc(s.fim)}, instrutor ${esc(s.instrutor || "não informado")}. ${e.c.pessoas.length} pessoa${e.c.pessoas.length === 1 ? "" : "s"}, acerto geral de ${e.c.pct}%. Os dados guardados batem com o código do PDF. <a href="#/relatorios/${s.id}">Abrir o relatório</a>.${tipoSessao(s) !== "real" ? " <b>Esta sessão é " + (tipoSessao(s) === "teste" ? "de teste" : "um ensaio com simulados") + ", não é registro oficial.</b>" : ""}${s.codTardio ? " O código foi gerado depois do encerramento (sessão anterior à v0.5.0)." : ""}`};
++  CF.res = {t: "ok", titulo: "Documento autêntico", texto: `${esc(s.titulo)} (${verTxt(s)}), ${dtc(s.fim)}, instrutor ${esc(s.instrutor || "não informado")}. ${e.c.pessoas.length} pessoa${e.c.pessoas.length === 1 ? "" : "s"}, acerto geral de ${e.c.pct}%. Os dados guardados batem com o código do PDF. <a href="#/relatorios/${s.id}">Abrir o relatório</a>.${tipoSessao(s) !== "real" ? " <b>Esta sessão é " + (tipoSessao(s) === "teste" ? "de teste" : "um ensaio com simulados") + ", não é registro oficial.</b>" : ""}${s.codTardio ? " O código foi gerado depois do encerramento (sessão anterior à v0.5.0)." : ""}`};
+ }
+ function conferirArquivo(arq) {
+   const fr = new FileReader();
+@@ -343,7 +343,7 @@
+ document.addEventListener("change", e => {
+   const t = e.target;
+   if (t.id === "rl-s") { REL.sid = t.value; ir("#/relatorios/" + t.value); }
+-  else if (t.id === "rl-foto" && t.files[0]) { const s = sessaoRel(REL.sid); if (s) salvarFoto(s, t.files[0]); t.value = ""; }
++  else if (t.id === "rl-foto" && t.files[0] && podeGerir()) { const s = sessaoRel(REL.sid); if (s) salvarFoto(s, t.files[0]); t.value = ""; }
+   else if (t.id === "c-logo" && t.files[0]) { salvarLogo(t.files[0]); t.value = ""; }
+   else if (t.id === "cf-arq" && t.files[0]) { conferirArquivo(t.files[0]); t.value = ""; }
+ });
+diff -ruN /tmp/src-p3/v11.css src/v11.css
+--- /tmp/src-p3/v11.css	2026-11-16 06:22:11.944556409 -0300
++++ src/v11.css	2026-11-16 09:28:30.985860792 -0300
+@@ -1,14 +1,14 @@
+ /* ===== v1.1.0 ===== */
+ /* telão: barra de opções, projetor e apresentação */
+-.tvbar{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:calc(10px + env(safe-area-inset-right,0px));z-index:20;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;padding:6px;border-radius:14px;background:rgb(8 20 19/.78);backdrop-filter:blur(6px);box-shadow:var(--e3);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .18s,transform .18s}
++.tvbar{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:calc(10px + env(safe-area-inset-right,0px));z-index:20;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;padding:6px;border-radius:var(--r);background:var(--tvBg);backdrop-filter:blur(6px);box-shadow:var(--e3);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity var(--duration-quick,150ms) var(--ease-out,ease-out),transform var(--duration-quick,150ms) var(--ease-out,ease-out)}
+ .tvbar.on{opacity:1;transform:none;pointer-events:auto}
+-.tvbar .b{min-height:36px;padding:0 12px;gap:6px;background:transparent;color:#F2F7F6;border-color:rgb(255 255 255/.28);font-size:14px}
+-.tvbar .b[aria-pressed=true]{background:var(--sabia);color:#fff;border-color:transparent}
++.tvbar .b{min-height:36px;padding:0 12px;gap:6px;background:transparent;color:var(--tvTx);border-color:rgb(255 255 255/.28);font-size:14px}
++.tvbar .b[aria-pressed=true]{background:var(--tvOn);color:var(--altTxEsc);border-color:transparent}
+ .tvbar .b .i{width:16px;height:16px}
+ .tvbar kbd{font:600 11px var(--f-mono);padding:1px 5px;border-radius:5px;border:1px solid currentColor;opacity:.75}
+-.tvdica{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:20;max-width:calc(100vw - 32px);padding:10px 18px;border-radius:999px;background:rgb(8 20 19/.88);color:#F2F7F6;font-size:15px;text-align:center}
++.tvdica{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:20;max-width:calc(100vw - 32px);padding:10px 18px;border-radius:999px;background:var(--tvBg);color:var(--tvTx);font-size:15px;text-align:center}
+ .telfull.idle.apr{cursor:none}
+-.telfull.proj .tel{--tel-bg:#FFFFFF;--tel-bg2:#EDF2F1;--tel-card:#FFFFFF;--tel-ink:#000000;--tel-ink2:#1E2D2C;--tel-line:#6F8785;font-weight:500}
++.telfull.proj .tel{--tel-anel:#000000;--tel-bg:#FFFFFF;--tel-bg2:#f2eee4;--tel-card:#FFFFFF;--tel-ink:#000000;--tel-ink2:#2a2519;--tel-line:#7d7462;--tel-a:#7d5a1c;--tel-aS:rgba(125,90,28,.14);--tel-aTx:#5c4214;--tel-onA:#fff;--tel-ok:#2f7d4f;font-weight:500}
+ .telfull.proj .tel .tfoot,.telfull.proj .tel .tt span{font-weight:600}
+ @media (prefers-reduced-motion:reduce){.tvbar{transition:none}}
+ /* painel do treinamento (lateral) */
+diff -ruN /tmp/src-p3/v14.css src/v14.css
+--- /tmp/src-p3/v14.css	2026-11-16 06:22:11.944253684 -0300
++++ src/v14.css	2026-11-16 06:28:43.041562972 -0300
+@@ -15,18 +15,18 @@
+ /* celular: escolher e montar */
+ .bon-linha{display:grid;grid-template-columns:140px 1fr;gap:4px 12px;align-items:center}
+ .bon-linha .b{grid-column:1 / -1;justify-self:start}
+-.bon-m{width:140px;height:140px;background:var(--sunk);border-radius:16px}
++.bon-m{width:140px;height:140px;background:var(--sunk);border-radius:var(--r)}
+ .bon-topo{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center}
+-.bon-g{width:150px;height:150px;background:var(--sunk);border-radius:20px}
++.bon-g{width:150px;height:150px;background:var(--sunk);border-radius:var(--r)}
+ .bon-tt{display:grid;gap:4px;justify-items:start;min-width:0}.bon-tt h1{margin:0;font-size:20px}.bon-tt .sm{overflow-wrap:anywhere}
+ .bon-abas{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+ .bon-aba{min-height:40px;padding:0 6px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
+ .bon-aba.on{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+ .bon-op{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:max-content;gap:10px;max-height:56dvh;overflow:auto;padding:2px}
+-.bon-i{display:grid;align-content:start;gap:4px;justify-items:center;padding:6px 6px 8px;border-radius:16px;border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit;min-height:44px}
++.bon-i{display:grid;align-content:start;gap:4px;justify-items:center;padding:6px 6px 8px;border-radius:var(--r);border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit;min-height:44px}
+ .bon-i.on{border-color:var(--sabia);background:var(--warn-soft,var(--sunk))}
+ .bon-n{font-size:14px;font-weight:600;line-height:1.2;text-align:center;overflow-wrap:anywhere}
+-.bon-mini{display:block;width:100%;aspect-ratio:1/1;overflow:hidden;line-height:0;border-radius:10px;background:var(--sunk)}
++.bon-mini{display:block;width:100%;aspect-ratio:1/1;overflow:hidden;line-height:0;border-radius:var(--rs);background:var(--sunk)}
+ .bon-mini img{width:100%;height:100%;object-fit:contain}
+ .bon-cab .bon-mini img,.bon-det .bon-mini img{transform:scale(1.5);transform-origin:37% 34%}
+ .bon-pes .bon-mini img{transform:scale(1.33);transform-origin:40% 55%}

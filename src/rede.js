@@ -159,12 +159,13 @@ function pubDe(s) {
   const sn = snap(s), f = s.fase;
   return {
     meta: {sid: s.id, mom: s.mom || "", titulo: s.titulo, instrutor: s.instrutor || "", meta: s.meta, entrada: !!s.entrada, ranking: !!s.aj.ranking, confirmar: !!s.aj.confirmar, setores: s.setores || [], roster: s.roster || [], rs: (s.roster || []).map(n => (pessoaPorNome(n) || {}).setor || ""), nPart: s.part.length, nPerg: sn.nPerg},
-    fase: {etapa: f.etapa, idx: f.idx, k: f.idx + ":" + f.t0, dur: f.dur || 0, numPerg: sn.numPerg, totalPerg: sn.totalPerg},
+    fase: {etapa: f.etapa, idx: f.idx, k: f.idx + ":" + f.t0, dur: f.dur || 0, conf: f.conf ? 1 : 0, numPerg: sn.numPerg, totalPerg: sn.totalPerg},
     item: sn.item ? Object.assign({}, sn.item, {voz: undefined}) : null   /* a voz gravada fica no aparelho do instrutor: nunca vai para o Firebase */
   };
 }
 function resDe(s) {
   const f = s.fase; if (f.etapa !== "resultado" && f.etapa !== "podio") return null;
+  if (f.conf) return null; // v1.5.1: ainda conferindo; o resultado de cada um vai quando o segundo acabar
   if (s.mom === "pre") return null; // pré-teste: ninguém vê acerto nem pontos
   const c = calc(s), pos = new Map(c.ranking.map((p, k) => [p.id, k + 1])), out = {};
   c.pessoas.forEach(p => {
@@ -246,7 +247,7 @@ document.addEventListener("submit", e => {
   const f = e.target.closest("[data-form='roster']"); if (!f) return; e.preventDefault();
   const s = sala(f.dataset.id); if (!s) return;
   const nomes = [...new Set($("#ro-t").value.split("\n").map(limpaNome).filter(Boolean))].slice(0, 300);
-  s.roster = nomes; salvar(); $("#dlg").close(); mudou(s); aviso(nomes.length ? nomes.length + " nomes na lista" : "Lista removida");
+  s.roster = nomes; salvar(); $("#dlg").close(); mudou(s); aviso(nomes.length ? nomes.length + " nomes na lista" : "Lista removida", null, null, "ok");
 });
 document.addEventListener("click", e => {
   const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act;
@@ -255,6 +256,6 @@ document.addEventListener("click", e => {
     const st = $("#fbSt"); if (st) { st.className = "chip"; st.textContent = "Testando..."; }
     Rede.testar().then(r => { const x = $("#fbSt"); if (x) { x.className = "chip " + (r.ok ? "ok" : "bad"); x.textContent = r.msg; } });
   }
-  else if (a === "fbregras") { try { navigator.clipboard.writeText(REGRAS_FIREBASE).then(() => aviso("Regras copiadas"), () => aviso("Não deu para copiar. Selecione o texto e copie.")); } catch(x) { aviso("Não deu para copiar. Selecione o texto e copie."); } }
+  else if (a === "fbregras") { try { navigator.clipboard.writeText(REGRAS_FIREBASE).then(() => aviso("Regras copiadas", null, null, "ok"), () => aviso("Não deu para copiar. Selecione o texto e copie.", null, null, "erro")); } catch(x) { aviso("Não deu para copiar. Selecione o texto e copie.", null, null, "erro"); } }
   else if (a === "rmpart") { const s = sala(rota().id); if (s && s.fase.etapa === "espera") { s.part = s.part.filter(p => p.id !== el.dataset.id); mudou(s); } }
 });

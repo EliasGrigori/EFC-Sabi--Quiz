@@ -19,10 +19,10 @@ function contaAtiva() { return !!(INT.conta && !intSaiu()); }
 function perfilAtual() { const p = contaAtiva() ? INT.conta.perfil : (S && S.cfg && S.cfg.perfil); return PERFIS[p] ? p : "primario"; }
 const podeGerir = () => perfilAtual() !== "colaborador";
 const podeObs = () => podeGerir();
-const ROTAS_COL = ["inicio", "treinos", "relatorios", "conferir", "ajustes", "mais", "entrar"];
+const ROTAS_COL = ["inicio", "treinos", "pendencias", "relatorios", "conferir", "ajustes", "mais", "entrar"];
 const rotaOk = v => podeGerir() || ROTAS_COL.includes(v);
 const navOk = id => rotaOk(id);
-const ACOES_GERIR = ["novo", "dlg", "usarmodelo", "excluir", "duplicar", "impor", "preparar", "apagartudo", "apagarok", "obsadd", "obsdel"];
+const ACOES_GERIR = ["novo", "dlg", "usarmodelo", "excluir", "duplicar", "impor", "preparar", "apagartudo", "apagarok", "obsadd", "obsdel", "aplicarpend", "baixa", "rmfoto", "reaplicar", "aplicarpos"];   /* v1.6.0 parte 4 (P1): o Colaborador consulta Pendências, sem aplicar nem dar baixa */
 
 /* ---------- ativação do aparelho ---------- */
 const ativado = () => lsG(LS_ATIV) === "1" || contaAtiva();
@@ -145,10 +145,11 @@ function ajPerfil() {
   </section>`;
 }
 function ajTelao() {
-  const seg = (campo, lista) => `<div class="seg" role="group" style="display:flex">${lista.map(([k, n]) => `<button style="flex:1" data-act="padrao" data-c="${campo}" data-v="${k}" aria-pressed="${(S.cfg[campo] || lista[0][0]) === k}">${n}</button>`).join("")}</div>`;
+  /* v1.6.0: as escolhas viram lista retrátil (aprovado em 15/11) */
+  const seg = (campo, lista, rot) => escolha({id: "aj-" + campo, rotulo: rot, act: "padrao", attrs: `data-c="${campo}"`, valor: S.cfg[campo] || lista[0][0], ops: lista.map(([k, n]) => ({v: k, nome: n}))});
   return `<section class="k" id="aj-telao"><h3>Telão e sala</h3>
-    <div class="fd"><span class="lbl">Telão ao aplicar</span>${seg("telaoPadrao", [["escuro", "Escuro"], ["claro", "Claro"]])}</div>
-    <div class="fd" style="margin-top:10px"><span class="lbl">Som ao aplicar</span>${seg("somPadrao", [["ligado", "Ligado"], ["desligado", "Desligado"]])}</div>
+    <div class="fd"><span class="lbl">Telão ao aplicar</span>${seg("telaoPadrao", [["escuro", "Escuro"], ["claro", "Claro"]], "Telão ao aplicar")}</div>
+    <div class="fd" style="margin-top:10px"><span class="lbl">Som ao aplicar</span>${seg("somPadrao", [["ligado", "Ligado"], ["desligado", "Desligado"]], "Som ao aplicar")}</div>
     <p class="sm mut" style="margin:10px 0 0">Vale como ponto de partida em cada nova sessão. Em Aplicar você ainda pode mudar.</p></section>`;
 }
 function ajDemo() {
@@ -177,8 +178,25 @@ function ajIntegra() {
 function ajObs() {
   return `<section class="k" id="aj-obs"><h3>Observações</h3><div class="fd"><label for="c-obs">Anotações suas sobre o uso do app</label><textarea class="in" id="c-obs" data-c="obs" rows="4" maxlength="1000" placeholder="Fica só neste aparelho">${esc(S.cfg.obs || "")}</textarea></div></section>`;
 }
-const AJ_IND = [["aj-ident", "Identificação"], ["aj-perfil", "Perfil e conta"], ["aj-aparencia", "Aparência"], ["aj-telao", "Telão e sala"], ["aj-demo", "Demonstração"], ["aj-setores", "Setores e pessoas"], ["aj-nuvem", "Celulares"], ["aj-armaz", "Armazenamento"], ["aj-integra", "Integração"], ["aj-obs", "Observações"]];
-const ajIndice = () => `<nav class="aj-ind k" aria-label="Seções dos Ajustes" style="grid-column:1/-1">${AJ_IND.map(([id, n]) => `<button class="sc" data-act="ajir" data-v="${id}">${n}</button>`).join("")}</nav>`;
+const AJ_IND = [["aj-ident", "Identificação"], ["aj-perfil", "Perfil e conta"], ["aj-aparencia", "Aparência"], ["aj-telao", "Telão e sala"], ["aj-nuvem", "Celulares na sala"], ["aj-demo", "Demonstração"], ["aj-setores", "Setores e pessoas"], ["aj-armaz", "Armazenamento"], ["aj-integra", "Integração"], ["aj-obs", "Observações"]];
+/* v1.6.0: o índice dos Ajustes vira uma lista em grupos (antes eram 10 botões soltos) */
+const AJ_GRUPOS = [["Você e este aparelho", ["aj-ident", "aj-perfil", "aj-aparencia"]], ["Aplicação", ["aj-telao", "aj-nuvem", "aj-demo"]], ["Cadastros", ["aj-setores"]], ["Dados", ["aj-armaz", "aj-integra", "aj-obs"]]];
+const ajIndice = () => `<nav class="aj-ind" aria-label="Seções dos Ajustes">${AJ_GRUPOS.map(([g, ids]) => `<div class="aj-ig">${g}</div>${ids.map(id => `<button class="aj-ii" data-act="ajir" data-v="${id}">${AJ_IND.find(x => x[0] === id)[1]}</button>`).join("")}`).join("")}</nav>`;
+/* marca no índice a seção que está na tela */
+let ajEspiao = null, ajTocou = 0;
+function ajMarca(id) { document.querySelectorAll(".aj-ii").forEach(b => { if (b.dataset.v === id) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); }); }
+function ajEspia() {
+  if (ajEspiao) { ajEspiao.disconnect(); ajEspiao = null; }
+  const raiz = $("#app"), ids = AJ_IND.map(x => x[0]); if (!document.querySelector(".aj-ii") || !("IntersectionObserver" in window)) return;
+  ajMarca(ids[0]);
+  const vis = new Map();
+  const decide = () => { if (Date.now() < ajTocou) return;
+    if (raiz.scrollTop + raiz.clientHeight >= raiz.scrollHeight - 4) { ajMarca(ids[ids.length - 1]); return; }   /* no fim, a última seção nunca chega ao alto */
+    const em = ids.filter(id => vis.get(id)); if (em.length) ajMarca(em[0]); };
+  ajEspiao = new IntersectionObserver(es => { es.forEach(e => vis.set(e.target.id, e.isIntersecting)); decide(); }, {root: raiz, rootMargin: "0px 0px -55% 0px"});
+  ids.forEach(id => { const el = document.getElementById(id); if (el) ajEspiao.observe(el); });
+  raiz.onscroll = () => { if (document.querySelector(".aj-ii")) decide(); };
+}
 
 /* ---------- ganchos do render ---------- */
 function intPosRender() {
@@ -191,7 +209,7 @@ function intPosRender() {
 function intAntesRender(v) {   // devolve true se já tratou a tela
   document.body.classList.remove("modo-porta");
   if (portaFechada(v)) { vPorta(); return true; }
-  if (!rotaOk(v)) { aviso("O perfil Colaborador não abre esta tela."); location.replace("#/inicio"); return true; }
+  if (!rotaOk(v)) { aviso("O perfil Colaborador não abre esta tela.", null, null, "erro"); location.replace("#/inicio"); return true; }
   return false;
 }
 window.EFC_API = {
@@ -201,31 +219,31 @@ window.EFC_API = {
 
 /* ---------- eventos ---------- */
 document.addEventListener("click", e => {
-  if (!podeGerir()) { const g = e.target.closest("[data-act]"); if (g && ACOES_GERIR.includes(g.dataset.act)) { e.stopPropagation(); e.preventDefault(); aviso("O perfil Colaborador só consulta."); return; } }
+  if (!podeGerir()) { const g = e.target.closest("[data-act]"); if (g && ACOES_GERIR.includes(g.dataset.act)) { e.stopPropagation(); e.preventDefault(); aviso("O perfil Colaborador só consulta.", null, null, "erro"); return; } }
 }, true);
 document.addEventListener("click", e => {
   const el = e.target.closest("[data-act]"); if (!el) return; const a = el.dataset.act, v = el.dataset.v, id = el.dataset.id;
-  if (a === "ajir") { const s = document.getElementById(v); if (s) { s.scrollIntoView({behavior: "smooth", block: "start"}); s.setAttribute("tabindex", "-1"); s.focus({preventScroll: true}); } }
+  if (a === "ajir") { const s = document.getElementById(v); if (s) { ajMarca(v); ajTocou = Date.now() + 900; s.scrollIntoView({behavior: "smooth", block: "start"}); s.setAttribute("tabindex", "-1"); s.focus({preventScroll: true}); } }
   else if (a === "padrao") { S.cfg[el.dataset.c] = v; salvar(); intPosRender(); render(); }
   else if (a === "porta") { S.cfg.porta = v === "1"; if (S.cfg.porta) ativar(); salvar(); render(); aviso(S.cfg.porta ? "Porta ligada. Este aparelho já está ativado." : "Porta desligada."); }
-  else if (a === "ativarcopiar") { const t = linkAtivar(); (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => aviso("Link copiado"), () => aviso("Link: " + t)); }
-  else if (a === "intcfgrem") { lsS(LS_ICFG, null); lsS(LS_ICONTA, null); lsS(LS_SAIU, null); INT.conta = null; INT.p = null; INT.estado = "off"; INT.msg = ""; render(); aviso("Configuração removida"); }
+  else if (a === "ativarcopiar") { const t = linkAtivar(); (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => aviso("Link copiado", null, null, "ok"), () => aviso("Link: " + t)); }
+  else if (a === "intcfgrem") { lsS(LS_ICFG, null); lsS(LS_ICONTA, null); lsS(LS_SAIU, null); INT.conta = null; INT.p = null; INT.estado = "off"; INT.msg = ""; render(); aviso("Configuração removida", null, null, "ok"); }
   else if (a === "intsair") { lsS(LS_SAIU, "1"); render(); aviso("Você saiu só do Sabiá. O EFClaudian continua conectado."); }
   else if (a === "intsairtudo") { lsS(LS_SAIU, null); lsS(LS_ICONTA, null); INT.conta = null; (INT.auth ? INT.auth.signOut() : Promise.resolve()).catch(() => {}).then(() => render()); }
   else if (a === "intvoltar") { lsS(LS_SAIU, null); intAuthMudou(INT.user); }
-  else if (a === "democarregar") { MODELOS.forEach(m => { if (!S.treinamentos.some(t => t.titulo === m.titulo)) criarDeModelo(m); }); salvar(); render(); aviso("Exemplos carregados"); }
-  else if (a === "demolimpar") { const ant = S.sessoes.slice(); S.sessoes = S.sessoes.filter(s => !(s.aj && s.aj.teste)); salvar(); render(); aviso("Sessões de teste apagadas", "Desfazer", () => { S.sessoes = ant; salvar(); render(); }); }
-  else if (a === "obsdel" && UI.ed) { const t = treino(UI.ed.id); if (t && podeObs()) { const ant = (t.obs || []).slice(); t.obs = ant.filter(o => o.id !== id); salvar(); pintaObs(); aviso("Observação excluída", "Desfazer", () => { t.obs = ant; salvar(); pintaObs(); }); } }
+  else if (a === "democarregar") { MODELOS.forEach(m => { if (!S.treinamentos.some(t => t.titulo === m.titulo)) criarDeModelo(m); }); salvar(); render(); aviso("Exemplos carregados", null, null, "ok"); }
+  else if (a === "demolimpar") { const ant = S.sessoes.slice(); S.sessoes = S.sessoes.filter(s => !(s.aj && s.aj.teste)); salvar(); render(); aviso("Sessões de teste apagadas", "Desfazer", () => { S.sessoes = ant; salvar(); render(); }, "ok"); }
+  else if (a === "obsdel" && UI.ed) { const t = treino(UI.ed.id); if (t && podeObs()) { const ant = (t.obs || []).slice(); t.obs = ant.filter(o => o.id !== id); salvar(); pintaObs(); aviso("Observação excluída", "Desfazer", () => { t.obs = ant; salvar(); pintaObs(); }, "ok"); } }
 });
 function pintaObs() { const b = $("#obs-box"), t = UI.ed && treino(UI.ed.id); if (b && t) b.innerHTML = obsHtml(t); }
 document.addEventListener("submit", async e => {
   const f = e.target.closest("[data-form]"); if (!f) return; const k = f.dataset.form;
-  if (k === "intcfg") { e.preventDefault(); const c = lerConfigTexto(($("#int-cfg") || {}).value || ""); if (!c) { INT.msg = "Não achei apiKey e projectId no texto colado."; const er = $("#int-er"); if (er) er.textContent = INT.msg; return; } lsS(LS_ICFG, JSON.stringify(c)); INT.msg = ""; INT.p = null; render(); intArrancar(); aviso("Configuração guardada neste aparelho"); }
+  if (k === "intcfg") { e.preventDefault(); const c = lerConfigTexto(($("#int-cfg") || {}).value || ""); if (!c) { INT.msg = "Não achei apiKey e projectId no texto colado."; const er = $("#int-er"); if (er) er.textContent = INT.msg; return; } lsS(LS_ICFG, JSON.stringify(c)); INT.msg = ""; INT.p = null; render(); intArrancar(); aviso("Configuração guardada neste aparelho", null, null, "ok"); }
   else if (k === "intlogin") {
     e.preventDefault(); if (INT.ocup) return;
     const lg = ($("#int-lg") || $("#int-lg2") || {}).value, sn = ($("#int-sn") || $("#int-sn2") || {}).value;
     INT.ocup = true; INT.msg = "";
-    try { await intEntrar(lg, sn); INT.msg = ""; INT.ocup = false; render(); aviso("Conectado como " + INT.conta.nome); }
+    try { await intEntrar(lg, sn); INT.msg = ""; INT.ocup = false; render(); aviso("Conectado como " + INT.conta.nome, null, null, "ok"); }
     catch (er) { INT.ocup = false; INT.msg = intErroTexto(er); render(); }
   }
   else if (k === "obsadd") { e.preventDefault(); const t = UI.ed && treino(UI.ed.id), i = $("#obs-t"); if (!t || !podeObs() || !i) return; const tx = i.value.trim(); if (!tx) return; (t.obs = t.obs || []).push({id: uid(), txt: tx.slice(0, 300), por: (contaAtiva() ? INT.conta.nome : S.cfg.instrutor) || PERFIS[perfilAtual()], em: Date.now()}); salvar(); pintaObs(); }

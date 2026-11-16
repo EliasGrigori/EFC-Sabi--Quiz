@@ -64,7 +64,7 @@ function acertaRevPodio() {
 }
 function guardaRev() {
   acertaRevPodio();
-  const f = CE.pub && CE.pub.fase, m = CE.pub && CE.pub.meta; if (!CE.entrou || !f || f.etapa !== "resultado" || !m || m.mom === "pre") return;
+  const f = CE.pub && CE.pub.fase, m = CE.pub && CE.pub.meta; if (!CE.entrou || !f || f.etapa !== "resultado" || f.conf || !m || m.mom === "pre") return;
   const it = itemCel(); if (!it || it.ensaio) return;
   const r = CE.res && CE.res.i === f.idx ? CE.res : null; if (!r || ![1, 0, -1].includes(r.ok)) return;
   const mine = CE.resp[f.idx], ja = CE.rev[f.idx];
@@ -96,7 +96,7 @@ function pintaCel() {
   const {tela, html} = montaCel();
   if (html === CE.html && tela === CE.tela) return;
   if (tela !== CE.tela) ouvirParar();
-  CE.tela = tela; CE.html = html; $("#app").innerHTML = html; pintaTelaCel();
+  const telaAntes = CE.tela; CE.tela = tela; CE.html = html; $("#app").innerHTML = html; pintaTelaCel(); if (typeof celMov === "function") celMov(telaAntes, tela);
 }
 function pintaTelaCel() { tickTempo(); const c = $("#cassin"); if (c) prepararAssinatura(c); }
 function montaCel() {
@@ -105,7 +105,7 @@ function montaCel() {
   if (!CE.chave) return {tela: "chave", html: `<div class="cc">${cabCel()}<form class="cb" data-form="celchave"><h1>Entrar na sala</h1><p class="mut" style="margin:0">Digite a chave de 6 números que está no telão.</p>
     <div class="fd"><label for="ce-k">Chave da sala</label><input class="in big" id="ce-k" inputmode="numeric" pattern="[0-9 ]*" maxlength="7" autocomplete="off" placeholder="000 000"></div><button class="b p g2" type="submit">Entrar</button></form></div>`};
   if (CE.erro === "semdb") return {tela: "erro", html: `<div class="cc">${cabCel()}<div class="cb"><h1>Use o QR ou o link</h1><p class="mut" style="margin:0">Este aparelho ainda não sabe onde fica a sala. Aponte a câmera para o QR do telão ou abra o link que o instrutor enviou. Nas próximas vezes basta digitar a chave.</p><a class="b" href="#/entrar">Digitar outra chave</a></div></div>`};
-  if (!CE.visto) return {tela: "conectando", html: `<div class="cc">${cabCel()}<div class="cb ct"><div class="rodar"></div><h1>${CE.st === "erro" ? "Não consegui conectar" : "Conectando à sala..."}</h1><p class="mut" style="margin:0">${CE.st === "erro" ? "Confira a internet e tente de novo." : "Aguarde um instante."}</p>${CE.st === "erro" ? `<button class="b" data-act="cretry">Tentar de novo</button>` : ""}</div></div>`};
+  if (!CE.visto) return {tela: "conectando", html: `<div class="cc">${cabCel()}<div class="cb ct">${CE.st === "erro" ? "" : `<span class="cf-pt" aria-hidden="true"><i></i><i></i><i></i></span>`}<h1>${CE.st === "erro" ? "Não consegui conectar" : "Conectando à sala..."}</h1><p class="mut" style="margin:0">${CE.st === "erro" ? "Confira a internet e tente de novo." : "Aguarde um instante."}</p>${CE.st === "erro" ? `<button class="b" data-act="cretry">Tentar de novo</button>` : ""}</div></div>`};
   if (CE.vista && (CE.entrou || CE.jaEntrou) && errosCel().length) return CE.vista === "rever" ? telaRever() : telaRefazer();
   if (!CE.pub) return CE.jaEntrou
     ? {tela: "fim", html: `<div class="cc">${cabCel()}<div class="cb ct"><h1>A sala foi encerrada</h1><p class="mut" style="margin:0">Obrigado por participar.</p>${blocoRevisao()}<a class="b" href="#/entrar">Entrar em outra sala</a></div></div>`}
@@ -136,10 +136,14 @@ function montaCel() {
       corpo = `<div class="ords">${ord.map(k => `<button class="ot ${pos(k) >= 0 ? "on" : ""}" data-act="cord" data-k="${k}" ${pos(k) >= 0 ? "disabled" : ""}><b>${pos(k) >= 0 ? pos(k) + 1 : ""}</b><span>${esc(it.alts[k])}</span></button>`).join("")}</div>
         <div class="bar2"><button class="b" data-act="cordz" ${CE.ord.length ? "" : "disabled"}>Desfazer</button><button class="b p" data-act="cordok" ${CE.ord.length === ord.length && !CE.enviando ? "" : "disabled"}>${CE.enviando ? "Enviando..." : "Enviar ordem"}</button></div><p class="mut sm" style="margin:0">Toque nos passos na ordem certa.</p>`;
     } else {
-      corpo = `<div class="tiles">${it.alts.map((a, k) => `<button class="ct2 ${CE.sel === k ? "sel" : ""}" style="background:${COR_ALT[k % 4]}" data-act="cresp" data-k="${k}" ${CE.enviando ? "disabled" : ""}><span class="sh2"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span><span>${esc(a)}</span></button>`).join("")}</div>
+      corpo = `<div class="tiles">${it.alts.map((a, k) => `<button class="ct2 k${k % 4} ${CE.sel === k ? "sel" : ""}" style="background:${COR_ALT[k % 4]}" data-act="cresp" data-k="${k}" ${CE.enviando ? "disabled" : ""}><span class="sh2"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span><span>${esc(a)}</span></button>`).join("")}</div>
         ${m.confirmar ? `<button class="b p g2" data-act="cconf" ${CE.sel === null || CE.enviando ? "disabled" : ""}>${CE.enviando ? "Enviando..." : "Confirmar resposta"}</button>` : ""}`;
     }
     return {tela: "pergunta", html: `<div class="cc">${cabCel()}<div class="cb">${faixa(rot, tempo)}<h1 class="q">${esc(it.enunciado)}</h1>${btnOuvir("p")}${corpo}</div></div>`};
+  }
+  if (t === "resultado" && it && f.conf) {
+    const mine = CE.resp[f.idx];
+    return {tela: "conferindo", html: `<div class="cc">${cabCel()}<div class="cb ct">${faixa(it.ensaio ? "Pergunta de teste" : `Pergunta ${f.numPerg} de ${f.totalPerg}`)}<span class="cf-pt" aria-hidden="true"><i></i><i></i><i></i></span><h1>Conferindo respostas...</h1><p class="mut" style="margin:0">${mine === undefined ? "O resultado aparece em instantes." : "Sua resposta foi enviada. O resultado aparece em instantes."}</p></div></div>`};
   }
   if (t === "resultado" && it) {
     const r = CE.res && CE.res.i === f.idx ? CE.res : null, rank = m.ranking && r && r.pos ? `<p class="rk2">Você está em <b>${r.pos}º</b> de ${r.np}${it.ensaio ? "" : " · " + r.tot + " pontos"}</p>` : "";
@@ -210,7 +214,7 @@ function telaRefazer() {
     const ord = atual.o || atual.a.map((_, k) => k), pos = k => rf.ord.indexOf(k);
     corpo = `<div class="ords">${ord.map(k => `<button class="ot ${pos(k) >= 0 ? "on" : ""}" data-act="crord" data-k="${k}" ${pos(k) >= 0 ? "disabled" : ""}><b>${pos(k) >= 0 ? pos(k) + 1 : ""}</b><span>${esc(atual.a[k])}</span></button>`).join("")}</div>
       <div class="bar2"><button class="b" data-act="crordz" ${rf.ord.length ? "" : "disabled"}>Desfazer</button><button class="b p" data-act="crordok" ${rf.ord.length === ord.length ? "" : "disabled"}>Conferir ordem</button></div><p class="mut sm" style="margin:0">Toque nos passos na ordem certa.</p>`;
-  } else corpo = `<div class="tiles">${atual.a.map((a, k) => `<button class="ct2" style="background:${COR_ALT[k % 4]}" data-act="crtoca" data-k="${k}"><span class="sh2"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span><span>${esc(a)}</span></button>`).join("")}</div>`;
+  } else corpo = `<div class="tiles">${atual.a.map((a, k) => `<button class="ct2 k${k % 4}" style="background:${COR_ALT[k % 4]}" data-act="crtoca" data-k="${k}"><span class="sh2"><svg viewBox="0 0 24 24" aria-hidden="true">${FORMAS[k % 4]}</svg></span><span>${esc(a)}</span></button>`).join("")}</div>`;
   return {tela: "refazer", html: `<div class="cc">${cabCel()}<div class="cb">${cab}<p class="mut sm" style="margin:0"><b>Tentativa ${tent} de 3</b> · não vale nota</p><h1 class="q">${esc(atual.e)}</h1>${corpo}<button class="b g" data-act="cvolta">Sair do treino</button></div></div>`};
 }
 function refazerResp(r) {
@@ -269,11 +273,11 @@ function prepararAssinatura(c) {
 }
 async function assinarCel() {
   const c = $("#cassin"); if (!c) return;
-  if (CE.tracos < 8) { aviso("Faça a assinatura com o dedo antes de enviar."); return; }
+  if (CE.tracos < 8) { aviso("Faça a assinatura com o dedo antes de enviar.", null, null, "erro"); return; }
   const o = document.createElement("canvas"); o.width = 300; o.height = 120; const x = o.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, 300, 120); x.drawImage(c, 0, 0, 300, 120);
   const d = o.toDataURL("image/jpeg", 0.6);
   try { await Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/ass/" + CE.pid, d); }
-  catch(e) { if (e.status !== 401 && e.status !== 403) { aviso("Não enviou. Confira a internet e toque de novo."); return; } }
+  catch(e) { if (e.status !== 401 && e.status !== 403) { aviso("Não enviou. Confira a internet e toque de novo.", null, null, "erro"); return; } }
   CE.assinou = true; try { localStorage.setItem(chaveLS("sabia-a-"), "1"); } catch(e) {} CE.tracos = 0; CE.html = ""; pintaCel();
 }
 
@@ -282,7 +286,7 @@ async function enviarResp(r) {
   const f = CE.pub && CE.pub.fase; if (!f || CE.enviando) return; const idx = f.idx;
   CE.enviando = true; CE.html = ""; pintaCel();
   try { await Rede.req(CE.base, "PUT", "/salas/" + CE.chave + "/resp/" + CE.pid + "/" + idx, {r}); CE.resp[idx] = r; try { navigator.vibrate && navigator.vibrate(30); } catch(e) {} }
-  catch(e) { if (e.status === 401 || e.status === 403) CE.resp[idx] = r; else aviso("Não enviou. Confira a internet e toque de novo."); }
+  catch(e) { if (e.status === 401 || e.status === 403) CE.resp[idx] = r; else aviso("Não enviou. Confira a internet e toque de novo.", null, null, "erro"); }
   CE.enviando = false; CE.html = ""; pintaCel();
 }
 async function entrarCel(nome, setor) {
@@ -344,7 +348,7 @@ function atualizaSug() {
 document.addEventListener("input", e => { if (e.target.id === "ce-n") { CE.nome = e.target.value; atualizaSug(); } else if (e.target.id === "cm-t") CE.cm.texto = e.target.value; });
 document.addEventListener("submit", e => {
   const f = e.target.closest("[data-form]"); if (!f) return;
-  if (f.dataset.form === "celchave") { e.preventDefault(); const k = $("#ce-k").value.replace(/\D/g, ""); if (k.length === 6) location.hash = "#/entrar/" + k; else aviso("A chave tem 6 números."); }
+  if (f.dataset.form === "celchave") { e.preventDefault(); const k = $("#ce-k").value.replace(/\D/g, ""); if (k.length === 6) location.hash = "#/entrar/" + k; else aviso("A chave tem 6 números.", null, null, "erro"); }
   else if (f.dataset.form === "celentrar") { e.preventDefault(); const s = $("#ce-s"); entrarCel($("#ce-n").value, s ? s.value : "").then(() => { CE.html = ""; if (CE.erro) { const el = $("#ce-erro"); if (el) el.textContent = CE.erro; } }); }
 });
 setInterval(() => { if (CE.chave && CE.tela === "pergunta" && CE.pub && CE.pub.fase.dur && Date.now() > CE.t0 + CE.pub.fase.dur && CE.resp[CE.pub.fase.idx] === undefined) { CE.html = ""; pintaCel(); } }, 500);
